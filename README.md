@@ -80,15 +80,13 @@
 3. 코드 
     (아두보이 업로드 하는 방법) 
 
-/projects/ambientLight
-/projects/layzer
-/projects/calculator
-/projects/smartFactory
-/projects/gamePad
-
-
-/projects/new
-/projects/upload
-/projects/<project_name>/edit 
+- /projects/ambientLight
+- /projects/layzer
+- /projects/calculator
+- /projects/smartFactory
+- /projects/gamePad
+- /projects/new
+- /projects/upload
+- /projects/<project_name>/edit 
                         
 
