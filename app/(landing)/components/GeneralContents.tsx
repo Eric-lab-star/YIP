@@ -1,3 +1,5 @@
+import Curriculum from "./Curriculum"
+import Projects from "./Projects"
 
 			{/* <div> */}
 			{/* 	<Projects> */}
@@ -14,7 +16,7 @@
 			{/* 	</Class> */}
 			{/* 	<Champions /> */}
 			{/* </div> */}
-import Projects from "./Projects.tsx"
+
 export default function GeneralContents() {
 	return(
 		<div className="lg:col-span-4  flex flex-col gap-3">
@@ -28,13 +30,7 @@ export default function GeneralContents() {
 
 
 
-function Curriculum() {
-	return(
-		<div className="border-2 bg-amber-50 h-96 ">
-			Curriculum
-		</div>
-	)
-}
+
 
 function  Champions() {
 	return(

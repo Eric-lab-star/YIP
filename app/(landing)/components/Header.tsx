@@ -10,7 +10,7 @@ const blackHandSans = Black_Han_Sans({weight: "400"})
 export default function Header() {
 	return (
 		<div 
-		className={`select-none border-2 gap-3 h-44 px-3 py-1 my-3 flex flex-col justify-center 
+		className={`select-none rounded-md gap-3 h-44 px-3 py-1 my-3 flex flex-col justify-center 
 			items-center bg-amber-50`}>
 			<div className="flex flex-col justify-center items-center">
 					
