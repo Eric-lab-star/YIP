@@ -34,7 +34,7 @@ export default function GeneralContents() {
 
 function  Champions() {
 	return(
-		<div className="border-2 bg-amber-50 h-96 ">
+		<div className="rounded-md bg-amber-50 h-96 ">
 			Champions
 		</div>
 	)

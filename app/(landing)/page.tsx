@@ -18,11 +18,10 @@ import Header from "./components/Header";
 //
 export default function Home() {
   return (
-		<div className=" bg-amber-600 lg:w-5/6 lg:mx-auto md:w-screen space-y-3 ">
+		<div className=" lg:w-5/6 lg:mx-auto md:w-screen space-y-3 ">
 			<Header/>
 			<Body />
 			<Footer />
-			
 		</div>
   );
 }
