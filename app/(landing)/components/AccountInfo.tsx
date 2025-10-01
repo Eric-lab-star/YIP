@@ -1,35 +1,19 @@
 "use client";
-import { SubmitHandler, useForm } from "react-hook-form"
 
-type Inputs = {
-	userId: string,
-	password: string,
-}
+import LoginForm from "./LoginForm";
 
 export default function AccountInfo() {
-	const {
-		register,
-		handleSubmit,
-		watch, 
-		formState: { errors },
-	} = useForm<Inputs>()
-
-	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
-
-	console.log(watch("userId")); // watch input value by passing the name of it
 	
 	return(
-		<div className={`lg:col-span-2 lg:order-last md:order-first rounded-md p-2 md:mb-3
-			lg:mb-0 bg-amber-50`}>
-			<div>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<input placeholder="이름" {...register("userId")} />
-					<input placeholder="전화번호 또는 비밀번호 " {...register("password", {required: true})} />
-					{errors.password && <span>Password is required</span> }
-					<input className="block" type="submit" defaultValue={"로그인"}/>
-				</form>
-
-			</div>
+		<div className={`flex flex-col space-y-3 lg:col-span-2 lg:order-last md:order-first rounded-md
+			p-2 md:mb-3 lg:mb-0 `}>
+			<LoginForm />
+			<div className="bg-amber-50 h-50 w-full rounded-md p-3"> 달력 </div>
+			<div className="bg-amber-50 h-50 w-full rounded-md p-3"> 뉴스  </div>
+			<div className="bg-amber-50 h-50 w-full rounded-md p-3"> 지식 / 교육 영상 </div>
+			<div className="bg-amber-50 h-50 w-full rounded-md p-3">  상담 문의 </div>
 		</div>
 	)
 }
+
+

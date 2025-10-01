@@ -34,8 +34,8 @@ export default function GeneralContents() {
 
 function  Champions() {
 	return(
-		<div className="rounded-md bg-amber-50 h-96 ">
-			Champions
+		<div className="p-3 rounded-md bg-amber-50 h-96 ">
+			학생들 발표 영상/ 제작 | 수업 사진 
 		</div>
 	)
 }

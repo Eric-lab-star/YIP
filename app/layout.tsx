@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={`
 					${geistSans.variable} ${geistMono.variable} antialiased
-					bg-zinc-200 lg:w-5/6 lg:mx-auto md:w-screen space-y-3 `}
+					bg-zinc-200 lg:w-screen lg:px-15 md:w-screen space-y-3 `}
       >
         {children}
       </body>
