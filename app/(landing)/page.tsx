@@ -14,9 +14,10 @@
 import Body from "./components/Body";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-
+import {run } from "../lib/data";
 //
-export default function Home() {
+export default async function Home() {
+	const db = await run();
   return (
 		<div className="space-y-3">
 			<Header/>
