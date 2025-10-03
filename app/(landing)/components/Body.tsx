@@ -1,6 +1,6 @@
 			{/* <Login /> */}
-import GeneralContents from "./GeneralContents.tsx"
-import AccountInfo from "./AccountInfo.tsx"
+import GeneralContents from "./GeneralContents"
+import AccountInfo from "./AccountInfo"
 
 export default function Body( ) {
 	return(
