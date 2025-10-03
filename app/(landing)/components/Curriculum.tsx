@@ -1,5 +1,7 @@
 "use client";
 
+import FaceSmile from "@/app/components/Face_smile";
+import Image from "next/image";
 import { useState } from "react";
 
 /*
@@ -25,10 +27,11 @@ import { useState } from "react";
 const curriculumDB = [
 	{
 		name: "성장 프로세스 ",
+		image: "arduino.webp",
 		steps: [
 			{
 				step: "FUN 단계 ",
-				description: "완벽한 기초 다지리를 위한 단계",
+				description: "완벽한 기초 다지기를 위한 단계",
 			},
 			{
 				step: "성장 1 단계 ",
@@ -42,6 +45,7 @@ const curriculumDB = [
 	},
 	{
 		name: "도약 브릿지",
+		image: "robot.jpg",
 		steps: [
 			{
 				step: "Bridge",
@@ -51,6 +55,7 @@ const curriculumDB = [
 	},
 	{
 		name: "도약 프로세스",
+		image: "layzer.jpeg",
 		steps: [
 			{
 				step: "도약",
@@ -62,18 +67,20 @@ const curriculumDB = [
 
 export default function Curriculum() {
 	const db = curriculumDB
-	const [selected, setSelected] = useState(db[0])
+	const [selected, setSelected] = useState(db[2])
 	return(
 		<div className=" relative">
-			<button className="absolute top-30 text-2xl left-0">
+			<button className="z-10 absolute top-30 text-2xl left-0">
 				<div className="rounded-full bg-red-100 border-2 h-10 w-10 flex justify-center items-center">{`<`} </div>
 			</button>	
-			<button className="absolute top-30 right-0 text-2xl">
+			<button className="z-10 absolute top-30 right-0 text-2xl">
 				<div className="rounded-full bg-red-100 border-2 h-10 w-10 flex justify-center items-center">{`>`} </div>
 			</button>	
 			<div className=" rounded-lg bg-amber-50 h-96 p-3">
 				<div key={selected.name} className="flex flex-col">
-					<div className="w-full h-70 bg-red-100 rounded-md"></div>
+					<div className=" relative w-full h-70 bg-red-100 rounded-md">
+						<Image alt="" className="rounded-md"  fill={true} src={`/${selected.image}`}/>
+					</div>
 					<div className="">
 						<div>{selected.name}</div>
 						<div>{selected.steps[0].step}</div>
