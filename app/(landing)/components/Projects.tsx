@@ -87,7 +87,6 @@ export default function Projects() {
 							backgroundColor: project == selectedTab ? project.bg : "#fefbeb"
 						}}
 						onClick={() => {
-							console.log(project)
 							setSelectedTab(project)}}
 						>{project.name}</motion.li>
 					))}

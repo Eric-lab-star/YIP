@@ -1,0 +1,57 @@
+import clientPromise, { getDB } from "./db";
+
+interface Users {
+	name: string;
+	password: string;
+	age: number;
+	phoneNumber: string;
+	school: string;
+	currentProj: string;
+	attendence: Date;
+	login: boolean;
+}
+
+const userDB: Users[] = [
+	{
+		name: "김경섭",
+		password: "010628888587",
+		age: 17,
+		phoneNumber: "01062888587",
+		school: "아름고등학교",
+		currentProj: "smartFactory",
+		attendence: new Date(Date.now()),
+		login: false,
+	}
+];
+
+
+async function initUsers() {
+	const db = await getDB();
+	const users = await db.listCollections({name: "users"}).next();
+	if (users) {
+		db.collection("users").drop();
+	}
+	return db.createCollection("users");
+}
+
+export async function mockUser() {
+	try {
+		const users = await initUsers()
+		const res = await users.insertMany(userDB)
+		console.log(`${res.insertedCount} documents were inserted to users collection`);
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+
+export async function findOneUser(user: string) {
+	try {
+		const db = await getDB(); 
+		const users = db.collection<Users>("users");
+		const doc = await users.findOne({name: `${decodeURIComponent(user)}`});
+		return doc
+	} catch(e) {
+		console.log(e);
+	}
+}
