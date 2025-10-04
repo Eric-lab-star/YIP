@@ -53,22 +53,12 @@ const client = new MongoClient(uri, {
 export async function run() {
 	try {
 		await client.connect();
-<<<<<<< HEAD
-		const yipDB = client.db("yipDB");
-		const blogs = yipDB.collection("blogs")
-		const blogsDoc = {
-			name: "Arduboy",
-			difficulty: "3",
-			description: "this is intermediate course."
-=======
-		
 		const yipDB = client.db("yipDB");
 		const users = yipDB.collection<Users>("users");
 		const result = await users.insertMany(db);
 		const ids = result.insertedIds;
 		for ( const id of Object.values(ids)) {
 			console.log(`Inserted a document with id ${id}`);
->>>>>>> origin/main
 		}
 
 	} catch {
