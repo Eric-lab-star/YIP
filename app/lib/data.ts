@@ -13,17 +13,14 @@ const client = new MongoClient(uri, {
 export async function run() {
 	try {
 		await client.connect();
-
 		const yipDB = client.db("yipDB");
-		const names =  yipDB.listCollections({}, {nameOnly: true});
-		for await (const doc of names) {
-			console.log(doc);
+		const blogs = yipDB.collection("blogs")
+		const blogsDoc = {
+			name: "Arduboy",
+			difficulty: "3",
+			description: "this is intermediate course."
 		}
-		yipDB.collection("users").drop();
-		const newnames =  yipDB.listCollections({}, {nameOnly: true});
-		for await (const doc of newnames) {
-			console.log(doc);
-		}
+
 	} catch {
 		await client.close();
 	}
