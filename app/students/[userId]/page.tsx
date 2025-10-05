@@ -1,9 +1,6 @@
-// import clientPromise from "@/app/lib/db"
-
-import { mockProjects } from "@/app/lib/projects";
-import { findOneUser, mockUser } from "@/app/lib/users";
-
-
+import { findOneProject,mockProjects, Projects } from "@/app/lib/projects";
+import { findOneUser, getCurrentProject, mockUser } from "@/app/lib/users";
+import { WithId } from "mongodb";
 
 export default async function Page(
 	{ 
@@ -11,19 +8,19 @@ export default async function Page(
 	}: {
 		params: Promise<{ userId: string}>
 	}) {
-		await mockUser();
-		await mockProjects();
+		// await mockUser();
+		// await mockProjects();
 		const { userId } = await params
-		const user = await findOneUser(userId);
-		console.log(user);
+		// const user = await findOneUser(userId);
+		// const proj = await findOneProject("스마트 팩토리")
+		// let currentProj: WithId<Projects>|null|undefined;
+		// if (proj && user) {
+		// 	user.currentProj.push(proj._id);
+		// 	currentProj = await getCurrentProject(user)
+		// }
+
 
 	return (
-		<div>
-			<div>{user!.name}</div>
-			<div>{user!.age}</div>
-			<div>{user!.school}</div>
-			<div>{user!.phoneNumber}</div>
-		</div>
-		
+		<div>{userId} </div>
 	)
 }

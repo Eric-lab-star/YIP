@@ -1,12 +1,14 @@
-import clientPromise, { getDB } from "./db";
+import { ObjectId, WithId } from "mongodb";
+import  { getDB } from "./db";
+import { findProjectById } from "./projects";
 
-interface Users {
+export interface Users {
 	name: string;
 	password: string;
 	age: number;
 	phoneNumber: string;
 	school: string;
-	currentProj: string;
+	currentProj: ObjectId[];
 	attendence: Date;
 	login: boolean;
 }
@@ -18,7 +20,7 @@ const userDB: Users[] = [
 		age: 17,
 		phoneNumber: "01062888587",
 		school: "아름고등학교",
-		currentProj: "smartFactory",
+		currentProj: [],
 		attendence: new Date(Date.now()),
 		login: false,
 	}
@@ -55,3 +57,13 @@ export async function findOneUser(user: string) {
 		console.log(e);
 	}
 }
+
+export async function getCurrentProject(user: WithId<Users>) {
+	try {
+		const currentProj = await findProjectById(user.currentProj[0])
+		return currentProj
+	}catch(e) {
+		console.log(e)
+	}
+}
+
