@@ -63,3 +63,8 @@ export async function validateLogin() {
 		console.log(e);
 	}
 }
+
+export async function logoutAction() {
+	const cookiesStore = await cookies();
+	cookiesStore.set("token", "");
+}

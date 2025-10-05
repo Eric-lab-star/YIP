@@ -1,4 +1,5 @@
-import { LoginJWTPayload } from "@/app/lib/actions";
+"use client";
+import { LoginJWTPayload, logoutAction } from "@/app/lib/actions";
 
 /* 
 	*  블로그
@@ -17,6 +18,7 @@ export default function LoggedInUser({user}:{user:LoginJWTPayload}) {
 		<div className="col-span-1 h-full bg-amber-300 rounded-md"> 마인드 맵 </div>
 		<div className="col-span-1 h-full bg-amber-300 rounded-md"> 개인화면 </div>
 		<div className="col-span-1 h-full bg-amber-300 rounded-md"> 보고서 </div>
-		<div className="col-span-1 h-full bg-amber-300 rounded-md"> 로그아웃 </div>
+		<div className="col-span-1 h-full bg-amber-300 rounded-md" 
+		onClick={async()=> await logoutAction()}> 로그아웃 </div>
 	</div>
 }
