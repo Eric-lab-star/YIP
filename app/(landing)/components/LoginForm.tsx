@@ -20,10 +20,9 @@ export default function LoginForm() {
 	const onSubmit: SubmitHandler<LoginInputs> = async (data: LoginInputs) => {
 		const res = await loginAction(data);
 		if (res && res.auth) {
-			redirect(`/students/${res.userId}`)
+			redirect(`/students/${res.userId}`, RedirectType.push)
 		}
-
-
+		
 		setValue("name", "")
 		setValue("password", "")
 	}
