@@ -4,7 +4,6 @@ import { LoginInputs } from "../(landing)/components/LoginForm";
 import { getDB } from "./db";
 import { Users } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { revalidatePath } from "next/cache";
 
 export interface LoginJWTPayload extends JwtPayload {
 	userId: string;
@@ -13,7 +12,13 @@ export interface LoginJWTPayload extends JwtPayload {
 }
 
 
-export async function loginAction(formData: LoginInputs){
+export interface LoginActionRes {
+	login: boolean;
+	message: string;
+}
+
+
+export async function loginAction(formData: LoginInputs): Promise<LoginActionRes>{
 	try {
 		const userId = formData.name
 		const password = formData.password
@@ -22,6 +27,20 @@ export async function loginAction(formData: LoginInputs){
 
 		if (!process.env.JWT_SECRET) {
 			throw new Error("server error: JWT SECRET is missing");
+		}
+
+		if (!user) {
+			return {
+				login: false,
+				message: "잘못된 이름입니다."
+			}
+		}
+
+		if (user.password !== password ) {
+			return {
+				login: false,
+				message: "비밀번호 오류입니다."
+			}
 		}
 
 		if (user && (user.password == password)) {
@@ -37,14 +56,23 @@ export async function loginAction(formData: LoginInputs){
 			);
 			cookiesStore.set("token", token)
 			console.log("login success");
-			return true
+			return {
+				login: true,
+				message: "login success"
+			}
 		} else {
 			console.log("login fail");
-			return  false
+			return {
+				login: false,
+				message: "login failed"
+			} 
 		}
 	} catch(e) {
 		console.log("error");
-		return false
+		return {
+			login: false,
+			message: `${e}`
+		}
 	}
 }
 
