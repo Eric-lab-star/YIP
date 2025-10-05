@@ -47,11 +47,11 @@ export async function mockUser() {
 }
 
 
-export async function findOneUser(user: string) {
+export async function getUserData(userId: string) {
 	try {
 		const db = await getDB(); 
 		const users = db.collection<Users>("users");
-		const doc = await users.findOne({name: `${decodeURIComponent(user)}`});
+		const doc = await users.findOne({_id: new ObjectId(userId)});
 		return doc
 	} catch(e) {
 		console.log(e);
