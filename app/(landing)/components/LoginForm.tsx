@@ -1,7 +1,7 @@
 "use client";
 
 import { loginAction } from "@/app/lib/actions";
-import { redirect, RedirectType } from "next/navigation";
+import { redirect } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form"
 
 export type LoginInputs = {
@@ -17,12 +17,12 @@ export default function LoginForm() {
 		formState: { errors },
 	} = useForm<LoginInputs>()
 
+
 	const onSubmit: SubmitHandler<LoginInputs> = async (data: LoginInputs) => {
 		const res = await loginAction(data);
-		if (res && res.auth) {
-			redirect(`/students/${res.userId}`, RedirectType.push)
+		if (res) {
+			redirect("/")
 		}
-		
 		setValue("name", "")
 		setValue("password", "")
 	}
@@ -44,3 +44,4 @@ export default function LoginForm() {
 			</div>
 	)
 }
+

@@ -4,23 +4,30 @@ import { findProjectById } from "./projects";
 
 export interface Users {
 	name: string;
+	image: string;
+	role: "student" | "admin"
 	password: string;
 	age: number;
 	phoneNumber: string;
 	school: string;
 	currentProj: ObjectId[];
+	blogs: ObjectId[];
 	attendence: Date;
 	login: boolean;
+	
 }
 
 const userDB: Users[] = [
 	{
 		name: "김경섭",
-		password: "010628888587",
+		image: "",
+		role: "student",
+		password: "01062888587",
 		age: 17,
 		phoneNumber: "01062888587",
 		school: "아름고등학교",
 		currentProj: [],
+		blogs: [],
 		attendence: new Date(Date.now()),
 		login: false,
 	}
@@ -34,6 +41,11 @@ async function initUsers() {
 		db.collection("users").drop();
 	}
 	return db.createCollection("users");
+}
+
+async function getUsersColl() {
+	const db = await getDB();
+	return db.collection("users");
 }
 
 export async function mockUser() {

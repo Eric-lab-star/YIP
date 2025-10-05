@@ -1,4 +1,3 @@
-			{/* <Login /> */}
 import GeneralContents from "./GeneralContents"
 import AccountInfo from "./AccountInfo"
 
