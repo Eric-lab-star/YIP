@@ -4,6 +4,13 @@ import * as motion from "motion/react-client"
 import { Black_Han_Sans, Sunflower } from "next/font/google" 
 import { useState } from "react"
 import Image from "next/image"
+
+// static images
+import layzerImage from "../../../public/layzer.jpeg";
+import arduboyImage from "../../../public/arduino.webp";
+import calculatorImage from "../../../public/humanbot.jpg";
+import smartFactoryImage from "../../../public/robot.jpg";
+
 const blackHanSans = Black_Han_Sans({weight: "400"})
 const sunflower  = Sunflower({weight: "300"})
 const projectLists  = [
@@ -72,7 +79,7 @@ export default function Projects() {
 	const [selectedTab, setSelectedTab ] = useState(projectLists[0]);
 
 	return(
-		<div className="h-max rounded-md">
+		<div className="h-max ounded-md select-none">
 			<nav>
 				<ul className="flex space-x-1">{projectLists.map(
 					project => (
@@ -81,7 +88,7 @@ export default function Projects() {
 							backgroundColor: project == selectedTab ? project.bg : "#fefbeb"
 						}}
 						key={project.name} className={
-							`text-sm px-3 py-1 select-none ${blackHanSans.className} rounded-t-md`
+							`text-sm px-3 py-1 ${blackHanSans.className} rounded-t-md`
 						}
 						animate={{
 							backgroundColor: project == selectedTab ? project.bg : "#fefbeb"
@@ -95,12 +102,12 @@ export default function Projects() {
 			<main 
 			style={{backgroundColor: `${selectedTab.bg}`}} 
 			className={`rounded-b-md rounded-tr-md p-3 space-y-1`}>
-				<div className="relative self-center row-span-5 w-full h-80 ">
+				<div className="relative self-center row-span-5 w-full h-154 ">
 					<Image fill={true} className="rounded-md" alt="project Image" src={`/${selectedTab.image}`}/>
 				</div>
-				<div className={`row-span-2 space-y-1 ${selectedTab.bg}`}>
+				<div className={`row-span-2 space-y-1 ${selectedTab.bg} `}>
 					<div>{level(selectedTab.description.difficulty)}</div>
-					<div className={`${sunflower.className} text-lg text-zinc-100 `}> {selectedTab.description.explanation} </div>
+					<div className={`${sunflower.className} select-none text-lg text-zinc-100 `}> {selectedTab.description.explanation} </div>
 					<ul className="flex space-x-2">{selectedTab.description.goals.map(goal => <li className="rounded-md text-sm bg-amber-50 py-1 px-2" key={goal}>{goal}</li>)}</ul>
 				</div>
 			</main>
@@ -108,6 +115,8 @@ export default function Projects() {
 	)
 }
 
+
+// level component to convert number to number of stars
 function level( difficulty: number ) {
 	const stars = [];
 	for (let i = 0; i < difficulty; i++) {

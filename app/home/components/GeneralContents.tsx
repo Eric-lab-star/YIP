@@ -1,22 +1,6 @@
 import Curriculum from "./Curriculum"
 import Projects from "./Projects"
 
-			{/* <div> */}
-			{/* 	<Projects> */}
-			{/* 		<Arduboy /> */}
-			{/* 		<Calculator /> */}
-			{/* 		<Layzer /> */}
-			{/* 		<SmartFactory /> */}
-			{/* 		<GamePad /> */}
-			{/* 		<Entry /> */}
-			{/* 	</Projects> */}
-			{/* 	<Class> */}
-			{/* 		<Curriculum /> */}
-			{/* 		<ClassAlbum /> */}
-			{/* 	</Class> */}
-			{/* 	<Champions /> */}
-			{/* </div> */}
-
 export default function GeneralContents() {
 	return(
 		<div className="lg:col-span-4  flex flex-col gap-3">
