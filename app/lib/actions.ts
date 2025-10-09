@@ -1,9 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import { LoginInputs } from "../(landing)/components/LoginForm";
 import { getDB } from "./db";
 import { Users } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { LoginInputs } from "../home/components/LoginForm";
 
 export interface LoginJWTPayload extends JwtPayload {
 	userId: string;

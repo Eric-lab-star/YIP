@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getDB } from "./db";
 
-export interface Projects {
+export interface IProjects {
 	name: string;
 	levels: number;
 	book: string;
@@ -12,7 +12,7 @@ export interface Projects {
 	goals: string[];
 }
 
-const projectDB: Projects[] = [
+const projectDB: IProjects[] = [
 	{
 		name: "스마트 팩토리",
 		levels: 5,
@@ -66,7 +66,7 @@ const projectDB: Projects[] = [
 				이 프로젝트를 수행하는 학생들은 게임기의 회로 연결과 코드 업로드까지 모든 직접 손으로
 			만들면서 우리 주위의 전자기기의 동작 방식을 이해하게 됩니다. 이러한 이해는 게임 기계를
 			소비자의 관점이 아닌 개발자의 관점에서 볼 수 있도록 전환시켜 줍니다.`,
-		color: "",
+		color: "#F54927",
 		goals: ["회로", "아두이노의 이해"],
 	},
 ];
@@ -77,7 +77,7 @@ export async function initProjects() {
 	if (project) {
 		db.collection("projects").drop();
 	}
-	return db.createCollection<Projects>("projects");
+	return db.createCollection<IProjects>("projects");
 }
 
 export async function mockProjects() {
@@ -88,7 +88,7 @@ export async function mockProjects() {
 
 export async function findOneProject(name: string) {
 	const db = await getDB();
-	const projects = db.collection<Projects>("projects")
+	const projects = db.collection<IProjects>("projects")
 	return await projects.findOne({name})
 }
 
@@ -96,14 +96,14 @@ export async function findOneProject(name: string) {
 
 export async function findProjectById(id: ObjectId) {
 	const db = await getDB();
-	const projects = db.collection<Projects>("projects")
+	const projects = db.collection<IProjects>("projects")
 	return await projects.findOne({_id: id})
 }
 
 export async function findProject(ids: ObjectId[]) {
 	const db = await getDB();
-	const projects = db.collection<Projects>("projects")
-	const result: Projects[] = [];
+	const projects = db.collection<IProjects>("projects")
+	const result: IProjects[] = [];
 	for (const id of ids) {
 		const prj = await projects.findOne({_id: id})
 		if (prj) {

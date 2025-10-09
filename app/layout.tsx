@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { notosansKorean } from "./stores/font";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "DDokDDok",
@@ -26,7 +17,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`
-					${geistSans.variable} ${geistMono.variable} antialiased
+					${notosansKorean.className} antialiased
 					bg-zinc-200 lg:w-[1280] mx-auto md:w-[1280] space-y-3 `}
       >
         {children}

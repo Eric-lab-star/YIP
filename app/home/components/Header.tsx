@@ -2,10 +2,9 @@
 	* Logo
 	* 
 	* */
-import { Black_Han_Sans } from "next/font/google" 
+import { blackHanSans } from "@/app/stores/font"
 import Link from "next/link"
 
-const blackHandSans = Black_Han_Sans({weight: "400"})
 
 export default function Header() {
 	return (
@@ -16,7 +15,7 @@ export default function Header() {
 					
 				<div 
 				className={
-					`${blackHandSans.className} 
+					`${blackHanSans.className} 
 					hover:text-shadow-md/50 text-shadow-amber-300 text-5xl select-none
 					`}>
 					<Link href={"/"}> 똑똑 코딩 </Link>
