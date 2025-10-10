@@ -6,68 +6,9 @@ import { useState } from "react";
 import { Black_Han_Sans, Sunflower } from "next/font/google" 
 import RightArrow from "@/app/components/RightArrow";
 import LeftArrow from "@/app/components/LeftArrow";
+import { curriculumDB } from "@/app/lib/staticDB/curriculumDB";
 const blackHanSans = Black_Han_Sans({weight: "400"})
 const sunflower  = Sunflower({weight: "300"})
-/*
-	* 1. 성장 프로세스 
-* 		FUN 단계 
-* 			완벽한 기초 다지기를 위한 단계
-* 		성장 1 단계 
-* 			문제해결 과정을 익히는 기초 단계 
-* 		성장 2 단계 
-* 			문제해결 프로젝트 심화 교육 밎 과학 레포트 작성 
-*
-	*  2. 도약 브릿지 
-*  			성장 단계에서 도약 단계로 이어주는 추가 프로젝트 
-*  			초고속 실력 향상, 다양한 프로젝트  
-*  			학생부 세부 특기사항 기록 
-*  			자율 수행 프로젝트, 블로그 
-*  		3. 도약 프로세스 
-
-*
-	*
-*/
-
-const curriculumDB = [
-	{
-		name: "성장 프로세스 ",
-		image: "arduino.webp",
-		steps: [
-			{
-				step: "FUN 단계 ",
-				description: "완벽한 기초 다지리를 위한 단계",
-			},
-			{
-				step: "성장 1 단계 ",
-				description: "문제해결 과정을 익히는 기초 단계",
-			},
-			{
-				step: "성장 2 단계 ",
-				description: "문제해결 프로젝트 심화 교육 및 과학 레포트 작성 ",
-			},
-		],
-	},
-	{
-		name: "도약 브릿지",
-		image: "robot.jpg",
-		steps: [
-			{
-				step: "Bridge",
-				description: "성장 단계에서 도약 단계로 이어주는 추가 프로젝트.",
-			},
-		],
-	},
-	{
-		name: "도약 프로세스",
-		image: "humanbot.jpg",
-		steps: [
-			{
-				step: "도약",
-				description: ""
-			}
-		],
-	}
-]
 
 export default function Curriculum() {
 	const db = curriculumDB
