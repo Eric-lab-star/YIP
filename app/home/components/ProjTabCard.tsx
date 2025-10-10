@@ -12,11 +12,11 @@ import layzerImage from "../../../public/layzer.jpeg";
 import arduboyImage from "../../../public/arduino.webp";
 import calculatorImage from "../../../public/humanbot.jpg";
 import smartFactoryImage from "../../../public/robot.jpg";
-import { IProjects} from "@/app/lib/projects";
+import { IProject} from "@/app/lib/projects";
 import { blackHanSans, sunflower } from "@/app/stores/font";
 
 
-export default function ProjTabCard({projectLists}: {projectLists: IProjects[]}) {
+export default function ProjTabCard({projectLists}: {projectLists: IProject[]}) {
 	const [selectedTab, setSelectedTab ] = useState(projectLists[0]);
 
 	return(

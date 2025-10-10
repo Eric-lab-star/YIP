@@ -20,6 +20,9 @@ let client: MongoClient;
  const clientPromise = global._mongoClientPromise;
 
 
+/**
+	* getDB function waits for client connection 
+* */
 export async function getDB() {
 	const client = await clientPromise
 	const db = client.db("yipDB");

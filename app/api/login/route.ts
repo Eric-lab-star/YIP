@@ -1,5 +1,5 @@
 import { getDB } from "@/app/lib/db";
-import { Users } from "@/app/lib/users";
+import { IUser } from "@/app/lib/users";
 import { NextRequest } from "next/server";
 
 interface loginRequest {
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest){
 	try {
 		const data  = (await req.json()) as loginRequest;
 		const db = await getDB();
-		const user = await db.collection<Users>("users").findOne({name: data.name});
+		const user = await db.collection<IUser>("users").findOne({name: data.name});
 		if (user && user.password === data.password) {
 			return Response.json({
 				message: "login successful",

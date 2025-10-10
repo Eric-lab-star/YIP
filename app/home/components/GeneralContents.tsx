@@ -1,11 +1,11 @@
 import { getDB } from "@/app/lib/db"
 import Curriculum from "./Curriculum"
 import ProjTabCard from "./ProjTabCard"
-import { IProjects as IProjects } from "@/app/lib/projects";
+import { IProject as IProject } from "@/app/lib/projects";
 
 export default async function GeneralContents() {
 	const db = await getDB();
-	const projectLists: IProjects[] = await db.collection<IProjects>("projects")
+	const projectLists: IProject[] = await db.collection<IProject>("projects")
 	.find({}, {projection: {_id: 0}})
 	.toArray();
 	return(

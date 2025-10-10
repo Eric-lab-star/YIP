@@ -2,7 +2,7 @@ import { ObjectId, WithId } from "mongodb";
 import  { getDB } from "./db";
 import { findProjectById } from "./projects";
 
-export interface Users {
+export interface IUser {
 	name: string;
 	image: string;
 	role: "student" | "admin"
@@ -12,12 +12,15 @@ export interface Users {
 	school: string;
 	currentProj: ObjectId[];
 	blogs: ObjectId[];
-	attendence: Date;
+	attendence: ObjectId[];
+	notes: ObjectId[];
 	login: boolean;
 	
 }
 
-const userDB: Users[] = [
+
+
+const userDB: IUser[] = [
 	{
 		name: "김경섭",
 		image: "",
@@ -28,7 +31,8 @@ const userDB: Users[] = [
 		school: "아름고등학교",
 		currentProj: [],
 		blogs: [],
-		attendence: new Date(Date.now()),
+		attendence: [],
+		notes:[],
 		login: false,
 	}
 ];
@@ -62,7 +66,7 @@ export async function mockUser() {
 export async function getUserData(userId: string) {
 	try {
 		const db = await getDB(); 
-		const users = db.collection<Users>("users");
+		const users = db.collection<IUser>("users");
 		const doc = await users.findOne({_id: new ObjectId(userId)});
 		return doc
 	} catch(e) {
@@ -70,7 +74,7 @@ export async function getUserData(userId: string) {
 	}
 }
 
-export async function getCurrentProject(user: WithId<Users>) {
+export async function getCurrentProject(user: WithId<IUser>) {
 	try {
 		const currentProj = await findProjectById(user.currentProj[0])
 		return currentProj

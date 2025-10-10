@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { getDB } from "./db";
-import { Users } from "./users";
+import { IUser } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { LoginInputs } from "../home/components/LoginForm";
 
@@ -23,7 +23,7 @@ export async function loginAction(formData: LoginInputs): Promise<LoginActionRes
 		const userId = formData.name
 		const password = formData.password
 		const db = await getDB();
-		const user = await db.collection<Users>("users").findOne({name: userId});
+		const user = await db.collection<IUser>("users").findOne({name: userId});
 
 		if (!process.env.JWT_SECRET) {
 			throw new Error("server error: JWT SECRET is missing");
