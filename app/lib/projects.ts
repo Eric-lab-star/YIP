@@ -71,7 +71,7 @@ const projectDB: IProject[] = [
 	},
 ];
 
-export async function initProjects() {
+async function initProjects() {
 	const db = await getDB();
 	const project = await db.listCollections({name: "projects"}).next();
 	if (project) {
