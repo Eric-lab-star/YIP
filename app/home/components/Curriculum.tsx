@@ -46,7 +46,7 @@ export default function Curriculum() {
 					<div className={`relative  
 						w-full h-70 bg-red-100 rounded-md`}>
 						<Image alt="Curriculums"
-						className="rounded-md" src={`/${db[selected].image}`} fill={true} />
+						className="rounded-md" src={db[selected].image} fill={true} />
 					</div>
 					<div className={`${sunflower.className} `}>
 						<div className={`${blackHanSans.className} text-lg`}>
