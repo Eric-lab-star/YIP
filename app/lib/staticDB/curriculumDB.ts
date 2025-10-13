@@ -1,7 +1,3 @@
-import basic from "../../../public/arduino.webp";
-import intermediate from "../../../public/arduboy.jpg";
-import advanced from "../../../public/humanbot.jpg";
-import { StaticImageData } from "next/image";
 interface Isteps {
 	step: string;
 	description: string;
@@ -9,14 +5,14 @@ interface Isteps {
 
 export interface curriculumDB {
 	name: string;
-	image: StaticImageData;
+	image: string;
 	steps: Isteps[]
 }
 
 export const curriculumDB: curriculumDB[] = [
 	{
 		name: "성장 프로세스 ",
-		image: basic,
+		image: "/arduino.webp",
 		steps: [
 			{
 				step: "FUN 단계 ",
@@ -34,7 +30,7 @@ export const curriculumDB: curriculumDB[] = [
 	},
 	{
 		name: "도약 브릿지",
-		image: intermediate,
+		image: "/arduboy.jpg",
 		steps: [
 			{
 				step: "Bridge",
@@ -44,7 +40,7 @@ export const curriculumDB: curriculumDB[] = [
 	},
 	{
 		name: "도약 프로세스",
-		image: advanced,
+		image: "/humanbot.jpg",
 		steps: [
 			{
 				step: "도약",

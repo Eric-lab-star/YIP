@@ -9,7 +9,6 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { insertSmartFactory } from "../lib/smartFactory";
 export default async function Home() {
-	// await insertSmartFactory()
 	// await mockProjects();
 	// await mockUser();
 	// await addProjToUser()

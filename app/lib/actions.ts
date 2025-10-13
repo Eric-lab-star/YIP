@@ -94,5 +94,5 @@ export async function validateLogin() {
 
 export async function logoutAction() {
 	const cookiesStore = await cookies();
-	cookiesStore.set("token", "");
+	cookiesStore.delete("token")
 }
