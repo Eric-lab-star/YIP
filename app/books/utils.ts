@@ -4,6 +4,14 @@ export interface IbookPath {
 	tags: string;
 }
 
+export const smartFactory: IbookPath[] = [
+	{
+		path: "/books/smartFactory/1",
+		label: "시작하기",
+		tags: "",
+	}
+]
+
 export const bookPaths: IbookPath[] = [
 	{
 		path: "wireGame",
