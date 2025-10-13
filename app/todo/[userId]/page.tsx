@@ -13,7 +13,8 @@ export default async function Page({ params }: {
 		return (
 			<div className={`${notosansKorean_500.className}  bg-amber-50 h-full  `}> 
 				<div> {user.age} </div>
-				<div> {user.projectDetails?.map((ps, i) => <div key={i}>{ps.name}<div> {ps.description}</div></div>)} </div>
+				<div> {user.projectDetails?.map(
+					(ps, i) => <div key={i}>{ps.name}<div> {ps.description}</div></div>)} </div>
 			</div>
 		)
 	} catch (e) {
