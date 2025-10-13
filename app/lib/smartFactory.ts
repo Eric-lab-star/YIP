@@ -26,7 +26,7 @@ export async function insertSmartFactory() {
 			db.push({
 				name: `smartFactory_${formattedNum}`,
 				page: i,
-				src: `../../public/smartFactory/smartFactory_${formattedNum}.webp`,
+				src: `/smartFactory/smartFactory_${formattedNum}.webp`,
 				description: formattedNum
 			});
 		}
