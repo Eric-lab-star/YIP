@@ -2,7 +2,8 @@
 import { notosansKorean_500 } from "@/app/stores/font"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { smartFactory } from "../utils";
+import { books } from "../utils";
+import { smartFactoryPath } from "../smartFactory/utils";
 
 
 
@@ -22,9 +23,9 @@ function getLinks(){
 	const path = usePathname()
 	switch (true){
 		case path.startsWith("/books/smartFactory"):
-			return smartFactory;
+			return smartFactoryPath;
 		case path.startsWith("/books"):
-			return [];
+			return books;
 		default:
 			return [];
 	}

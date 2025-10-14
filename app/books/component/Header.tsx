@@ -20,22 +20,22 @@ export default function Header({className = ""}:{className?: string}) {
 
 function setTitle(){
 	const path = usePathname();
-	switch (path) {
-		case "/books/smartFactory":
+	switch (true) {
+		case path.startsWith("/books/smartFactory"):
 			return "스마트 팩토리"	
-		case "/books/wireGame":
+		case path.startsWith("/books/wireGame"):
 			return "와이어 게임"
-		case "/books/layzer":
+		case path.startsWith("/books/layzer"):
 			return "레이저 터렛";
-		case "/books/circuit":
+		case path.startsWith("/books/circuit"):
 			return "회로";
-		case "/books/moodLight":
+		case path.startsWith("/books/moodLight"):
 			return "무드등";
-		case "/books/waterPollution":
+		case path.startsWith("/books/waterPollution"):
 			return "수질 오염"
-		case "/books/arduino":
+		case path.startsWith("/books/arduino"):
 			return "아두이노"
-		case "/books":
+		case path.startsWith("/books"):
 			return "교재방"
 		default:
 			return "YIP 코딩"
