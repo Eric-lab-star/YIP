@@ -225,7 +225,7 @@ export interface smartFactoryBook {
 	doc: string;
 	description?: string;
 	title?: string;
-	images: {src: string; video?: (...args: any[])=> React.JSX.Element; alt: string, message?: string;}[];
+	images: {src: string; video?: ({className}: {className?: string})=> React.JSX.Element; alt: string, message?: string;}[];
 }
 
 export const smartFactoryBook: smartFactoryBook[] = [

@@ -33,6 +33,7 @@ export async function insertSmartFactory() {
 		const {insertedCount} = await sf.insertMany(db)
 		console.log(`Inserted ${insertedCount} docs to smartFactory collection`)
 	} catch (error) {
+		console.log(error)
 		console.log("Error while inserting")
 	}
 }

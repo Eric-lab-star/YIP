@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Header({className = ""}:{className?: string}) {
-	const title = setTitle();
+	const path = usePathname();
+	const title = setTitle(path);
 	
 
 	return (
@@ -18,8 +19,7 @@ export default function Header({className = ""}:{className?: string}) {
 	)
 }
 
-function setTitle(){
-	const path = usePathname();
+function setTitle(path: string){
 	switch (true) {
 		case path.startsWith("/books/smartFactory"):
 			return "스마트 팩토리"	

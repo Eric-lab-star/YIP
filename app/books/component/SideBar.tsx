@@ -10,7 +10,8 @@ import { smartFactoryPath } from "../smartFactory/utils";
 export default function SideBar(
 	{ className = "" }:{ className?: string }
 ) {
-	const links: link[] = getLinks()
+	const path = usePathname()
+	const links: link[] = getLinks(path)
 	return (
 		<div className={` h-full w-44 flex gap-1 flex-col flex-none ${className}`}>
 			<SidebarItmes links={links} />
@@ -19,8 +20,7 @@ export default function SideBar(
 }
 
 
-function getLinks(){
-	const path = usePathname()
+function getLinks(path: string){
 	switch (true){
 		case path.startsWith("/books/smartFactory"):
 			return smartFactoryPath;

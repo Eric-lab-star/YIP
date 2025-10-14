@@ -15,6 +15,7 @@ export async function getUserFromCookie(){
 			const decode =  jwt.verify(token, process.env.JWT_SECRET) as LoginJWTPayload;
 			return decode
 		} catch(e) {
+			console.log(e)
 			return null;
 		}
 }

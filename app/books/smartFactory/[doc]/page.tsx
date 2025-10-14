@@ -1,4 +1,4 @@
-import { smartFactoryBook } from "../utils"
+import { smartFactoryBook, smartFactoryPath } from "../utils"
 import Image from "next/image";
 
 export default async function page({
@@ -9,7 +9,6 @@ export default async function page({
 	const { doc } = await params
 	let page:smartFactoryBook = {
 		doc: "issue",
-		title: "이슈 알아보기",
 		images: [],
 	};
 
@@ -24,6 +23,10 @@ export default async function page({
 		</div>
 		
 	)
+}
+
+export async function generateStaticParmas() {
+	return smartFactoryPath.map((p) => ({ doc: p.path }))
 }
 
 
