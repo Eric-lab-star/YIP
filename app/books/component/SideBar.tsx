@@ -2,7 +2,6 @@
 import { notosansKorean_500 } from "@/app/stores/font"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { books } from "../utils";
 import { smartFactoryPath } from "../smartFactory/utils";
 
 
@@ -12,8 +11,11 @@ export default function SideBar(
 ) {
 	const path = usePathname()
 	const links: link[] = getLinks(path)
+	if (path == "/books") {
+		return <div className="hidden"></div>
+	}
 	return (
-		<div className={` h-full w-44 flex gap-1 flex-col flex-none ${className}`}>
+		<div className={` h-full  w-44 flex gap-1 flex-col flex-none ${className}`}>
 			<SidebarItmes links={links} />
 		</div>
 	)
@@ -25,7 +27,7 @@ function getLinks(path: string){
 		case path.startsWith("/books/smartFactory"):
 			return smartFactoryPath;
 		case path.startsWith("/books"):
-			return books;
+			return [];
 		default:
 			return [];
 	}

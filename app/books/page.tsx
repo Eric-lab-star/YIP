@@ -1,14 +1,36 @@
+import Link from "next/link";
 import { notosansKorean_500 } from "../stores/font";
+import { books } from "./utils";
+import Image from "next/image";
 
 
 export default async function Page() {
 	return (
-		<div className={`space-y-3 text-lg`}>
+		<div className={`space-y-3 text-lg `}>
 			<Intoduction />
 			<Goal />
+			<Books />
 		</div>
 	)
 
+}
+
+function Books() {
+
+	return (
+		<div  className="w-full min-h-100 max-h-max grid grid-cols-4 gap-3">
+		{
+			books.map((book) => {
+				return (
+				<Link key={book.label} href={book.path} >
+					<div  className="rounded-md bg-zinc-50">
+						<Image src={"/arduboy.jpg"} width={100} height={100} alt="image" />
+					</div>
+				</ Link>)
+			})
+		}
+		</div>
+	)
 }
 
 
