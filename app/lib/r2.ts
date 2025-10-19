@@ -1,4 +1,3 @@
-
 import {
   S3Client,
   ListBucketsCommand,
@@ -7,13 +6,13 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 
-function getClient() {
+export function getR2Client() {
 	try {
 		if(!process.env.R2_SECRET_KEY || !process.env.R2_ACCESS_KEY || !process.env.R2_SECRET_KEY){
 			throw new Error("Failed to get env")
 		}
 
-		const S3 = new S3Client({
+		const r2  = new S3Client({
 			region: "auto",
 			endpoint:process.env.R2_URL,
 			credentials: {
@@ -21,7 +20,8 @@ function getClient() {
 				secretAccessKey:process.env.R2_SECRET_KEY,
 			},
 		});
+		return r2;
 	} catch(e) {
-		
+		console.log(e);
 	}
 }
