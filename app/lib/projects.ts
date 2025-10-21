@@ -92,8 +92,6 @@ export async function findOneProject(name: string) {
 	return await projects.findOne({name})
 }
 
-
-
 export async function findProjectById(id: ObjectId) {
 	const db = await getDB();
 	const projects = db.collection<IProject>("projects")
