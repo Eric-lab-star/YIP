@@ -35,6 +35,8 @@ export async function create() {
 	console.log(`inserted ${insertedCount} items`);
 }
 
+
+
 export async function read() {
 	const db = await getDB();	
 	const coll = db.collection("smartFactoryIntro")
