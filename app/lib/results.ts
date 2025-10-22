@@ -2,6 +2,9 @@
 type Result<T> = { ok: true; value: T} | { ok: false; error: Error}
 type AsyncResult<T> = Promise<Result<T>>
 
+
+/** safe function catches error which was thrown from function argument
+	*/
 export function safe<T>(fn: ()=> T): Result<T> {
 	try {
 		return { ok: true, value: fn() };
@@ -20,6 +23,7 @@ export async function safeAsync<T>(fn: () => Promise<T>): AsyncResult<T> {
 		return {ok: false, error: err instanceof Error ? err : new Error(String(err)) }
 	}
 }
+
 
 export function unwrap<T>(result: Result<T>): T {
 	if(!result.ok) throw result.error;

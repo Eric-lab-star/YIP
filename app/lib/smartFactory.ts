@@ -16,6 +16,7 @@ async function initSmartFactory() {
 	return db.createCollection<IsmartFactoryDoc>("smartFactory");
 }
 
+
 export async function insertSmartFactory() {
 	const sf = await initSmartFactory()
 	console.log("Initiallized smartFactory collection")

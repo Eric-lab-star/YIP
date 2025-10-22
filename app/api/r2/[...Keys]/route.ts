@@ -1,8 +1,9 @@
 
-import { r2client } from "@/app/lib/r2";
-import { delay } from "@/app/lib/utils/wait";
+import { r2client } from "@/app/lib/r2/client";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 
+/** Get image from r2 using r2 key
+	*/
 export async function GET(
 	req: Request,
 	{params}: {params: Promise<{Keys: string[]}>}
