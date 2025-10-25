@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Db, MongoClient, ServerApiVersion } from "mongodb";
 
 const uri = process.env.YIPDB_MONGODB_URI!;
 const options = {
@@ -21,12 +21,33 @@ let client: MongoClient;
 
 
 /**
-	* getDB function waits for client connection 
+	* getDB function waits for client connection and return db
 * */
 export async function getDB() {
 	const client = await clientPromise
 	const db = client.db("yipDB");
 	return db
+}
+
+/**
+	* isExists function returns null if collection does not
+* exist.
+	*/
+export async function isExists(db:Db, name: string ){
+	const exists = await db.listCollections({name}).next();
+	return exists
+}
+
+/**
+	* initCollection drops collection if already exists else creates one
+	*/
+export async function initCollection(db: Db, name: string) {
+	const exists = await isExists(db, name);
+	if (exists) {
+		await db.collection(name).drop();
+		console.log("delted previous collection")
+	}
+	return await db.createCollection(name)
 }
 
  export default clientPromise;

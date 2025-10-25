@@ -22,10 +22,10 @@ export async function imageMetadata(key: string) {
 	const {width, height}= await image.metadata();
 	const tinyImage = await image.resize(10, 10, {fit: "inside"}).toBuffer();
 	const base64 = tinyImage.toString("base64")
-	const dataUrl = `data:image/*;base64,${base64}`
+	const blurDataURL= `data:image/*;base64,${base64}`
 	return {
-		key: key,
-		dataUrl: dataUrl,
+		key,
+		blurDataURL,
 		width,
 		height,
 	};

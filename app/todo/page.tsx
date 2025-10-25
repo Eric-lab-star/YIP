@@ -1,6 +1,3 @@
-import { joinProjToUser } from "@/app/lib/projToUser";
-import { blackHanSans, notosansKorean, notosansKorean_500 } from "@/app/stores/font";
-import Image from "next/image";
 
 export default async function Page() {
 		return (
