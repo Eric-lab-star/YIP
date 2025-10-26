@@ -11,3 +11,12 @@ export async function delay(time: number) {
 		}, time)
 	})
 }
+
+
+export function toSafeNumber(str: string|undefined) {
+	if (!str ||str.trim() === "" ){
+		return null
+	} 
+	const num = Number(str);
+	return isNaN(num) ? null : num
+}

@@ -39,7 +39,7 @@ export async function createSmartFactoryCollection() {
 
 
 
-export async function readSmartFactoryCollection() {
+export async function smartFactoryCollection() {
 	const db = await getDB();	
 	const coll = db.collection<IsmartFactory>("smartFactoryIntro")
 	const docs = await coll.find().toArray();

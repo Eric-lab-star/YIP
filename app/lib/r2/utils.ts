@@ -4,7 +4,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const HOUR = 3600
 
-export async function r2Get(key: string) {
+export async function r2GetSignedURL(key: string) {
 	const command = new GetObjectCommand({
 		Bucket: process.env.R2_BUCKET!,
 		Key: key

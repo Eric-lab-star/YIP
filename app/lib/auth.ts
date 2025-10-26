@@ -8,7 +8,7 @@ export async function getUserFromCookie(){
 		}
 		const cookiesStore = await cookies()
 		const token = cookiesStore.get("token")?.value;
-		if (!token) {
+		if (token === "" || !token) {
 			return null;
 		}
 		try {
