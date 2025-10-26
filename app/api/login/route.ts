@@ -1,4 +1,4 @@
-import { getDB } from "@/app/lib/db";
+import { getDB } from "@/app/lib/mongo/db";
 import { IUser } from "@/app/lib/users";
 import { NextRequest } from "next/server";
 

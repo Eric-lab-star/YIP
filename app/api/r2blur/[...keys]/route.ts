@@ -7,7 +7,7 @@ export async function GET(
 	{params}: {params: Promise<{keys: string[]}>}
 ) {
 	const {keys} = await params
-	const {dataUrl} = await imageMetadata(keys.join("/"))	
-	return Response.json({blurDataURL: dataUrl})
+	const {blurDataURL} = await imageMetadata(keys.join("/"))	
+	return Response.json({blurDataURL})
 }
 

@@ -1,7 +1,14 @@
 import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { r2client } from "../r2/client";
-import { getDB, initCollection } from "../db";
+import { getDB, initCollection } from "../mongo/db";
 import { imageMetadata } from "../r2/sharp/bluarData";
+
+export interface IsmartFactory {
+	key: string;
+	blurDataURL: string;
+	width: number;
+	height: number;
+}
 
 /** Upload function create collection of image metadata to mongodb
 	* pdf format is not allowed. collection contains a documents of 
@@ -31,10 +38,19 @@ export async function createSmartFactoryCollection() {
 
 
 
-export async function read() {
-	const db = await getDB();	
-	const coll = db.collection("smartFactoryIntro")
-	const docs = await coll.find().toArray();
-	return Response.json(docs)
 
+export async function readSmartFactoryCollection() {
+	const db = await getDB();	
+	const coll = db.collection<IsmartFactory>("smartFactoryIntro")
+	const docs = await coll.find().toArray();
+	return docs
+
+}
+
+export async function getSmartFactoryDoc(key: string){
+	const db = await getDB();
+	const doc = await db.collection<IsmartFactory>("smartFactoryIntro").findOne({
+		key: key
+	})
+	return doc
 }

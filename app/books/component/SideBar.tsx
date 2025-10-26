@@ -45,7 +45,7 @@ function SidebarItmes({links}: {links: link[]} ) {
 function linkmapper(link: link){
 	return (
 		<Link key={link.path} 
-		className={`${notosansKorean_500.className} text-lg rounded-md min-h-10  bg-amber-300 flex items-center justify-center `} 
+		className={`${notosansKorean_500.className} px-2 ${link.label.length >= 10 ? "text-sm": "text-base"} min-h-10  bg-amber-300 flex items-center justify-center `} 
 		href={`${link.path}`}>
 			<div className="">{link.label}</div>
 		</Link>

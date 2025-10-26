@@ -21,7 +21,6 @@ export default async function page({
 		<div>
 			<Images images={page.images} />
 		</div>
-		
 	)
 }
 

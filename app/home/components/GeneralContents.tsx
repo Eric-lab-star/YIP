@@ -1,4 +1,4 @@
-import { getDB } from "@/app/lib/db"
+import { getDB } from "@/app/lib/mongo/db"
 import Curriculum from "./Curriculum"
 import ProjTabCard from "./ProjTabCard"
 import { IProject as IProject } from "@/app/lib/projects";

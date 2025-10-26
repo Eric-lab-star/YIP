@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { getDB } from "./db";
+import { getDB } from "./mongo/db";
 import { IUser } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { LoginInputs } from "../home/components/LoginForm";

@@ -1,6 +1,5 @@
-import { ObjectId, WithId } from "mongodb";
-import  { getDB } from "./db";
-import { findProjectById } from "./projects";
+import { ObjectId } from "mongodb";
+import  { getDB } from "./mongo/db";
 
 export interface IUser {
 	name: string;
@@ -71,15 +70,6 @@ export async function getUserData(userId: string) {
 		return doc
 	} catch(e) {
 		console.log(e);
-	}
-}
-
-export async function getCurrentProject(user: WithId<IUser>) {
-	try {
-		const currentProj = await findProjectById(user.currentProj[0])
-		return currentProj
-	}catch(e) {
-		console.log(e)
 	}
 }
 
