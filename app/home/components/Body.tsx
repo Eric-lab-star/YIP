@@ -1,6 +1,12 @@
 import GeneralContents from "./GeneralContents"
 import AccountInfo from "./AccountInfo"
 
+/*
+	* Body function 
+	*
+	*
+*/
+
 export default function Body( ) {
 	return(
 		<div 

@@ -4,8 +4,8 @@ import { notosansKorean } from "./stores/font";
 
 
 export const metadata: Metadata = {
-  title: "DDokDDok",
-  description: "똑똑한 똑똑 코딩 ",
+  title: "Academia",
+  description: "Learn code with arduino",
 };
 
 export default async function RootLayout({
