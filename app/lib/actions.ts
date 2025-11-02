@@ -1,9 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { getDB } from "./mongo/db";
-import { IUser } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { LoginInputs } from "../components/LoginForm";
 
 export interface LoginJWTPayload extends JwtPayload {
 	userId: string;
@@ -18,63 +15,7 @@ export interface LoginActionRes {
 }
 
 
-export async function loginAction(formData: LoginInputs): Promise<LoginActionRes>{
-	try {
-		const userId = formData.name
-		const password = formData.password
-		const db = await getDB();
-		const user = await db.collection<IUser>("users").findOne({name: userId});
 
-		if (!process.env.JWT_SECRET) {
-			throw new Error("server error: JWT SECRET is missing");
-		}
-
-		if (!user) {
-			return {
-				login: false,
-				message: "잘못된 이름입니다."
-			}
-		}
-
-		if (user.password !== password ) {
-			return {
-				login: false,
-				message: "비밀번호 오류입니다."
-			}
-		}
-
-		if (user && (user.password == password)) {
-			const cookiesStore = await cookies()
-			const token = jwt.sign(
-				{
-					userId: user._id.toString(),
-					name: user.name,
-					image: user.image,
-				},
-				process.env.JWT_SECRET,
-				{expiresIn: "2h", algorithm: "HS256"}
-			);
-			cookiesStore.set("token", token)
-			console.log("login success");
-			return {
-				login: true,
-				message: "login success"
-			}
-		} else {
-			console.log("login fail");
-			return {
-				login: false,
-				message: "login failed"
-			} 
-		}
-	} catch(e) {
-		console.log("error");
-		return {
-			login: false,
-			message: `${e}`
-		}
-	}
-}
 
 export async function validateLogin() {
 	try {
