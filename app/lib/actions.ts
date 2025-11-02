@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { getDB } from "./mongo/db";
 import { IUser } from "./users";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { LoginInputs } from "../home/components/LoginForm";
+import { LoginInputs } from "../components/LoginForm";
 
 export interface LoginJWTPayload extends JwtPayload {
 	userId: string;

@@ -1,7 +1,12 @@
-import { Db, MongoClient, ServerApiVersion } from "mongodb";
+import { Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
 
-const uri = process.env.YIPDB_MONGODB_URI!;
-const options = {
+if(!process.env.YIPDB_MONGODB_URI) {
+	throw new Error("YIPDB_MONGODB_URI is not defined")
+}
+
+const uri = process.env.YIPDB_MONGODB_URI;
+const options: MongoClientOptions = {
+	maxPoolSize: 10,
 	serverApi : {
 		version: ServerApiVersion.v1,
 		strict: true,
@@ -11,13 +16,21 @@ const options = {
 
 
 let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
+
+if(process.env.NODE_ENV === "development"){
  if (!global._mongoClientPromise) {
  	client = new MongoClient(uri, options);
  	global._mongoClientPromise = client.connect();
  }
+ clientPromise = global._mongoClientPromise;
+} else {
+	client = new MongoClient(uri, options);
+	clientPromise = client.connect();
+}
 
- const clientPromise = global._mongoClientPromise;
+
 
 
 /**
@@ -45,7 +58,7 @@ export async function initCollection(db: Db, name: string) {
 	const exists = await isExists(db, name);
 	if (exists) {
 		await db.collection(name).drop();
-		console.log("delted previous collection")
+		console.log("deleted previous collection")
 	}
 	return await db.createCollection(name)
 }
