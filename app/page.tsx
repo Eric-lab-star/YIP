@@ -1,37 +1,48 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import { IStudentDoc } from "./lib/mongo/students/studentTypes";
 import { tv } from "tailwind-variants";
-import { postStudentAction } from "./actions/userAction";
+import { postStudent, responseType} from "./actions/students";
 import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { StudentData, studentSchema } from "./lib/zod/studentSchema";
+import { StudentList } from "./lib/fetcher/students";
+import { mutate } from "swr";
+
 
 
 export default function Page() {
-	const [isPending, startTransition] = useTransition();
-	const [objID, setObjID] = useState("");
+	const [isPending, startTransition ] = useTransition();
+	const [serverResult, setServerResult] = useState<responseType>({})
+	
 
-	const { handleSubmit, register } = useForm<IStudentDoc>()
-	const onSubmit: SubmitHandler<IStudentDoc> = async (data: IStudentDoc) =>{
-			const msg =  await postStudentAction("hello")
-			console.log(msg)
+	const { register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
+		resolver: zodResolver(studentSchema)
+	})
 
+	const onSubmit = (data: StudentData) => {
+		startTransition(async () => {
+			const res = await postStudent(data)
+			setServerResult(res)
+			if (res.success) reset();
+			mutate("/api/students")
+		})
 	}
 
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(onSubmit)} className="flex w-100 space-y-1 flex-col">
-				<input placeholder="이름을 입력하세요" defaultValue="김경섭" className={inputStyle()} {...register("name")} />
-				<input placeholder="년" defaultValue="1997" className={inputStyle()} {...register("birthYear")}/>
-				<input placeholder="월" defaultValue="09" className={inputStyle()} {...register("birthMonth")}/>
-				<input placeholder="일" className={inputStyle()} defaultValue="12"  {...register("birthDate")}/>
-				<input className={inputStyle()} placeholder="학교" defaultValue="종촌"  {...register("school")}/>
-				<input defaultValue={isPending ? "pending": "submit"} type="submit" className="p-2 border-2 rounded-2xl"/>
+			<form onSubmit={handleSubmit(onSubmit)}  className="bg-amber-100 pt-3 flex justify-center items-center space-y-1 flex-col">
+				<input  placeholder="이름을 입력하세요"  className={"p-2 w-150 bg-amber-50"} {...register("name")}  />
+				<div className="flex flex-wrap">
+					<input placeholder="년"  className={"p-2 w-50 bg-amber-50"}  {...register("birthYear")}/>
+					<input placeholder="월"  className={"p-2 w-50 bg-amber-50"} {...register("birthMonth")}/>
+					<input placeholder="일" className={"p-2 w-50 bg-amber-50"}   { ...register("birthDate") }/>
+				</div>
+				<input placeholder="학교" className={"p-2 w-150 bg-amber-50 "}   {...register("school")} />
+				<input type="submit" className="p-2 border-2 rounded-2xl"/>
 			</form>
-			<div className="p-2 bg-amber-100">
-				<span>uploaded</span> <span>{objID}</span>
-			</div>
+			<StudentList />
 		</div>
 	)
 }
@@ -39,4 +50,6 @@ export default function Page() {
 const inputStyle = tv({
 	base: "p-2 bg-amber-50"
 })
+
+
 
