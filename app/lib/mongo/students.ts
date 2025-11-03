@@ -3,12 +3,18 @@ import { getDB } from "./db";
 
 
 
+/*
+	* returns insertOneResult after insertion.
+	* */
 export async function createStudent(student: StudentData){
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
 	return await students.insertOne(student)
 }
 
+/*
+	* returns all students data in array
+	* */
 export async function readManyStudent(){
 	const db = await getDB();
 	const student = db.collection<StudentData>("students")

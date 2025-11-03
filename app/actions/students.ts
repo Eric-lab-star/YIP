@@ -10,6 +10,9 @@ export interface responseType {
 }
 
 
+/*
+	* creates new student doc 
+	* */
 export async function postStudent(formdata: StudentData) {
 	const zodResult = studentSchema.safeParse(formdata)
 	if (!zodResult.success){
