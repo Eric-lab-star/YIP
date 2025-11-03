@@ -1,5 +1,5 @@
 "use client";
-import { LoginJWTPayload, logoutAction } from "@/app/lib/actions";
+import { LoginJWTPayload, logoutAction } from "@/app/actions/loginAction";
 import { notosansKorean_500 } from "@/app/stores/font";
 import Link from "next/link";
 import {BookImage, LogOut, BrainCircuit, FileText, Rocket, User } from "lucide-react";

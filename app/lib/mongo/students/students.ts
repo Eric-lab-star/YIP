@@ -3,9 +3,9 @@ import { IStudentDoc } from "./studentTypes";
 
 
 
-export async function createStudents(student: IStudentDoc){
+export async function createStudent(student: IStudentDoc){
 	const db = await getDB();
 	const students = await initCollection(db, "students")
-	students.insertOne(student)
+	return await students.insertOne(student)
 
 }

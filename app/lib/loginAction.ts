@@ -1,9 +1,8 @@
 "use server";
 import { cookies } from "next/headers";
-import { getDB } from "./mongo/db";
-import { IUser } from "./users";
+import { getDB } from "../lib/mongo/db";
+import { IUser } from "../lib/users";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { LoginInputs } from "../components/LoginForm";
 
 export interface LoginJWTPayload extends JwtPayload {
 	userId: string;

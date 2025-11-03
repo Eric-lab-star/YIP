@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { LoginJWTPayload } from "./actions";
+import { LoginJWTPayload } from "../actions/loginAction";
 
 export async function getUserFromCookie(){
 		if (!process.env.JWT_SECRET) {

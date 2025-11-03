@@ -5,3 +5,5 @@ export interface IStudentDoc {
 		birthDate: number,
 		school: string,
 }
+
+

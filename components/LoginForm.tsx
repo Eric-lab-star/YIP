@@ -1,6 +1,6 @@
 "use client";
 
-import { loginAction } from "@/app/lib/actions";
+import { loginAction } from "@/app/actions/loginAction";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
