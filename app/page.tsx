@@ -2,7 +2,7 @@
 
 import { tv } from "tailwind-variants";
 import { postStudent, responseType} from "./actions/students";
-import { useState, useTransition } from "react";
+import { forwardRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StudentData, studentSchema } from "./lib/zod/studentSchema";
@@ -15,20 +15,25 @@ export default function Page() {
 	const [isPending, startTransition ] = useTransition();
 	const [serverResult, setServerResult] = useState<responseType>({})
 
-	const { register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
+	const { watch, register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
 		resolver: zodResolver(studentSchema)
 	})
 
 	const onSubmit = (data: StudentData) => {
-		startTransition(async () => {
-			const res = await postStudent(data)
-			setServerResult(res)
-			if (res.success) {
-				reset();
-				mutate("/api/students")
-			}
-		})
+		console.log(data);
+		// startTransition(async () => {
+		// 	const res = await postStudent(data)
+		// 	setServerResult(res)
+		// 	if (res.success) {
+		// 		reset();
+		// 		mutate("/api/students")
+		// 	}
+		// })
 	}
+
+	console.log(
+		watch("attendence")
+	)
 
 
 	return (
@@ -40,20 +45,40 @@ export default function Page() {
 					<input placeholder="월"  className={inputStyle({size: "s"})} {...register("birthMonth", {required:true })}/>
 					<input placeholder="일" className={inputStyle({size: "s"})}   { ...register("birthDate", {required: true}) }/>
 				</div>
-				<input placeholder="학교" className={inputStyle({size: "l"})}   {...register("school", {required: "학교를 입력하세요"})} />
-				<input placeholder="" className={inputStyle({size: "l"})} {...register("attend", {required: true})}/>
-				<input type="submit" defaultValue={isPending ? "업로딩" : "제출"} className={submitStyle()} disabled={isPending}/>
+				<DayInput {...register("attendence")}/>
+				<input placeholder="학교" className={inputStyle({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
+				<input type="submit" defaultValue={"제출"} className={submitStyle()} />
 			{serverResult.errors && <div>{serverResult.errors.toString()}</div>}
 			{errors.name && <div>이름을 입력하세요</div>}
 			{errors.birthYear && <div>생년월일을 확인하세요</div>}
 			{errors.birthMonth && <div>생년월일을 확인하세요</div>}
 			{errors.birthDate && <div>생년월일을 확인하세요</div>}
 			{errors.school && <div>학교를 입력하세요</div>}
+			{errors.attendence && <div>{errors.attendence.message}</div>}
 			</form>
 			<StudentList />
 		</div>
 	)
 }
+
+
+const DayInput = forwardRef<HTMLInputElement, React.ComponentProps<"input">>( (props, ref) => {
+	return (
+	<div className="flex space-x-2">
+		<input id="mon" value={"MON"} hidden type="checkbox" ref={ref} className={inputStyle({size: "l"})} {...props}/>
+		<label className="p-2 w-20 h-20 bg-slate-100 rounded-2xl select-none flex justify-center items-center" htmlFor="mon">
+			mon
+		</label>
+		<input id="TUE" value={"TUE"} type="checkbox" hidden  className={inputStyle({size: "l"})} {...props}/>
+		<label className="p-2 w-20 h-20 bg-slate-100 rounded-2xl select-none flex justify-center items-center" htmlFor="TUE">
+			tue
+		</label>
+	</div>
+	)
+})
+
+
+
 
 const submitStyle = tv({
 	base: "w-150 shadow-2xl  p-2 bg-amber-50 mb-2 rounded-2xl"

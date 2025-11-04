@@ -8,7 +8,6 @@ export interface responseType {
 	errors?: Error,
 }
 
-
 export async function postStudent(formdata: StudentData) {
 	const zodResult = studentSchema.safeParse(formdata)
 	if (!zodResult.success){
