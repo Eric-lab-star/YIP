@@ -1,22 +1,21 @@
 "use client";
 
-import { postStudent, responseType} from "./actions/students";
+import { postStudent } from "./actions/studentAction";
 import { useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { StudentData, studentSchema } from "./lib/zod/studentSchema";
+import studentSchema from "./lib/zod/studentSchema";
 import { StudentList } from "../components/SWR/students";
 import { mutate } from "swr";
-import { inputTV } from "./lib/tv/forms/inputTV";
-import { submitTV } from "./lib/tv/forms/submitTV";
-import { formTV } from "./lib/tv/forms/formTV";
-import { DayInput } from "@/components/forms/student/days";
-
-
+import inputTV from "./lib/tv/forms/inputTV";
+import submitTV from "./lib/tv/forms/submitTV";
+import formTV from "./lib/tv/forms/formTV";
+import DayContainer  from "@/components/forms/student/DayContainer";
+import { IActionRes, StudentData } from "@/types";
 
 export default function Page() {
 	const [isPending, startTransition ] = useTransition();
-	const [serverResult, setServerResult] = useState<responseType>({})
+	const [serverResult, setServerResult] = useState<IActionRes>({})
 
 	const { watch, register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
 		resolver: zodResolver(studentSchema)
@@ -47,7 +46,7 @@ export default function Page() {
 					<input placeholder="월"  className={inputTV({size: "s"})} {...register("birthMonth", {required:true })}/>
 					<input placeholder="일" className={inputTV({size: "s"})}   { ...register("birthDate", {required: true}) }/>
 				</div>
-				<DayInput {...register("attendence")}/>
+				<DayContainer {...register("attendence")}/>
 				<input placeholder="학교" className={inputTV({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
 				<input type="submit" defaultValue={"제출"} className={submitTV()} />
 				<ErrorMessage errors={errors} serverResult={serverResult} />
@@ -58,7 +57,7 @@ export default function Page() {
 }
 
 
-const ErrorMessage = ({errors, serverResult}: {errors: FieldErrors<StudentData> ; serverResult: responseType }) => {
+const ErrorMessage = ({errors, serverResult}: {errors: FieldErrors<StudentData> ; serverResult: IActionRes}) => {
 	return (
 		<>
 			{serverResult.errors && <div>{serverResult.errors.toString()}</div>}

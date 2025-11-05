@@ -1,12 +1,9 @@
 "use server";
 
+import { StudentData } from "@/types";
 import { createStudent } from "../lib/mongo/students";
-import { StudentData, studentSchema } from "../lib/zod/studentSchema";
+import studentSchema from "../lib/zod/studentSchema";
 
-export interface responseType {
-	success?: boolean,
-	errors?: Error,
-}
 
 export async function postStudent(formdata: StudentData) {
 	const zodResult = studentSchema.safeParse(formdata)

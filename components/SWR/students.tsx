@@ -1,14 +1,12 @@
 import useSWR from "swr";
-import { StudentData } from "@/app/lib/zod/studentSchema";
 import { WithId } from "mongodb";
+import { StudentData } from "@/types";
 
 async function studentFetcher(url: string){
 	const response = await fetch(url);
 	const json: WithId<StudentData>[] =  await response.json();
 	return json
 }
-
-
 
 export function StudentList() {
 	const {data, isLoading, error} = useSWR("/api/students", studentFetcher)

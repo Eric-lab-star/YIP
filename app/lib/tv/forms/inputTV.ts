@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants"
 
-export const inputTV = tv({
+const inputTV = tv({
 	base: "p-2 bg-amber-50",
 	variants: {
 		size: {
@@ -10,4 +10,6 @@ export const inputTV = tv({
 		}
 	}
 })
+
+export default inputTV;
 
