@@ -2,7 +2,7 @@
 
 import { postStudent, responseType} from "./actions/students";
 import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StudentData, studentSchema } from "./lib/zod/studentSchema";
 import { StudentList } from "../components/SWR/students";
@@ -50,6 +50,17 @@ export default function Page() {
 				<DayInput {...register("attendence")}/>
 				<input placeholder="학교" className={inputTV({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
 				<input type="submit" defaultValue={"제출"} className={submitTV()} />
+				<ErrorMessage errors={errors} serverResult={serverResult} />
+			</form>
+			<StudentList />
+		</div>
+	)
+}
+
+
+const ErrorMessage = ({errors, serverResult}: {errors: FieldErrors<StudentData> ; serverResult: responseType }) => {
+	return (
+		<>
 			{serverResult.errors && <div>{serverResult.errors.toString()}</div>}
 			{errors.name && <div>이름을 입력하세요</div>}
 			{errors.birthYear && <div>생년월일을 확인하세요</div>}
@@ -57,9 +68,6 @@ export default function Page() {
 			{errors.birthDate && <div>생년월일을 확인하세요</div>}
 			{errors.school && <div>학교를 입력하세요</div>}
 			{errors.attendence && <div>{errors.attendence.message}</div>}
-			</form>
-			<StudentList />
-		</div>
+		</>
 	)
 }
-
