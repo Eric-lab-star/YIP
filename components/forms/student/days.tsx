@@ -28,5 +28,5 @@ const dayContainer = tv({
 })
 
 const dayLabel = tv({
-	base: "p-2 w-15 h-15 bg-slate-100 rounded-2xl select-none flex justify-center items-center text-zinc-100" 
+	base: "p-1 w-12 h-12 bg-zinc-200 rounded-2xl select-none flex justify-center items-center text-zinc-500" 
 })
