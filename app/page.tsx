@@ -5,14 +5,18 @@ import { useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
-import { StudentList } from "../components/SWR/students";
+import { StudentTable } from "../components/SWR/students";
 import { mutate } from "swr";
 import inputTV from "./lib/tv/forms/inputTV";
 import submitTV from "./lib/tv/forms/submitTV";
-import formTV from "./lib/tv/forms/formTV";
 import DayContainer  from "@/components/forms/student/DayContainer";
 import { IActionRes, StudentData } from "@/types";
+import StudentFormName from "@/components/forms/student/StudentFormName";
+import FormTV from "./lib/tv/forms/FormTV";
 
+/**
+	* renders home
+	*/
 export default function Page() {
 	const [isPending, startTransition ] = useTransition();
 	const [serverResult, setServerResult] = useState<IActionRes>({})
@@ -39,9 +43,9 @@ export default function Page() {
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(onSubmit)}  className={formTV()} >
-				<input  placeholder="이름을 입력하세요"  className={inputTV({size: "l"})} {...register("name", {required: true})}  />
-				<div className="flex flex-wrap">
+			<form onSubmit={handleSubmit(onSubmit)}  className={FormTV()} >
+				<StudentFormName {...register("name", {required: true})} />
+				<div className="grid-cols-3">
 					<input placeholder="년"  className={inputTV({size: "s"})}  {...register("birthYear", {required: true})}/>
 					<input placeholder="월"  className={inputTV({size: "s"})} {...register("birthMonth", {required:true })}/>
 					<input placeholder="일" className={inputTV({size: "s"})}   { ...register("birthDate", {required: true}) }/>
@@ -51,7 +55,7 @@ export default function Page() {
 				<input type="submit" defaultValue={"제출"} className={submitTV()} />
 				<ErrorMessage errors={errors} serverResult={serverResult} />
 			</form>
-			<StudentList />
+			<StudentTable />
 		</div>
 	)
 }

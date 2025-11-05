@@ -4,27 +4,30 @@ import { StudentData } from "@/types";
 
 async function studentFetcher(url: string){
 	const response = await fetch(url);
-	const json: WithId<StudentData>[] =  await response.json();
+	const json  =  await response.json();
 	return json
 }
 
-export function StudentList() {
-	const {data, isLoading, error} = useSWR("/api/students", studentFetcher)
-	if (error) {return <div>Error fetching data</div>}
-	if (isLoading) return <div>Loading</div>;
+type StudentTableType = WithId<StudentData>[]
 
-	return <div>{
-		data ? data.map((s) => {
-			return <div className="space-x-3 flex p-2" key={s._id.toString()}>
+export function StudentTable() {
+	const {data, isLoading, error} = useSWR<StudentTableType>("/api/students", studentFetcher)
+	if (isLoading) return <div>Loading</div>;
+	if (error) {return <div>Error fetching data</div>}
+
+	return <div>{ data && StudentRow(data) } </div>
+}
+
+function StudentRow(studentlist: StudentTableType) {
+	return studentlist.map((s) => (
+			<div className="space-x-3 flex p-2" key={s._id.toString()}>
 				<div className="w-20 bg-amber-100 p-2">{s.name}</div>
 				<div className="w-40 bg-amber-100 p-2">
 					<span>{s.birthYear} 년 </span>
 					<span>{s.birthMonth.toString().padStart(2, "0")} 월 </span>
 					<span>{s.birthDate.toString().padStart(2, "0")} 일</span>
 				</div>
-				<div className="w-30 bg-amber-100 p-2">{s.school}</div>
-				<div>{s.attendence?.map((ds, i)=> <div key={i}>{ds}</div>)}</div>
-				</div>
-		}) : <div>Data is NotFound</div>
-	} </div>
-}
+				<div className="w-30 bg-amber-100 p-2 grid place-items-center">{s.school}</div>
+				<div className="flex justify-center items-center">{s.attendence?.map((ds, i)=> <div className="w-20 bg-amber-100 p-2" key={i}>{ds}</div>)}</div>
+		</div>
+	))}

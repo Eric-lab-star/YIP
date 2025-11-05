@@ -1,4 +1,4 @@
-import { studentSchema } from "@/app/lib/zod/studentSchema";
+import studentSchema from "@/app/lib/zod/studentSchema";
 import { UseFormRegister } from "react-hook-form";
 import * as z from "zod";
 
