@@ -1,7 +1,7 @@
 
 import { getUserFromCookie } from "@/app/lib/auth";
 import LoginForm from "../home/components/LoginFormnents/LoginForm";
-import { LoginJWTPayload } from "@/app/lib/actions";
+import { LoginJWTPayload } from "@/app/actions/loginAction";
 
 export default async function AccountInfo() {
 	const user = await getUserFromCookie() as LoginJWTPayload

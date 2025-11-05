@@ -1,20 +1,17 @@
 import { StudentData } from "../zod/studentSchema";
 import { getDB } from "./db";
 
-
-
 /*
-	* returns insertOneResult after insertion.
+	* calls mongodb and create new student doc
 	* */
 export async function createStudent(student: StudentData){
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
 	return await students.insertOne(student)
 }
-
 /*
-	* returns all students data in array
-	* */
+	* calls mongodb and get all students doc
+	*/
 export async function readManyStudent(){
 	const db = await getDB();
 	const student = db.collection<StudentData>("students")

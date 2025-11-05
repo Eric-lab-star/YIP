@@ -1,22 +1,24 @@
 "use client";
 
-import { tv } from "tailwind-variants";
 import { postStudent, responseType} from "./actions/students";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StudentData, studentSchema } from "./lib/zod/studentSchema";
-import { StudentList } from "./lib/fetcher/students";
+import { StudentList } from "../components/SWR/students";
 import { mutate } from "swr";
+import { inputTV } from "./lib/tv/forms/inputTV";
+import { submitTV } from "./lib/tv/forms/submitTV";
+import { formTV } from "./lib/tv/forms/formTV";
+import { DayInput } from "@/components/forms/student/days";
 
 
 
 export default function Page() {
 	const [isPending, startTransition ] = useTransition();
 	const [serverResult, setServerResult] = useState<responseType>({})
-	
 
-	const { register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
+	const { watch, register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
 		resolver: zodResolver(studentSchema)
 	})
 
@@ -24,33 +26,40 @@ export default function Page() {
 		startTransition(async () => {
 			const res = await postStudent(data)
 			setServerResult(res)
-			if (res.success) reset();
-			mutate("/api/students")
+			if (res.success) {
+				reset();
+				mutate("/api/students")
+			}
 		})
 	}
+
+	console.log(
+		watch("attendence")
+	)
 
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(onSubmit)}  className="bg-amber-100 pt-3 flex justify-center items-center space-y-1 flex-col">
-				<input  placeholder="이름을 입력하세요"  className={"p-2 w-150 bg-amber-50"} {...register("name")}  />
+			<form onSubmit={handleSubmit(onSubmit)}  className={formTV()} >
+				<input  placeholder="이름을 입력하세요"  className={inputTV({size: "l"})} {...register("name", {required: true})}  />
 				<div className="flex flex-wrap">
-					<input placeholder="년"  className={"p-2 w-50 bg-amber-50"}  {...register("birthYear")}/>
-					<input placeholder="월"  className={"p-2 w-50 bg-amber-50"} {...register("birthMonth")}/>
-					<input placeholder="일" className={"p-2 w-50 bg-amber-50"}   { ...register("birthDate") }/>
+					<input placeholder="년"  className={inputTV({size: "s"})}  {...register("birthYear", {required: true})}/>
+					<input placeholder="월"  className={inputTV({size: "s"})} {...register("birthMonth", {required:true })}/>
+					<input placeholder="일" className={inputTV({size: "s"})}   { ...register("birthDate", {required: true}) }/>
 				</div>
-				<input placeholder="학교" className={"p-2 w-150 bg-amber-50 "}   {...register("school")} />
-				<input type="submit" className="p-2 border-2 rounded-2xl"/>
+				<DayInput {...register("attendence")}/>
+				<input placeholder="학교" className={inputTV({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
+				<input type="submit" defaultValue={"제출"} className={submitTV()} />
+			{serverResult.errors && <div>{serverResult.errors.toString()}</div>}
+			{errors.name && <div>이름을 입력하세요</div>}
+			{errors.birthYear && <div>생년월일을 확인하세요</div>}
+			{errors.birthMonth && <div>생년월일을 확인하세요</div>}
+			{errors.birthDate && <div>생년월일을 확인하세요</div>}
+			{errors.school && <div>학교를 입력하세요</div>}
+			{errors.attendence && <div>{errors.attendence.message}</div>}
 			</form>
 			<StudentList />
-
 		</div>
 	)
 }
-
-const input = tv({
-	base: "p-2 bg-amber-50 "
-})
-
-
 
