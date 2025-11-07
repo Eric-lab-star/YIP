@@ -1,17 +1,22 @@
-import dayLabelTV from "@/app/lib/tv/forms/dayLabelTV";
-import inputTV from "@/app/lib/tv/forms/inputTV";
+import { day, inputtv } from "@/app/lib/tv/forms/FormStyles";
 import { StudentDataRegister } from "@/types";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
 
 /**
 	* Day componet is used inside DayContainer Componet
 	* Recieves register from react hook form.
 	*/
-const Day = forwardRef<HTMLInputElement, StudentDataRegister & {label: string}>(({label, ...register}, ref) => {
+const Day = forwardRef<HTMLInputElement, StudentDataRegister & {label: string, key: string}>(({label, key, ...register}, ref) => {
+
+	const [click, setClick] = useState(false)
+	const handleClick = () =>{
+		console.log(label)
+	}
+	const tv = day({click})
 	return (
-		<div className={dayLabelTV()}>
-			<input id={label} value={label} hidden type="checkbox" ref={ref} className={inputTV({size: "l"})} {...register}/>
+		<div key={key} onClick={() => handleClick()} className={tv}>
+			<input id={label} value={label} hidden type="checkbox" ref={ref} className={inputtv({size: "l"})} {...register}/>
 			<label htmlFor={label}>
 				{label}
 			</label>
