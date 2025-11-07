@@ -1,7 +1,7 @@
 "use client";
 
 import { postStudent } from "./actions/studentAction";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
@@ -19,57 +19,46 @@ export default function Page() {
 	const [_, startTransition ] = useTransition();
 	const [serverResult, setServerResult] = useState<IActionRes>({})
 
-	const {getValues, watch, register, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
+	const { register,watch, handleSubmit, formState:{errors}, reset  } = useForm<StudentData>({
 		resolver: zodResolver(studentSchema)
 	})
 	
-
 	const onSubmit = (data: StudentData) => {
-		startTransition(async () => {
-			const res = await postStudent(data)
-			setServerResult(res)
-			if (res.success) {
-				reset();
-				mutate("/api/students")
-			}
-		})
+		console.log(data);
+		// startTransition(async () => {
+		// 	const res = await postStudent(data)
+		// 	setServerResult(res)
+		// 	if (res.success) {
+		// 		reset();
+		// 		mutate("/api/students")
+		// 	}
+		// })
 	}
 
 	const [click, setClick] = useState<string[]>([""]);
 	const handleClick  = () => {
 		setClick(["mon"])
 	}
-
-
-
-
 // TODO: make readable code
-	// 1st try: 
-	// forwardRef 
-	// 	--> problem: nextjs renders twice which makes diffciult to devlop toggle
-	// 
+// 1st try: 
+// forwardRef 
+// 	--> problem: nextjs renders twice which makes diffciult to devlop toggle 
+	// 	too many forwarding 
+// 	
 
 	return (
 		<div>
 			<form onSubmit={handleSubmit(onSubmit)}  className={formtv()} >
-				<StudentFormName {...register("name", {required: true})} />
+				<StudentFormName register={register} label="name" />
 				<div className="grid-cols-3">
 					<input placeholder="년"  className={inputtv({size: "s", insert: false})}  {...register("birthYear", {required: true})}/>
 					<input placeholder="월"  className={inputtv({size: "s", insert: false})} {...register("birthMonth", {required:true })}/>
 					<input placeholder="일" className={inputtv({size: "s", insert: false})}   { ...register("birthDate", {required: true}) }/>
 				</div>
-				<label className={day({click: click.includes("mon")})} htmlFor="mon" onClick={handleClick}>
-					<input type="checkbox" value="mon" id={"mon"}   {...register("attendence")}/>
-					Mon
-				</label>
 
-				<input type="checkbox" value="tue"  {...register("attendence")}/>
-				<input type="checkbox" value="wed"  {...register("attendence")}/>
-
-				<DayContainer {...register("attendence")}/>
+				<DayContainer register={register}/>
 				<input placeholder="학교" className={inputtv({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
 				<input type="submit" defaultValue={"제출"} className={submittv()} />
-				<ErrorMessage errors={errors} serverResult={serverResult} />
 			</form>
 			<StudentTable />
 
@@ -79,16 +68,3 @@ export default function Page() {
 
 
 
-const ErrorMessage = ({errors, serverResult}: {errors: FieldErrors<StudentData> ; serverResult: IActionRes}) => {
-	return (
-		<>
-			{serverResult.errors && <div>{serverResult.errors.toString()}</div>}
-			{errors.name && <div>이름을 입력하세요</div>}
-			{errors.birthYear && <div>생년월일을 확인하세요</div>}
-			{errors.birthMonth && <div>생년월일을 확인하세요</div>}
-			{errors.birthDate && <div>생년월일을 확인하세요</div>}
-			{errors.school && <div>학교를 입력하세요</div>}
-			{errors.attendence && <div>{errors.attendence.message}</div>}
-		</>
-	)
-}

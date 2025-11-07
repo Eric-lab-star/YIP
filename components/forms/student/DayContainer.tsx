@@ -1,7 +1,8 @@
 "use client";
-import { StudentDataRegister } from "@/types/hook-form";
-import { forwardRef, useRef, useState } from "react"
-import { day, dayContainertv, inputtv } from "@/app/lib/tv/forms/FormStyles";
+import { StudentData } from "@/types/hook-form";
+import {  useState } from "react"
+import { day, dayContainertv } from "@/app/lib/tv/forms/FormStyles";
+import { UseFormRegister } from "react-hook-form";
 
 const week = [
 	"mon",
@@ -11,45 +12,23 @@ const week = [
 	"fri",
 	"sat",
 	"sun",
-];
+] as const;
 
-const DayContainer = forwardRef<
-HTMLInputElement, 
-StudentDataRegister>((props, ref) => {
+const DayContainer = ({register}: {register: UseFormRegister<StudentData>}) => {
 	return (
 	<div className={dayContainertv()} >
-		<Mon ref={ref} {...props}/>
+	{
+		week.map((d)=> <Day key={d} label={d}/>)
+	}
 	</div>
 	)
-})
-
-
-
-
-const Mon = forwardRef<HTMLInputElement, StudentDataRegister>(
-(props, ref) => {
-	const [click, setClick] = useState(false);
-	return <div className={day({click})} onClick={()=>setClick(!click)}>
-	Mon 
-	<input type="checkbox" hidden value="mon" ref={ref} {...props}/>
-	</div>
-}
-
-) 
-
-const Tue = () => {
-	const [click, setClick] = useState(false);
-	return <div className={day({click})} onClick={()=>setClick(!click)}>Tue</div>
 }
 
 
-
-				// <div key={w} onClick={() => console.log(w)} className={day({click:false})}>
-				// 	<input id={w} value={w} hidden type="checkbox" ref={ref} className={inputtv({size: "l"})} {...props}/>
-				// 	<label htmlFor={w}>
-				// 	{w.toUpperCase()}
-				// 	</label>
-				// </div>
+const Day= ({label}: {label: typeof week[number]}) => {
+	const [click, setClick] = useState(false);
+	return <div className={day({click})} onClick={()=>setClick(!click)}>{label}</div>
+}
 
 
 export default DayContainer;

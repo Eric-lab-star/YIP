@@ -1,12 +1,13 @@
 import { inputtv } from "@/app/lib/tv/forms/FormStyles";
-import { StudentDataRegister } from "@/types";
-import { forwardRef } from "react";
+import { StudentData, StudentDataRegister } from "@/types";
+import { UseFormRegister } from "react-hook-form";
 
-const StudentFormName = forwardRef<HTMLInputElement, StudentDataRegister>((props, ref) => {
+const StudentFormName = ({label, register}: {label: "name"|"school" ; register: UseFormRegister<StudentData>}) => {
 	return (
 		<div>
-			<input  placeholder="이름을 입력하세요"  className={inputtv({size: "l", insert: true})} {...props} ref={ref}  />
+			<label>이름</label>
+			<input  placeholder="이름을 입력하세요"  className={inputtv({size: "l", insert: true})} {...register(label, {required: true})}  />
 		</div>
 	)
-})
+}
 export default StudentFormName;
