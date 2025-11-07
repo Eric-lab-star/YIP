@@ -56,7 +56,7 @@ export default function Page() {
 					<input placeholder="일" className={inputtv({size: "s", insert: false})}   { ...register("birthDate", {required: true}) }/>
 				</div>
 
-				<DayContainer register={register}/>
+				<DayContainer register={register} />
 				<input placeholder="학교" className={inputtv({size: "l"})}    {...register("school", {required: "학교를 입력하세요"})} />
 				<input type="submit" defaultValue={"제출"} className={submittv()} />
 			</form>
