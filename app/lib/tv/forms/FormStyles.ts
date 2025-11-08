@@ -33,10 +33,6 @@ const inputtv = tv({
 			r: "w-100",
 			l: "w-150"
 		},
-		insert: {
-			true: "text-left",
-			false: "text-right",
-		}
 	},
 })
 

@@ -1,29 +1,17 @@
-import { day, inputtv } from "@/app/lib/tv/forms/FormStyles";
-import { StudentDataRegister } from "@/types";
-import { forwardRef, useState } from "react";
+import { StudentData } from "@/types";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 
-/**
-	* Day componet is used inside DayContainer Componet
-	* Recieves register from react hook form.
-	*/
-const Day = forwardRef<HTMLInputElement, StudentDataRegister & {label: string, key: string}>(({label, key, ...register}, ref) => {
-
-	const [click, setClick] = useState(false)
-	const handleClick = () =>{
-		console.log(label)
+export default function Day({day}:{day: string}) {
+	const [check, setCheck] = useState(false)
+	const handleClick = () => {
+		setCheck(!check)
 	}
-	const tv = day({click})
-	return (
-		<div key={key} onClick={() => handleClick()} className={tv}>
-			<input id={label} value={label} hidden type="checkbox" ref={ref} className={inputtv({size: "l"})} {...register}/>
-			<label htmlFor={label}>
-				{label}
-			</label>
-		</div>
-
-	)
-});
-
-
-export default Day;
+	const ctx = useFormContext<StudentData>()
+	return <>
+		<label onClick={handleClick} className={`select-none w-15  h-15 grid place-items-center ${check ? "bg-amber-200 text-zinc-400" : "bg-zinc-500 text-amber-200"}`} htmlFor={day}>{day}
+		</label>
+		<input type="checkbox" hidden {...ctx.register("classDays")} id={day}/>
+		</>
+}
