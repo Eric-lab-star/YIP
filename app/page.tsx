@@ -39,6 +39,7 @@ export default function Page() {
 	const handleClick  = () => {
 		setClick(["mon"])
 	}
+
 // TODO: make readable code
 // 1st try: 
 // forwardRef 
