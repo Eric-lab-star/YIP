@@ -45,7 +45,7 @@ export default function Page() {
 // 	too many forwarding 
 // 2nd try: passing register as prop
 // nested input components is not subscribed to register
-// 3rd try: using FormProvider
+// 3rd try: using FormProvider good 
 
 	return (
 		<div>

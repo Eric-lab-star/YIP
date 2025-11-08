@@ -21,7 +21,7 @@ const day = tv({
 })
 
 const submittv = tv({
-	base: "w-150 shadow-2xl  p-2 bg-amber-50 mb-2 rounded-2xl"
+	base: "w-150 shadow-2xl  p-2 bg-amber-50 my-2 rounded-2xl"
 })
 
 

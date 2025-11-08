@@ -1,6 +1,6 @@
 import { inputtv } from "@/app/lib/tv/forms/FormStyles";
-import { StudentData, StudentDataRegister } from "@/types";
-import { useFormContext, UseFormRegister, UseFormReturn } from "react-hook-form";
+import { StudentData } from "@/types";
+import { useFormContext } from "react-hook-form";
 
 export default function StudentNameInput() {
 	const ctx = useFormContext<StudentData>();
