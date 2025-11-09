@@ -1,4 +1,4 @@
-import { StudentData } from "../zod/studentSchema";
+import { StudentData } from "@/types";
 import { getDB } from "./db";
 
 /*
