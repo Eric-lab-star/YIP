@@ -5,7 +5,7 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 /** Get image from r2 using r2 key
 	*/
 export async function GET(
-	req: Request,
+	_req: Request,
 	{params}: {params: Promise<{Keys: string[]}>}
 ) {
 	const {Keys} = await params

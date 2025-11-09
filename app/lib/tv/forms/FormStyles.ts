@@ -1,4 +1,4 @@
-import { tv, VariantProps } from "tailwind-variants";
+import { tv} from "tailwind-variants";
 
 const formtv = tv({
 	base: "bg-amber-100 pt-3 flex justify-center items-center space-y-1 flex-col"

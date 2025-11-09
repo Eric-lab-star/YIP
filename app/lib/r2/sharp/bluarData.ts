@@ -2,7 +2,8 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { r2client } from "../client";
 import sharp from "sharp";
 
-/** imageMetsadata function returns  width, height, blurDataUrl, and key
+/** imageMetsadata function 
+* uses sharp library to get meta data from r2 
 	* 
 	*/
 export async function imageMetadata(key: string) {
