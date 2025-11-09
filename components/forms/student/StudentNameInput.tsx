@@ -1,13 +1,15 @@
-import { inputtv } from "@/app/lib/tv/forms/FormStyles";
+import { container, input, label } from "@/app/lib/tv/forms/FormStyles";
 import { StudentData } from "@/types";
 import { useFormContext } from "react-hook-form";
 
 export default function StudentNameInput() {
 	const ctx = useFormContext<StudentData>();
+	const {base} = input();
 	return (
-		<div className={inputtv({size: "r"})}>
-			<label>이름</label>
-			<input {...ctx.register("name")} />
+		<div className={container()}>
+			<label className={label()}>이름</label>
+			<input placeholder="김경섭" 
+			className={base({width: "f", round: false})} {...ctx.register("name")} />
 		</div>
 
 	)

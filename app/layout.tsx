@@ -18,7 +18,7 @@ export default async function RootLayout({
       <body
         className={`
 					${notosansKorean.className} antialiased
-					bg-zinc-200 lg:w-[1280] mx-auto md:w-[1280] space-y-3 `}
+					lg:bg-zinc-200 lg:w-[1000px] mx-auto md:w-[900px] md:bg-zinc-400 sm:bg-zinc-600 min-w-[400px] bg-zinc-800 space-y-3 `}
       >
         {children}
       </body>

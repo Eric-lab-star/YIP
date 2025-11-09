@@ -1,12 +1,17 @@
+import { orbit } from "@/app/stores/font";
 import { tv} from "tailwind-variants";
 
-const formtv = tv({
-	base: "bg-amber-100 pt-3 flex justify-center items-center space-y-1 flex-col"
+const layout = tv({
+	base: "w-full bg-blue-200"
+})
+
+const form = tv({
+	base: "bg-amber-100"
 })
 
 
 const dayContainertv= tv({
-	base: "flex min-w-150 justify-around"
+	base: "flex space-y-2 min-w-150 justify-around"
 })
 
 
@@ -21,19 +26,62 @@ const day = tv({
 })
 
 const submittv = tv({
-	base: "w-150 shadow-2xl  p-2 bg-amber-50 my-2 rounded-2xl"
+	base: "w-full shadow-2xl  p-2 bg-amber-50 my-2 rounded-2xl"
 })
 
+const container = tv({
+	base: "space-y-2 flex flex-col"
+})
 
-const inputtv = tv({
-	base: "p-2 bg-amber-50",
+const label = tv({
+	base: `${orbit.className} text-black text-lg`,
 	variants: {
-		size: {
-			s: "w-50",
-			r: "w-100",
-			l: "w-150"
-		},
-	},
+		inset: {
+			right:  "right-0  absolute flex items-center pr-3 inset-y-0 h-10 text-base",
+			left: "left-0  absolute flex items-center pr-3 inset-y-0 h-10 text-base"
+		}
+	}
 })
 
-export {formtv, dayContainertv, day, submittv, inputtv };
+const input = tv({
+	slots: {
+		base: "placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 bg-amber-200 p-3 h-10  ",
+		birth: "bg-amber-200 rounded-xl h-10 pl-3 pr-10 placeholder:italic",
+	},
+	variants: {
+		fonts: {
+			"orbit": {
+				"base": `${orbit.className}`
+			},
+		},
+		width: {
+			"s":{
+				base: "w-50"
+			},
+			"m": {
+				base: "w-100"
+			},
+			"l": {
+				base: "w-150"
+			},
+			"f": {
+				base: "w-full"
+			}
+		},
+		round: {
+			true: {
+				base: "rounded-xl"
+			},
+			false: {
+				base: ""
+			}
+		}
+	},
+	defaultVariants: {
+		width: "s",
+		round: true,
+		fonts: "orbit"
+	}
+})
+
+export {form, layout, dayContainertv, day, submittv, input, label, container };

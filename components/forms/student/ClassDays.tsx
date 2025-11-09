@@ -1,5 +1,6 @@
 "use client";
 
+import { label } from "@/app/lib/tv/forms/FormStyles";
 import Day from "./Day";
 
 const days = [
@@ -14,9 +15,9 @@ const days = [
 
 export default function ClassDays() {
 	return (
-		<div>
-			<div>등원일</div>
-			<div className="w-150 grid grid-cols-7">{
+		<div className="space-y-2">
+			<div className={label()}>등원일</div>
+			<div className="flex justify-between">{
 				days.map((d)=> <Day day={d} key={d}/>)}
 			</div>
 		</div>

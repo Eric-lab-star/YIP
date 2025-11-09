@@ -6,8 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
 import { IActionRes, StudentData } from "@/types";
 import StudentNameInput from "@/components/forms/student/StudentNameInput";
-import { formtv, submittv } from "./lib/tv/forms/FormStyles";
+import { form, layout, submittv } from "./lib/tv/forms/FormStyles";
 import ClassDays from "@/components/forms/student/ClassDays";
+import Title from "@/components/commons/Title";
+import { Layout } from "lucide-react";
+import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
+import StudentSchool from "@/components/forms/student/StudentSchool";
 
 /**
 	* renders home
@@ -38,7 +42,7 @@ export default function Page() {
 	},[stM.formState.errors])
 
 
-// TODO: make readable code
+// NOTE: make readable code
 // 1st try: 
 // forwardRef 
 // 	--> problem: nextjs renders twice which makes diffciult to devlop toggle 
@@ -46,16 +50,22 @@ export default function Page() {
 // 2nd try: passing register as prop
 // nested input components is not subscribed to register
 // 3rd try: using FormProvider good 
+	//  FormProvder removes all unneccesarry logics but it may cause some rendering issues
 
 	return (
-		<div>
-		<FormProvider {...stM}>
-			<form onSubmit={stM.handleSubmit(onSubmit)}  className={formtv()} >
-				<StudentNameInput />		
-				<ClassDays />
-				<input className={submittv()} type="submit" />
-			</form>
-		</FormProvider>
+		<div	className={layout()} >
+			<Title name="학생정보" />
+			<FormProvider {...stM}>
+				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
+					<div className="flex flex-col justify-between  sm:flex-row space-y-2 ">
+						<StudentNameInput />		
+						<StudentBirthInput />
+						<StudentSchool />
+					</div>
+						<ClassDays />
+						<input className={submittv()} type="submit" />
+				</form>
+			</FormProvider>
 		</div>
 	)
 }
