@@ -21,7 +21,7 @@ export default function StudentBirthInput() {
 				<label className={label({inset: "right"})} htmlFor="year">년</label>
 			</div>
 			<div className="relative">
-				<input id="month"  {...register("birthMonth", {onChange: handleNumberChange})} placeholder="10" className={base({className: "w-18 "})} min={1} max={31} type="number" />
+				<input id="month"  {...register("birthMonth", {onChange: handleNumberChange, valueAsNumber: true})} placeholder="10" className={base({className: "w-18 "})} min={1} max={31} type="number" />
 				<label className={label({inset: "right"})} htmlFor="month">월</label>
 			</div>
 			<div className="relative">
