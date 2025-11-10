@@ -1,59 +1,58 @@
-import { orbit } from "@/app/stores/font";
 import { tv} from "tailwind-variants";
 
+const inputBgLight = "bg-amber-200"
+const inputBgDark = "bg-amber-300"
+const bg = "bg-amber-100"
+// const padSize = "3"
+
 const layout = tv({
-	base: "w-full bg-blue-200"
+	base: "w-full"
 })
 
 const form = tv({
-	base: "bg-amber-100"
+	base: bg
 })
 
 
-const dayContainertv= tv({
+const classDays= tv({
 	base: "flex space-y-2 min-w-150 justify-around"
 })
 
 
-const day = tv({
-	base: "p-1 w-15 h-12  rounded-2xl select-none flex justify-center items-center ",
+const classDay = tv({
+	base: `p-1 w-15 h-12  rounded-2xl select-none flex justify-center items-center hover:${inputBgDark} `,
 	variants: {
 		click: {
-			false: "bg-zinc-200 text-zinc-500",
-			true: "bg-amber-300 text-zinc-200",
+			false: `${inputBgLight} text-zinc-500`,
+			true: `${inputBgDark} text-zinc-100`,
 		}
  },
 })
 
-const submittv = tv({
-	base: "w-full shadow-2xl  p-2 bg-amber-50 my-2 rounded-2xl"
+const submit = tv({
+	base: ` w-full shadow-2xl  p-2 ${inputBgLight} my-3 rounded-2xl hover:${inputBgDark} hover:text-zinc-500 hover:cursor-pointer`
 })
 
 const container = tv({
-	base: "space-y-2 flex flex-col"
+	base: "px-3 space-y-2 flex flex-col"
 })
 
 const label = tv({
-	base: `${orbit.className} text-black text-lg`,
+	base: `text-black text-lg`,
 	variants: {
 		inset: {
 			right:  "right-0  absolute flex items-center pr-3 inset-y-0 h-10 text-base",
 			left: "left-0  absolute flex items-center pr-3 inset-y-0 h-10 text-base"
-		}
+		},
+		
 	}
 })
 
 const input = tv({
 	slots: {
-		base: "placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 bg-amber-200 p-3 h-10  ",
-		birth: "bg-amber-200 rounded-xl h-10 pl-3 pr-10 placeholder:italic",
+		base: `${inputBgLight} rounded-xl placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400  pl-3 pr-10 h-10 `,
 	},
 	variants: {
-		fonts: {
-			"orbit": {
-				"base": `${orbit.className}`
-			},
-		},
 		width: {
 			"s":{
 				base: "w-50"
@@ -80,8 +79,7 @@ const input = tv({
 	defaultVariants: {
 		width: "s",
 		round: true,
-		fonts: "orbit"
 	}
 })
 
-export {form, layout, dayContainertv, day, submittv, input, label, container };
+export {form, layout, classDays, classDay, submit, input, label, container };

@@ -1,6 +1,6 @@
 "use client";
 
-import { label } from "@/app/lib/tv/forms/FormStyles";
+import { container, label } from "@/app/lib/tv/forms/FormStyles";
 import Day from "./Day";
 
 const days = [
@@ -15,7 +15,7 @@ const days = [
 
 export default function ClassDays() {
 	return (
-		<div className="space-y-2">
+		<div className={container({className: "my-3"})}>
 			<div className={label()}>등원일</div>
 			<div className="flex justify-between">{
 				days.map((d)=> <Day day={d} key={d}/>)}

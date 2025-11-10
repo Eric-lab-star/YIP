@@ -3,8 +3,34 @@
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px oklch(92.4% 0.12 95.746)  inset !important; /* Tailwind's bg-amber-100 */
-
   box-shadow: 0 0 0px 1000px oklch(92.4% 0.12 95.746) inset !important;
   -webkit-text-fill-color: black !important;
 }
 
+
+
+/* globals.css */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* for Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+@layer utilities {
+  .no-spinner::-webkit-inner-spin-button,
+  .no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}

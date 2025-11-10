@@ -6,12 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
 import { IActionRes, StudentData } from "@/types";
 import StudentNameInput from "@/components/forms/student/StudentNameInput";
-import { form, layout, submittv } from "./lib/tv/forms/FormStyles";
+import { form, layout } from "./lib/tv/forms/FormStyles";
 import ClassDays from "@/components/forms/student/ClassDays";
 import Title from "@/components/commons/Title";
-import { Layout } from "lucide-react";
 import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";
+import SubmitBtn from "@/components/commons/SubmitBtn";
 
 /**
 	* renders home
@@ -57,13 +57,13 @@ export default function Page() {
 			<Title name="학생정보" />
 			<FormProvider {...stM}>
 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
-					<div className="flex flex-col justify-between  sm:flex-row space-y-2 ">
+					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">
 						<StudentNameInput />		
 						<StudentBirthInput />
 						<StudentSchool />
 					</div>
-						<ClassDays />
-						<input className={submittv()} type="submit" />
+					<ClassDays />
+					<SubmitBtn />
 				</form>
 			</FormProvider>
 		</div>

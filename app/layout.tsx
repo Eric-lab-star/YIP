@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { notosansKorean } from "./stores/font";
+import { orbit } from "./stores/font";
 
 
 export const metadata: Metadata = {
@@ -17,8 +17,8 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`
-					${notosansKorean.className} antialiased
-					lg:bg-zinc-200 lg:w-[1000px] mx-auto md:w-[900px] md:bg-zinc-400 sm:bg-zinc-600 min-w-[400px] bg-zinc-800 space-y-3 `}
+					${orbit.className} antialiased
+					lg:bg-zinc-200 lg:w-[1000px] mx-auto md:w-[900px] md:bg-zinc-400 sm:bg-zinc-600 min-w-[400px] bg-zinc-200 space-y-3 `}
       >
         {children}
       </body>
