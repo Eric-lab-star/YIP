@@ -42,15 +42,15 @@ export default function Page() {
 	},[stM.formState.errors])
 
 
-// NOTE: make readable code
-// 1st try: 
-// forwardRef 
-// 	--> problem: nextjs renders twice which makes diffciult to devlop toggle 
-// 	too many forwarding 
-// 2nd try: passing register as prop
-// nested input components is not subscribed to register
-// 3rd try: using FormProvider good 
-	//  FormProvder removes all unneccesarry logics but it may cause some rendering issues
+/** TODO: Make validation 
+// 1. birthday year month date should only accept number.
+// 2. valid range of date is from 1 to 31.
+// 3. valid range of month is from 1 to 12.
+// 4. minimum year is 1800
+// 5. both back and and frontend should validate inputs.
+// 6. 
+*/
+	
 
 	return (
 		<div	className={layout()} >

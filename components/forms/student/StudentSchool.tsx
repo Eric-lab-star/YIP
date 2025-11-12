@@ -7,6 +7,6 @@ export default function StudentSchool() {
 	const { register } = useFormContext<StudentData>()
 	return <div className={container()}>
 		<label className={label()}>학교</label>
-		<input placeholder="대한초등학교" {...register} className={base()}/>
+		<input placeholder="대한초등학교" {...register("school")} className={base()}/>
 	</div>
 }
