@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
-import { IActionRes, StudentData } from "@/types";
+import { StudentData } from "@/types";
 import StudentNameInput from "@/components/forms/student/StudentNameInput";
 import { form, layout } from "./lib/tv/forms/FormStyles";
 import ClassDays from "@/components/forms/student/ClassDays";
@@ -14,11 +14,9 @@ import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 
 /**
-	* renders home
-	*/
+* renders home
+*/
 export default function Page() {
-	const [_, startTransition ] = useTransition();
-	const [serverResult, setServerResult] = useState<IActionRes>({})
 
 	/**
 		* stM = studentMethod
@@ -43,12 +41,6 @@ export default function Page() {
 
 
 /** TODO: Make validation 
-// 1. birthday year month date should only accept number.
-// 2. valid range of date is from 1 to 31.
-// 3. valid range of month is from 1 to 12.
-// 4. minimum year is 1800
-// 5. both back and and frontend should validate inputs.
-// 6. 
 */
 	
 
