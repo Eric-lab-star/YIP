@@ -1,4 +1,4 @@
-import { classDay } from "@/app/lib/tv/forms/FormStyles"
+import { classDay, input } from "@/app/lib/tv/forms/FormStyles"
 import { StudentData } from "@/types"
 import { MouseEvent, useEffect, useState } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
@@ -18,7 +18,7 @@ export default function Week() {
 
 
 	return (
-		<div className="flex w-full justify-between items-center">
+		<div className="flex space-y-3 flex-col w-full  ">
 				{ week.map((d) => <Controller control={control} name={"classDays"} key={d} render={ ({field: {value}})=> <Day d={d} value={value}  key={d}/>} />) }
 		</div>
 	)
@@ -30,6 +30,26 @@ function Day({d, value } : {d : typeof week[number]; value: StudentData["classDa
 	const handleClick = ()=> {
 		setClick(!click);
 		value[d] = !value[d];
+	
 	}
-	return <div id={d} className={classDay({click})}  onClick={()=> handleClick()}  key={d}> {d}</div>
+
+	const handleInputClick = (e: MouseEvent) => {
+		e.stopPropagation() 
+	}
+	const {time}  = input()
+	return (
+		<div id={d} className={classDay({click})}  onClick={()=> handleClick()}  key={d}>
+			<div className="capitalize">{d}</div>
+			{
+				click &&
+			<div className="flex space-x-2 items-center">
+				<input onClick={(e) => handleInputClick(e)} className={time()}  type="number" placeholder="14:00" />
+				<div className="text-2xl"> ~ </div>
+				<input className={time()} onClick={(e) =>  handleInputClick(e)} type="number" placeholder="16:00" />
+			</div>
+
+			}
+		</div>
+	)
+
 }

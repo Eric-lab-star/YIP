@@ -21,7 +21,7 @@ const classDays= tv({
 
 
 const classDay = tv({
-	base: `p-1 w-15 h-12  ${round} select-none flex justify-center items-center hover:${inputBgDark} `,
+	base: `pl-3 pr-3 w-full  h-12  ${round} select-none flex justify-between  items-center hover:${inputBgDark} `,
 	variants: {
 		click: {
 			false: `${inputBgLight} text-zinc-500`,
@@ -52,12 +52,15 @@ const label = tv({
 
 const input = tv({
 	slots: {
-		base: ` ${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
+		base: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
+		time: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 py-3  pl-3 h-10 `,
+
 	},
 	variants: {
 		width: {
 			"s":{
-				base: "w-50"
+				base: "w-50",
+				time: "w-20"
 			},
 			"m": {
 				base: "w-100"
@@ -72,7 +75,6 @@ const input = tv({
 	},
 	defaultVariants: {
 		width: "s",
-		round: true,
 	}
 })
 
