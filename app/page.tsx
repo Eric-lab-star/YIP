@@ -22,25 +22,36 @@ export default function Page() {
 		* stM = studentMethod
 		* */ 
 	const stM = useForm<StudentData>({
-		resolver: zodResolver(studentSchema)
+		resolver: zodResolver(studentSchema),
+		defaultValues: {
+			classDays: {
+				mon: false,
+				tue: false,
+				wed: false,
+				thur: false,
+				fri: false,
+				sat: false,
+				sun: false,
+			}
+		}
 	})
 	
 	const onSubmit = (data: StudentData) => {
-		console.log("filled data")
+		console.log(`filled data `)
 		console.log(data);
 	}
 
-	useEffect(()=> {
-		if(stM.formState.errors) {
-			console.log("missing data:")
-			console.log(stM.formState.errors);
-		} else {
-			console.log("no errors in form")
-		} 
-	},[stM.formState.errors])
+	// useEffect(()=> {
+	// 	if(stM.formState.errors) {
+	// 		console.log("missing data:")
+	// 		console.log(stM.formState.errors);
+	// 	} else {
+	// 		console.log("no errors in form")
+	// 	} 
+	// },[stM.formState.errors])
+	//
 
-
-/** TODO: Make validation 
+/** TODO: Class Days select element 
 */
 	
 

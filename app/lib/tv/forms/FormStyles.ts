@@ -2,6 +2,7 @@ import { tv} from "tailwind-variants";
 
 const inputBgLight = "bg-amber-200"
 const inputBgDark = "bg-amber-300"
+const round = "rounded-lg"
 const bg = "bg-amber-100"
 // const padSize = "3"
 
@@ -20,7 +21,7 @@ const classDays= tv({
 
 
 const classDay = tv({
-	base: `p-1 w-15 h-12  rounded-2xl select-none flex justify-center items-center hover:${inputBgDark} `,
+	base: `p-1 w-15 h-12  ${round} select-none flex justify-center items-center hover:${inputBgDark} `,
 	variants: {
 		click: {
 			false: `${inputBgLight} text-zinc-500`,
@@ -30,7 +31,8 @@ const classDay = tv({
 })
 
 const submit = tv({
-	base: ` w-full shadow-2xl  p-2 ${inputBgLight} my-3 rounded-2xl hover:${inputBgDark} hover:text-zinc-500 hover:cursor-pointer`
+	base: ` w-full shadow-2xl  p-2 ${inputBgLight} my-3 ${round} hover:${inputBgDark} hover:text-zinc-500 hover:cursor-pointer`
+	
 })
 
 const container = tv({
@@ -50,7 +52,7 @@ const label = tv({
 
 const input = tv({
 	slots: {
-		base: `${inputBgLight} rounded-xl placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400  pl-3 pr-10 h-10 `,
+		base: ` ${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
 	},
 	variants: {
 		width: {
@@ -67,14 +69,6 @@ const input = tv({
 				base: "w-full"
 			}
 		},
-		round: {
-			true: {
-				base: "rounded-xl"
-			},
-			false: {
-				base: ""
-			}
-		}
 	},
 	defaultVariants: {
 		width: "s",

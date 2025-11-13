@@ -6,7 +6,15 @@ const studentSchema =  z.object({
 	birthDate: z.coerce.number<number>().min(1, "Invalid date").max(31, "Invalid date"),
 	birthMonth: z.coerce.number<number>().min(1, "Invalid month").max(12, "Invalid month"),
 	school: z.string().min(1, "school is required"),
-	classDays: z.array(z.string()),
+	classDays: z.object({
+		mon: z.boolean(),
+		tue: z.boolean(),
+		wed: z.boolean(),
+		thur: z.boolean(),
+		fri: z.boolean(),
+		sat: z.boolean(),
+		sun: z.boolean(),
+	}),
 })
 
 export default studentSchema;

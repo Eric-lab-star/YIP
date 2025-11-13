@@ -8,7 +8,7 @@ export default function StudentNameInput() {
 	return (
 		<div className={container()}>
 			<label className={label()}>이름</label>
-			<input placeholder="김경섭" className={base({width: "f", round: false})} {...ctx.register("name")} />
+			<input placeholder="김경섭" className={base({width: "f"})} {...ctx.register("name")} />
 		</div>
 
 	)
