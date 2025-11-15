@@ -1,6 +1,6 @@
 import { classDay, input } from "@/app/lib/tv/forms/FormStyles"
 import { StudentData } from "@/types"
-import { MouseEvent, useEffect, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 
 const week = [
@@ -33,24 +33,33 @@ function Day({d, value } : {d : typeof week[number]; value: StudentData["classDa
 	
 	}
 
-	const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
-		e.stopPropagation() 
-		const { value } = e.currentTarget
-	}
-	const {time}  = input()
 	return (
 		<div id={d} className={classDay({click})}  onClick={()=> handleClick()}  key={d}>
 			<div className="capitalize">{d}</div>
 			{
 				click &&
 			<div className="flex space-x-2 items-center">
-				<input onClick={(e) => handleInputClick(e)} className={time()}  type="time" placeholder="14:00" />
+				<TimeInput />
 				<div className="text-2xl"> ~ </div>
-				<input className={time()} onClick={(e) =>  handleInputClick(e)} type="time" placeholder="16:00" />
+				<TimeInput />
 			</div>
 
 			}
 		</div>
 	)
-
 }
+
+function TimeInput() {
+	const [t, setT] = useState("");
+
+	const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
+		e.stopPropagation() 
+	}
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setT(e.currentTarget.value);
+	}
+	const {time}  = input()
+	return <input className={time()} onClick={(e) =>  handleInputClick(e)} type="time" onChange={(e)=> handleChange(e)}  value={t}/>
+}
+

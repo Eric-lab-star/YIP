@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import studentSchema from "./lib/zod/studentSchema";
@@ -24,15 +23,7 @@ export default function Page() {
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
 		defaultValues: {
-			classDays: {
-				mon: false,
-				tue: false,
-				wed: false,
-				thur: false,
-				fri: false,
-				sat: false,
-				sun: false,
-			}
+			classDays: [{date: "mon", time: {start: "14:00", end: "16:00"}}],
 		}
 	})
 	
