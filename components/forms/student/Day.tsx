@@ -33,8 +33,9 @@ function Day({d, value } : {d : typeof week[number]; value: StudentData["classDa
 	
 	}
 
-	const handleInputClick = (e: MouseEvent) => {
+	const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
 		e.stopPropagation() 
+		const { value } = e.currentTarget
 	}
 	const {time}  = input()
 	return (
@@ -43,9 +44,9 @@ function Day({d, value } : {d : typeof week[number]; value: StudentData["classDa
 			{
 				click &&
 			<div className="flex space-x-2 items-center">
-				<input onClick={(e) => handleInputClick(e)} className={time()}  type="number" placeholder="14:00" />
+				<input onClick={(e) => handleInputClick(e)} className={time()}  type="time" placeholder="14:00" />
 				<div className="text-2xl"> ~ </div>
-				<input className={time()} onClick={(e) =>  handleInputClick(e)} type="number" placeholder="16:00" />
+				<input className={time()} onClick={(e) =>  handleInputClick(e)} type="time" placeholder="16:00" />
 			</div>
 
 			}

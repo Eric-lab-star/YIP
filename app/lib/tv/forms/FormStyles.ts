@@ -2,6 +2,8 @@ import { tv} from "tailwind-variants";
 
 const inputBgLight = "bg-amber-200"
 const inputBgDark = "bg-amber-300"
+const TextColor = "text-zinc-500"
+const HighLightColor = "text-orange-600"
 const round = "rounded-lg"
 const bg = "bg-amber-100"
 // const padSize = "3"
@@ -25,7 +27,7 @@ const classDay = tv({
 	variants: {
 		click: {
 			false: `${inputBgLight} text-zinc-500`,
-			true: `${inputBgDark} text-zinc-100`,
+			true: `${inputBgDark} ${HighLightColor}`,
 		}
  },
 })
@@ -53,14 +55,13 @@ const label = tv({
 const input = tv({
 	slots: {
 		base: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
-		time: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 py-3  pl-3 h-10 `,
-
+		time: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-2 h-10 ${TextColor} `,
 	},
 	variants: {
 		width: {
 			"s":{
 				base: "w-50",
-				time: "w-20"
+				time: "w-33"
 			},
 			"m": {
 				base: "w-100"
