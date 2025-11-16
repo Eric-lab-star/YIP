@@ -11,6 +11,7 @@ import Title from "@/components/commons/Title";
 import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
+import { useEffect } from "react";
 
 /**
 * renders home
@@ -23,7 +24,6 @@ export default function Page() {
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
 		defaultValues: {
-			classDays: [{date: "mon", time: {start: "14:00", end: "16:00"}}],
 		}
 	})
 	
@@ -32,15 +32,13 @@ export default function Page() {
 		console.log(data);
 	}
 
-	// useEffect(()=> {
-	// 	if(stM.formState.errors) {
-	// 		console.log("missing data:")
-	// 		console.log(stM.formState.errors);
-	// 	} else {
-	// 		console.log("no errors in form")
-	// 	} 
-	// },[stM.formState.errors])
-	//
+	console.log(stM.watch("classDays"))
+
+	useEffect(()=> {
+		console.log("error");
+		console.log(stM.formState.errors.classDays)
+	},[stM.formState.errors.classDays])
+
 
 /** TODO: Class Days select element 
 */

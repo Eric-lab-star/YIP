@@ -13,53 +13,57 @@ const week = [
 	"sun",
 ] as const
 
-export default function Week() {
-	const {control } = useFormContext<StudentData>()
-
-
+export default function Week({classDay}: {classDay: number[]}) {
+	
 	return (
 		<div className="flex space-y-3 flex-col w-full  ">
-				{ week.map((d) => <Controller control={control} name={"classDays"} key={d} render={ ({field: {value}})=> <Day d={d} value={value}  key={d}/>} />) }
+				{ classDay.map((d) => <Day d={d} key={d}/>) }
 		</div>
 	)
 }
 
-function Day({d, value } : {d : typeof week[number]; value: StudentData["classDays"]}) {
-
-	const [click, setClick] = useState(false);
-	const handleClick = ()=> {
-		setClick(!click);
-		value[d] = !value[d];
-	
-	}
+function Day({d} : {d : number;}) {
 
 	return (
-		<div id={d} className={classDay({click})}  onClick={()=> handleClick()}  key={d}>
+		<div className={classDay()}  key={d}>
 			<div className="capitalize">{d}</div>
-			{
-				click &&
 			<div className="flex space-x-2 items-center">
-				<TimeInput />
+				<TimeInput d={d} label={"start"} />
 				<div className="text-2xl"> ~ </div>
-				<TimeInput />
+				<TimeInput d={d} label={"end"}/>
 			</div>
-
-			}
 		</div>
 	)
 }
 
-function TimeInput() {
-	const [t, setT] = useState("");
-
+function TimeInput({d, label}: {label: "start"|"end",d: typeof week[number]}) {
+	const {register } = useFormContext<StudentData>()
 	const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
 		e.stopPropagation() 
 	}
 
-	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setT(e.currentTarget.value);
+	const handleChange =(e: ChangeEvent<HTMLInputElement> ) => {
+		const target = e.currentTarget;
+		if (target.value.length > 2) {
+			target.value = target.value.slice(0, 2);
+		}
 	}
+
+
+
 	const {time}  = input()
-	return <input className={time()} onClick={(e) =>  handleInputClick(e)} type="time" onChange={(e)=> handleChange(e)}  value={t}/>
+	return <>
+	
+	<div className="relative">
+		<input {...register(`classDays.${d}.${label}.h`, {max:24, min:0, onChange:(e) => handleChange(e)})} className={time()} onClick={(e) =>  handleInputClick(e)} type="number"/>
+		<div className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">h</div>
+	</div>
+	
+	<div className="relative">
+		<input max={60} min={0} {...register(`classDays.${d}.${label}.m`, {max: 60, min: 0, onChange:(e) => handleChange(e) })} className={time()} onClick={(e) =>  handleInputClick(e)} type="number"/>
+		<div className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">m</div>
+	</div>
+	</>
+	
 }
 
