@@ -1,32 +1,26 @@
 import { classDay, input } from "@/app/lib/tv/forms/FormStyles"
+import { days } from "@/app/lib/zod/studentSchema"
 import { StudentData } from "@/types"
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
-import { Controller, useFieldArray, useFormContext } from "react-hook-form"
+import { ChangeEvent, MouseEvent } from "react"
+import { useFormContext } from "react-hook-form"
 
-const week = [
-	"mon",
-	"tue",
-	"wed",
-	"thur",
-	"fri",
-	"sat",
-	"sun",
-] as const
 
 export default function Week({classDay}: {classDay: number[]}) {
 	
 	return (
 		<div className="flex space-y-3 flex-col w-full  ">
-				{ classDay.map((d) => <Day d={d} key={d}/>) }
+				{ classDay.map((d) => <DaySelector key={d}/>) }
 		</div>
 	)
 }
 
-function Day({d} : {d : number;}) {
+function DaySelector() {
 
 	return (
-		<div className={classDay()}  key={d}>
-			<div className="capitalize">{d}</div>
+		<div className={classDay()}>
+			<div className="capitalize">
+				
+			</div>
 			<div className="flex space-x-2 items-center">
 				<TimeInput d={d} label={"start"} />
 				<div className="text-2xl"> ~ </div>
@@ -36,7 +30,7 @@ function Day({d} : {d : number;}) {
 	)
 }
 
-function TimeInput({d, label}: {label: "start"|"end",d: typeof week[number]}) {
+function TimeInput({d, label}: {label: "start"|"end",d: typeof days[number]}) {
 	const {register } = useFormContext<StudentData>()
 	const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
 		e.stopPropagation() 

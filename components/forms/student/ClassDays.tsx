@@ -2,7 +2,7 @@
 
 import { container, label } from "@/app/lib/tv/forms/FormStyles";
 import { useState } from "react";
-import Week from "./Day";
+import Week from "./Week";
 
 
 

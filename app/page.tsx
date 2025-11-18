@@ -17,7 +17,6 @@ import { useEffect } from "react";
 * renders home
 */
 export default function Page() {
-
 	/**
 		* stM = studentMethod
 		* */ 
