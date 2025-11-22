@@ -22,8 +22,6 @@ export default function Page() {
 		* */ 
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
-		defaultValues: {
-		}
 	})
 	
 	const onSubmit = (data: StudentData) => {
@@ -31,7 +29,6 @@ export default function Page() {
 		console.log(data);
 	}
 
-	console.log(stM.watch("classDays"))
 
 	useEffect(()=> {
 		console.log("error");
