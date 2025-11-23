@@ -7,6 +7,10 @@ const HighLightColor = "text-orange-600"
 const round = "rounded-lg"
 const bg = "bg-amber-100"
 // const padSize = "3"
+//
+export const errorMessage = tv({
+	base: "text-red-700"
+})
 
 const layout = tv({
 	base: "w-full"

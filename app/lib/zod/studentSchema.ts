@@ -3,17 +3,17 @@ import * as z from "zod";
 export const days = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"] as const;
 const DaySchema = z.enum(days);
 const TimeSchema = z.object({
-	h: z.coerce.number<number>().max(24, "maximum valid input is 24"),
-	m: z.coerce.number<number>().max(60,"maximum valid iput is 60"),
+	h: z.coerce.number<number>().min(0, "0이 최소입니다.").max(24, "24가 최대입니다."),
+	m: z.coerce.number<number>().min(0, "0이 최소입니다").max(59, "59가 최대입니다."),
 })
 
 const studentSchema =  z.object({
-	name: z.string().min(1, "Name is required"),
-	birthYear: z.coerce.number<number>().min(1800, "Year is required"),
-	birthDate: z.coerce.number<number>().min(1, "Invalid date").max(31, "Invalid date"),
-	birthMonth: z.coerce.number<number>().min(1, "Invalid month").max(12, "Invalid month"),
-	school: z.string().min(1, "school is required"),
-	classDays: z.record(DaySchema, z.object({start: TimeSchema, end: TimeSchema}).optional()).optional() 
+	name: z.string("이름을 확인하세요.").min(1, "이름을 확인하세요"),
+	birthYear: z.coerce.number<number>("연도를 확인해 주세요.").min(1800, "잘못된 연도입니다."),
+	birthDate: z.coerce.number<number>("날짜를 확인해 주세요.").min(1).max(31, "잘못된 날짜입니다."),
+	birthMonth: z.coerce.number<number>("월을 확인해 주세요.").min(1).max(12, "잘못된 월입니다."),
+	school: z.string().min(1, "학교를 확인하세요"),
+	classDays: z.partialRecord(DaySchema, z.object({start: TimeSchema, end: TimeSchema}))
 })
 
 

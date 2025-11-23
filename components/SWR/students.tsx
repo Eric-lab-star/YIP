@@ -28,6 +28,19 @@ function StudentRow(studentlist: StudentTableType) {
 					<span>{s.birthDate.toString().padStart(2, "0")} 일</span>
 				</div>
 				<div className="w-30 bg-amber-100 p-2 grid place-items-center">{s.school}</div>
-				<div className="flex justify-center items-center">{s.classDays?.map((ds, i)=> <div className="w-20 bg-amber-100 p-2" key={i}>{ds}</div>)}</div>
+				<div className="flex justify-center items-center"><StudentClassDays classDay={s.classDays}  /></div>
 		</div>
 	))}
+
+
+function StudentClassDays({classDay}: {classDay: StudentData['classDays']}) {
+	const tmp = [];
+
+	for (const [k, v] of Object.entries(classDay)) {
+		if (v) {
+			tmp.push(<div><div>{k}</div><div>{v.start.h}</div></div>)
+		}
+	}
+	return <>{tmp.map(v => v)} </>
+	
+}

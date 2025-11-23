@@ -27,23 +27,16 @@ export default function Page() {
 	
 	const onSubmit = async (data: StudentData) => {
 		console.log(`postiing data ${data}`)
-		// const result = await postStudent(data)
-		// if (!result.success) {
-		// 	console.log(result.errors)
-		// } 
+		const result = await postStudent(data)
+		if (!result.success) {
+			console.log(result.errors)
+		} 
 	}
 
 
-	useEffect(()=> {
-		console.log("error");
-		console.log(stM.formState.errors.classDays)
-	},[stM.formState.errors.classDays])
 
-
-/** TODO: Class Days select element 
+/** TODO: form validation 
 */
-	
-
 	return (
 		<div	className={layout()} >
 			<Title name="학생정보" />
