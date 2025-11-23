@@ -1,24 +1,22 @@
 "use client";
 
 import { container, label } from "@/app/lib/tv/forms/FormStyles";
-import { useState } from "react";
-import Week from "./Week";
 import { Plus } from "lucide-react";
 import { useClassDays } from "@/app/stores/classDayStore";
+import ClassDaySelect from "./ClassDaySelect";
 
 
-
-
+/**
+* 
+*/
 export default function ClassDays() {
-	//const [classDay, setClassDay] = useState([Date.now()]);
-	const addDay = useClassDays((state) => state.addDay);
-	
-
-
+	const {addDay, days} = useClassDays((state) => state);
 	return (
 		<div className={container({className: "my-3"})}>
 			<div className={label()}>등원일</div>
-			<Week />
+			<div className="flex space-y-3 flex-col w-full  ">
+					{ days.map((d) => <ClassDaySelect id={d} key={d}/>) }
+			</div>
 			<div className="p-2  hover:bg-amber-300 flex justify-center items-center bg-amber-200 rounded-xl" onClick={()=> addDay()}><Plus className="text-amber-400" /> </div>
 		</div>
 	)

@@ -6,7 +6,7 @@ import studentSchema from "./lib/zod/studentSchema";
 import { StudentData } from "@/types";
 import StudentNameInput from "@/components/forms/student/StudentNameInput";
 import { form, layout } from "./lib/tv/forms/FormStyles";
-import ClassDays from "@/components/forms/student/ClassDays";
+import ClassDays from "@/components/forms/student/StudentClassDay/ClassDays";
 import Title from "@/components/commons/Title";
 import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";

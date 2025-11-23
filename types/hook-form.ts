@@ -18,3 +18,15 @@ export interface IBirthDayInput {
 	name: BdName;
 	rOption: Roption; 
 }
+
+const days = [
+	"mon",
+	"tue",
+	"wed",
+	"thur",
+	"fri",
+	"sat",
+	"sun",
+] as const
+
+export type Day = typeof days[number]
