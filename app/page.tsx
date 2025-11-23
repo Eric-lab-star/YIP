@@ -12,6 +12,7 @@ import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import { useEffect } from "react";
+import { postStudent } from "./actions/studentAction";
 
 /**
 * renders home
@@ -24,9 +25,12 @@ export default function Page() {
 		resolver: zodResolver(studentSchema),
 	})
 	
-	const onSubmit = (data: StudentData) => {
-		console.log(`filled data `)
-		console.log(data);
+	const onSubmit = async (data: StudentData) => {
+		console.log(`postiing data ${data}`)
+		// const result = await postStudent(data)
+		// if (!result.success) {
+		// 	console.log(result.errors)
+		// } 
 	}
 
 

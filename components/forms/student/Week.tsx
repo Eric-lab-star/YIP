@@ -1,4 +1,5 @@
 import { classDay, input } from "@/app/lib/tv/forms/FormStyles"
+import { useClassDays } from "@/app/stores/classDayStore"
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem, } from "@/components/ui/select"
 import { StudentData } from "@/types"
 import { Trash2 } from "lucide-react"
@@ -6,16 +7,17 @@ import { ChangeEvent, MouseEvent, useState } from "react"
 import { useFormContext } from "react-hook-form"
 
 
-export default function Week({deleteClassDay, classDay}: {deleteClassDay: (v:number) => void; classDay: number[]}) {
-
+export default function Week() {
+	const classDay = useClassDays(state => state.days)
 	return (
 		<div className="flex space-y-3 flex-col w-full  ">
-				{ classDay.map((d, i) => <ClassDaySelect id={d} key={d} deleteClassDay={deleteClassDay}/>) }
+				{ classDay.map((d) => <ClassDaySelect id={d} key={d}/>) }
 		</div>
 	)
 }
 
-function ClassDaySelect({id, deleteClassDay}: {id: number; deleteClassDay: (v:number) => void}) {
+function ClassDaySelect({id}: {id: number}) {
+	const deleteClassDay = useClassDays(state => state.deleteDay);
 	const [day, setDay] = useState<typeof days[number]>(days[0]);
 	const handleDay = (d: typeof days[number]) => {
 		setDay(d)
