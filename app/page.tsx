@@ -11,7 +11,6 @@ import Title from "@/components/commons/Title";
 import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
-import { useEffect } from "react";
 import { postStudent } from "./actions/studentAction";
 
 /**

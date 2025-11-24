@@ -11,7 +11,7 @@ import { tv } from "tailwind-variants";
 * ClassDaySelect component wrapper
 */
 export default function ClassDays() {
-	const {addDay, days} = useClassDays((state) => state);
+	const { addDay, days } = useClassDays();
 	return (
 		<div className={container({className: "my-3"})}>
 			<div className={label()}>등원일</div>

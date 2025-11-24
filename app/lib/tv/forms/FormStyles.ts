@@ -27,7 +27,7 @@ const classDays= tv({
 
 
 const classDay = tv({
-	base: ` pl-3 pr-3 w-full  h-12  ${round} select-none flex justify-between items-center space-x-2 `,
+	base: `w-full  h-12  ${round} select-none flex justify-between items-center space-x-2 `,
 })
 
 const submit = tv({
