@@ -1,9 +1,9 @@
 import { submit } from "@/app/lib/tv/forms/FormStyles";
 
-export default function SubmitBtn() {
+export default function SubmitBtn({name}: {name: string}) {
 	return (
 		<div className="px-3">
-			<input className={submit()} type="submit" />
+			<button className={submit()}>{name}</button>
 		</div>
 	)
 }

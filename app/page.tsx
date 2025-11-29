@@ -12,6 +12,7 @@ import StudentBirthInput from "@/components/forms/student/StudentBirthInput";
 import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import { postStudent } from "./actions/studentAction";
+import PhoneNumber from "@/components/forms/student/StudentPhoneNumber";
 
 /**
 * renders home
@@ -22,10 +23,16 @@ export default function Page() {
 		* */ 
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
+		defaultValues: {
+			studentPhoneNumber: ["", "" ,""],
+			guardianPhoneNUmber: ["", "" ,""]
+		}
 	})
+
+	const {setError, register, watch} = stM
 	
 	const onSubmit = async (data: StudentData) => {
-		console.log(`postiing data ${data}`)
+		setError("studentPhoneNumber", {type: "custom", message: "번호를 확인해주세요"})
 		const result = await postStudent(data)
 		if (!result.success) {
 			console.log(result.errors)
@@ -35,6 +42,7 @@ export default function Page() {
 
 
 /** TODO: form validation 
+*   when number input is left blank, zod automatically translates it to 0. 
 */
 	return (
 		<div	className={layout()} >
@@ -43,11 +51,13 @@ export default function Page() {
 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
 					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">
 						<StudentNameInput />		
+						<PhoneNumber who={"student"}/>
+						<PhoneNumber who={"guardian"}/>
 						<StudentBirthInput />
 						<StudentSchool />
 					</div>
 					<ClassDays />
-					<SubmitBtn />
+					<SubmitBtn name={"등록"} />
 				</form>
 			</FormProvider>
 		</div>

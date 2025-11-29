@@ -1,6 +1,6 @@
 import studentSchema from "@/app/lib/zod/studentSchema";
 import { ChangeEvent } from "react";
-import { FieldError, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import * as z from "zod";
 
 export type StudentDataRegister= ReturnType<UseFormRegister<StudentData>>

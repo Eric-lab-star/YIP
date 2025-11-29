@@ -13,7 +13,9 @@ const studentSchema =  z.object({
 	birthDate: z.coerce.number<number>("날짜를 확인해 주세요.").min(1).max(31, "잘못된 날짜입니다."),
 	birthMonth: z.coerce.number<number>("월을 확인해 주세요.").min(1).max(12, "잘못된 월입니다."),
 	school: z.string().min(1, "학교를 확인하세요"),
-	classDays: z.partialRecord(DaySchema, z.object({start: TimeSchema, end: TimeSchema}))
+	classDays: z.partialRecord(DaySchema, z.object({start: TimeSchema, end: TimeSchema})),
+	studentPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "numbers only").min(3, "min 3").max(3, "max 3"), z.string().min(4).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/)]),
+	guardianPhoneNUmber: z.tuple([z.string().min(3).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/)]),
 })
 
 

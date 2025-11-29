@@ -54,15 +54,19 @@ const input = tv({
 	slots: {
 		base: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
 		time: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-3 h-10 ${TextColor} `,
+		phone: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-3 h-10 `,
+		
 	},
 	variants: {
 		width: {
 			"s":{
 				base: "w-50",
-				time: "w-15"
+				time: "w-15",
+				phone: "w-15"
 			},
 			"m": {
-				base: "w-100"
+				base: "w-100",
+				phone: "w-17"
 			},
 			"l": {
 				base: "w-150"
