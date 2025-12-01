@@ -14,8 +14,8 @@ const studentSchema =  z.object({
 	birthMonth: z.coerce.number<number>("월을 확인해 주세요.").min(1).max(12, "잘못된 월입니다."),
 	school: z.string().min(1, "학교를 확인하세요"),
 	classDays: z.partialRecord(DaySchema, z.object({start: TimeSchema, end: TimeSchema})),
-	studentPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "numbers only").min(3, "min 3").max(3, "max 3"), z.string().min(4).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/)]),
-	guardianPhoneNUmber: z.tuple([z.string().min(3).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/), z.string().min(4).regex(/^\d+$/)]),
+	studentPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "앞번호를 입력하세요").min(3, "앞번호를 3자리 이상입력하세요.").max(3, "앞번호는 3자리까지 입력가능합니다."), z.string().regex(/^\d+$/, "중간 번호를 입력하세요").min(4, "중간번호를 4자리 이상입력하세요").max(4, "중간번호는 4 자리까지 입력할 수 있습니다."), z.string().regex(/^\d+$/, "마지막 번호를 입력하세요").min(4, "마지막 번호를 4자리 이상입력하세요").max(4, "마지막 번호는 4 자리까지 입력할 수 있습니다.")]),
+	 guardianPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "앞번호를 입력하세요").min(3, "앞번호를 3자리 이상입력하세요.").max(3, "앞번호는 3자리까지 입력가능합니다."), z.string().regex(/^\d+$/, "중간 번호를 입력하세요").min(4, "중간번호를 4자리 이상입력하세요").max(4, "중간번호는 4 자리까지 입력할 수 있습니다."), z.string().regex(/^\d+$/, "마지막 번호를 입력하세요").min(4, "마지막 번호를 4자리 이상입력하세요").max(4, "마지막 번호는 4 자리까지 입력할 수 있습니다.")]),
 })
 
 

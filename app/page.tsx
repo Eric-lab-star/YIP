@@ -19,20 +19,17 @@ import PhoneNumber from "@/components/forms/student/StudentPhoneNumber";
 */
 export default function Page() {
 	/**
-		* stM = studentMethod
-		* */ 
+	*stM = studentMethod
+	*register StudentData to react hook form
+	* */ 
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
 		defaultValues: {
-			studentPhoneNumber: ["", "" ,""],
-			guardianPhoneNUmber: ["", "" ,""]
 		}
 	})
 
-	const {setError, register, watch} = stM
 	
 	const onSubmit = async (data: StudentData) => {
-		setError("studentPhoneNumber", {type: "custom", message: "번호를 확인해주세요"})
 		const result = await postStudent(data)
 		if (!result.success) {
 			console.log(result.errors)
