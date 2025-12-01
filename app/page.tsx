@@ -1,4 +1,3 @@
-"use client";
 
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,51 +13,56 @@ import SubmitBtn from "@/components/commons/SubmitBtn";
 import { postStudent } from "./actions/studentAction";
 import PhoneNumber from "@/components/forms/student/StudentPhoneNumber";
 
+export default function Page() {
+	return <div>home</div>
+}
+
 /**
 * renders home
 */
-export default function Page() {
-	/**
-	*stM = studentMethod
-	*register StudentData to react hook form
-	* */ 
-	const stM = useForm<StudentData>({
-		resolver: zodResolver(studentSchema),
-		defaultValues: {
-		}
-	})
-
-	
-	const onSubmit = async (data: StudentData) => {
-		const result = await postStudent(data)
-		if (!result.success) {
-			console.log(result.errors)
-		} 
-	}
-
-
-
-/** TODO: form validation 
-*   when number input is left blank, zod automatically translates it to 0. 
-*/
-	return (
-		<div	className={layout()} >
-			<Title name="학생정보" />
-			<FormProvider {...stM}>
-				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
-					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">
-						<StudentNameInput />		
-						<PhoneNumber who={"student"}/>
-						<PhoneNumber who={"guardian"}/>
-						<StudentBirthInput />
-						<StudentSchool />
-					</div>
-					<ClassDays />
-					<SubmitBtn name={"등록"} />
-				</form>
-			</FormProvider>
-		</div>
-	)
-}
-
-
+// export default function Page() {
+// 	/**
+// 	*stM = studentMethod
+// 	*register StudentData to react hook form
+// 	* */ 
+// 	const stM = useForm<StudentData>({
+// 		resolver: zodResolver(studentSchema),
+// 		mode: "all",
+// 		defaultValues: {
+// 		}
+// 	})
+//
+// 	
+// 	const onSubmit = async (data: StudentData) => {
+// 		const result = await postStudent(data)
+// 		if (!result.success) {
+// 			console.log(result.errors)
+// 		} 
+// 	}
+//
+//
+//
+// /** TODO: form validation 
+// *   when number input is left blank, zod automatically translates it to 0. 
+// */
+// 	return (
+// 		<div	className={layout()} >
+// 			<Title name="학생정보" />
+// 			<FormProvider {...stM}>
+// 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
+// 					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">
+// 						<StudentNameInput />		
+// 						<PhoneNumber who={"student"}/>
+// 						<PhoneNumber who={"guardian"}/>
+// 						<StudentBirthInput />
+// 						<StudentSchool />
+// 					</div>
+// 					<ClassDays />
+// 					<SubmitBtn name={"등록"} />
+// 				</form>
+// 			</FormProvider>
+// 		</div>
+// 	)
+// }
+//
+//

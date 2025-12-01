@@ -18,7 +18,10 @@ export default function ClassDays() {
 			<div className="flex space-y-3 flex-col w-full">
 					{ days.map((d) => <ClassDaySelect id={d} key={d}/>) }
 			</div>
-			<div className={button()} onClick={()=> addDay()}><Plus className="text-amber-400" /> </div>
+			<div className={button()} onClick={()=> addDay()}>
+				<div className="pr-3">등원일 추가</div>
+				<Plus className="text-amber-400" /> 
+			</div>
 		</div>
 	)
 }

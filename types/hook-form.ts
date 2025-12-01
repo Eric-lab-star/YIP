@@ -1,5 +1,5 @@
 import studentSchema from "@/app/lib/zod/studentSchema";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SyntheticEvent } from "react";
 import { UseFormRegister } from "react-hook-form";
 import * as z from "zod";
 
@@ -10,7 +10,8 @@ export type BdName  = "birthYear" | "birthMonth" | "birthDate";
 export interface Roption{
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void
 	max?: number;
-	min?: number
+	min?: number;
+	onBlur?: (e:React.FocusEvent<HTMLInputElement, Element>) => void
 }
 export interface IBirthDayInput {
 	field: string;
