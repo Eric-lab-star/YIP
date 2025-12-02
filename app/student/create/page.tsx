@@ -43,7 +43,7 @@ export default function Page() {
 */
 	return (
 		<div	className={layout()} >
-			<Title name="학생정보" />
+			<Title name="신규 등록" />
 			<FormProvider {...stM}>
 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
 					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">

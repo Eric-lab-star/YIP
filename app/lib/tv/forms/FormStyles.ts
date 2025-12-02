@@ -17,7 +17,7 @@ const layout = tv({
 })
 
 const form = tv({
-	base: bg
+	base: ""
 })
 
 
