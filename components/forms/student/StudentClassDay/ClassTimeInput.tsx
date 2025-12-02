@@ -25,6 +25,7 @@ export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}
 		const target = e.currentTarget;
 		const schema = z.coerce.number<number>()
 		const parsed = schema.safeParse(target.value.slice(-1))
+
 		if ( parsed.error ) {
 			target.value = target.value.slice(0, -1)
 		};
@@ -34,7 +35,7 @@ export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}
 		}
 	}
 
-	const {time}  = input()
+	const { time }  = input()
 	return <>
 	<div className="relative">
 		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${d}.${label}.h`, { max:24, min:0, onChange:(e) => handleChange(e)})} className={time()} type="number"/>

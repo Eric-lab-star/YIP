@@ -1,11 +1,12 @@
 import { tv} from "tailwind-variants";
 
-const inputBgLight = "bg-amber-200"
+
+const inputBgLight = "bg-zinc-50"
 const inputBgDark = "bg-amber-300"
 const TextColor = "text-zinc-500"
 const HighLightColor = "text-orange-600"
 const round = "rounded-lg"
-const bg = "bg-amber-100"
+export const bg = "bg-zinc-100"
 // const padSize = "3"
 //
 export const errorMessage = tv({
@@ -52,9 +53,9 @@ const label = tv({
 
 const input = tv({
 	slots: {
-		base: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-10 h-10 `,
-		time: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-3 h-10 ${TextColor} `,
-		phone: `${inputBgLight} ${round} placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg focus:outline-2 focus:outline-blue-400 py-3  pl-3 pr-3 h-10 `,
+		base: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0 placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg   py-3  pl-3 pr-10 h-10 `,
+		time: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0  placeholder:text-gray-500 placeholder:italic py-3  pl-3 pr-3 h-10 ${TextColor} `,
+		phone: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0 placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg  py-3  pl-3 pr-3 h-10 `,
 		
 	},
 	variants: {

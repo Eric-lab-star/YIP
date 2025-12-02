@@ -1,5 +1,5 @@
 
-import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
+import { bg, classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
 import { useClassDays } from "@/app/stores/classDayStore"
 import { Day, StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
@@ -34,7 +34,7 @@ export default function ClassDaySelect({ id }: IClassDaySelectProp) {
 		<div className={ "w-full px-3" }>
 			<div className={classDay( )}>
 			<div className={ "flex justify-center items-center space-x-3" }>
-			{ days.length > 1 && <div onClick={( ) => handleDelete()} className="bg-amber-200 p-2 hover:bg-amber-400 rounded-lg">
+			{ days.length > 1 && <div onClick={( ) => handleDelete()} className={`bg-background p-2`}>
 				 <Trash2 className="text-red-800"/> 
 				</div> }
 				<ClassDaySelectInput handleDay={handleDay}  />
