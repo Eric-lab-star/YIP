@@ -56,7 +56,7 @@ const input = tv({
 		base: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0 placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg   py-3  pl-3 pr-10 h-10 `,
 		time: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0  placeholder:text-gray-500 placeholder:italic py-3  pl-3 pr-3 h-10 ${TextColor} `,
 		phone: `${inputBgLight} border-b-2 border-zinc-500 focus:border-amber-300 focus:outline-0 placeholder:text-gray-500 placeholder:italic placeholder:text-lg text-lg  py-3  pl-3 pr-3 h-10 `,
-		
+		button: "p-2  bg-background hover:bg-amber-300 flex justify-center items-center  rounded-xl select-none hover:text-zinc-50 text-zinc-800",
 	},
 	variants: {
 		width: {
