@@ -1,6 +1,6 @@
 
 /**
-* Delays function for 0.5sec
+* Delays function for <time> sec
 * @param sec - delay time
 *
 	* */

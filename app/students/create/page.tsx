@@ -10,7 +10,7 @@ import StudentSchool from "@/components/forms/student/StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import PhoneNumber from "@/components/forms/student/StudentPhoneNumber";
 import studentSchema from "../../lib/zod/studentSchema";
-import { postStudent } from "../../actions/studentAction";
+import { studentSignupFormAction } from "../../actions/studentAction";
 import { form, layout } from "../../lib/tv/forms/FormStyles";
 
 /**
@@ -28,7 +28,7 @@ export default function Page() {
 		}
 	})
 
-	const { setError, watch } = stM
+	const { reset, setError, watch, formState:{isSubmitting} } = stM
 
 	
 	const onSubmit = async (data: StudentData) => {
@@ -43,10 +43,12 @@ export default function Page() {
 				return
 			}
 		}
-		const result = await postStudent(data)
+		const result = await studentSignupFormAction(data)
 		if (!result.success) {
 			console.log(result.errors)
-		} 
+		} else {
+			reset();
+		}  
 	}
 
 
@@ -64,7 +66,7 @@ export default function Page() {
 						<StudentSchool />
 					</div>
 					<ClassDays />
-					<SubmitBtn name={"등록"} />
+					 <SubmitBtn isSubmitting={isSubmitting} name={"등록"} /> 
 				</form>
 			</FormProvider>
 		</div>

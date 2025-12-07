@@ -26,7 +26,7 @@ const layout = tv({
 })
 
 const form = tv({
-	base: "w-full"
+	base: "select-none md:w-250"
 })
 
 
@@ -71,6 +71,10 @@ const input = tv({
 		button: "border-1 border-zinc-400 p-2  bg-background hover:bg-amber-300 flex justify-center items-center select-none hover:text-zinc-50 text-zinc-800",
 	},
 	variants: {
+		diabled: {
+			true: "bg-zinc-500",
+			false: "",
+		},
 		width: {
 			"s":{
 				base: "w-50",

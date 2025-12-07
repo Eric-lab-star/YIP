@@ -1,10 +1,8 @@
 "use client";
 
 import { container, input, label } from "@/app/lib/tv/forms/FormStyles";
-import { Plus } from "lucide-react";
 import { useClassDays } from "@/app/stores/classDayStore";
 import ClassDaySelect from "./ClassDaySelect";
-import { tv } from "tailwind-variants";
 
 
 /**
