@@ -38,9 +38,6 @@ export default function Page() {
 
 
 
-/** TODO: form validation 
-*   when number input is left blank, zod automatically translates it to 0. 
-*/
 	return (
 		<div	className={layout()} >
 			<Title name="신규 등록" />
