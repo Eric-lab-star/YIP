@@ -1,7 +1,7 @@
 "use client";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { StudentData } from "@/types";
+import { Day, StudentData } from "@/types";
 import StudentNameInput from "@/components/forms/student/StudentNameInput";
 import ClassDays from "@/components/forms/student/StudentClassDay/ClassDays";
 import Title from "@/components/commons/Title";
@@ -28,8 +28,21 @@ export default function Page() {
 		}
 	})
 
+	const { setError, watch } = stM
+
 	
 	const onSubmit = async (data: StudentData) => {
+		const classDay = watch(`classDays`)
+		for (const [d, t] of Object.entries(classDay)) {
+			if (t.start.h == t.end.h) {
+				setError(`classDays.${d as Day}`,{type: "time", message: "시작시간이 종료시간과 같을 수 없습니다."})
+				return;
+			}
+			if (t.start.h > t.end.h) {
+				setError(`classDays.${d as Day}`,{type: "time", message: "시작시간이 종료시간보다 빨라야 합니다."})
+				return
+			}
+		}
 		const result = await postStudent(data)
 		if (!result.success) {
 			console.log(result.errors)
@@ -43,7 +56,7 @@ export default function Page() {
 			<Title name="신규 등록" />
 			<FormProvider {...stM}>
 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
-					<div className="flex flex-col justify-between  sm:flex-row space-y-3 ">
+					<div className="flex flex-col justify-between   space-y-3 ">
 						<StudentNameInput />		
 						<PhoneNumber who={"student"}/>
 						<PhoneNumber who={"guardian"}/>

@@ -9,8 +9,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px oklch(92.4% 0.12 95.746)  inset !important; /* Tailwind's bg-amber-100 */
-  box-shadow: 0 0 0px 1000px oklch(92.4% 0.12 95.746) inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px black  inset !important; /* Tailwind's bg-amber-100 */
+  box-shadow: 0 0 0px 1000px black inset !important;
   -webkit-text-fill-color: black !important;
 }
 

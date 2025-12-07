@@ -7,7 +7,7 @@ export default function StudentSchool() {
 	const { register, formState:{errors: {school}} } = useFormContext<StudentData>()
 	return <div className={container()}>
 		<label className={label()}>학교</label>
-		<input placeholder="대한초등학교" {...register("school", {required: true})} className={base()}/>
+		<input autoComplete="off" placeholder="대한초등학교" {...register("school", {required: true})} className={base()}/>
 		{school && <div className={errorMessage()}>{school.message}</div>}
 	</div>
 }

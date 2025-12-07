@@ -47,7 +47,7 @@ export default function PhoneNumber({who}: {who: "student" | "guardian"}) {
 	return (
 		<div className={container()}>
 			<label className={label()}> { who === "student" ? "학생" : "보호자"} 전화번호</label>
-			<div className="flex space-x-2 items-center">
+			<div className="flex space-x-2 items-center lg:justify-between ">
 
 				<input placeholder="010" type="number"  className={phone({width: "s"})}
 				{...register(`${schemaType}.0`, {
@@ -56,7 +56,6 @@ export default function PhoneNumber({who}: {who: "student" | "guardian"}) {
 				onKeyDown={(e) => handleKeyDown(e)}/>
 
 				<span> - </span>
-
 
 				<input placeholder="0000" type="number" className={phone({width: "m"})} {...register(`${schemaType}.1`, {onChange : (e)=> handleChange(e, 4)})} onKeyDown={(e) => handleKeyDown(e)}/>
 				<span> - </span>
