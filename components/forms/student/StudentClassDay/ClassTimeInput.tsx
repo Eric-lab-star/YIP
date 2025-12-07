@@ -5,7 +5,9 @@ import { useFormContext } from "react-hook-form";
 import * as z from "zod";
 
 export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}) {
-	const { register, setFocus } = useFormContext<StudentData>()
+
+	const { register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
+
 	const handleLableM = () => {
 		setFocus(`classDays.${d}.${label}.m`)
 	}
@@ -23,8 +25,13 @@ export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}
 
 	const handleChange =(e: ChangeEvent<HTMLInputElement> ) => {
 		const target = e.currentTarget;
+		const name = target.name;
 		const schema = z.coerce.number<number>()
 		const parsed = schema.safeParse(target.value.slice(-1))
+
+		if( classDaysErr && classDaysErr[d] && classDaysErr[d].type == "time") {
+			clearErrors("classDays")
+		} 
 
 		if ( parsed.error ) {
 			target.value = target.value.slice(0, -1)
@@ -32,6 +39,17 @@ export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}
 
 		if (target.value.length >= 2) {
 			target.value = target.value.slice(0, 2);
+			switch ( name ) {
+				case `classDays.${d}.start.h`:
+					setFocus( `classDays.${d}.start.m` )
+					break;
+				case `classDays.${d}.start.m`:
+					setFocus( `classDays.${d}.end.h` )
+					break;
+				case `classDays.${d}.end.h`:
+					setFocus( `classDays.${d}.end.m` )
+					break;
+			}
 		}
 	}
 

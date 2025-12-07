@@ -18,11 +18,12 @@ export default function StudentNameInput() {
 			validate: (v) => /^[a-zA-Z]*$/.test(v) || "Only letters allowed",
 			onChange: (e) => {handlechange(e)}
 		})}
+
 	return (
 		<div className={container()}>
 			<label className={label()}>이름</label>
-			<input placeholder="김경섭" className={base({width: "f"})} {...formHookProp} type="text" />
-			{nameError && <div className={errorMessage()}>{nameError.message}</div>}
+			<input autoComplete="off" placeholder="김경섭" className={base({width: "f"})} {...formHookProp} type="text" />
+			{nameError && <div className={errorMessage({className: "lg:col-start-4 lg:col-span-2 h-full lg:flex lg:items-center "})}>{nameError.message}</div>}
 		</div>
 	)
 }

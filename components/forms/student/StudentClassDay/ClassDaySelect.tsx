@@ -1,5 +1,5 @@
 
-import { bg, classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
+import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
 import { useClassDays } from "@/app/stores/classDayStore"
 import { Day, StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
@@ -31,28 +31,35 @@ export default function ClassDaySelect({ id }: IClassDaySelectProp) {
 		}
 	}
 	return (
-		<div className={ "w-full px-3" }>
+		<div className={ "w-full" }>
 			<div className={classDay( )}>
-			<div className={ "flex justify-center items-center space-x-3" }>
-			{ days.length > 1 && <div onClick={( ) => handleDelete()} className={`bg-background p-2`}>
-				 <Trash2 className="text-red-800"/> 
-				</div> }
-				<ClassDaySelectInput handleDay={handleDay}  />
-			</div>
-				{ selectedDay && <>
-				<div className="flex space-x-2 items-center">
-					<ClassTimeInput d={selectedDay} label={"start"} />
-					<div className="text-2xl"> ~ </div>
-					<ClassTimeInput d={selectedDay} label={"end"}/>
-				</div>
-				</>
-				}
-			</div>
-			{classDaysError && <div className={ errorMessage( ) }> 등원일을 선택하세요 </div>}
+				<div className={ "flex justify-center items-center lg:justify-start space-x-3 lg:col-span-2 " }>
+					{ days.length > 1 && (
+						<div onClick={( ) => handleDelete()} className={`bg-background p-2  border-zinc-500 hover:border-amber-300 border-b-2`}>
+							<Trash2 className="text-red-800"/> 
+						</div>
+					) }
+						<ClassDaySelectInput handleDay={handleDay}  />
+					</div>
+					{ selectedDay && <>
+						<div className="flex space-x-2 items-center lg:col-span-2 ">
+							<ClassTimeInput d={selectedDay} label={"start"} />
+							<div className="text-2xl"> ~ </div>
+							<ClassTimeInput d={selectedDay} label={"end"}/>
+						</div>
+					</>
+					}
+
+			<div className="min-w-30 lg:col-span-2 lg:col-start-6">
+			{(classDaysError && classDaysError.type === "invalid_type") && <div className={ errorMessage( ) }> 등원일을 선택하세요 </div>}
+			{ selectedDay && classDaysError && classDaysError[selectedDay] && <div className={ errorMessage( ) }> { classDaysError[selectedDay].message } </div> }
 			{ selectedDay && classDaysError && classDaysError[selectedDay] && <div className={ errorMessage( ) }> { classDaysError[selectedDay].start?.h?.message } </div> }
 			{ selectedDay && classDaysError && classDaysError[selectedDay] && <div className={ errorMessage( ) }> { classDaysError[selectedDay].start?.m?.message } </div> }
 			{ selectedDay && classDaysError && classDaysError[selectedDay] && <div className={ errorMessage( ) }> { classDaysError[selectedDay].end?.h?.message } </div> }
 			{ selectedDay && classDaysError && classDaysError[selectedDay] && <div className={ errorMessage( ) }> { classDaysError[selectedDay].end?.m?.message } </div> }
+			</div>
+			</div>
 		</div>
 	)
 }
+

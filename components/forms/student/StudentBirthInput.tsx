@@ -35,14 +35,16 @@ export default function StudentBirthInput() {
 
 	return <div className={container()}>
 		<div className={label()}>생년월일</div>
-		<div className="flex space-x-5 ">
+		<div className=" lg:col-span-2 flex lg:justify-between lg:items-center space-x-5 ">
 			<BirthDayInput field="년" name="birthYear" register={register}  rOption={{onChange:handleNumberChange, min: 1800}}/>
 			<BirthDayInput  field="월" name="birthMonth" register={register}  rOption={{onChange:handleNumberChange, min: 1, max: 12,}}/>
 			<BirthDayInput field="일" name="birthDate" register={register}  rOption={{onChange:handleNumberChange, min: 1, max: 31,}}/>
 		</div>
-		{birthYear && <div className={errorMessage()}>{birthYear.message}</div>}
-		{birthMonth && <div className={errorMessage()}>{birthMonth.message}</div>}
-		{birthDate && <div className={errorMessage()}>{birthDate.message}</div>}
+		<li className={errorMessage({layout: "multi", className:"list-none"})}>
+			{birthYear && <ul>{birthYear.message}</ul>}
+			{birthMonth && <ul>{birthMonth.message}</ul>}
+			{birthDate && <ul>{birthDate.message}</ul>}
+		</li>
 	</div>
 
 }
