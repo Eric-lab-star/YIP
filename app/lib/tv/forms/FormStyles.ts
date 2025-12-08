@@ -26,7 +26,7 @@ const layout = tv({
 })
 
 const form = tv({
-	base: "select-none md:w-250"
+	base: " select-none min-w-[200px] lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]"
 })
 
 

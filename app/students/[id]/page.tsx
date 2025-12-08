@@ -2,9 +2,10 @@ import { readStudent } from "@/app/lib/mongo/students";
 import { container } from "@/app/lib/tv/student/style";
 import Title from "@/components/commons/Title";
 import { Day } from "@/types";
-import { Cake, Calendar1, Phone, School, School2, User } from "lucide-react";
+import { Cake, Calendar1, Phone, School2, User } from "lucide-react";
 import { ObjectId } from "mongodb";
-import { notFound } from "next/navigation";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Page({params}: {params: Promise<{id: string}>}) {
 	const { id } = await params;
@@ -46,6 +47,9 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 				</div>
 				<div className=""></div>
 				<div className="bg-blue-300"></div>
+			</div>
+			<div>
+				<Link href={`/students/update/${id}`} className="p-2 bg-background border-b-amber-200 border-2"> 수정하기  </Link>
 			</div>
 		</div>
 	)

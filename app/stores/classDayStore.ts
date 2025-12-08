@@ -14,5 +14,6 @@ export const useClassDays = create<State & Action>()(
 		days: [Date.now()],
 		addDay: () => set((state) => {state.days.push(Date.now())}),
 		deleteDay: (t:number) => set((state)=> {state.days = state.days.filter(d => d != t)}),
+		populateDay: () => set(() => {}),
 	}))
 )

@@ -18,7 +18,7 @@ export default async function RootLayout({
       <body
         className={`
 					${orbit.className} select-none antialiased
-					 lg:w-[1000px] mx-auto md:w-[900px]  min-w-200 bg-zinc-200 space-y-3 `}
+					 lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]   bg-zinc-200 space-y-3 `}
       >
         {children}
       </body>
