@@ -1,4 +1,5 @@
 import { Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
+import { attachDatabasePool } from "@vercel/functions";
 
 if(!process.env.YIPDB_MONGODB_URI) {
 	throw new Error("YIPDB_MONGODB_URI is not defined")
@@ -22,11 +23,13 @@ let clientPromise: Promise<MongoClient>;
 if(process.env.NODE_ENV === "development"){
  if (!global._mongoClientPromise) {
  	client = new MongoClient(uri, options);
+	attachDatabasePool(client);
  	global._mongoClientPromise = client.connect();
  }
  clientPromise = global._mongoClientPromise;
 } else {
 	client = new MongoClient(uri, options);
+	attachDatabasePool(client);
 	clientPromise = client.connect();
 }
 

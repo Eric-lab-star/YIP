@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer"
+
 type State = {
 	days: number[];
 }
@@ -11,7 +12,7 @@ type Action = {
 
 export const useClassDays = create<State & Action>()(
 	immer((set) => ({
-		days: [Date.now()],
+		days: [],
 		addDay: () => set((state) => {state.days.push(Date.now())}),
 		deleteDay: (t:number) => set((state)=> {state.days = state.days.filter(d => d != t)}),
 		populateDay: () => set(() => {}),

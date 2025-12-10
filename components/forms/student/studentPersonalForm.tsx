@@ -13,9 +13,11 @@ import StudentBirthInput from "./StudentBirthInput";
 import StudentSchool from "./StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import ClassDays from "./StudentClassDay/ClassDays";
+import { useClassDays } from "@/app/stores/classDayStore";
 
 export default function StudentPersonalForm({defaultData}: {defaultData?: string}) {
 
+	const { addDay, days } = useClassDays();
 	/**
 	*stM = studentMethod
 	*register StudentData to react hook form
@@ -49,8 +51,6 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 		}  
 	}
 
-
-
 	return (
 			<FormProvider {...stM}>
 				<form onSubmit={stM.handleSubmit(onSubmit)}  className={form()} >
@@ -62,7 +62,7 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 						<StudentSchool />
 					</div>
 					<ClassDays />
-					 <SubmitBtn isSubmitting={isSubmitting} name={"등록"} /> 
+					<SubmitBtn isSubmitting={isSubmitting} name={"등록"} /> 
 				</form>
 			</FormProvider>
 	)

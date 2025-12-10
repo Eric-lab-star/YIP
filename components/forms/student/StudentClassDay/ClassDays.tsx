@@ -10,6 +10,8 @@ import ClassDaySelect from "./ClassDaySelect";
 */
 export default function ClassDays() {
 	const { addDay, days } = useClassDays();
+
+
 	const {button} = input();
 	return (
 		<div className={container({className: "my-3", layout: "classDay"})}>

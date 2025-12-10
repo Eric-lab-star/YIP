@@ -1,9 +1,9 @@
-
+'use client';
 import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
 import { useClassDays } from "@/app/stores/classDayStore"
 import { Day, StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 import ClassDaySelectInput from "./ClassDaySelectInput";
 import ClassTimeInput from "./ClassTimeInput";
 import { useFormContext } from "react-hook-form";
@@ -13,7 +13,9 @@ interface IClassDaySelectProp {
 }
 
 export default function ClassDaySelect({ id }: IClassDaySelectProp) {
-	const { unregister, formState: { errors: { classDays: classDaysError } } } = useFormContext<StudentData>()
+
+	const { unregister, formState: { errors: { classDays: classDaysError }, defaultValues  } } = useFormContext<StudentData>()
+	
 	const deleteClassDay = useClassDays( state => state.deleteDay );
 	const days = useClassDays(state => state.days);
 	const [ selectedDay, setDay ] = useState<Day | undefined>(undefined);
@@ -30,6 +32,10 @@ export default function ClassDaySelect({ id }: IClassDaySelectProp) {
 			unregister(`classDays.${selectedDay}`);
 		}
 	}
+	useEffect(() => {
+	},[])
+
+
 	return (
 		<div className={ "w-full" }>
 			<div className={classDay( )}>
@@ -39,7 +45,7 @@ export default function ClassDaySelect({ id }: IClassDaySelectProp) {
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput handleDay={handleDay}  />
+						<ClassDaySelectInput handleDay={handleDay}   />
 					</div>
 					{ selectedDay && <>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">

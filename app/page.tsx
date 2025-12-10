@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-//TODO: UPdate StudentInfo -> populate classDay
+//TODO: Update StudentInfo -> populate classDay
+// FIX: classDay state type should be more precise
 export default function Page() {
 	return <div className="flex flex-col">
 		<Link href={"/students"} > students </Link>

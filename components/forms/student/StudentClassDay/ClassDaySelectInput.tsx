@@ -26,12 +26,12 @@ const koreanWeek = {
 
 export default function ClassDaySelectInput({handleDay}: {handleDay: (d: Day) => void}) {
 	return <div>
-		<Select onValueChange={handleDay}>
+		<Select  onValueChange={handleDay}>
 			<SelectTrigger className=" bg-background  border-1 hover:border-2 border-zinc-400 ">
 				<SelectValue placeholder="등원일 선택" />
 			</SelectTrigger>
 			<SelectContent>
-			{week.map((d)=> <SelectItem key={d} value={d}>{koreanWeek[d]}</SelectItem>) }
+				{week.map((d)=> <SelectItem key={d} value={d}>{koreanWeek[d]}</SelectItem>)}
 			</SelectContent>
 	</Select>
 	</div>
