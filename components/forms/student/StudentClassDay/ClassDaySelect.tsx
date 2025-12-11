@@ -1,6 +1,6 @@
 'use client';
 import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
-import { useClassDays } from "@/app/stores/classDayStore"
+import { useDaySelect } from "@/app/stores/classDayStore"
 import { Day, StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
 import {  useEffect, useState } from "react"
@@ -9,16 +9,20 @@ import ClassTimeInput from "./ClassTimeInput";
 import { useFormContext } from "react-hook-form";
 
 interface IClassDaySelectProp {
-	id: number
+	day: Day 
 }
 
-export default function ClassDaySelect({ id }: IClassDaySelectProp) {
+export default function ClassDaySelect({ day }: IClassDaySelectProp) {
 
-	const { unregister, formState: { errors: { classDays: classDaysError }, defaultValues  } } = useFormContext<StudentData>()
+	const { unregister, formState: { defaultValues, errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
 	
-	const deleteClassDay = useClassDays( state => state.deleteDay );
-	const days = useClassDays(state => state.days);
+	const {selectables, deleteSelect}= useDaySelect();
 	const [ selectedDay, setDay ] = useState<Day | undefined>(undefined);
+	useEffect(()=> {
+		if (defaultValues && defaultValues.classDays) {
+			setDay(day)
+		}
+	},[])
 	const handleDay = ( d: Day ) => {
 		if (selectedDay) {
 			unregister( `classDays.${selectedDay}` )
@@ -27,25 +31,23 @@ export default function ClassDaySelect({ id }: IClassDaySelectProp) {
 	}
 
 	const handleDelete = ( ) => {
-		deleteClassDay( id );
+		deleteSelect( day );
 		if ( selectedDay ) {
 			unregister(`classDays.${selectedDay}`);
 		}
 	}
-	useEffect(() => {
-	},[])
 
 
 	return (
 		<div className={ "w-full" }>
 			<div className={classDay( )}>
 				<div className={ "flex justify-center items-center lg:justify-start space-x-3 lg:col-span-2 " }>
-					{ days.length > 1 && (
+					{ selectables.length > 1 && (
 						<div onClick={( ) => handleDelete()} className={`bg-background p-2  border-zinc-500 hover:border-amber-300 border-b-2`}>
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput handleDay={handleDay}   />
+						<ClassDaySelectInput defaultD={selectedDay}  handleDay={handleDay}   />
 					</div>
 					{ selectedDay && <>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">

@@ -2,11 +2,12 @@ import * as z from "zod";
 
 export const days = ["mon", "tue", "wed", "thur", "fri", "sat", "sun"] as const;
 const DaySchema = z.enum(days);
-const TimeSchema = z.object({
+export const TimeSchema = z.object({
 	h: z.coerce.number<number>().min(0, "최소 0시부터 입력가능합니다.").max(24, "24시까지 입력가능합니다."),
 	m: z.coerce.number<number>().min(0, "최소 0분부터 입력가능합니다").max(59, "59분까지 입력 가능합니다."),
 })
 
+export const ClassDayEntries = z.tuple([DaySchema , z.object({start: TimeSchema, end: TimeSchema}).optional()])
 export const ClassDaySchema = z.partialRecord(DaySchema, z.object({start: TimeSchema, end: TimeSchema}))
 
 const studentSchema =  z.object({

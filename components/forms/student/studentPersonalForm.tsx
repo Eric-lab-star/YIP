@@ -1,9 +1,8 @@
 "use client";
 
 import { studentSignupFormAction } from "@/app/actions/studentAction";
-import { form, layout } from "@/app/lib/tv/forms/FormStyles";
+import { form } from "@/app/lib/tv/forms/FormStyles";
 import studentSchema from "@/app/lib/zod/studentSchema";
-import Title from "@/components/commons/Title";
 import { Day, StudentData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -13,24 +12,16 @@ import StudentBirthInput from "./StudentBirthInput";
 import StudentSchool from "./StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import ClassDays from "./StudentClassDay/ClassDays";
-import { useClassDays } from "@/app/stores/classDayStore";
 
 export default function StudentPersonalForm({defaultData}: {defaultData?: string}) {
-
-	const { addDay, days } = useClassDays();
-	/**
-	*stM = studentMethod
-	*register StudentData to react hook form
-	* */ 
+	const currentData = defaultData ? JSON.parse(defaultData) : {};
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
 		mode: "all",
-		defaultValues: defaultData ? JSON.parse(defaultData) : {}
+		defaultValues: currentData
 	})
 
 	const { reset, setError, watch, formState:{isSubmitting} } = stM
-
-	
 	const onSubmit = async (data: StudentData) => {
 		const classDay = watch(`classDays`)
 		for (const [d, t] of Object.entries(classDay)) {

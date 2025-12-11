@@ -7,10 +7,14 @@ export default async function Page() {
 	return <div>
 		<Title name={"Students"} />
 		<div className="flex flex-col">
+
+		<div className="flex space-x-1">
+			<div>id</div> <div>name</div> <div>school</div> 
+		</div>
 			{students.map(
 				(v)=> (
 					<Link key={v._id.toString()} href={`/students/${v._id.toString()}`} className="hover:bg-amber-200 flex space-x-1">
-						<div> {v.name}</div> <div>{v.school}</div> 
+						<div>{v._id.toString().slice(0,7)}</div> <div> {v.name}</div> <div>{v.school}</div> 
 					</Link>
 				))}
 		</div>

@@ -1,26 +1,40 @@
 "use client";
 
 import { container, input, label } from "@/app/lib/tv/forms/FormStyles";
-import { useClassDays } from "@/app/stores/classDayStore";
+import { useDaySelect} from "@/app/stores/classDayStore";
 import ClassDaySelect from "./ClassDaySelect";
+import { useFormContext } from "react-hook-form";
+import { Day, StudentData } from "@/types";
+import { useEffect, useState } from "react";
+import { ClassDaySchema} from "@/app/lib/zod/studentSchema";
 
+type Cd = [string, {start: {h:number, m: number}, end: {h: number, m: number}}];
 
 /**
 * ClassDaySelect component wrapper
 */
 export default function ClassDays() {
-	const { addDay, days } = useClassDays();
+	const { selectables, addSelect, initSelect } = useDaySelect();
+	const { formState:{defaultValues} } = useFormContext<StudentData>()
 
-
-	const {button} = input();
+	useEffect(() => {
+		if (defaultValues && defaultValues.classDays) {
+			const df = Object.keys(defaultValues.classDays) as Day[]
+			initSelect(df)
+		}
+	},[])
+	const { button } = input();
 	return (
 		<div className={container({className: "my-3", layout: "classDay"})}>
 			<div className={label()}>등원일</div>
 			<div className="lg:col-span-4 space-y-3">
 				<div className="flex space-y-3 flex-col w-full">
-						{ days.map((d) => <ClassDaySelect id={d} key={d}/>) }
+						{ selectables.map(
+							(v, i) => {
+								return <ClassDaySelect day={v} key={v}/>
+							})}
 				</div>
-				<div className={button({className: "flex justify-center items-center"})} onClick={()=> addDay()}>
+				<div className={button({className: "flex justify-center items-center"})} onClick={()=> addSelect()}>
 					<div className=" pr-3">등원일 추가</div>
 				</div>
 			</div>

@@ -1,20 +1,23 @@
+import { Day } from "@/types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer"
 
+export type DaySelectable = Day | "unknown" | undefined
 type State = {
-	days: number[];
+	selectables: DaySelectable[];
 }
 
 type Action = {
-	addDay: () => void;
-	deleteDay: (t: number) => void;
+	addSelect: () => void;
+	deleteSelect: (target: string) => void;
+	initSelect: (p:Day[]) => void;
 }
 
-export const useClassDays = create<State & Action>()(
+export const useDaySelect = create<State & Action>()(
 	immer((set) => ({
-		days: [],
-		addDay: () => set((state) => {state.days.push(Date.now())}),
-		deleteDay: (t:number) => set((state)=> {state.days = state.days.filter(d => d != t)}),
-		populateDay: () => set(() => {}),
+		selectables: ["unknown"],
+		addSelect: () => set((state) => {state.selectables.push("unknown")}),
+		deleteSelect: (target:string) => set((state)=> {state.selectables= state.selectables.filter(d => d != target)}),
+		initSelect: (p: Day[]) => set((state) => {state.selectables = p}),
 	}))
 )
