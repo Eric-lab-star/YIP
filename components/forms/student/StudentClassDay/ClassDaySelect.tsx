@@ -1,28 +1,22 @@
 'use client';
 import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
-import { useDaySelect } from "@/app/stores/classDayStore"
+import { DaySelectable, useDaySelect } from "@/app/stores/classDayStore"
 import { Day, StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
-import {  useEffect, useState } from "react"
+import { useState } from "react"
 import ClassDaySelectInput from "./ClassDaySelectInput";
 import ClassTimeInput from "./ClassTimeInput";
 import { useFormContext } from "react-hook-form";
 
-interface IClassDaySelectProp {
-	day: Day 
-}
 
-export default function ClassDaySelect({ day }: IClassDaySelectProp) {
+export default function ClassDaySelect({ day }: {day: DaySelectable}) {
 
-	const { unregister, formState: { defaultValues, errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
+	const { unregister, formState: { errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
 	
 	const {selectables, deleteSelect}= useDaySelect();
-	const [ selectedDay, setDay ] = useState<Day | undefined>(undefined);
-	useEffect(()=> {
-		if (defaultValues && defaultValues.classDays) {
-			setDay(day)
-		}
-	},[])
+	const [ selectedDay, setDay ] = useState<DaySelectable>(day);
+
+
 	const handleDay = ( d: Day ) => {
 		if (selectedDay) {
 			unregister( `classDays.${selectedDay}` )
@@ -31,8 +25,8 @@ export default function ClassDaySelect({ day }: IClassDaySelectProp) {
 	}
 
 	const handleDelete = ( ) => {
-		deleteSelect( day );
 		if ( selectedDay ) {
+			deleteSelect( selectedDay );
 			unregister(`classDays.${selectedDay}`);
 		}
 	}
@@ -47,7 +41,7 @@ export default function ClassDaySelect({ day }: IClassDaySelectProp) {
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput defaultD={selectedDay}  handleDay={handleDay}   />
+						<ClassDaySelectInput defaultD={day}  handleDay={handleDay}   />
 					</div>
 					{ selectedDay && <>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">
