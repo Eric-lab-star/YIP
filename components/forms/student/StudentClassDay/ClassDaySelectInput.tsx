@@ -1,7 +1,7 @@
 import { Day } from "@/types";
 
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem, } from "@/components/ui/select"
-import { DaySelectable } from "@/app/stores/classDayStore";
+import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
 
 const week = [
@@ -25,7 +25,7 @@ const koreanWeek = {
 } as const
 
 
-export default function ClassDaySelectInput({handleDay, defaultD}: {defaultD: DaySelectable; handleDay: (d: Day) => void}) {
+export default function ClassDaySelectInput({handleDay, defaultD}: {defaultD?: DayType; handleDay: (d: Day) => void}) {
 	return <div>
 		<Select onValueChange={handleDay} defaultValue={defaultD}>
 			<SelectTrigger className=" bg-background  border-1 hover:border-2 border-zinc-400 ">

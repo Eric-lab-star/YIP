@@ -4,18 +4,17 @@ import { container, input, label } from "@/app/lib/tv/forms/FormStyles";
 import { useDaySelect} from "@/app/stores/classDayStore";
 import ClassDaySelect from "./ClassDaySelect";
 import { useFormContext } from "react-hook-form";
-import { Day, StudentData } from "@/types";
-import { useEffect } from "react";
-
+import { StudentData } from "@/types";
+import { v4 as uuidv4} from "uuid";
 
 /**
 * ClassDaySelect component wrapper
 */
 export default function ClassDays() {
 	const { selectables, addSelect, initSelect } = useDaySelect();
-	const { watch, formState:{ defaultValues } } = useFormContext<StudentData>()
+	const { watch } = useFormContext<StudentData>()
 
-	console.log(watch("classDays"))
+	console.log(selectables)
 
 	const { button } = input();
 
@@ -26,10 +25,10 @@ export default function ClassDays() {
 				<div className="flex space-y-3 flex-col w-full">
 						{selectables.map(
 							(v, i) => {
-								return <ClassDaySelect day={v} key={i}/>
+								return <ClassDaySelect id={v.id} key={i}/>
 							})}
 				</div>
-				<div className={button({className: "flex justify-center items-center"})} onClick={()=> addSelect()}>
+				<div className={button({className: "flex justify-center items-center"})} onClick={()=> addSelect(uuidv4())}>
 					<div className=" pr-3">등원일 추가</div>
 				</div>
 			</div>

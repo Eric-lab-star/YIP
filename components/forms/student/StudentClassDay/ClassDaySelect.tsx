@@ -1,33 +1,29 @@
 'use client';
-import { classDay, errorMessage } from "@/app/lib/tv/forms/FormStyles"
-import { DaySelectable, useDaySelect } from "@/app/stores/classDayStore"
-import { Day, StudentData } from "@/types";
+import { classDay } from "@/app/lib/tv/forms/FormStyles"
+import { useDaySelect } from "@/app/stores/classDayStore"
+import { StudentData } from "@/types";
 import { Trash2 } from "lucide-react"
-import { useState } from "react"
 import ClassDaySelectInput from "./ClassDaySelectInput";
-import ClassTimeInput from "./ClassTimeInput";
 import { useFormContext } from "react-hook-form";
+import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
 
-export default function ClassDaySelect({ day }: {day: DaySelectable}) {
+export default function ClassDaySelect({ id }: {id: ClassDayItemsType["id"]}) {
 
-	const { unregister, formState: { errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
-	const {selectables, deleteSelect}= useDaySelect();
-	const [ selectedDay, setDay ] = useState<DaySelectable>(day);
+	const { formState: { errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
+
+	const {updateSelect, selectables, deleteSelect}= useDaySelect();
 
 
-	const handleDay = ( d: Day ) => {
-		if (selectedDay) {
-			// unregister( `classDays.${selectedDay}` )
-		}
-		setDay( d )
+	const handleDay = ( d: DayType) => {
+		updateSelect({id, day: d} )
 	}
 
 	const handleDelete = ( ) => {
-		if ( selectedDay ) {
-			deleteSelect( selectedDay );
-		// unregister(`classDays.${selectedDay}`);
+		if (selectables.length <= 1 ) {
+			return;
 		}
+		deleteSelect(id);
 	}
 
 
@@ -40,15 +36,13 @@ export default function ClassDaySelect({ day }: {day: DaySelectable}) {
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput defaultD={day}  handleDay={handleDay}   />
+						<ClassDaySelectInput  handleDay={handleDay}   />
 					</div>
-					{ selectedDay && <>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">
-							<ClassTimeInput d={selectedDay} label={"start"} />
+							{/* <ClassTimeInput d={findSelect(id)!} label={"start"} /> */}
 							<div className="text-2xl"> ~ </div>
-							<ClassTimeInput d={selectedDay} label={"end"}/>
+							{/* <ClassTimeInput d={findSelect(id)!} label={"end"}/> */}
 						</div>
-					</> }
 			<div className="min-w-30 lg:col-span-2 lg:col-start-6">
 			</div>
 			</div>

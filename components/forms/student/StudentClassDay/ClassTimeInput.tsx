@@ -1,10 +1,11 @@
 import { input } from "@/app/lib/tv/forms/FormStyles";
+import { ClassDayItemsType } from "@/app/lib/zod/studentSchema";
 import { Day, StudentData } from "@/types"
 import { ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import * as z from "zod";
 
-export default function ClassTimeInput({d, label}: {d:Day; label: "start"|"end"}) {
+export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: "start"|"end"}) {
 
 	const { register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
 
