@@ -13,14 +13,9 @@ import { useEffect } from "react";
 */
 export default function ClassDays() {
 	const { selectables, addSelect, initSelect } = useDaySelect();
-	const { formState:{defaultValues} } = useFormContext<StudentData>()
+	const { watch, formState:{ defaultValues } } = useFormContext<StudentData>()
 
-	useEffect(() => {
-		if (defaultValues?.classDays) {
-			const df = Object.keys(defaultValues.classDays) as Day[]
-			initSelect(df)
-		}
-	},[])
+	console.log(watch("classDays"))
 
 	const { button } = input();
 

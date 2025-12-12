@@ -1,9 +1,10 @@
 import { Day } from "@/types";
 import { create } from "zustand";
+import { ClassDayEntriesType, DayType } from "../lib/zod/studentSchema";
 
 export type DaySelectable = Day 
 type State = {
-	selectables: DaySelectable[];
+	selectables: ClassDayEntriesType[];
 }
 
 type Action = {
@@ -13,13 +14,17 @@ type Action = {
 }
 
 export const useDaySelect = create<State & Action>()((set) => ({
-	selectables: [],
-	addSelect:() => set((state) => ({selectables: [...state.selectables, "mon"]})),
+	selectables: [["mon",  {start: {h: 0, m: 0}, end: {h: 0, m:0}}]],
+
+	addSelect:() => (set(addSelectAction)),
 	deleteSelect: (target) => set((state) => ({selectables: state.selectables.filter(d => d != target)})),
-	initSelect:(p) => set(() => ({selectables: p})),
+	initSelect:(p) => (set(() => ({selectables: p})),true),
 }))
 
-
+// (state) => ({selectables: [["mon", {start: {h:0, m:0}, end: {h:0, m:0} }]]})
+const addSelectAction = (state: State & Action): State => {
+	return {selectables: [["mon", {start: {h: 0, m:0}, end: {h:0, m:0}}]]}
+}
 
 
 
