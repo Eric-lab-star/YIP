@@ -8,22 +8,21 @@ import { useFormContext } from "react-hook-form";
 import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
 
-export default function ClassDaySelect({ id }: {id: ClassDayItemsType["id"]}) {
+export default function ClassDaySelect({value}: {value: ClassDayItemsType}) {
 
 	const { formState: { errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
 
-	const {updateSelect, selectables, deleteSelect}= useDaySelect();
-
+	const { updateSelect, selectables, deleteSelect }= useDaySelect();
 
 	const handleDay = ( d: DayType) => {
-		updateSelect({id, day: d} )
+		updateSelect({id:value.id, day: d} )
 	}
 
 	const handleDelete = ( ) => {
 		if (selectables.length <= 1 ) {
 			return;
 		}
-		deleteSelect(id);
+		deleteSelect(value.id);
 	}
 
 
@@ -36,7 +35,7 @@ export default function ClassDaySelect({ id }: {id: ClassDayItemsType["id"]}) {
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput  handleDay={handleDay}   />
+						<ClassDaySelectInput defaultV={value}  handleDayAction={handleDay}   />
 					</div>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">
 							{/* <ClassTimeInput d={findSelect(id)!} label={"start"} /> */}

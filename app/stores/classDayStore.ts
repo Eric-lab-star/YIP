@@ -21,14 +21,14 @@ export const useDaySelect = create<State & Action>()((set,get) => ({
 	selectables: [{id: uuidv4(), day: "mon", start: {h:0, m:0}, end: {h:0, m:0}}],
 	addSelect:(id: string) => (set((state) => addSelectAction(id, state)),false),
 	deleteSelect: (target) => set((state) => deletAction(target, state)),
-	updateSelect: (target) => set((state) => updateAction(target, state)),
+	updateSelect: (target) => set((state) => updateAction(target, state),false),
 	initSelect:(p) => (set(() => initAction(p)),true),
 	findSelect: (id) => (get().selectables.find(v => v.id === id)),
 }))
 
+
 // (state) => ({selectables: [["mon", {start: {h:0, m:0}, end: {h:0, m:0} }]]})
 const addSelectAction = (id: string, state: State & Action): State => {
-	console.log(id)
 	const uuid = z.uuidv4()
 	try {
 		uuid.parse(id)
@@ -61,17 +61,3 @@ const updateAction = (target: {id:string, day: DayType} , state: State) : State 
 	return {selectables: [day as ClassDayItemsType,...state.selectables.filter(f => f.id === target.id)]}
 }
 
-
-
-/**
-[
-	{
-		id: 234324,
-		day: "mon",
-		start: {h: 000, m:00},
-		end: {h:00, m:00}
-	},
-	["tue", {start: {h: 000, m:00}, end: {h:00, m:00}}]
-	["fri", {start: {h: 000, m:00}, end: {h:00, m:00}}]
-]
-	*/

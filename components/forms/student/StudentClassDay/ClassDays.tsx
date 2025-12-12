@@ -25,7 +25,7 @@ export default function ClassDays() {
 				<div className="flex space-y-3 flex-col w-full">
 						{selectables.map(
 							(v, i) => {
-								return <ClassDaySelect id={v.id} key={i}/>
+								return <ClassDaySelect value={v}  key={i}/>
 							})}
 				</div>
 				<div className={button({className: "flex justify-center items-center"})} onClick={()=> addSelect(uuidv4())}>
