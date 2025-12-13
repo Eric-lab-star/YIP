@@ -9,10 +9,11 @@ import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
 
 export default function ClassDaySelect({value}: {value: ClassDayItemsType}) {
+	console.log(value.id, value.day)
 
 	const { formState: { errors: { classDays: classDaysError }  }} = useFormContext<StudentData>()
 
-	const { updateSelect, selectables, deleteSelect }= useDaySelect();
+	const { updateSelect, selectables, deleteSelect } = useDaySelect();
 
 	const handleDay = ( d: DayType) => {
 		updateSelect({id:value.id, day: d} )
@@ -35,7 +36,7 @@ export default function ClassDaySelect({value}: {value: ClassDayItemsType}) {
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }
-						<ClassDaySelectInput defaultV={value}  handleDayAction={handleDay}   />
+						<ClassDaySelectInput key={value.id} defaultV={value}  handleDayAction={handleDay}   />
 					</div>
 						<div className="flex space-x-2 items-center lg:col-span-2 ">
 							{/* <ClassTimeInput d={findSelect(id)!} label={"start"} /> */}

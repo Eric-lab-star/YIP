@@ -3,19 +3,13 @@
 import { container, input, label } from "@/app/lib/tv/forms/FormStyles";
 import { useDaySelect} from "@/app/stores/classDayStore";
 import ClassDaySelect from "./ClassDaySelect";
-import { useFormContext } from "react-hook-form";
-import { StudentData } from "@/types";
 import { v4 as uuidv4} from "uuid";
 
 /**
 * ClassDaySelect component wrapper
 */
 export default function ClassDays() {
-	const { selectables, addSelect, initSelect } = useDaySelect();
-	const { watch } = useFormContext<StudentData>()
-
-	console.log(selectables)
-
+	const { selectables, addSelect } = useDaySelect();
 	const { button } = input();
 
 	return (

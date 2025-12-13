@@ -58,6 +58,7 @@ const updateAction = (target: {id:string, day: DayType} , state: State) : State 
 	if (day) {
 		day.day = target.day
 	}
-	return {selectables: [day as ClassDayItemsType,...state.selectables.filter(f => f.id === target.id)]}
+	const filtered = state.selectables.filter(f => f.id != target.id)
+	return {selectables: [day as ClassDayItemsType, ...filtered]}
 }
 
