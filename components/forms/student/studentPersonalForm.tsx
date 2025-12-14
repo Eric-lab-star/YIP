@@ -30,11 +30,12 @@ const mock = {
 }
 
 export default function StudentPersonalForm({defaultData}: {defaultData?: string}) {
-	const currentData: StudentData = defaultData ? JSON.parse(defaultData): mock;
-	const {selectables, initSelect} = useDaySelect();
+	const currentData: StudentData = defaultData ? JSON.parse(defaultData): {};
+	const {initSelect} = useDaySelect();
+
 
 	useEffect(()=>{
-		if (currentData.classDays.length > 1) {
+		if (currentData.classDays && currentData.classDays.length > 1) {
 			const cds = currentData.classDays;
 			initSelect(cds)
 		}
@@ -46,9 +47,27 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 		defaultValues: currentData
 	})
 
-	const { formState:{ isSubmitting }  } = stM
+	const { formState:{errors, isSubmitting }, setError, watch  } = stM
 
 	const onSubmit = async (data: StudentData) => {
+		const classDays = watch("classDays")
+		classDays.forEach(
+			(v,i) => {
+				if ((v.start.m == 0 && v.start.h == 0) || (v.end.m == 0 && v.end.h == 0) ) {
+					setError(`classDays.${i}`, {message: "시간을 설정해주세요", type: "custom"})
+					return;
+				}
+				if ((v.start.h > v.end.h) ) {
+					setError(`classDays.${i}`, {message: "시간을 설정해주세요", type: "custom"})
+					return;
+				}
+			}
+		)
+		if (errors.classDays) {
+			console.log(errors.classDays);
+			return;
+		};
+		console.log(errors)
 		console.log(data, "student data")
 	}
 

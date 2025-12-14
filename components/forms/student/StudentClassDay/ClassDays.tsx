@@ -37,9 +37,7 @@ export default function ClassDays() {
 			<div className="lg:col-span-4 space-y-3">
 				<div className="flex space-y-3 flex-col w-full">
 						{selectables.map(
-							(v, i) => {
-								return <ClassDaySelect value={v}  key={i}/>
-							})}
+							(v, i) => <ClassDaySelect value={v}  key={i}/>)}
 				</div>
 				<div className={button({className: "flex justify-center items-center"})} onClick={addClassDays}>
 					<div className=" pr-3">등원일 추가</div>

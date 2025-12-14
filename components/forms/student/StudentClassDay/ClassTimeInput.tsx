@@ -40,8 +40,8 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 		const schema = z.coerce.number<number>()
 		const parsed = schema.safeParse(target.value.slice(-1))
 
-		if( classDaysErr && classDaysErr[index] && classDaysErr[index].type == "time") {
-			clearErrors("classDays")
+		if( classDaysErr && classDaysErr[index] && classDaysErr[index].type == "custom") {
+			clearErrors(`classDays.${index}`)
 		} 
 
 		if ( parsed.error ) {
