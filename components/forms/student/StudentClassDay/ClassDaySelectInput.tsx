@@ -4,9 +4,8 @@ import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem, } from "
 import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
 import { useDaySelect } from "@/app/stores/classDayStore"
-import { Controller, useController, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { StudentData } from "@/types";
-import { useEffect } from "react";
 
 const week = [
 	"mon",

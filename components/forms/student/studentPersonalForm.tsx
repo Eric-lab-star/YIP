@@ -1,7 +1,7 @@
 "use client";
 
 import { form } from "@/app/lib/tv/forms/FormStyles";
-import studentSchema from "@/app/lib/zod/studentSchema";
+import studentSchema, { DayType } from "@/app/lib/zod/studentSchema";
 import { StudentData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -11,16 +11,17 @@ import StudentBirthInput from "./StudentBirthInput";
 import StudentSchool from "./StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import ClassDays from "./StudentClassDay/ClassDays";
+import {v4 as uuidv4} from "uuid";
 
 export default function StudentPersonalForm({defaultData}: {defaultData?: string}) {
-	const currentData = defaultData ? JSON.parse(defaultData) : {};
+	const currentData = defaultData ? JSON.parse(defaultData) : {classDays: [{id: uuidv4() , day: "mon" as DayType, start: {h: "", m:""}, end: {h:"", m:""} }]};
 	const stM = useForm<StudentData>({
 		resolver: zodResolver(studentSchema),
 		mode: "all",
 		defaultValues: currentData
 	})
 
-	const { reset, setError, watch, formState:{isSubmitting, errors}  } = stM
+	const { watch, formState:{ isSubmitting }  } = stM
 
 	console.log(
 		watch("classDays"),
@@ -28,12 +29,6 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 	)
 	const onSubmit = async (data: StudentData) => {
 		console.log(data, "student data")
-		// const result = await studentSignupFormAction(data)
-		// if (!result.success) {
-		// 	console.log(result.errors)
-		// } else {
-		// 	reset();
-		// }  
 	}
 
 	return (

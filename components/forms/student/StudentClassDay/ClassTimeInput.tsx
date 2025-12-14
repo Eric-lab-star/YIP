@@ -12,6 +12,7 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 	const {register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
 	const { getIndexof } = useDaySelect();
 	const [index, setIndex] = useState(getIndexof(d))
+
 	useEffect(()=> {
 		setIndex(getIndexof(d))
 	},[])

@@ -34,7 +34,9 @@ const addSelectAction = (id: string, state: State & Action): State => {
 	const uuid = z.uuidv4()
 	try {
 		uuid.parse(id)
-		return {selectables: [{id, day: "mon", start: {h: 0, m:0}, end: {h:0, m:0} }, ...state.selectables]}
+		const d = {id, day: "mon" as DayType, start: {h: 0, m:0}, end: {h:0, m:0} };
+		state.selectables.push(d)
+		return {selectables: [...state.selectables]}
 	}catch(e) {
 		return state
 	}
@@ -44,7 +46,7 @@ const deletAction = (target: string, state: State & Action): State => {
 	try {
 		const uuid4 = z.uuidv4({message: "invalid id"})
 		const id = uuid4.parse(target)
-		const filetered = state.selectables.filter(v => v.id != id)
+		const filetered = state.selectables.filter(v => v.id != id).reverse()
 		return {selectables: filetered}
 	} catch(e) {
 		return state
@@ -58,9 +60,11 @@ const initAction = (p: ClassDaysType): State => {
 const updateAction = (target: {id:string, day: DayType} , state: State) : State => {
 	const day = state.selectables.find(s => s.id === target.id);
 	if (day) {
+		const index = state.selectables.indexOf(day)
 		day.day = target.day
+		const ns = [...state.selectables.slice(0,index), day, ...state.selectables.slice(index+1)]
+		return {selectables: ns}
 	}
-	const filtered = state.selectables.filter(f => f.id != target.id)
-	return {selectables: [day as ClassDayItemsType, ...filtered]}
+	return {selectables: state.selectables}
 }
 

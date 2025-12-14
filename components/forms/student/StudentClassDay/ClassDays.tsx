@@ -13,7 +13,7 @@ import { useEffect } from "react";
 */
 export default function ClassDays() {
 	const { selectables, addSelect } = useDaySelect();
-	const { register } = useFormContext<StudentData>()
+	const { register, watch } = useFormContext<StudentData>()
 	const { button } = input();
 
 	useEffect(()=> {
@@ -34,7 +34,7 @@ export default function ClassDays() {
 			<div className={label()}>등원일</div>
 			<div className="lg:col-span-4 space-y-3">
 				<div className="flex space-y-3 flex-col w-full">
-						{selectables.map(
+						{watch("classDays").map(
 							(v, i) => {
 								return <ClassDaySelect value={v}  key={i}/>
 							})}
