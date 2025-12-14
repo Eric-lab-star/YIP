@@ -5,17 +5,21 @@ import { Trash2 } from "lucide-react"
 import ClassDaySelectInput from "./ClassDaySelectInput";
 import { ClassDayItemsType } from "@/app/lib/zod/studentSchema";
 import ClassTimeInput from "./ClassTimeInput";
+import { useFormContext } from "react-hook-form";
+import { StudentData } from "@/types";
 
 
 export default function ClassDaySelect({value}: {value: ClassDayItemsType}) {
 
-	const { selectables, deleteSelect } = useDaySelect();
+	const { selectables, deleteSelect, getIndexof } = useDaySelect();
+	const { unregister } = useFormContext<StudentData>()
 
-	const handleDelete = ( ) => {
+	const handleTrash = ( ) => {
 		if (selectables.length <= 1 ) {
 			return;
 		}
 		deleteSelect(value.id);
+		unregister(`classDays.${getIndexof(value)}`);
 	}
 
 
@@ -24,7 +28,7 @@ export default function ClassDaySelect({value}: {value: ClassDayItemsType}) {
 			<div className={classDay( )}>
 				<div className={ "flex justify-center items-center lg:justify-start space-x-3 lg:col-span-2 " }>
 					{ selectables.length > 1 && (
-						<div onClick={( ) => handleDelete()} className={`bg-background p-2  border-zinc-500 hover:border-amber-300 border-b-2`}>
+						<div onClick={( ) => handleTrash()} className={`bg-background p-2  border-zinc-500 hover:border-amber-300 border-b-2`}>
 							<Trash2 className="text-red-800"/> 
 						</div>
 					) }

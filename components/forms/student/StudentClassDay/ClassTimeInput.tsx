@@ -10,7 +10,7 @@ import * as z from "zod";
 export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: "start"|"end"}) {
 
 	const {register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
-	const { getIndexof } = useDaySelect();
+	const {updateTime, getIndexof } = useDaySelect();
 	const [index, setIndex] = useState(getIndexof(d))
 
 	useEffect(()=> {
@@ -34,7 +34,7 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 		}
 	}
 
-	const handleChange =(e: ChangeEvent<HTMLInputElement> ) => {
+	const handleChange =(e: ChangeEvent<HTMLInputElement>, HnM: "h" | "m" ) => {
 		const target = e.currentTarget;
 		const name = target.name;
 		const schema = z.coerce.number<number>()
@@ -62,17 +62,18 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 					break;
 			}
 		}
+		updateTime(index, Number(target.value), label, HnM)
 	}
 
 	const { time }  = input()
 	return <>
 	<div className="relative">
-		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.h`, { max:24, min:0, onChange:(e) => handleChange(e)})} className={time()} type="number"/>
+		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.h`, { max:24, min:0, onChange:(e) => handleChange(e, "h")})} className={time()} type="number"/>
 		<div onClick={handleLableH} className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">h</div>
 	</div>
 	
 	<div className="relative">
-		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.m`, {max: 60, min: 0, onChange:(e) => handleChange(e) })} className={time()} type="number"/>
+		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.m`, {max: 60, min: 0, onChange:(e) => handleChange(e, "m") })} className={time()} type="number"/>
 		<div onClick={handleLableM}  className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">m</div>
 	</div>
 	</>

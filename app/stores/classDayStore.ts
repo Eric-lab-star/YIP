@@ -1,7 +1,6 @@
 import { Day } from "@/types";
 import { create } from "zustand";
 import { ClassDayItemsType, ClassDaysType, DayType } from "../lib/zod/studentSchema";
-import {v4 as uuidv4} from "uuid";
 import * as z from "zod";
 
 export type DaySelectable = Day 
@@ -16,13 +15,15 @@ type Action = {
 	updateSelect: (target: {id:string, day: DayType}) => void;
 	findSelect: (id: string) => ClassDayItemsType|undefined;
 	getIndexof: (item: ClassDayItemsType) => number;
+	updateTime: (index: number, time: number, label: "start" | "end", HnM: "h"|"m") => void;
 }
 
 export const useDaySelect = create<State & Action>()((set,get) => ({
-	selectables: [{id: uuidv4(), day: "mon", start: {h:0, m:0}, end: {h:0, m:0}}],
+	selectables: [],
 	addSelect:(id: string) => (set((state) => addSelectAction(id, state)),false),
 	deleteSelect: (target) => set((state) => deletAction(target, state)),
 	updateSelect: (target) => set((state) => updateAction(target, state),false),
+	updateTime: (index, time, label, HnM) => set((state)=> updateTimeAction(index,time,label,HnM, state)),
 	initSelect:(p) => (set(() => initAction(p)),true),
 	findSelect: (id) => (get().selectables.find(v => v.id === id)),
 	getIndexof: (item) => (get().selectables.indexOf(item))
@@ -68,3 +69,13 @@ const updateAction = (target: {id:string, day: DayType} , state: State) : State 
 	return {selectables: state.selectables}
 }
 
+
+const updateTimeAction = (index: number, time: number, label: "start" | "end", HnM: "h" | "m", state: State): State => {
+	if (index < state.selectables.length) {
+		const target = state.selectables[index]
+		target[`${label}`][`${HnM}`] = time;
+		return {selectables: [...state.selectables.slice(0, index), target, ...state.selectables.slice(index+1)]}
+	}
+	console.log(index, time, label, HnM)
+	return state
+}

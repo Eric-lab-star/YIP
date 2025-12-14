@@ -6,6 +6,7 @@ import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 import { useDaySelect } from "@/app/stores/classDayStore"
 import { Controller, useFormContext } from "react-hook-form";
 import { StudentData } from "@/types";
+import { useEffect } from "react";
 
 const week = [
 	"mon",
@@ -29,8 +30,8 @@ const koreanWeek = {
 
 
 export default function ClassDaySelectInput({defaultV}: {defaultV: ClassDayItemsType}) {
-	const { getIndexof, updateSelect } = useDaySelect();
-	const { control} = useFormContext<StudentData>()
+	const {selectables, getIndexof, updateSelect } = useDaySelect();
+	const {watch, control} = useFormContext<StudentData>()
 	const id = getIndexof(defaultV)
 
 	return <Controller control={control} defaultValue={defaultV.day} name={`classDays.${id}.day`} 
