@@ -1,6 +1,5 @@
 "use client";
 
-import { studentSignupFormAction } from "@/app/actions/studentAction";
 import { form } from "@/app/lib/tv/forms/FormStyles";
 import studentSchema from "@/app/lib/zod/studentSchema";
 import { StudentData } from "@/types";
@@ -21,9 +20,14 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 		defaultValues: currentData
 	})
 
-	const { reset, setError, watch, formState:{isSubmitting} } = stM
+	const { reset, setError, watch, formState:{isSubmitting, errors}  } = stM
 
+	console.log(
+		watch("classDays"),
+		"watch"
+	)
 	const onSubmit = async (data: StudentData) => {
+		console.log(data, "student data")
 		// const result = await studentSignupFormAction(data)
 		// if (!result.success) {
 		// 	console.log(result.errors)

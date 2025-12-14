@@ -15,6 +15,7 @@ type Action = {
 	initSelect: (p:ClassDaysType) => void;
 	updateSelect: (target: {id:string, day: DayType}) => void;
 	findSelect: (id: string) => ClassDayItemsType|undefined;
+	getIndexof: (item: ClassDayItemsType) => number;
 }
 
 export const useDaySelect = create<State & Action>()((set,get) => ({
@@ -24,6 +25,7 @@ export const useDaySelect = create<State & Action>()((set,get) => ({
 	updateSelect: (target) => set((state) => updateAction(target, state),false),
 	initSelect:(p) => (set(() => initAction(p)),true),
 	findSelect: (id) => (get().selectables.find(v => v.id === id)),
+	getIndexof: (item) => (get().selectables.indexOf(item))
 }))
 
 

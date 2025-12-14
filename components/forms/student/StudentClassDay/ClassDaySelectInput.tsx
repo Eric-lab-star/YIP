@@ -3,6 +3,10 @@
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem, } from "@/components/ui/select"
 import { ClassDayItemsType, DayType } from "@/app/lib/zod/studentSchema";
 
+import { useDaySelect } from "@/app/stores/classDayStore"
+import { Controller, useController, useFormContext } from "react-hook-form";
+import { StudentData } from "@/types";
+import { useEffect } from "react";
 
 const week = [
 	"mon",
@@ -25,10 +29,15 @@ const koreanWeek = {
 } as const
 
 
-export default function ClassDaySelectInput({handleDayAction, defaultV}: {defaultV: ClassDayItemsType; handleDayAction: (d: DayType) => void}) {
+export default function ClassDaySelectInput({defaultV}: {defaultV: ClassDayItemsType}) {
+	const { getIndexof, updateSelect } = useDaySelect();
+	const { control} = useFormContext<StudentData>()
+	const id = getIndexof(defaultV)
 
-	return <div>
-		<Select onValueChange={handleDayAction} defaultValue={defaultV.day}>
+	return <Controller control={control} defaultValue={defaultV.day} name={`classDays.${id}.day`} 
+	render={({field: {onChange }}) => (
+	<div>
+		<Select defaultValue={defaultV.day} onValueChange={(s) => { onChange(s); updateSelect({id: defaultV.id, day: s as DayType }); }} >
 			<SelectTrigger className=" bg-background  border-1 hover:border-2 border-zinc-400 ">
 				<SelectValue placeholder="등원일 선택" />
 			</SelectTrigger>
@@ -37,4 +46,7 @@ export default function ClassDaySelectInput({handleDayAction, defaultV}: {defaul
 			</SelectContent>
 	</Select>
 	</div>
+	)}
+	/>
+
 }

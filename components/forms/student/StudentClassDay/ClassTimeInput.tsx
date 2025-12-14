@@ -1,20 +1,29 @@
+"use client";
 import { input } from "@/app/lib/tv/forms/FormStyles";
 import { ClassDayItemsType } from "@/app/lib/zod/studentSchema";
-import { Day, StudentData } from "@/types"
-import { ChangeEvent } from "react";
+import { useDaySelect } from "@/app/stores/classDayStore";
+import { StudentData } from "@/types"
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import * as z from "zod";
 
 export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: "start"|"end"}) {
 
-	const { register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
+	const {register, setFocus, formState:{errors: {classDays: classDaysErr}}, clearErrors } = useFormContext<StudentData>()
+	const { getIndexof } = useDaySelect();
+	const [index, setIndex] = useState(getIndexof(d))
+	useEffect(()=> {
+		setIndex(getIndexof(d))
+	},[])
+
+
 
 	const handleLableM = () => {
-		setFocus(`classDays.${d}.${label}.m`)
+		setFocus(`classDays.${index}.${label}.m`)
 	}
 
 	const handleLableH = () => {
-		setFocus(`classDays.${d}.${label}.h`)
+		setFocus(`classDays.${index}.${label}.h`)
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -30,7 +39,7 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 		const schema = z.coerce.number<number>()
 		const parsed = schema.safeParse(target.value.slice(-1))
 
-		if( classDaysErr && classDaysErr[d] && classDaysErr[d].type == "time") {
+		if( classDaysErr && classDaysErr[index] && classDaysErr[index].type == "time") {
 			clearErrors("classDays")
 		} 
 
@@ -41,14 +50,14 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 		if (target.value.length >= 2) {
 			target.value = target.value.slice(0, 2);
 			switch ( name ) {
-				case `classDays.${d}.start.h`:
-					setFocus( `classDays.${d}.start.m` )
+				case `classDays.${index}.start.h`:
+					setFocus( `classDays.${index}.start.m` )
 					break;
-				case `classDays.${d}.start.m`:
-					setFocus( `classDays.${d}.end.h` )
+				case `classDays.${index}.start.m`:
+					setFocus( `classDays.${index}.end.h` )
 					break;
-				case `classDays.${d}.end.h`:
-					setFocus( `classDays.${d}.end.m` )
+				case `classDays.${index}.end.h`:
+					setFocus( `classDays.${index}.end.m` )
 					break;
 			}
 		}
@@ -57,15 +66,14 @@ export default function ClassTimeInput({d, label}: {d:ClassDayItemsType; label: 
 	const { time }  = input()
 	return <>
 	<div className="relative">
-		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${d}.${label}.h`, { max:24, min:0, onChange:(e) => handleChange(e)})} className={time()} type="number"/>
+		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.h`, { max:24, min:0, onChange:(e) => handleChange(e)})} className={time()} type="number"/>
 		<div onClick={handleLableH} className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">h</div>
 	</div>
 	
 	<div className="relative">
-		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${d}.${label}.m`, {max: 60, min: 0, onChange:(e) => handleChange(e) })} className={time()} type="number"/>
+		<input onKeyDown={ ( e ) => handleKeyDown( e )}  {...register(`classDays.${index}.${label}.m`, {max: 60, min: 0, onChange:(e) => handleChange(e) })} className={time()} type="number"/>
 		<div onClick={handleLableM}  className="absolute inset-y-0 h-10 text-zinc-600 flex justify-center items-center right-3">m</div>
 	</div>
 	</>
-	
 }
 
