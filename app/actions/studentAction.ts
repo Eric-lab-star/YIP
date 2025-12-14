@@ -1,7 +1,7 @@
 "use server";
 
 import { StudentData } from "@/types";
-import { createStudent } from "../lib/mongo/students";
+import { createStudent, updateStudent } from "../lib/mongo/students";
 import studentSchema from "../lib/zod/studentSchema";
 import { redirect } from "next/navigation";
 
@@ -19,3 +19,13 @@ export async function studentSignupFormAction (formdata: StudentData) {
 	}
 }
 
+export async function updateSignmup(formdata: StudentData){
+	const zodResult = studentSchema.safeParse(formdata)
+		if (!zodResult.success){
+			return {success: false, errors: zodResult.error}
+	} else {
+		const  insertedId  = await updateStudent(zodResult.data)
+		redirect(`/students/${insertedId.toString()}`)
+	}
+
+}

@@ -14,6 +14,7 @@ import ClassDays from "./StudentClassDay/ClassDays";
 import {v4 as uuidv4} from "uuid";
 import { useDaySelect } from "@/app/stores/classDayStore";
 import { useEffect } from "react";
+import { studentSignupFormAction } from "@/app/actions/studentAction";
 
 const mock = {
 	name: "testname",
@@ -29,7 +30,7 @@ const mock = {
 	],
 }
 
-export default function StudentPersonalForm({defaultData}: {defaultData?: string}) {
+export default function StudentPersonalForm({type, defaultData}: {type: "수정하기" |"등록하기" ,defaultData?: string}) {
 	const currentData: StudentData = defaultData ? JSON.parse(defaultData): {};
 	const {initSelect} = useDaySelect();
 
@@ -47,7 +48,7 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 		defaultValues: currentData
 	})
 
-	const { formState:{errors, isSubmitting }, setError, watch  } = stM
+	const { formState:{errors, isSubmitting }, setError, watch, reset  } = stM
 
 	const onSubmit = async (data: StudentData) => {
 		const classDays = watch("classDays")
@@ -63,12 +64,32 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 				}
 			}
 		)
+
 		if (errors.classDays) {
 			console.log(errors.classDays);
 			return;
 		};
+
 		console.log(errors)
 		console.log(data, "student data")
+
+		
+		switch (type) {
+			case "등록하기":
+				const res = 	await studentSignupFormAction(data)
+				if (!res.success) {
+					console.log(res.errors)
+					return;
+				}
+				break;
+			case "수정하기":
+				
+				break;
+			default:
+				break;
+		}
+
+		reset();
 	}
 
 	return (
@@ -82,7 +103,7 @@ export default function StudentPersonalForm({defaultData}: {defaultData?: string
 					<StudentSchool />
 				</div>
 				<ClassDays />
-				<SubmitBtn isSubmitting={isSubmitting} name={"등록"} /> 
+				<SubmitBtn isSubmitting={isSubmitting} name={type} /> 
 			</form>
 		</FormProvider>
 	)

@@ -14,7 +14,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}){
 	return (
 		<div className="w-full">
 			<Title name="정보 수정" />
-			<StudentPersonalForm defaultData={json} />
+			<StudentPersonalForm type={"수정하기"} defaultData={json} />
 		</div>
 	)
 }

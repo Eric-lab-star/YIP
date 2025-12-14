@@ -1,6 +1,6 @@
 import { StudentData } from "@/types";
 import { getDB } from "./db";
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 /**
 * calls mongodb and create new student doc
@@ -9,6 +9,16 @@ export async function createStudent(student: StudentData){
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
 	return await students.insertOne(student);
+}
+
+
+
+// update Studnent
+export async function updateStudent(student: WithId<StudentData>){
+	const db = await getDB();
+	const students = db.collection<StudentData>("students")
+	await students.updateOne({_id: student._id}, {$set: student});
+	return student._id
 }
 
 /**

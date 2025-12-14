@@ -7,7 +7,7 @@ export default function Page() {
 	return (
 		<div	className={layout()} >
 			<Title name="신규 등록" />
-			<StudentPersonalForm type="등록하기" />
+			<StudentPersonalForm type="수정하기" />
 		</div>
 	)
 }

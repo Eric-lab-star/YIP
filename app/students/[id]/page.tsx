@@ -1,7 +1,7 @@
 import { readStudent } from "@/app/lib/mongo/students";
 import { container } from "@/app/lib/tv/student/style";
 import Title from "@/components/commons/Title";
-import { Day } from "@/types";
+import { Day, StudentData } from "@/types";
 import { Cake, Calendar1, Phone, School2, User } from "lucide-react";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
@@ -18,7 +18,6 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 	if (!student) {
 		return notFound()
 	}
-	const studentClass = Object.entries(student.classDays)
 
 	return (
 		<div>
@@ -43,7 +42,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 				</div>
 				<div className="flex space-x-2">  <Calendar1 className="w-5 relative top-0.5" /> <div>등원시간 </div>  </div>
 				<div className="grid grid-cols-subgrid col-span-3">
-					<ClassDayTable studentClass={studentClass as [Day, time][]} />
+					<ClassDayTable studentClass={student.classDays} />
 				</div>
 				<div className=""></div>
 				<div className="bg-blue-300"></div>
@@ -81,17 +80,17 @@ const koreanWeek = {
 
 
 
-function ClassDayTable( {studentClass}: { studentClass: [ Day, time ][]}){
+function ClassDayTable( {studentClass}: { studentClass: StudentData["classDays"]}){
 	const field = [
 		<div>등원 요일</div>,
 		<div>시작</div>,
 		<div>종료</div>,
 	]
 
-	studentClass.forEach((v,i) => {
-		field.push( <div>{koreanWeek[v[0]]}</div>)
-		field.push( <div>{v[1].start.h} : {v[1].start.m}</div>)
-		field.push( <div>{v[1].end.h} : {v[1].end.m}</div>)
+	studentClass.forEach((v) => {
+		field.push( <div>{v.day}</div>)
+		field.push( <div>{v.start.h} : {v.start.m}</div>)
+		field.push( <div>{v.end.h} : {v.end.m}</div>)
 	})
 
 	return <> { field.map((v,i)=> <div key={i}>{v}</div>) } </>
