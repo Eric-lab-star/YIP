@@ -15,9 +15,11 @@ export async function createStudent(student: StudentData){
 
 // update Studnent
 export async function updateStudent(student: WithId<StudentData>){
+	console.log(student)
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
-	await students.updateOne({_id: student._id}, {$set: student});
+	const res = await students.updateOne({_id: new ObjectId(student._id)}, {$set: student}, {upsert: false});
+	console.log(res)
 	return student._id
 }
 

@@ -14,7 +14,8 @@ import ClassDays from "./StudentClassDay/ClassDays";
 import {v4 as uuidv4} from "uuid";
 import { useDaySelect } from "@/app/stores/classDayStore";
 import { useEffect } from "react";
-import { studentSignupFormAction } from "@/app/actions/studentAction";
+import { studentSignupFormAction, updateSignUpFormAction } from "@/app/actions/studentAction";
+import { WithId } from "mongodb";
 
 const mock = {
 	name: "testname",
@@ -31,8 +32,8 @@ const mock = {
 }
 
 export default function StudentPersonalForm({type, defaultData}: {type: "수정하기" |"등록하기" ,defaultData?: string}) {
-	const currentData: StudentData = defaultData ? JSON.parse(defaultData): {};
-	const {initSelect} = useDaySelect();
+	const currentData: WithId<StudentData> = defaultData ? JSON.parse(defaultData): {};
+	const { initSelect } = useDaySelect();
 
 
 	useEffect(()=>{
@@ -71,19 +72,24 @@ export default function StudentPersonalForm({type, defaultData}: {type: "수정�
 		};
 
 		console.log(errors)
-		console.log(data, "student data")
 
 		
 		switch (type) {
-			case "등록하기":
-				const res = 	await studentSignupFormAction(data)
+			case "등록하기": {
+				const res = await studentSignupFormAction(data)
 				if (!res.success) {
 					console.log(res.errors)
 					return;
 				}
+			}
 				break;
-			case "수정하기":
-				
+			case "수정하기": {
+				const res = await updateSignUpFormAction({...currentData, ...data})
+				if (!res.success) {
+					console.log(res.errors)
+					return;
+				}
+			}
 				break;
 			default:
 				break;
