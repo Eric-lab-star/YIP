@@ -21,13 +21,12 @@ export async function studentSignupFormAction (formdata: StudentData) {
 }
 
 export async function updateSignUpFormAction(formdata: WithId<StudentData>){
-	console.log(formdata)
 	
 	const zodResult = studentSchema.safeParse(formdata)
 		if (!zodResult.success){
 			return {success: false, errors: zodResult.error}
 	} else {
-		await updateStudent(zodResult.data as WithId<StudentData>)
+		await updateStudent(formdata)
 		redirect(`/students/${formdata._id.toString()}`)
 	}
 

@@ -15,11 +15,10 @@ export async function createStudent(student: StudentData){
 
 // update Studnent
 export async function updateStudent(student: WithId<StudentData>){
-	console.log(student)
+	const {_id, ...withoutId} =  student;
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
-	const res = await students.updateOne({_id: new ObjectId(student._id)}, {$set: student}, {upsert: false});
-	console.log(res)
+	await students.updateOne({_id: new ObjectId(_id)}, {$set: withoutId}, {upsert: false});
 	return student._id
 }
 
