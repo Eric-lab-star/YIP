@@ -1,9 +1,10 @@
 import { readStudent } from "@/app/lib/mongo/students";
 import { container } from "@/app/lib/tv/student/style";
 import Title from "@/components/commons/Title";
+import ClassHistory from "@/components/forms/classHistory/ClassHistory";
 import StudentDeleteBTN from "@/components/forms/student/StudentDeleteBtn";
 import { StudentData } from "@/types";
-import { Cake, Calendar1, Phone, School2, Shredder, SquarePen, User } from "lucide-react";
+import { ArrowLeft, Cake, Calendar1, Phone, School2, SquarePen, User } from "lucide-react";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,6 +26,13 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 	return (
 		<div>
 			<Title name={"학생정보"} />
+			
+			<Link href={"/students"} >
+				<div className="flex items-center justify-center space-x-1 mb-3 w-26 p-2 bg-background border-2 border-b-amber-400">
+				<ArrowLeft className="size-4"/>
+				<div> 돌아가기 </div>
+				</div>
+			</Link>
 			<div className={container()}>
 				<div className="flex  space-x-2">  <User className="w-5 relative top-0.5" /> <div>학생 이름</div>  </div>
 				<div className="col-span-4">{student.name}</div>
@@ -58,8 +66,11 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 					<div> 수정하기</div>
 				</div>
 				</Link>
-				<StudentDeleteBTN />
+				<StudentDeleteBTN id={id}/>
 			</div>
+			<div className=" my-3 border-b border-dashed border-b-black h-2"></div>
+			<div className="text-xl"> 수업 정보</div>
+			<ClassHistory />
 		</div>
 	)
 }

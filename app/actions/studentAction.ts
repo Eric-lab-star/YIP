@@ -32,7 +32,7 @@ export async function updateSignUpFormAction(formdata: WithId<StudentData>){
 
 }
 
-export async function deletStudentAction(id: string) {
+export async function deleteStudentAction(id: string) {
 	await deleteStudent(new ObjectId(id))
 	redirect(`/students`)
 }
