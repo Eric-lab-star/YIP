@@ -1,10 +1,10 @@
 "use server";
 
 import { StudentData } from "@/types";
-import { createStudent, updateStudent } from "../lib/mongo/students";
+import { createStudent, deleteStudent, updateStudent } from "../lib/mongo/students";
 import studentSchema from "../lib/zod/studentSchema";
 import { redirect } from "next/navigation";
-import { WithId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 /** 
 * Action function which create new student doc on mongodb if formdata is valid.
@@ -30,4 +30,9 @@ export async function updateSignUpFormAction(formdata: WithId<StudentData>){
 		redirect(`/students/${formdata._id.toString()}`)
 	}
 
+}
+
+export async function deletStudentAction(id: string) {
+	await deleteStudent(new ObjectId(id))
+	redirect(`/students`)
 }

@@ -42,3 +42,14 @@ export async function readStudent(id: ObjectId){
 	}
 
 }
+
+export async function deleteStudent(id: ObjectId){
+	try{
+		const db = await getDB();
+		const student = db.collection<StudentData>("students")
+		student.deleteOne({_id: id})
+	} catch(err) {
+		console.log(err)
+		return null
+	}
+}

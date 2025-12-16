@@ -1,11 +1,14 @@
 import { readStudent } from "@/app/lib/mongo/students";
 import { container } from "@/app/lib/tv/student/style";
 import Title from "@/components/commons/Title";
-import { Day, StudentData } from "@/types";
-import { Cake, Calendar1, Phone, School2, User } from "lucide-react";
+import StudentDeleteBTN from "@/components/forms/student/StudentDeleteBtn";
+import { StudentData } from "@/types";
+import { Cake, Calendar1, Phone, School2, Shredder, SquarePen, User } from "lucide-react";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+
+
 
 export default async function Page({params}: {params: Promise<{id: string}>}) {
 	const { id } = await params;
@@ -47,8 +50,15 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 				<div className=""></div>
 				<div className="bg-blue-300"></div>
 			</div>
-			<div>
-				<Link href={`/students/update/${id}`} className="p-2 bg-background border-b-amber-200 border-2"> 수정하기  </Link>
+			<div className="flex justify-between">
+
+				<Link href={`/students/update/${id}`}>
+				<div className="text-center flex justify-center items-center space-x-1 p-2 bg-background border-b-amber-200 border-2">
+					<SquarePen className="size-4.5"/>
+					<div> 수정하기</div>
+				</div>
+				</Link>
+				<StudentDeleteBTN />
 			</div>
 		</div>
 	)
@@ -64,9 +74,6 @@ function PhoneNumber({pn}: {pn: [string, string, string]}) {
 	</>
 	
 }
-
-type time = {start: {h:number, m: number}, end: {h: number, m: number}}
-
 
 const koreanWeek = {
 	mon: "월요일",
@@ -88,7 +95,7 @@ function ClassDayTable( {studentClass}: { studentClass: StudentData["classDays"]
 	]
 
 	studentClass.forEach((v) => {
-		field.push( <div>{v.day}</div>)
+		field.push( <div>{koreanWeek[`${v.day}`]}</div>)
 		field.push( <div>{v.start.h} : {v.start.m}</div>)
 		field.push( <div>{v.end.h} : {v.end.m}</div>)
 	})

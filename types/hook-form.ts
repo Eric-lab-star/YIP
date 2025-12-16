@@ -1,5 +1,5 @@
 import studentSchema from "@/app/lib/zod/studentSchema";
-import { ChangeEvent, SyntheticEvent } from "react";
+import { ChangeEvent } from "react";
 import { UseFormRegister } from "react-hook-form";
 import * as z from "zod";
 
@@ -29,5 +29,8 @@ const days = [
 	"sat",
 	"sun",
 ] as const
+
+
+
 
 export type Day = typeof days[number]
