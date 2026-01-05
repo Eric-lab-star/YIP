@@ -25,7 +25,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 
 	return (
 		<div>
-			<Title name={"학생정보"} />
+			<Title text={"학생정보"} />
 			
 			<Link href={"/students"} >
 				<div className="flex items-center justify-center space-x-1 mb-3 w-26 p-2 bg-background border-2 border-b-amber-400">

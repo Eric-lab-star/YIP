@@ -6,7 +6,7 @@ import StudentPersonalForm from "@/components/forms/student/studentPersonalForm"
 export default function Page() {
 	return (
 		<div	className={layout()} >
-			<Title name="신규 등록" />
+			<Title text="신규 등록" />
 			<StudentPersonalForm type="등록하기" />
 		</div>
 	)

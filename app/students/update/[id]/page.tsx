@@ -13,7 +13,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}){
 	const json = JSON.stringify(student)
 	return (
 		<div className="w-full">
-			<Title name="정보 수정" />
+			<Title text="정보 수정" />
 			<StudentPersonalForm type={"수정하기"} defaultData={json} />
 		</div>
 	)
