@@ -24,12 +24,14 @@ export default async function Page() {
 
 	return (
 		<div className="pb-30">
-			<Title text="Python Sandbox" />
-			<Title my="l" size="h2" text="파이썬 편집기" />
-			<Text my="l"  text="기초 수업을 하는 동안에는 번거로운 설치 과정을 생략하기 위해서 pythonsandbox.io에서 파이썬 코드를 작성할 거에요. 다른 언어를 이미 공부해본 경험이 있거나, pythonsandbox.io가 마음에 들지 않는 다면 원하는 곳에 작성해도 좋아요. "/>
-			<Title size="h2" text="사용 방법" />
+			<Title>Python Sandbox</Title>
+			<Title my="l" weight="semi" size="h2">파이썬 편집기</Title>
+			<Text my="l"  children="기초 수업을 하는 동안에는 번거로운 설치 과정을 생략하기 위해서 pythonsandbox.io에서 파이썬 코드를 작성할 거에요. 다른 언어를 이미 공부해본 경험이 있거나, pythonsandbox.io가 마음에 들지 않는 다면 원하는 곳에 작성해도 좋아요. "/>
+			<Title size="h2" weight="semi">사용 방법</Title>
 			<Link target="_blank" href="https://pythonsandbox.io/">
-				<Text my="m" text="1. 여기를 클릭! pythonsandbox.io" />
+				<Text my="m"> 
+					<span className="hover:text-rose-400"> 1. 여기를 클릭! pythonsandbox.io </span> 
+				</Text>
 			</Link>
 			<Image 
 				className="px-3"
@@ -37,7 +39,7 @@ export default async function Page() {
 				alt="codesandbox" placeholder="blur" blurDataURL={sandBox01Meta.blurDataURL}  preload={true}  width={sandBox01Meta.width} height={sandBox01Meta.height} 
 			/>
 
-			<Text my="l" text="2. 우측 상단에 보이는 파란색 버튼으로 된 Try Editor를 클릭해요 " />
+			<Text my="l" children="2. 우측 상단에 보이는 파란색 버튼으로 된 Try Editor를 클릭해요 " />
 			<Image 
 				className="px-3"
 				src={sandBox02}
@@ -45,7 +47,7 @@ export default async function Page() {
 			/>
 
 
-			<Text my="l" text="버튼을 클릭하면 이런 화면이 나와요. " />
+			<Text my="l" children="버튼을 클릭하면 이런 화면이 나와요. " />
 			<Image 
 				className="px-3"
 				src={sandBox03}
@@ -53,13 +55,13 @@ export default async function Page() {
 			/>
 
 
-			<Text my="l" text="run 버튼을 클릭해서 실행해요" />
+			<Text my="l" children="run 버튼을 클릭해서 실행해요" />
 			<Image 
 				className="px-3"
 				src={sandBox04}
 				alt="codesandbox" placeholder="blur" blurDataURL={sandBox04Meta.blurDataURL}  preload={true}  width={sandBox04Meta.width} height={sandBox04Meta.height} 
 			/>
-			<Text my="l" text="웹 사이트에서 위의 사진에서 보이는 Run 버튼을 클릭하면 코드가 실행되고 copy를 클릭하면 작성된 코드를 복사할 수 있어요" />
+			<Text my="l" children="웹 사이트에서 위의 사진에서 보이는 Run 버튼을 클릭하면 코드가 실행되고 copy를 클릭하면 작성된 코드를 복사할 수 있어요" />
 
 			<Image 
 				className="px-3"
@@ -67,7 +69,7 @@ export default async function Page() {
 				alt="codesandbox" placeholder="blur" blurDataURL={sandBox05Meta.blurDataURL}  preload={true}  width={sandBox05Meta.width} height={sandBox05Meta.height} 
 			/>
 
-			<Text my="l"  text="Run 버튼을 눌렀을 때 오른쪽에 보이는 글이 실행된 결과에요. 우리는 왼쪽에 파이썬 코드를 작성할 거에요." />
+			<Text my="l"  children="Run 버튼을 눌렀을 때 오른쪽에 보이는 글이 실행된 결과에요. 우리는 왼쪽에 파이썬 코드를 작성할 거에요." />
 
 			<div className="grid grid-cols-2 py-3">
 				<CodeBlock code={
@@ -77,7 +79,7 @@ export default async function Page() {
 	print("Hello, World!") `
 				} />
 
-				<Text my="s" text="왼쪽에 이런 글자가 입력되어 있어요. 여기에서 Hello, World 라고 쓰여있는 부분을 `파이썬 공부 시작 이라고 수정할 거에요." />
+				<Text my="s" children="왼쪽에 이런 글자가 입력되어 있어요. 여기에서 Hello, World 라고 쓰여있는 부분을 `파이썬 공부 시작 이라고 수정할 거에요." />
 			</div>
 
 
@@ -89,7 +91,7 @@ export default async function Page() {
 print("파이썬 공부 시작!") `
 				} />
 
-				<Text my="s" text="이렇게 작성하고 다시 Run 버튼을 눌러보세요! " />
+				<Text my="s"  children="이렇게 작성하고 다시 Run 버튼을 눌러보세요! " />
 			</div>
 
 			<Image 
@@ -98,7 +100,7 @@ print("파이썬 공부 시작!") `
 				alt="codesandbox" placeholder="blur" blurDataURL={sandBox06Meta.blurDataURL}  preload={true}  width={sandBox06Meta.width} height={sandBox05Meta.height} 
 			/>
 
-			<Text my="l"  text="이렇게 나왔으면 성공이에요. 이제부터 파이썬 공부를 시작합니다.  " />
+			<Text my="l" children="이렇게 나왔으면 성공이에요. 이제부터 파이썬 공부를 시작합니다.  " />
 
 		</div>
 	)

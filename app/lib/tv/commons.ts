@@ -20,19 +20,21 @@ export const text = tv({
 			l: "my-6",
 			m: "my-3",
 			s: "my-1",
+			x: "",
 		},
 		mx:{
 			l: "mx-6",
 			m: "mx-3",
 			s: "mx-1",
+			x: "",
 		},
 
 	},
 	defaultVariants:{
 		weight: "base",
 		size: "md",
-		my: "m",
-		mx: "m",
+		my: "x",
+		mx: "x",
 	}
 })
 
