@@ -15,7 +15,7 @@ export default async function Page() {
 	const students = await readManyStudent();
 
 	return <div>
-		<Title text={"Students"} />
+		<Title children={"Students"} />
 			<Link href={"/students/create"}  >
 				<div className={"p-2 bg-background border-2 border-b-amber-600 hover:bg-accent w-20"}>
 					신규등록

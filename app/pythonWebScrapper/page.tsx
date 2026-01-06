@@ -77,19 +77,19 @@ print(fibonacci(9)) `
 		</div>
 		<div className="flex flex-col">
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
-				<Text weight="bold"> 📕 Python SandBox.io 소개</Text>
+				<Text weight="bold" my="m"> 📕 Python SandBox.io 소개</Text>
 			 </Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
-				<Text weight="bold">📗 변수, 문자열, 불리안</Text>
+				<Text weight="bold"my="m" >📗 변수, 문자열, 불리안</Text>
 			</Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/functions"}>
-				<Text weight="bold"> 📘 파이썬 함수</Text>
+				<Text weight="bold" my="m"> 📘 파이썬 함수</Text>
 			</Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
-				<Text weight="bold"> 📙 도전! say_hello()</Text>
+				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>
 			 </Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_arithmetic"}>
-				<Text weight="bold"> 📙 도전! 사칙연산</Text>
+				<Text weight="bold" my="m"> 📙 도전! 사칙연산</Text>
 			</Link>
 		</div>
 	</div>

@@ -104,9 +104,16 @@ dead = "False" # 오류! 따옴표안에 있으면 문자열임.
 			불리안은 참 혹은 거짓의 상태를 표현하는 값이에요. 이러한 값으로  게임에서 죽었는지 살았는지 나타낼 수 있어요. 
 		</CodeExplain>
 		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
-		<SelectableQuizz question="변수 a에 변수 값으로 2를 지정하는 방법으로 올바른 것을 고르세요." />
+		<SelectableQuizz options={["a = 1", "A = 3", "a = 2"]} answer={"a = 2"} question="1. 변수 a에 변수 값으로 2를 지정하는 방법으로 올바른 것을 고르세요." />
+		<SelectableQuizz options={["red_apple", "redApple", "redapple"]} answer={"red_apple"} question="2. snake_case표기 방법으로 올바른 것을 고르세요." />
+		<CodeBlock code={
+`five = 5
+two = 2
+result = five + two
+print(result) `}/>
 
-
-
+		<SelectableQuizz options={["five", "5", "7", "seven"]} answer={"7"} question="3. 위의 코드를 실행했을 때의 결과로 알맞은 것을 고르세요." />
+		<SelectableQuizz options={["true", `"true"`, "false", "False", `"False"`]} answer={"False"} question="4. 불리언 값을 고르세요." />
+		<SelectableQuizz options={[`"2025"`, `20205`, "False", "True"]} answer={`"2025"`} question="5.문자열 값을 고르세요." />
 	</div>
 )}
