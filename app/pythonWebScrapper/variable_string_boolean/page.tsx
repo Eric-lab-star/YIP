@@ -1,3 +1,4 @@
+import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
 import { r2GetSignedURL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
@@ -7,11 +8,16 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import SelectableQuizz from "@/components/forms/quizz/SelectableQuizz";
+import Image from "next/image";
 
 
 
 export default async function Page() {
 	const stringErrorImageSrc = await r2GetSignedURL("NameError.png") 
+	const explainVariable = await r2GetSignedURL("explainVariables.png")
+	const explainVariableMeta = await imageMetadata("explainVariables.png")
+
+
 	return (
 		<div className="space-y-5 mb-50">
 			<Title> 변수, 문자열, 불리안 </Title>
@@ -65,6 +71,21 @@ age_10 = 10 # 가능 - 숫자가 뒤에 오는 것은 가능함
 @age_10 = 10 # 불가능 - 특수문자를 입력하면 안됨`}>
 변수의 이름을 만들 때는 공백을 넣을 수 없어요, 대신에 공백이 필요한 경우 _ 밑줄을 단어 사이에 넣어요.  예를 들어 <Code>my_age</ Code>와 만들 수 있어요. 이런 방식을 snake_case라고 하며 파이썬 개발자의 약속이에요. <Code>myage</Code>, <Code>myAge</Code> 또는  <Code>my___________age</Code> 라고 적어도 프로그램에 오류는 없어요 하지만 보기 좋은 코드를 만들기 위해서 snake_case를 사용해요
 			</CodeExplain>
+
+			<div className={``}>
+				<Image 
+					className=" w-[50%]"
+					src={explainVariable} 
+					alt="explains variables" 
+					width={explainVariableMeta.width} 
+					height={explainVariableMeta.height} 
+					placeholder="blur" 
+					blurDataURL={explainVariableMeta.blurDataURL}/>
+			</div>
+
+
+
+
 
 			<Title my="s" weight="semi" size="h2">🐘 문자열 - string </Title>
 			<CodeExplain code={`food = apple # 오류!`}>
