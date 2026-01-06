@@ -72,7 +72,7 @@ age_10 = 10 # 가능 - 숫자가 뒤에 오는 것은 가능함
 변수의 이름을 만들 때는 공백을 넣을 수 없어요, 대신에 공백이 필요한 경우 _ 밑줄을 단어 사이에 넣어요.  예를 들어 <Code>my_age</ Code>와 만들 수 있어요. 이런 방식을 snake_case라고 하며 파이썬 개발자의 약속이에요. <Code>myage</Code>, <Code>myAge</Code> 또는  <Code>my___________age</Code> 라고 적어도 프로그램에 오류는 없어요 하지만 보기 좋은 코드를 만들기 위해서 snake_case를 사용해요
 			</CodeExplain>
 
-			<div className={``}>
+			<div className={"flex justify-center items-center"}>
 				<Image 
 					className=" w-[50%]"
 					src={explainVariable} 
@@ -94,7 +94,7 @@ age_10 = 10 # 가능 - 숫자가 뒤에 오는 것은 가능함
 왼쪽에 있는 코드를 실행시키고 어떤 결과가 나왔나요?
 			</CodeExplain>
 
-		<ImageExplain src={stringErrorImageSrc}>
+			<ImageExplain src={stringErrorImageSrc}>
 			<Code>NameError: name 'apple' is not defined</Code> 라는 오류 메시지가 나왔어요. 오류 메시지는 개발자들을 도와주는 도구에요.  오류가 나왔다고 실력이 없는 개발자라는 의미는 아니에요. 
 			<div className="my-1"/>
 			메시지를 해석해 보면 apple이 정의되지 않았다고 나와요. 현제 파이썬은 apple을 변수 이름으로 생각하고 있는 거예요.
