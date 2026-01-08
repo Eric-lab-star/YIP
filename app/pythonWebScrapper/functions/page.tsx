@@ -2,8 +2,8 @@ import Code from "@/components/commons/Code";
 import CodeExplain from "@/components/commons/CodeExplain";
 import Title from "@/components/commons/Title";
 import { Option } from "@/components/forms/quizz/Option";
-import SelectCodeQuizz from "@/components/forms/quizz/QuizzForm";
-import QuizzForm from "@/components/forms/quizz/QuizzForm";
+import SelectCodeQuizz from "@/components/forms/quizz/QuzzWithOptions";
+import QuizzForm from "@/components/forms/quizz/QuzzWithOptions";
 
 export default function Page() {
 	return (
@@ -219,12 +219,11 @@ print(result)
 또한 <Code>return</Code>은 함수를 끝내는 역할을 하기 때문에 return 뒤오는 코드는 실행되지 않아요.
 			</CodeExplain>
 		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
-
-<SelectCodeQuizz answer={2} question="which one is banana?">
-  <Option value={1}>1. apple</Option>
-  <Option value={2}>2. banana</Option>
-  <Option value={3}>3. grape</Option>
-</SelectCodeQuizz>
+		<SelectCodeQuizz answer={2} question="which one is banana?">
+			<Option value={1}>1. apple</Option>
+			<Option value={2}>2. banana</Option>
+			<Option value={3}>3. grape</Option>
+		</SelectCodeQuizz>
 		</div>
 	)
 }

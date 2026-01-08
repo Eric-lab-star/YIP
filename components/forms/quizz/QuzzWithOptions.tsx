@@ -5,7 +5,7 @@ import Text from "@/components/commons/Text";
 
 type QuizzContextValue = {
   selected: number | null;
-  select: (value: number) => void;
+  select: (value: number|null) => void;
   answer: number;
 };
 
@@ -23,7 +23,7 @@ interface SelectCodeQuizzProps {
   answer: number; // keep it number (your example shows string, but number is better)
 }
 
-export default function SelectCodeQuizz({
+export default function QuzzWithOptions({
   answer,
   question,
   children,
@@ -40,11 +40,13 @@ export default function SelectCodeQuizz({
   );
 
   return (
-    <QuizzContext.Provider value={value}>
+    <QuizzContext value={value}>
       <div>
-        <Text weight="bold">{question}</Text>
+        <Text my="s" weight="bold">{question}</Text>
         <div>{children}</div>
       </div>
-    </QuizzContext.Provider>
+			{selected === answer && <Text weight="bold" size="md" style="text-blue-600">정답!</Text>}
+			{(selected != null) && (selected !== answer) && <Text weight="bold" size="md" style="text-red-500" >오답~!</Text>}
+    </QuizzContext>
   );
 }
