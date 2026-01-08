@@ -1,7 +1,9 @@
 import Code from "@/components/commons/Code";
 import CodeExplain from "@/components/commons/CodeExplain";
 import Title from "@/components/commons/Title";
-import SelectableQuizz from "@/components/forms/quizz/SelectableQuizz";
+import { Option } from "@/components/forms/quizz/Option";
+import SelectCodeQuizz from "@/components/forms/quizz/QuizzForm";
+import QuizzForm from "@/components/forms/quizz/QuizzForm";
 
 export default function Page() {
 	return (
@@ -218,9 +220,12 @@ print(result)
 			</CodeExplain>
 		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
 
-
-
-
+<SelectCodeQuizz answer={2} question="which one is banana?">
+  <Option value={1}>1. apple</Option>
+  <Option value={2}>2. banana</Option>
+  <Option value={3}>3. grape</Option>
+</SelectCodeQuizz>
 		</div>
 	)
 }
+
