@@ -7,9 +7,9 @@ import { useState } from "react";
 interface SelectableQuizz {
 	question: string,
 	answer: string,
-	options: string[]
+	options: string[],
 }
-export default function SelectableQuizz({question, answer, options}:{answer:string, question:string, options: string[]}) {
+export default function SelectableQuizz({question, answer, options}:SelectableQuizz) {
 	const [selected, setSelected] = useState("")
 	const handleClick = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
 		const value = e.currentTarget.value

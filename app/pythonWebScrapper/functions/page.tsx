@@ -1,10 +1,11 @@
 import Code from "@/components/commons/Code";
 import CodeExplain from "@/components/commons/CodeExplain";
 import Title from "@/components/commons/Title";
+import SelectableQuizz from "@/components/forms/quizz/SelectableQuizz";
 
 export default function Page() {
 	return (
-		<div>
+		<div className="mb-30">
 			<Title my="m">함수 Function</Title>
 			<Title  my="l" size="h2" weight="semi">함수를 만들자</Title>
 			<CodeExplain code={
@@ -119,6 +120,104 @@ print("start")
 ` }>
 함수 바디에 어떤 것도 넣고 싶지 않다면, pass 를 넣어도 좋아요.  pass 가 뭔지 이해가 아직 안 되겠지만 지금은 오류를 무시해주는 마법이라고 생각하세요
 			</CodeExplain>
+
+			<Title size="h2" my="l" weight="semi">매개변수와 인수 Parameter and Argument </Title>
+			<CodeExplain code={
+` print("hello")
+
+`
+}>이제 이 함수는 아주 익숙해졌을 거에요. print 가 함수의 이름이라는 것을 알고 있고. "hello" 가 문자열이라는 것도 알고 있어요. 하지만  괄호 내부에 문자열을 어떻게 넣을 수  있을까요?
+			</CodeExplain>
+			<CodeExplain code={
+`def plus_one(number):
+	print(number + 1)
+
+`}>
+여기 왼쪽에 있는 함수에 새로운게 조금 추가 되어있어요. 이제는 괄호 안에 <Code>number</Code> 이라는 단어가 생겼네요. <Code>number</Code> 는 함수의 매개변수라고 하며 영어로는 <Code>parameter</Code>라고 불러요. 매개변수의 이름은 변수처럼 자유롭게 만들 수 있어요. 다시 말해 <Code>number</Code> 뿐만 아니라 <Code>num</Code> , <Code>x</Code> , <Code>y</Code> 등등 으로 바꾸어도 좋아요.  
+			</CodeExplain>
+			<CodeExplain code={
+`def plus_one(number):
+	print(number + 1)
+number # 오류!
+`
+}>
+매개변수는 함수 내부에서만 사용할 수 있어요. 함수 밖에서 number를 적으면 오류가 생깁니다. 
+			</CodeExplain>
+			<CodeExplain code={
+`def plus_one(number):
+	print(number + 1)
+
+plus_one(10)
+`
+}>
+만든 함수를 실행시킬려면 <Code>plus_one(10)</Code> 과 같이 괄호 내부에 값을 넣어야 되요. 여기서 10을 인수, 영어로 argument라고 해요. 
+<div className="h-2"/>
+하지만 argument와  parameter는 개발자들도 혼용해서 많이 사용하기 때문에 매개변수라고 하거나 인수라고 하거나 중요하지 않아요.
+			</CodeExplain>
+			<CodeExplain code={
+`def greet(name):
+	print("hello", name)
+
+greet("python")
+`
+}>
+매개변수를 이용하면, <Code>hello python</Code> 과 같은 문자를 출력할 수 있어요. 그런데 왼쪽 코드를 보면 <Code>print</Code> 함수가 “hello” 와 name 두가지 변수를 사용하고 있네요.
+<div className="h-2"/>
+어떻게하면 이렇게 만들 수 있을까요?  이번에는  함수가 변수2개를 사용할 수 있게 만들어 봐요.
+			</CodeExplain>
+			<CodeExplain code={
+`def add(x, y):
+	print(x + y)
+	
+add(10, 11)
+`
+}>
+<Code>add</Code> 라는 함수의 괄호 안에 <Code>x</Code>, <Code>y</Code>를 작성했어요. 함수의 매개변수를 늘리고 싶을 때는 <Code>,</ Code>콤마를 사용해요. 
+<div className="h-2" />
+함수를 실행할 때는 <Code>add(10, 11)</Code>이렇게 작성해요. 10이 x의 위치에 있음으로 <Code>x</Code>는 <Code>10</Code>으로 바뀝니다. 같은 방식으로 <Code>11</Code>은 <Code>y</Code>의 위치에 있음으로 <Code>y</Code>는 <Code>11</Code>로 바뀌어서 <Code>print(10 + 11)</ Code>이 <Code>add</Code>함수 내부에서 실행되는 거예요.
+			</CodeExplain>
+
+			<CodeExplain code={
+`def add(x, y):
+	print(x + y)
+	
+add(10) # 오류!
+`
+			}>
+이번에는 <Code>add(10)</ Code>이라고 작성하고 코드를 실행해 봐요. <Code>TypeError: add() missing 1 required argument: y on line 4</ Code>이런 식의 메시지가 나왔네요.
+<div className="h-2"/>
+<Code>add</Code> 함수를 정의할 때 매개변수 x와 y를 만들었기에 함수를 실행할 때도 <Code>x</Code>와 <Code>y</ Code>자리에 인수를 반드시 넣어주어야 해요. 
+			</CodeExplain>
+			<CodeExplain code={
+`def add(x, y=10):
+	print(x + y)
+
+add(10)
+
+`
+			}>
+매개변수 기본값을 설정해줌으로서 해결하는 방법도 가능해요. <Code>add</Code> 함수가 정의 될 때 매개변수 <Code>y</Code>의 자리에 <Code>y=10</Code> 이라고 작성했어요. 이렇게 작성하면, 함수가 실행 될 때, <Code>y</Code>가 전달 받을 인수가 없다면 <Code>y</Code>값을 <Code>10</Code>으로 정해줘요. 
+<div className="h-2"/>
+
+이런 방식을  default value for parameter 라고 하며, 한국어로 “매개변수에 기본값 설정하기”라고 해요.
+			</CodeExplain>
+			<CodeExplain code={
+`def add_two(x):
+	return x + 2
+
+result = add_two(3)
+
+print(result)
+`
+			}>
+마지막으로 <Code>return</ Code>을 배워봐요.
+<div className="h-2"/>
+<Code>return</Code>을 통해서 함수로부터 새로운 값을 만들 수 있어요. 왼쪽의 <Code>add_two</ Code>함수에 어떤 숫자를 넣으면 2를 더해서 반환해주는 역할을 해요. <Code>add_two</ Code>에 3을 더했을 때 2가 나오게 되는 거에요.
+<div className="h-2"/>
+또한 <Code>return</Code>은 함수를 끝내는 역할을 하기 때문에 return 뒤오는 코드는 실행되지 않아요.
+			</CodeExplain>
+		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
+
 
 
 
