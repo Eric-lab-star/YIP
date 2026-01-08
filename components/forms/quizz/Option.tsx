@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useSelectCodeQuizz } from "./QuizzForm";
+import { useSelectCodeQuizz } from "./QuzzWithOptions";
 
 type OptionProps = {
   value: number;
@@ -15,30 +15,19 @@ export function Option({ value, children }: OptionProps) {
   const isSelected = selected === value;
   const isCorrect = selected !== null && value === answer;
   const isWrongSelected = selected !== null && isSelected && value !== answer;
+	const clickHandler = () => {
+		if (selected === value){
+			select(null)
+			return
+		} 
+		select(value)
+	}
 
   return (
-    <button
-      type="button"
-      onClick={() => select(value)}
-      style={{
-        display: "block",
-        width: "100%",
-        textAlign: "left",
-        padding: "10px 12px",
-        marginTop: 8,
-        borderRadius: 8,
-        border: "1px solid #ddd",
-        cursor: "pointer",
-        background: isCorrect
-          ? "#e9ffe9"
-          : isWrongSelected
-          ? "#ffe9e9"
-          : isSelected
-          ? "#f3f4f6"
-          : "white",
-      }}
-    >
-      {children}
-    </button>
+		<div 
+			className={`mx-3 px-3 border-b h-13 border-b-gray-400 flex items-center ${isSelected ? "hover:bg-yellow-400" : "hover:bg-zinc-300"} ${isSelected && "bg-yellow-400"}`}
+			onClick={clickHandler} >
+			{children}
+    </div>
   );
 }
