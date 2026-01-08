@@ -44,9 +44,6 @@ export default function SelectCodeQuizz({
       <div>
         <Text weight="bold">{question}</Text>
         <div>{children}</div>
-
-        {/* optional: show current selection */}
-        {/* <div>Selected: {selected ?? "none"}</div> */}
       </div>
     </QuizzContext.Provider>
   );
