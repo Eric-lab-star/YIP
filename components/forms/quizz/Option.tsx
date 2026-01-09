@@ -2,7 +2,8 @@
 "use client";
 
 import React from "react";
-import { useSelectCodeQuizz } from "./QuzzWithOptions";
+import { useSelectCodeQuizz } from "./QuizzWithOptions";
+import { tv } from "tailwind-variants";
 
 type OptionProps = {
   value: number;
@@ -10,7 +11,7 @@ type OptionProps = {
 };
 
 export function Option({ value, children }: OptionProps) {
-  const { selected, select, answer } = useSelectCodeQuizz();
+  const { selected, select, answer, layout } = useSelectCodeQuizz();
 
   const isSelected = selected === value;
   const isCorrect = selected !== null && value === answer;
@@ -25,9 +26,23 @@ export function Option({ value, children }: OptionProps) {
 
   return (
 		<div 
-			className={`mx-3 px-3 border-b h-13 border-b-gray-400 flex items-center ${isSelected ? "hover:bg-yellow-400" : "hover:bg-zinc-300"} ${isSelected && "bg-yellow-400"}`}
+			className={style({isSelected, layout })}
 			onClick={clickHandler} >
 			{children}
     </div>
   );
 }
+
+const style = tv({
+	base: "",
+	variants: {
+		isSelected:{
+			true: " hover:bg-yellow-400  bg-yellow-400",
+			false: "hover:bg-zinc-300 "
+		},
+		layout: {
+			row: "mx-3 px-3 border-b h-13 border-b-gray-400 flex items-center",
+			grid: "px-3 py-2 rounded-sm",
+		}
+	}
+})

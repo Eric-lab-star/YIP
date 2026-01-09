@@ -1,20 +1,48 @@
+import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
+import { r2GetSignedURL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
+import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";
+import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import { Option } from "@/components/forms/quizz/Option";
-import SelectCodeQuizz from "@/components/forms/quizz/QuzzWithOptions";
-import QuizzForm from "@/components/forms/quizz/QuzzWithOptions";
+import  QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function Page() {
+export default async function Page() {
+	const pythonFunctionJuice = await r2GetSignedURL("pythonFunctionJuice.png")
+	const pythonFunctionJuiceMeta = await imageMetadata("pythonFunctionJuice.png")
+	const functionBody = await r2GetSignedURL("pythonFunctionBody.png")
+	const functionBodyMeta= await imageMetadata("pythonFunctionBody.png")
 	return (
 		<div className="mb-30">
 			<Title my="m">함수 Function</Title>
 			<Title  my="l" size="h2" weight="semi">함수를 만들자</Title>
+			<Text>
+이제부터 함수를 배워봐요. 함수는 영어로 function이라고 해요. 프로그래밍에서 사용되는 함수는 수학에서 사용된는 함수와 같은 점도 있고 다른 점도 있어요. 먼저 기본적인 함수의 작동 방식을 알아볼까요?
+			</Text>
+			<div className="flex justify-center">
+				<Image 
+					className="w-150 my-9"
+					alt="python function juice" 
+					src={pythonFunctionJuice}
+					placeholder="blur"
+					blurDataURL={pythonFunctionJuiceMeta.blurDataURL}
+					width={pythonFunctionJuiceMeta.width}
+					height={pythonFunctionJuiceMeta.height}
+				/>
+			</div>
+			<Text my="l">
+함수는 믹서기라고 생각하세요. 믹서기는에는 사과를 넣으면 항상 사과주스가 나와요. 함수도 마찬가지로 함수 안에 무언가를 넣었을 때 어떤 결과를 만드는 기능을 합니다. 지금까지 사용했던 <Code>print("hello")</Code>또한 함수에요. hello를 넣었을 때 hello가 출력되는 기능을 하고 있으니까요.
+			</Text>
+
 			<CodeExplain code={
-`def game_over():
+`
+def game_over():
 	print("You are dead. Game over")
 `}>
-이제 함수를 만들어 봐요. 함수를 만들 때는 변수를 만드는 것하고 조금 달라요. 먼저 <Code>def</Code> 를 적어야 되요. <Code>def</Code> 다음에 함수의 이름을 적어요. 왼쪽에 <Code>game_over</Code> 는 함수 이름이에요. 꼭 <Code>game_over</Code> 라고 적지 않아도 되요. 이름은 자유롭게 바꾸어도 좋아요
+이제 함수를 만들어 봐요. 함수를 만드는 방법은 변수를 만드는 것하고 조금 달라요. 먼저 <Code>def</Code> 를 적어야 되요. <Code>def</Code> 다음에 함수의 이름을 적어요. 왼쪽에 <Code>game_over</Code> 는 함수 이름이에요. 꼭 <Code>game_over</Code> 라고 적지 않아도 되요. 이름은 자유롭게 바꾸어도 좋아요
 			</CodeExplain>
 
 			<CodeExplain code={
@@ -42,6 +70,16 @@ print("hello")
 <div className="h-3" />
 <Code>def</Code>는 영어 define 을 의미해요. 한국어로 정의하다라는 의미에요. 다시 말해 파이썬을 이용해서 “game_over를 정의해” 라고 컴퓨터에게 작성하고 있는 거에요.
 			</CodeExplain>
+			<Title weight="semi" size="h2">간단한 함수를 만드는 방법</Title>
+			<Text my="m"> 1. <Code>def</Code>를 작성한다 </Text>
+			<Text my="m"> 2. 한 칸을 띄우고 함수의 이름을 작성한다. </Text>
+			<Text my="m"> 3. <Code>():</Code>를 작성한다.</Text>
+			<Text my="m"> 4. 엔터키를 눌러서 다음 줄로 이동한다.</Text>
+			<Text my="m"> 5. <Code>def</Code>하고 같은 세로줄에서 새로운 문자가 입력될 경우 탭을 눌러준다. 아니면 6번으로 이동</Text>
+			<Text my="m"> 6. 함수가 실행될 때 실행될 코드를 작성한다.</Text>
+			<div>
+				
+			</div>
 
 			<CodeExplain code={
 `#say_hello 함수
@@ -54,6 +92,16 @@ say_hello()
 <div className="h-2"/>
 함수를 실행하기 위해서는 <Code>()</Code> 콜론이 함수 이름 뒤에 반드시 있어야 해요.  콜론이 없으면 함수가 실행되지 않아요.
 			</CodeExplain>
+			
+			<Title weight="semi" my="l" size="h2"> 함수는 왜 만들까? </Title>
+			<Text style="mb-2">
+함수가 복잡하고 어렵다고 생각했나요. 하지만 놀랍게도 함수는 복잡하고 어려운 코드를 간단하고 읽기 편하게 하려고 만들어요. 함수는 믹서기와 같다고 했던 거 기억하나요? 만약 믹서기 없이 주스를 만든다고 생각을 해봐요. 1개 2개는 쉽게 만들 수 있어요. 하지만 매일 300개 혹은 500개를 만들어야 한다면 어떨까요? 이렇게 함수는 번거로운 일을 간단하게 도와주는 역할을 해요. 어려운 말로 "추상화"라고 해요. 영어로는 "abstraction"이라고 해요. 추상화 수준이 높을수록 복잡하고 어려운 코드는 사라지고 읽기 편하고 사용하기 쉬운 코드를 작성할 수 있게 되는 거예요.
+			</Text>
+			<Link target="_blank" href={"https://onestone-dev.tistory.com/3"} className="h-6 flex  text-blue-800"> 
+				<Text weight="bold" style="hover:border-b border-b-blue-800">
+					추상화 수준에 대해서 더 알고 싶다면? 여기를 클릭!
+				</Text>
+			</Link>
 
 			<CodeExplain code={`
 def paint_text():
@@ -78,21 +126,24 @@ paint_text()
 paint_text()
 paint_text()
 `}>
-함수를 만들면 한번 작성한 코드를 재사용 할 수 있어요. 지금은 함수가 간단하기 때문에 좋다고 못 느낄 수 있지만 100줄 200줄 넘어간다고 생각해보세요. 반복적으로 쓰면 손이 아플거에요. 대신 함수 바디에 넣어주면  편리하게 사용할 수 있게되요. 
+함수의 가장 기본적인 기능은 다시 사용하기 편하게 만들는 거에요. 지금은 함수가 간단하기 때문에 좋다고 못 느낄 수 있지만 100줄 200줄 넘어간다고 생각해보세요. 반복적으로 쓰면 손이 아플거에요. 대신 함수 바디에 넣어주면  편리하게 사용할 수 있게되요. 
 <div className="h-3"/>
 왼쪽에 있는 코드를 실행시켜 볼까요?
 			</CodeExplain>
 
-			<Title my="l" size="h2" weight="semi"> 들여쓰기 - whitespaces, indentation, tab </Title>
+			<Title my="l" size="h2" weight="semi"> 함수의 몸체 - Function Body </Title>
+			<Text my="m">
+"함수 바디", "함수의 몸체", "몸통" 이런 용어가 나오는데 무슨 뜻일까요? 다시 믹서기 비유로 돌가가면, 믹서기의 내부는 함수의 몸통이라고 생각할 수 있어요. 믹서기의 내부와 외부는 플라스틱으로 구분해요. 그렇다면 함수의 내부와 외부는 어떻게 구분할 수 있을까요? 함수의 내부와 외부는 공백으로 구분해요.
+			</Text>
+
 			<CodeExplain code={
-`def say_start():
+`def mixer():
 	print("start")
 
 def say_end():
 	print("end")
-	
 `}>
-왼쪽에는 두개의 함수가 정의되어 있어요.이 두 함수는 모두 올바르게 동작해요.
+왼쪽에는 두개의 함수가 정의되어 있어요.이 두 함수는 모두 올바르게 동작해요. <Code>print("start")</Code>의 p가 윗줄 <Code>def</Code>의 e와 같은 세로줄에 있다는 것이 중요합니다.
 			</CodeExplain>
 			<CodeExplain code={
 `# 오류!
@@ -102,18 +153,17 @@ print("start")
 def say_end():
 print("end")
 				`}>
-하지만 여기 왼쪽에 있는 코드는 잘 못된 코드에요. 이유가 뭘까요?
+여기 왼쪽에 있는 코드는 잘 못된 코드에요. 이유가 뭘까요?
 <div className="h-3"/>
-<Code>print</Code> 라는 단어 앞에 공백이 없기 때문이에요. 파이썬은 공백에 아주 민감한 언어예요. 탭을 한번 눌러서 공백을 만들 수도 있고 스페이스바를 눌러서 공백을 만들 수 있어요.
+<Code>print</Code> 라는 단어 앞에 공백이 없기 때문이에요. 파이썬은 공백에 아주 민감한 언어예요. 탭을 한번 눌러서 공백을 만들 수도 있고 스페이스바를 눌러서 공백을 만들 수 있어요. 
+<div className="h-3"/>
 			</CodeExplain>
 
 			<CodeExplain code={
 `def say_start():
 print("start")
 `}>
-이 코드는 왜 오류가 생기는 걸까요? 
-<div className="h-2"/>
-함수를 정의할 때는 반드시 함수 바디에 무언가 입력해야 되요.  함수 바디는 공백으로 시작하는데  공백으로 시작되는 함수 바디가 없기 때문에 오류가 생기는 거에요.
+또한 함수를 정의할 때는 반드시 함수 바디에 무언가 입력해야 되요.  함수 바디는 공백으로 시작하는데  공백으로 시작되는 함수 바디가 없기 때문에 오류가 생기는 거에요.
 			</CodeExplain>
 			<CodeExplain code={
 `def say_start():
@@ -122,13 +172,21 @@ print("start")
 ` }>
 함수 바디에 어떤 것도 넣고 싶지 않다면, pass 를 넣어도 좋아요.  pass 가 뭔지 이해가 아직 안 되겠지만 지금은 오류를 무시해주는 마법이라고 생각하세요
 			</CodeExplain>
+			<div>
+				<Image 
+					alt="function body"  
+					width={functionBodyMeta.width}
+					height={functionBodyMeta.height}
+					src={functionBody}
+				/>
+			</div>
 
 			<Title size="h2" my="l" weight="semi">매개변수와 인수 Parameter and Argument </Title>
 			<CodeExplain code={
 ` print("hello")
 
 `
-}>이제 이 함수는 아주 익숙해졌을 거에요. print 가 함수의 이름이라는 것을 알고 있고. "hello" 가 문자열이라는 것도 알고 있어요. 하지만  괄호 내부에 문자열을 어떻게 넣을 수  있을까요?
+}>이제 이 <Code> print() </Code> 함수는 아주 익숙해졌을 거에요. <Code>print</Code> 가 함수의 이름이라는 것을 알고 있고. <Code>"hello"</Code>가 문자열이라는 것도 알고 있어요. 하지만  괄호 내부에 문자열을 넣을려면 어떻게 해야 할 까요?
 			</CodeExplain>
 			<CodeExplain code={
 `def plus_one(number):
@@ -154,7 +212,7 @@ plus_one(10)
 }>
 만든 함수를 실행시킬려면 <Code>plus_one(10)</Code> 과 같이 괄호 내부에 값을 넣어야 되요. 여기서 10을 인수, 영어로 argument라고 해요. 
 <div className="h-2"/>
-하지만 argument와  parameter는 개발자들도 혼용해서 많이 사용하기 때문에 매개변수라고 하거나 인수라고 하거나 중요하지 않아요.
+하지만 argument와  parameter는 개발자들도 혼용해서 많이 사용하기 때문에 매개변수와 인수가 혼용되서 사용되고 있어요.
 			</CodeExplain>
 			<CodeExplain code={
 `def greet(name):
@@ -218,12 +276,121 @@ print(result)
 <div className="h-2"/>
 또한 <Code>return</Code>은 함수를 끝내는 역할을 하기 때문에 return 뒤오는 코드는 실행되지 않아요.
 			</CodeExplain>
+
 		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
-		<SelectCodeQuizz answer={2} question="which one is banana?">
-			<Option value={1}>1. apple</Option>
-			<Option value={2}>2. banana</Option>
-			<Option value={3}>3. grape</Option>
-		</SelectCodeQuizz>
+		<QuizzWithOptions layout="grid" answer={2} question="1. 올바르게 작성된 함수 코드를 고르세요.">
+			<Option value={1}> 
+				<Text>A.</Text>
+				<CodeBlock code={
+`def get_year(): 
+print("2026")`}/>
+			</Option>
+			<Option value={2}> 
+				<Text>B.</Text>
+				<CodeBlock code={
+`def get_year():
+	print("2026")`}/>
+			</Option>
+			<Option value={3}> 
+				<Text>C.</Text>
+				<CodeBlock code={
+`get_year():
+	print("2026")`}/>
+			</Option>
+			<Option value={4}> 
+				<Text>D.</Text>
+				<CodeBlock code={
+`def get_year()
+	print("2026")`}/>
+			</Option>
+		</QuizzWithOptions >
+
+		<QuizzWithOptions answer={2} question="2. 아래 코드에 관한 설명으로 틀린 것을 고르세요." >
+			<div className="flex justify-center">
+				<div className="w-150 ">
+					<CodeBlock code={
+`def add(x, y):
+	return x + y
+add(10)
+`}/>
+				</div>
+			</div>
+			<Option value={1}>
+				<Text>1. 함수의 이름은 add이다.</Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. x와 y는 함수의 매개변수이다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. 함수를 실행하기 위해서는 <Code>add(13)</Code>이라고 작성해야된다.</Text>
+			</Option>
+			<Option value={4}>
+				<Text>4. <Code>return x + y</Code>는 함수 내부에서 실행된는 코드이다.</Text>
+			</Option>
+		</QuizzWithOptions>
+
+		<QuizzWithOptions answer={4} question="3. 함수를 만드는 이유에 관한 설명으로 틀린 것을 고르세요.">
+			<Option value={1}>
+				<Text>1. 함수를 사용하면 복잡한 코드를 다시 사용하기 편하게 만들어 준다.</Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. 함수의 추상화 수준을 높여준다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. 함수를 사용하면 읽기 편한 코드를 만들 수 있다.</Text>
+			</Option>
+			<Option value={4}>
+				<Text>4. 함수는 어렵기 때문에 사용하지 않는 것이 좋다.</Text>
+			</Option>
+		</QuizzWithOptions>
+
+		<QuizzWithOptions answer={2} question="4. 함수의 매개변수와 인수에 관한 설명으로 틀린 것을 고르세요.">
+			<Option value={1}>
+				<Text> 1. 매개변수는 함수 내부에서만 사용되는 변수이다.</Text>
+			</Option>
+			<Option value={2}>
+				<Text> 2. 매개변수는 함수 밖에서 사용 가능하다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text> 3. 함수 실행시 인수를 통해서 매개변수에 값을 전달 할 수 있다. </Text>
+			</Option>
+			<Option value={4}>
+				<Text> 4. 매개변수가 정의된 함수에서 함수를 실행시, 매개변수가 사용할 값이 없다면 오류가 생길 수 있다. </Text>
+			</Option>
+			<Option value={5}>
+				<Text> 5. 인수는 영어로 argument이다. </Text>
+			</Option>
+		</QuizzWithOptions>
+
+		<QuizzWithOptions answer={3} question="5. 아래의 코드에 관한 설명으로 틀린 것을 고르세요.">
+			<CodeBlock code={
+`# 믹서기 함수
+def blender(fruit="사과"):
+	return fruit + " 주스"
+	print("믹서기 함수 실행 종료")
+
+juice = blender(grape)
+print(juice)
+`
+}/>
+			<Option value={1}>
+				<Text>1. <Code>fruit</Code>는 <Code>blender</Code> 함수의 매개변수이다.</Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. <Code>print</Code>는 <Code>juice</Code>를 인수로 사용하고 있다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. 이 코드는 오류가 없다.</Text>
+			</Option>
+			<Option value={4}>
+				<Text>4. <Code>blender</Code> 함수의 안에 있는 <Code>print("믹서기 함수 실행 종료")</Code>는 실행되지 않는다.</Text>
+			</Option>
+			<Option value={5}>
+				<Text>5. <Code>blender</Code> 함수 실행시 인수를 받지 않아도 실행시 오류가 없다.</Text>
+			</Option>
+		</QuizzWithOptions>
+
+
 		</div>
 	)
 }

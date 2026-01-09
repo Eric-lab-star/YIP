@@ -8,7 +8,7 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import { Option } from "@/components/forms/quizz/Option";
-import QuzzWithOptions from "@/components/forms/quizz/QuzzWithOptions";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import Image from "next/image";
 
 
@@ -127,14 +127,45 @@ dead = "False" # 오류! 따옴표안에 있으면 문자열임.
 		</CodeExplain>
 		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
 
-		<QuzzWithOptions answer={3} question="변수 a에 변수값으로 2를 지정하는 방법으로 올바른 것을 고르세요">
+		<QuizzWithOptions answer={3} question="1. 변수 a에 변수값으로 2를 지정하는 방법으로 올바른 것을 고르세요">
 			<Option value={1}>1. a = 3</Option>
 			<Option value={2}>2. A = 2</Option>
 			<Option value={3}>3. a = 2</Option>
-		</QuzzWithOptions >
+		</QuizzWithOptions >
 
+		<QuizzWithOptions answer={1} question="2. snake_case 표기 방법으로 올바른 것을 고르세요.">
+			<Option value={1}>1. red_apple</Option>
+			<Option value={2}>2. redApple</Option>
+			<Option value={3}>3. reapple</Option>
+		</QuizzWithOptions >
 
+		<QuizzWithOptions answer={3} question="3. 아래 코드의 실행결과로 알맞은 것을 고르세요.">
+			<CodeBlock code={
+`
+five = 5
+two = 2
+result = five + two
+print(result)
+`}/>
+			<Option value={1}>1. five</Option>
+			<Option value={2}>2. 5</Option>
+			<Option value={3}>3. 7</Option>
+			<Option value={4}>4. seven</Option>
+		</QuizzWithOptions >
 
+		<QuizzWithOptions answer={4} question="4. 불리언 값을 고르세요.">
+			<Option value={1}>1. true</Option>
+			<Option value={2}>2. "true"</Option>
+			<Option value={3}>3. false</Option>
+			<Option value={4}>4. False</Option>
+			<Option value={5}>5. "False"</Option>
+		</QuizzWithOptions >
 
+		<QuizzWithOptions answer={1} question="5. 문자열 값을 고르세요.">
+			<Option value={1}>1. "2025"</Option>
+			<Option value={2}>2. 20205</Option>
+			<Option value={3}>3. False</Option>
+			<Option value={4}>4. True</Option>
+		</QuizzWithOptions >
 	</div>
 )}
