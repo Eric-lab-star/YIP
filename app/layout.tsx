@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { Noto_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
+import { OctagonXIcon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Academia",
@@ -16,6 +17,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="kr">
       <body
@@ -24,7 +26,7 @@ export default async function RootLayout({
 					 lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]   bg-zinc-100 space-y-3 `}
       >
         {children}
-				<Toaster/>
+				<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
       </body>
     </html>
   );

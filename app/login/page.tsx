@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -16,69 +15,79 @@ import {
 } from "@/components/ui/card"
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
+import { loginSchema } from "../lib/zod/loginSchema"
+import { loginAction, validateToken } from "../actions/loginAction"
+import { toast } from "sonner"
+import { redirect } from "next/navigation"
+import { startTransition, useEffect } from "react"
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Bug title must be at least 5 characters.")
-    .max(32, "Bug title must be at most 32 characters."),
-  description: z
-    .string()
-    .min(20, "Description must be at least 20 characters.")
-    .max(100, "Description must be at most 100 characters."),
-})
 
-export default function BugReportForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export default function Page() {
+	useEffect(() => {
+		startTransition(async () => {
+			const validToken = await validateToken()
+			if (!validToken) {
+				toast.error("로그인 세션이 만료되었습니다.", {position: "top-center"})
+			}
+		})
+	},[]);
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      name: "",
+      phoneNumber: "",
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-		console.log(data)
-    toast("You submitted the following values:", {
-      description: "hello world"})
-  }
+  async function onSubmit(data: z.infer<typeof loginSchema>) {
+		const result = await loginAction(data)
+		if (!result) {
+			form.reset()
+			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
+		} else {
+			redirect("/")
+		} 
+	}
+
+
+	const acceptOnlyNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		const invalidKeys = ["e", "E", "+", "-"];
+		if ( invalidKeys.includes( e.key ) ) {
+			e.preventDefault( )
+		}
+	}
+
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="mt-30 mx-auto w-full sm:max-w-md">
       <CardHeader>
-        <CardTitle>Bug Report</CardTitle>
+        <CardTitle>로그인</CardTitle>
         <CardDescription>
-          Help us improve by reporting bugs you encounter.
+					로그인을 하시면 더 많은 내용을 볼 수 있습니다.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="form-login" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
-              name="title"
+              name="name"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">
-                    Bug Title
+                  <FieldLabel htmlFor="form-name">
+                    이름
                   </FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-title"
+                    id="form-name"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
+                    placeholder="김석수"
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -88,32 +97,22 @@ export default function BugReportForm() {
               )}
             />
             <Controller
-              name="description"
+              name="phoneNumber"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-description">
-                    Description
+                  <FieldLabel htmlFor="form-number">
+                    핸드폰 번호
                   </FieldLabel>
-                  <InputGroup>
-                    <InputGroupTextarea
-                      {...field}
-                      id="form-rhf-demo-description"
-                      placeholder="I'm having an issue with the login button on mobile."
-                      rows={6}
-                      className="min-h-24 resize-none"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    <InputGroupAddon align="block-end">
-                      <InputGroupText className="tabular-nums">
-                        {field.value.length}/100 characters
-                      </InputGroupText>
-                    </InputGroupAddon>
-                  </InputGroup>
-                  <FieldDescription>
-                    Include steps to reproduce, expected behavior, and what
-                    actually happened.
-                  </FieldDescription>
+										<Input 
+										{...field}
+										onKeyDown={(e) => acceptOnlyNumber(e)}
+										id="form-number"
+										type="number"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="01034533222"
+                    autoComplete="off"
+										/>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -125,11 +124,8 @@ export default function BugReportForm() {
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button>
-          <Button type="submit" form="form-rhf-demo">
-            Submit
+          <Button type="submit" form="form-login">
+            로그인
           </Button>
         </Field>
       </CardFooter>

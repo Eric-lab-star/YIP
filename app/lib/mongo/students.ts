@@ -8,6 +8,7 @@ import { ObjectId, WithId } from "mongodb";
 export async function createStudent(student: StudentData){
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
+
 	return await students.insertOne(student);
 }
 
@@ -40,8 +41,26 @@ export async function readStudent(id: ObjectId){
 		console.log(error)
 		return null
 	}
+}
+
+export async function findStudent(name: string, phoneNumber: string){
+	try {
+		const db = await getDB();
+		const student = db.collection<StudentData>("students")
+		return student.findOne({
+			name,
+			studentPhoneNumber:[
+				phoneNumber.slice(0,3),
+				phoneNumber.slice(3,7),
+				phoneNumber.slice(7,11),
+			]})
+	} catch(err){
+		console.log(err)
+		return null
+	}
 
 }
+
 
 export async function deleteStudent(id: ObjectId){
 	try{
