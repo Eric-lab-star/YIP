@@ -30,5 +30,4 @@ const style = tv({
 	base: "border-b-gray-600  border-b",
 	variants: {
 	}
-
 })
