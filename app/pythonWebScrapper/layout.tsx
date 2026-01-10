@@ -15,7 +15,7 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 			jwt.verify(token, JWT_SECRET)
 		}
 	} catch(e) {
-		redirect("/login")
+//		redirect("/login")
 	}
 
 

@@ -13,7 +13,7 @@ export default function proxy(req: NextRequest) {
 
 export const config = {
 	matcher: [
-		'/pythonWebScrapper/:path*',
+		// '/pythonWebScrapper/:path*',
 		'/mindmap/:path*',
 		"/students/:path*",
 		"/"
