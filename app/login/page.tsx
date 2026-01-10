@@ -31,8 +31,9 @@ export default function Page() {
 	useEffect(() => {
 		startTransition(async () => {
 			const validToken = await validateToken()
-			if (!validToken) {
+			if (validToken?.result == "expired token") {
 				toast.error("로그인 세션이 만료되었습니다.", {position: "top-center"})
+				return
 			}
 		})
 	},[]);
@@ -51,7 +52,7 @@ export default function Page() {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			redirect("/")
+			redirect("/pythonWebScrapper")
 		} 
 	}
 

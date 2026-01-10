@@ -23,16 +23,19 @@ export interface LoginActionRes {
 export async function validateToken() {
 	try {
 		const cookiesStore = await cookies();
-		const token = cookiesStore.get("token")?.value;
+		const token = cookiesStore.get("token");
 		if (!process.env.JWT_SECRET) {
 			throw new Error("Server error, JWT token is missing");
 		}
-		if (token) {
-			jwt.verify(token, process.env.JWT_SECRET) as LoginJWTPayload
-			return true 
+		if (!token) {
+			return {result: "no token", pass:true}
+		}
+		if (token.value) {
+			jwt.verify(token.value, process.env.JWT_SECRET) as LoginJWTPayload
+			return {result: "valid token", pass: true} 
 		}
 	} catch(e) {
-		return false
+		return {result: "expired token", pass: false}
 	}
 }
 

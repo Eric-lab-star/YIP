@@ -15,6 +15,7 @@ export const config = {
 	matcher: [
 		'/pythonWebScrapper/:path*',
 		'/mindmap/:path*',
-		"/students/:path*"
+		"/students/:path*",
+		"/"
 	]
 }

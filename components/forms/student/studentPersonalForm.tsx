@@ -1,7 +1,7 @@
 "use client";
 
 import { form } from "@/app/lib/tv/forms/FormStyles";
-import studentSchema, { DayType }  from "@/app/lib/zod/studentSchema";
+import studentSchema  from "@/app/lib/zod/studentSchema";
 import { StudentData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -11,25 +11,11 @@ import StudentBirthInput from "./StudentBirthInput";
 import StudentSchool from "./StudentSchool";
 import SubmitBtn from "@/components/commons/SubmitBtn";
 import ClassDays from "./StudentClassDay/ClassDays";
-import {v4 as uuidv4} from "uuid";
 import { useDaySelect } from "@/app/stores/classDayStore";
 import { useEffect } from "react";
 import { studentSignupFormAction, updateSignUpFormAction } from "@/app/actions/studentAction";
 import { WithId } from "mongodb";
 
-const mock = {
-	name: "testname",
-	birthYear: 2010,
-	birthDate: 12,
-	birthMonth: 1,
-	school: "testSchool",
-	studentPhoneNumber: ["010", "2344","2341"],
-	guardianPhoneNumber: ["010", "0342", "1234"],
-	classDays: [ 
-		{id: uuidv4(), day: "mon" as DayType, start: {h: 12, m: 30}, end: {h: 14, m: 30}},
-		{id: uuidv4(), day: "tue" as DayType, start: {h: 12, m: 30}, end: {h: 14, m: 30}},
-	],
-}
 
 export default function StudentPersonalForm({type, defaultData}: {type: "수정하기" |"등록하기" ,defaultData?: string}) {
 	const currentData: WithId<StudentData> = defaultData ? JSON.parse(defaultData): {};
@@ -53,18 +39,24 @@ export default function StudentPersonalForm({type, defaultData}: {type: "수정�
 
 	const onSubmit = async (data: StudentData) => {
 		const classDays = watch("classDays")
+		let stop;
 		classDays.forEach(
 			(v,i) => {
 				if ((v.start.m == 0 && v.start.h == 0) || (v.end.m == 0 && v.end.h == 0) ) {
 					setError(`classDays.${i}`, {message: "시간을 설정해주세요", type: "custom"})
+					stop = true;
 					return;
 				}
 				if ((v.start.h > v.end.h) ) {
 					setError(`classDays.${i}`, {message: "시간을 설정해주세요", type: "custom"})
+					stop = true;
 					return;
 				}
 			}
 		)
+		if (stop) {
+			return
+		}
 
 		if (errors.classDays) {
 			console.log(errors.classDays);

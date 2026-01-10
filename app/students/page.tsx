@@ -11,6 +11,10 @@ const koreanWeek = {
 	sat: "토",
 	sun: "일",
 } as const
+
+
+
+// 수업일정 검증안되는 오류가 있음
 export default async function Page() {
 	const students = await readManyStudent();
 
