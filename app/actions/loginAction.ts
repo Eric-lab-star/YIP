@@ -53,7 +53,7 @@ export type JwtPayloadUser = {
 function signAccessToken(payload: JwtPayloadUser) {
   return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "15m", // access token은 짧게
+    expiresIn: "6h", // access token은 짧게
   });
 }
 
@@ -67,8 +67,6 @@ function signRefreshToken(payload: Pick<JwtPayloadUser, "id">) {
 
 
 export async function loginAction(data: z.infer<typeof loginSchema>){
-
-
 	try {
 		const result = loginSchema.safeParse(data)
 		if (!result.success) {

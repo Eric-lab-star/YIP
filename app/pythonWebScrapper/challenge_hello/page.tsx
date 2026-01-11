@@ -1,10 +1,11 @@
+import Howto from "@/components/codesandbox/Howto";
 import CodeBlock from "@/components/commons/CodeBlock";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import { Code } from "mongodb";
-import Link from "next/link";
+import SayHello from "@/components/forms/challenge/SayHelloChallengeForm";
 
-export default function Page() {
+export default async function Page() {
+	
 	return (
 		<div className="mb-30">
 			<Title my="m">첫번째 과제 - 안녕! 내 이름은() </Title>
@@ -23,19 +24,12 @@ say_hello("정국")
 				`}/>
 			<Title my="m" weight="semi" size="h2">조건</Title>
 			<Text>1. 매개변수를 이용해서 이름을 만들어야 해요.</Text>
+			
+
 			<Text>2. 함수를 실행할 때, 인수가 없어도 오류없이 작동해야 해요.</Text>
-			<Title my="m" weight="semi" size="h2">제출 방법</Title>
-			<Link target="_blank" href={"https://codesandbox.io/"}>
-				<Text>1. 여기를 클릭해서 코드샌드박스로 이동! https://codesandbox.io </Text>
-			</Link>
-			<Text>2. 우측 상단에 signin 버튼 클릭!</Text>
-			<Text>3. 구글, 깃허브, 애플 계정으로 로그인.</Text>
-			<Text>4. 우측 상단에 create 버튼 클릭!</Text>
-			<Text>5. python 검색! </Text>
-			<Text>6. 가장 왼쪽에 있는 python 클릭 </Text>
-			<Text>7. create Devbox 클릭 </Text>
-			<Text>8. 왼쪽에서 main.py 클릭 </Text>
-			<Text>9. 중앙에 있는 시작버튼 누르면 코드가 실행됩니다. </Text>
+			<Howto />
+
+			<SayHello />
 
 		</div>
 	)

@@ -12,9 +12,9 @@ export const text = tv({
 			base: kr_300.className,
 		},
 		size:{
-			md: "text-base",
-			sm: "text-sm",
-			xs: "text-xs",
+			md: "text-lg",
+			sm: "text-base",
+			xs: "text-sm",
 		},
 		my:{
 			l: "my-6",
