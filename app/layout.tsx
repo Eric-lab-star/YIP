@@ -1,26 +1,57 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { notosansKorean } from "./stores/font";
 
+import { Noto_Sans_KR } from "next/font/google";
+import { Toaster } from "sonner";
+import { OctagonXIcon } from "lucide-react";
+import AuthProvider, { userContext } from "@/components/commons/AuthProvider";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { LoginJWTPayload } from "./actions/loginAction";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "DDokDDok",
-  description: "똑똑한 똑똑 코딩 ",
+  title: "Academia",
+  description: "Learn code with arduino",
 };
 
+
+const kr = Noto_Sans_KR({weight: "300", style: "normal"})
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+	const user: userContext = {
+		loggedIn: false,
+	}
+	try {
+		const store = await cookies()
+		const token = store.get("token")
+
+		if (token) {
+			const verified = jwt.verify(token.value, process.env.JWT_SECRET!) as  LoginJWTPayload
+			user.id = verified.userId
+			user.loggedIn = true
+			user.name = verified.name
+		}
+	} catch(e) {
+	}
+
+
+
   return (
-    <html lang="en">
+    <html lang="kr">
       <body
         className={`
-					${notosansKorean.className} antialiased
-					bg-zinc-200 lg:w-[1280] mx-auto md:w-[1280] space-y-3 `}
+					${kr.className} select-none antialiased
+					 lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]   bg-zinc-100 space-y-3 `}
       >
-        {children}
+				<AuthProvider userCtx={user}>
+					{children}
+					<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
+				</AuthProvider>
       </body>
     </html>
   );

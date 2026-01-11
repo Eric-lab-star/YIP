@@ -1,6 +1,6 @@
 
 /**
-* Delays function for 0.5sec
+* Delays function for <time> sec
 * @param sec - delay time
 *
 	* */
@@ -10,4 +10,13 @@ export async function delay(time: number) {
 			return resolve("success")
 		}, time)
 	})
+}
+
+
+export function toSafeNumber(str: string|undefined) {
+	if (!str ||str.trim() === "" ){
+		return null
+	} 
+	const num = Number(str);
+	return isNaN(num) ? null : num
 }

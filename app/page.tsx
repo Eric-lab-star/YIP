@@ -1,5 +1,15 @@
-import { redirect, RedirectType } from "next/navigation"
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+
 
 export default function Page() {
-	redirect("/home", RedirectType.replace)
+	redirect("/pythonWebScrapper")
+
+	return <div className="flex flex-col">
+		{/* <Link href={"/students"} > students </Link> */}
+		{/* <Link href={"/pythonWebScrapper"} > pythonWebScrapper </Link> */}
+		{/* <Link href={"/login"}> login</Link> */}
+	</div>
 }
+
