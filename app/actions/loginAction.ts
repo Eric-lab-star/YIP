@@ -34,6 +34,7 @@ export async function validateToken() {
 			jwt.verify(token.value, process.env.JWT_SECRET) as LoginJWTPayload
 			return {result: "valid token", pass: true} 
 		}
+		return {result: "something went wrong", pass: false}
 	} catch(e) {
 		return {result: "expired token", pass: false}
 	}
@@ -79,7 +80,12 @@ export async function loginAction(data: z.infer<typeof loginSchema>){
 
 		const token = signAccessToken({id: student._id.toString(), name: student.name, phoneNumber: student.studentPhoneNumber.join("")})
 		const cookieStore = await cookies()
-		cookieStore.set("token", token)
+
+		cookieStore.set("token", token, {
+			httpOnly: true,
+			sameSite: "lax",
+			expires: 60 * 60 * 6 // 6h
+		})
 
 		return true
 
