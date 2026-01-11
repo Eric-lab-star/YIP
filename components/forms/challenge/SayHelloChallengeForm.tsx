@@ -3,18 +3,24 @@
 import { challengeAction } from "@/app/actions/challengeAction";
 import { validateToken } from "@/app/actions/loginAction";
 import { challengeSchema } from "@/app/lib/zod/challengeSchema";
+import { AuthContext } from "@/components/commons/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useEffect, useState } from "react";
+import { startTransition, useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
 
 
 export default function SayHello() {
+	const {loggedIn, ...user} = useContext(AuthContext)
+	console.log(loggedIn)
+
+
+
 	const rhform = useForm<z.infer<typeof challengeSchema>>({
 		resolver: zodResolver(challengeSchema),
 		mode: "all",

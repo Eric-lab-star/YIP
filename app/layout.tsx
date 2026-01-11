@@ -4,6 +4,11 @@ import "./globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
+import AuthProvider, { userContext } from "@/components/commons/AuthProvider";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { LoginJWTPayload } from "./actions/loginAction";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Academia",
@@ -18,6 +23,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
+	const user: userContext = {
+		loggedIn: false,
+	}
+	try {
+		const store = await cookies()
+		const token = store.get("token")
+
+		if (token) {
+			const verified = jwt.verify(token.value, process.env.JWT_SECRET!) as  LoginJWTPayload
+			user.id = verified.userId
+			user.loggedIn = true
+			user.name = verified.name
+		}
+	} catch(e) {
+	}
+
+
+
   return (
     <html lang="kr">
       <body
@@ -25,8 +48,10 @@ export default async function RootLayout({
 					${kr.className} select-none antialiased
 					 lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]   bg-zinc-100 space-y-3 `}
       >
-        {children}
-				<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
+				<AuthProvider userCtx={user}>
+					{children}
+					<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
+				</AuthProvider>
       </body>
     </html>
   );
