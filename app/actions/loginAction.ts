@@ -2,17 +2,12 @@
 import { cookies } from "next/headers";
 import * as z from "zod";
 
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { loginSchema } from "../lib/zod/loginSchema";
 import { findStudent } from "../lib/mongo/students";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export interface LoginJWTPayload extends JwtPayload {
-	userId: string;
-	name: string;
-	iamge: string;
-}
 
 
 export interface LoginActionRes {
@@ -31,7 +26,7 @@ export async function validateToken() {
 			return {result: "no token", pass:true}
 		}
 		if (token.value) {
-			jwt.verify(token.value, process.env.JWT_SECRET) as LoginJWTPayload
+			jwt.verify(token.value, process.env.JWT_SECRET) as JwtPayloadUser 
 			return {result: "valid token", pass: true} 
 		}
 		return {result: "something went wrong", pass: false}
@@ -64,8 +59,6 @@ function signRefreshToken(payload: Pick<JwtPayloadUser, "id">) {
     expiresIn: "4h",
   });
 }
-
-
 
 export async function loginAction(data: z.infer<typeof loginSchema>){
 	try {
