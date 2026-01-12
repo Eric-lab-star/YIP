@@ -6,6 +6,7 @@ import Link from "next/link";
 
 
 export default function Page(){
+
 	return <div className="pb-50">
 		<Title size="h1"> Python Web Scrapper</Title>
 		<Title size="h2" weight="semi">요구되는 사전 지식</Title>

@@ -54,7 +54,7 @@ export type JwtPayloadUser = {
 function signAccessToken(payload: JwtPayloadUser) {
   return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "6h", // access token은 짧게
+    expiresIn: "1m", // access token은 짧게
   });
 }
 
@@ -78,18 +78,24 @@ export async function loginAction(data: z.infer<typeof loginSchema>){
 			return false
 		}
 
-		const token = signAccessToken({id: student._id.toString(), name: student.name, phoneNumber: student.studentPhoneNumber.join("")})
+		const token = signAccessToken({
+			id: student._id.toString(),
+			name: student.name,
+			phoneNumber: student.studentPhoneNumber.join("")
+		})
 		const cookieStore = await cookies()
 
 		cookieStore.set("token", token, {
 			httpOnly: true,
 			sameSite: "lax",
-			expires: 60 * 60 * 6 // 6h
+			maxAge: 60 * 2// 6h
 		})
 
 		return true
 
 	} catch(e) {
+		console.log(e)
+		return false
 		
 	}
 }

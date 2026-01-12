@@ -1,40 +1,48 @@
 "use client";
 
 import { challengeAction } from "@/app/actions/challengeAction";
-import { validateToken } from "@/app/actions/loginAction";
-import { challengeSchema } from "@/app/lib/zod/challengeSchema";
 import { AuthContext } from "@/components/commons/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useContext, useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import { useContext, useState  } from "react";
 import { Controller, useForm } from "react-hook-form";
-import * as z from "zod";
+import { toast } from "sonner";
 
 
-
+// 사용자가 제출했다면 제출했다는 메시지 보여주기 
+// form ui를 변경시키서 제출를 못하게 하기
+// useEffect로 처음 들어왔을 때 이미 제출했는지 확인하기
+// 제출후에도 확인
 export default function SayHello() {
-	const {loggedIn, ...user} = useContext(AuthContext)
-	console.log(loggedIn)
+	const {loggedIn, id, name} = useContext(AuthContext)
+	const [submitted, setSubmitted] = useState(false) 
+
+	if (!loggedIn) {
+		redirect("/login")
+	}
 
 
-
-	const rhform = useForm<z.infer<typeof challengeSchema>>({
-		resolver: zodResolver(challengeSchema),
+	const rhform = useForm<{link: string}>({
 		mode: "all",
 		defaultValues: {
-			name: "",
-			phoneNumber: "",
 			link: "",
 		}
 	})
 
-	const onSubmit = async (data: z.infer<typeof challengeSchema>) => {
-		const action = await challengeAction(data, "sayHello")
-		console.log(action)
-
+	const onSubmit = async ({link}: {link: string}) => {
+		if (!id || !name){
+			console.log("id or name is not valid")
+			toast.error("id or name is not valid")
+			redirect("/login")
+		}
+		const saved = await challengeAction({userId: id, name,link}, "sayHello")
+		if (saved) {
+			setSubmitted(true)
+			toast.success("과제를 제출을 완료했습니다.")
+		}
 	}
 
 	return(
@@ -47,55 +55,12 @@ export default function SayHello() {
 				<form id="rhf" onSubmit={rhform.handleSubmit(onSubmit)}>
 					<FieldGroup>
 						<Controller 
-							name="name"
-							control={rhform.control} 
-							render={({field, fieldState}) =>(
-								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor="rhf-name">
-										이름
-									</FieldLabel >
-									<Input
-										{...field}
-										id="rhf-name"
-										aria-invalid={fieldState.invalid}
-										placeholder="김커피"
-										autoComplete="off"
-									/>
-									{fieldState.error &&
-										<FieldError errors={[fieldState.error]}/>
-									}
-								</Field>
-							)}
-						/>
-
-
-						<Controller 
-							name="phoneNumber"
-							control={rhform.control} 
-							render={({field, fieldState}) =>(
-								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor="rhf-phoneNumber">
-										핸드폰 번호
-									</FieldLabel >
-									<Input
-										{...field}
-										id="rhf-phoneNumber"
-										aria-invalid={fieldState.invalid}
-										type="number"
-										placeholder="01012341234"
-										autoComplete="off"
-									/>
-									{fieldState.error &&
-										<FieldError errors={[fieldState.error]}/>
-									}
-									
-								</Field>
-							)}
-						/>
-
-
-						<Controller 
 							name="link"
+							rules={{
+								required: {value:true, message: "주소를 입력하세요"},
+								min: {value: 20, message: "올바른 주소를 입력하세요"},
+								pattern: {value: new RegExp(/https:\/\/codesandbox\.io\/.*/), message: "codesandbox.io 주소를 입력하세요"},
+							}}
 							control={rhform.control} 
 							render={({field, fieldState}) =>(
 								<Field data-invalid={fieldState.invalid}>
@@ -122,12 +87,11 @@ export default function SayHello() {
 			</CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-					
           <Button type="button" variant={"outline"} onClick={() =>rhform.reset()}>
-          	초기화
+          	지우기	
           </Button>
           <Button type="submit" form="rhf">
-          	제출하기
+					{submitted ? "수정하기" : "제출하기"}
           </Button>
         </Field>
       </CardFooter>
