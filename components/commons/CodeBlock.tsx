@@ -1,3 +1,4 @@
+"use client";
 
 import { container } from '@/app/lib/tv/commons';
 import { Prism as SyntaxHighlighter }from 'react-syntax-highlighter';

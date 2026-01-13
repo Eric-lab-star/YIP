@@ -1,9 +1,8 @@
 "use client"
-
+import Link  from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -24,19 +23,28 @@ import { loginSchema } from "../lib/zod/loginSchema"
 import { loginAction, validateToken } from "../actions/loginAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
-import { startTransition, useEffect } from "react"
+import { useEffect, useTransition } from "react"
 
+const checkToken = async () => {
+	const validToken = await validateToken()
+	if (validToken?.result == "expired token") {
+		return false
+	} else {
+		return true
+	}
+	
+}
 
 export default function Page() {
+	const [isSubmitting, startSubmittion] = useTransition()
+
 	useEffect(() => {
-		startTransition(async () => {
-			const validToken = await validateToken()
-			if (validToken?.result == "expired token") {
+		checkToken().then((r)=>{
+			if (!r) {
 				toast.error("로그인 세션이 만료되었습니다.", {position: "top-center"})
-				return
 			}
 		})
-	},[]);
+	},[])
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -52,10 +60,11 @@ export default function Page() {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			redirect("/pythonWebScrapper")
+			startSubmittion((() => {
+				redirect("/pythonWebScrapper")
+			}))
 		} 
 	}
-
 
 	const acceptOnlyNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		const invalidKeys = ["e", "E", "+", "-"];
@@ -67,6 +76,7 @@ export default function Page() {
 
   return (
     <Card className="mt-30 mx-auto w-full sm:max-w-md">
+			<Link href={"/pythonWebScrapper"}></Link>
       <CardHeader>
         <CardTitle>로그인</CardTitle>
         <CardDescription>
@@ -125,8 +135,8 @@ export default function Page() {
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="submit" form="form-login">
-            로그인
+          <Button type="submit" form="form-login" disabled={isSubmitting}>
+					{isSubmitting ? "기다려주세요" : "로그인" }
           </Button>
         </Field>
       </CardFooter>

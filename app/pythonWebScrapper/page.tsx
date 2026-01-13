@@ -1,4 +1,4 @@
-import CodeBlock from "@/components/commons/CodeBlock";
+import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import { LibraryBig, Snail } from "lucide-react";
