@@ -4,7 +4,6 @@ import "./globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
-import AuthProvider, { userContext } from "@/components/commons/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Academia",
