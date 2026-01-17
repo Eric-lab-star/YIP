@@ -8,8 +8,8 @@ import { JwtPayloadUser } from "../actions/loginAction";
 
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-
 export default async function Layout({children}:{children: React.ReactNode}) {
+	
 	const userCtx: userContext = {
 		loggedIn: false
 	}

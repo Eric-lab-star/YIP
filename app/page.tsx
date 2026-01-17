@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+export default async function Page() {
 
-
-export default function Page() {
 	redirect("/pythonWebScrapper")
 
 	return <div className="flex flex-col">
