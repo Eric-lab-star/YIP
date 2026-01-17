@@ -6,29 +6,26 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL, r2GetSignedURL } from "@/app/lib/r2/utils";
 
 async function getImageMetas() {
-	const images = []
-	for (let i = 0; i <= 9; i++) {
-		const url = await imageMetadata(`sandbox_${i + 1}.png`)
-		images[i] = url
-	}
-	return images
+
+	const promises = Array.from({length: 10}, (_, i) => imageMetadata(`sandbox_${i + 1}.png`))
+
+	return Promise.all(promises)
 }
+
 async function getImage(){
-	const images = []
-	for (let i = 0; i <= 9 ; i++){
-		const url = await r2GetSignedURL(`sandbox_${i + 1}.png`)
-		images[i] = url
-	}
+	const images = Array.from(
+		{length: 10},
+		(_, i) =>`${IMAGE_BASE_URL}/sandbox_${i + 1}.png`)
 	return images
 }
 
 export default async function Howto(){
-
 	const metas = await getImageMetas()
 	const images = await getImage()
+
 	return(
 		<>
 			<Title my="m" weight="semi" size="h2">제출 방법</Title>

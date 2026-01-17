@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
 				pathname: '**/*',
 			}, 
 			new URL('https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/**'),
+			new URL('https://r2.kimkyungsub.com/**')
 		]
 	}
 };

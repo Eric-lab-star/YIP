@@ -1,8 +1,9 @@
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL, r2GetSignedURL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import { Option } from "@/components/forms/quizz/Option";
@@ -11,14 +12,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page() {
-	const pythonFunctionJuice = await r2GetSignedURL("pythonFunctionJuice.png")
+	const pythonFunctionJuice = `${IMAGE_BASE_URL}/pythonFunctionJuice.png`
 	const pythonFunctionJuiceMeta = await imageMetadata("pythonFunctionJuice.png")
-	const functionBody = await r2GetSignedURL("pythonFunctionBody.png")
+	const functionBody = `${IMAGE_BASE_URL}/pythonFunctionBody.png`
 	const functionBodyMeta= await imageMetadata("pythonFunctionBody.png")
 	return (
 		<div className="mb-30">
-			<Title my="m">함수 Function</Title>
-			<Title  my="l" size="h2" weight="semi">함수를 만들자</Title>
+			<Link id="title" href={"/pythonWebScrapper/functions#title"}>
+				<Title my="m">함수 Function</Title>
+			</Link>
+			<Link id="create" href={"/pythonWebScrapper/functions#create"}>
+				<Title  my="l" size="h2" weight="semi">함수를 만들자</Title>
+			</Link>
 			<Text>
 이제부터 함수를 배워봐요. 함수는 영어로 function이라고 해요. 프로그래밍에서 사용되는 함수는 수학에서 사용된는 함수와 같은 점도 있고 다른 점도 있어요. 먼저 기본적인 함수의 작동 방식을 알아볼까요?
 			</Text>
@@ -70,7 +75,10 @@ print("hello")
 <div className="h-3" />
 <Code>def</Code>는 영어 define 을 의미해요. 한국어로 정의하다라는 의미에요. 다시 말해 파이썬을 이용해서 “game_over를 정의해” 라고 컴퓨터에게 작성하고 있는 거에요.
 			</CodeExplain>
-			<Title weight="semi" size="h2">간단한 함수를 만드는 방법</Title>
+
+			<Link id="simple_create" href={"/pythonWebScrapper/functions#simple_create"}>
+				<Title weight="semi" size="h2">간단한 함수를 만드는 방법</Title>
+			</Link>
 			<Text my="m"> 1. <Code>def</Code>를 작성한다 </Text>
 			<Text my="m"> 2. 한 칸을 띄우고 함수의 이름을 작성한다. </Text>
 			<Text my="m"> 3. <Code>():</Code>를 작성한다.</Text>
@@ -93,7 +101,9 @@ say_hello()
 함수를 실행하기 위해서는 <Code>()</Code> 콜론이 함수 이름 뒤에 반드시 있어야 해요.  콜론이 없으면 함수가 실행되지 않아요.
 			</CodeExplain>
 			
-			<Title weight="semi" my="l" size="h2"> 함수는 왜 만들까? </Title>
+			<Link id="why_create" href={"/pythonWebScrapper/functions#why_create"}>
+				<Title weight="semi" my="l" size="h2"> 함수는 왜 만들까? </Title>
+			</Link>
 			<Text style="mb-2">
 함수가 복잡하고 어렵다고 생각했나요. 하지만 놀랍게도 함수는 복잡하고 어려운 코드를 간단하고 읽기 편하게 하려고 만들어요. 함수는 믹서기와 같다고 했던 거 기억하나요? 만약 믹서기 없이 주스를 만든다고 생각을 해봐요. 1개 2개는 쉽게 만들 수 있어요. 하지만 매일 300개 혹은 500개를 만들어야 한다면 어떨까요? 이렇게 함수는 번거로운 일을 간단하게 도와주는 역할을 해요. 어려운 말로 "추상화"라고 해요. 영어로는 "abstraction"이라고 해요. 추상화 수준이 높을수록 복잡하고 어려운 코드는 사라지고 읽기 편하고 사용하기 쉬운 코드를 작성할 수 있게 되는 거예요.
 			</Text>
@@ -131,7 +141,9 @@ paint_text()
 왼쪽에 있는 코드를 실행시켜 볼까요?
 			</CodeExplain>
 
-			<Title my="l" size="h2" weight="semi"> 함수의 몸체 - Function Body </Title>
+			<Link id="function_body" href={"/pythonWebScrapper/functions#function_body"}>
+				<Title my="l" size="h2" weight="semi"> 함수의 몸체 - Function Body </Title>
+			</Link>
 			<Text my="m">
 "함수 바디", "함수의 몸체", "몸통" 이런 용어가 나오는데 무슨 뜻일까요? 다시 믹서기 비유로 돌가가면, 믹서기의 내부는 함수의 몸통이라고 생각할 수 있어요. 믹서기의 내부와 외부는 플라스틱으로 구분해요. 그렇다면 함수의 내부와 외부는 어떻게 구분할 수 있을까요? 함수의 내부와 외부는 공백으로 구분해요.
 			</Text>
@@ -181,7 +193,10 @@ print("start")
 				/>
 			</div>
 
+			<Link id="parameter" href={"/pythonWebScrapper/functions#parameter"}>
 			<Title size="h2" my="l" weight="semi">매개변수와 인수 Parameter and Argument </Title>
+			</Link>
+
 			<CodeExplain code={
 ` print("hello")
 
@@ -277,7 +292,10 @@ print(result)
 또한 <Code>return</Code>은 함수를 끝내는 역할을 하기 때문에 return 뒤오는 코드는 실행되지 않아요.
 			</CodeExplain>
 
-		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
+	
+		<Link id="quizz" href={"/pythonWebScrapper/functions#quizz"}>
+			<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
+		</Link>
 		<QuizzWithOptions layout="grid" answer={2} question="1. 올바르게 작성된 함수 코드를 고르세요.">
 			<Option value={1}> 
 				<Text>A.</Text>
@@ -391,6 +409,12 @@ print(juice)
 		</QuizzWithOptions>
 
 
+			<NextAndPrev
+			prev={"/pythonWebScrapper/variable_string_boolean"}
+			prevPage="변수, 문자열, 불리안"
+			next={"/pythonWebScrapper/challenge_hello"}
+			nextPage="도전! say_hello()"
+			/>
 		</div>
 	)
 }

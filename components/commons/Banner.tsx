@@ -1,10 +1,9 @@
 
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData"
-import { r2GetSignedURL } from "@/app/lib/r2/utils"
+import { IMAGE_BASE_URL } from "@/app/lib/r2/utils"
 import Image from "next/image"
 
 export default async function Banner({id}:{id:string}) {
-	const pythonBanner = await r2GetSignedURL(id)
 	const meta = await imageMetadata(id)
 
 	return (
@@ -14,7 +13,7 @@ export default async function Banner({id}:{id:string}) {
 			className="h-30 sm:h-30 md:h-50 lg:h-70"
 			placeholder="blur"
 			blurDataURL={meta.blurDataURL} 
-			src={pythonBanner}
+			src={`${IMAGE_BASE_URL}/${id}`}
 			alt="python banner"
 			width={meta.width} height={meta.height} />
 	</div>

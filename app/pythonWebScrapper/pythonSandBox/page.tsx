@@ -1,6 +1,7 @@
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL, r2GetSignedURL } from "@/app/lib/r2/utils";
 import CodeBlock from "@/components/commons/CodeBlock";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import Image from "next/image";
@@ -10,22 +11,26 @@ import Link from "next/link";
 
 export default async function Page() {
 	const sandBox01Meta =  await imageMetadata("pythonSandBox_01.png")
-	const sandBox01 = await r2GetSignedURL("pythonSandBox_01.png")
+	const sandBox01 = `${IMAGE_BASE_URL}/pythonSandBox_01.png`
 	const sandBox02Meta =  await imageMetadata("pythonSandBox_02.png")
-	const sandBox02 = await r2GetSignedURL("pythonSandBox_02.png")
+	const sandBox02 = `${IMAGE_BASE_URL}/pythonSandBox_02.png`
 	const sandBox03Meta =  await imageMetadata("pythonSandBox_03.png")
-	const sandBox03 = await r2GetSignedURL("pythonSandBox_03.png")
+	const sandBox03 =  `${IMAGE_BASE_URL}/pythonSandBox_03.png`
 	const sandBox04Meta =  await imageMetadata("pythonSandBox_04.png")
-	const sandBox04 = await r2GetSignedURL("pythonSandBox_04.png")
+	const sandBox04 = `${IMAGE_BASE_URL}/pythonSandBox_04.png`
 	const sandBox05Meta =  await imageMetadata("pythonSandBox_05.png")
-	const sandBox05 = await r2GetSignedURL("pythonSandBox_05.png")
+	const sandBox05 = `${IMAGE_BASE_URL}/pythonSandBox_05.png`
 	const sandBox06Meta =  await imageMetadata("pythonSandBox_06.png")
-	const sandBox06 = await r2GetSignedURL("pythonSandBox_06.png")
+	const sandBox06 = `${IMAGE_BASE_URL}/pythonSandBox_06.png`
 
 	return (
 		<div className="pb-30">
-			<Title>Python Sandbox</Title>
-			<Title my="l" weight="semi" size="h2">파이썬 편집기</Title>
+			<Link href={"/pythonWebScrapper/pythonSandBox#title"}>
+				<Title>Python Sandbox</Title>
+			</Link>
+			<Link href={"/pythonWebScrapper/pythonSandBox#editor"}>
+				<Title my="l" weight="semi" size="h2">파이썬 편집기</Title>
+			</Link>
 			<Text my="l"  children="기초 수업을 하는 동안에는 번거로운 설치 과정을 생략하기 위해서 pythonsandbox.io에서 파이썬 코드를 작성할 거에요. 다른 언어를 이미 공부해본 경험이 있거나, pythonsandbox.io가 마음에 들지 않는 다면 원하는 곳에 작성해도 좋아요. "/>
 			<Title size="h2" weight="semi">사용 방법</Title>
 			<Link target="_blank" href="https://pythonsandbox.io/">
@@ -71,7 +76,7 @@ export default async function Page() {
 
 			<Text my="l"  children="Run 버튼을 눌렀을 때 오른쪽에 보이는 글이 실행된 결과에요. 우리는 왼쪽에 파이썬 코드를 작성할 거에요." />
 
-			<div className="grid grid-cols-2 py-3">
+			<div className="md:grid md:grid-cols-2 py-3">
 				<CodeBlock code={
 					`# Python 3.9.5 (default, May 11 2021, 07:48:02)
 	# [GCC 10.3.0] on linux
@@ -83,7 +88,7 @@ export default async function Page() {
 			</div>
 
 
-			<div className="grid grid-cols-2 py-3">
+			<div className="md:grid md:grid-cols-2 py-3">
 				<CodeBlock code={
 `# Python 3.9.5 (default, May 11 2021, 07:48:02)
 # [GCC 10.3.0] on linux
@@ -101,7 +106,12 @@ print("파이썬 공부 시작!") `
 			/>
 
 			<Text my="l" children="이렇게 나왔으면 성공이에요. 이제부터 파이썬 공부를 시작합니다.  " />
-
+			<NextAndPrev 
+			prev={"/pythonWebScrapper"}
+			prevPage="파이썬 시작하기"
+			next={"/pythonWebScrapper/variable_string_boolean"}
+			nextPage="변수, 문자열 불리안"
+			/>
 		</div>
 	)
 }

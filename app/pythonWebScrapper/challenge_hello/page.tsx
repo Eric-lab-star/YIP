@@ -1,5 +1,6 @@
 import Howto from "@/components/codesandbox/Howto";
 import CodeBlock from "@/components/commons/CodeBlock";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import SayHello from "@/components/forms/challenge/SayHelloChallengeForm";
@@ -28,8 +29,13 @@ say_hello("정국")
 
 			<Text>2. 함수를 실행할 때, 인수가 없어도 오류없이 작동해야 해요.</Text>
 			<Howto />
-
 			<SayHello />
+			<NextAndPrev
+				prev="/pythonWebScrapper/functions"
+				prevPage="함수"
+				next="/pythonWebScrapper/challenge_arithmetic"
+				nextPage="도전! 사칙연산"
+			/>
 
 		</div>
 	)

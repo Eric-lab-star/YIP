@@ -13,3 +13,10 @@ export async function r2GetSignedURL(key: string) {
 	return url
 
 }
+
+export const IMAGE_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://cdn.kimkyungsub.com"
+    : "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev"
+
+	

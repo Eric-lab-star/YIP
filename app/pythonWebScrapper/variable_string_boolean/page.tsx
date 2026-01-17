@@ -1,31 +1,37 @@
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";
 import ImageExplain from "@/components/commons/ImageExplain";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import { Option } from "@/components/forms/quizz/Option";
 import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import Image from "next/image";
+import Link from "next/link";
 
 
 
 export default async function Page() {
-	const stringErrorImageSrc = await r2GetSignedURL("NameError.png") 
-	const explainVariable = await r2GetSignedURL("explainVariables.png")
+	const stringErrorImageSrc = `${IMAGE_BASE_URL}/NameError.png`
+	const explainVariable = `${IMAGE_BASE_URL}/explainVariables.png`
 	const explainVariableMeta = await imageMetadata("explainVariables.png")
 
 
 	return (
 		<div className="space-y-5 mb-50">
-			<Title> 변수, 문자열, 불리안 </Title>
+			<Link id={"title"} href={"/pythonWebScrapper/variable_string_boolean#title"}>
+				<Title> 변수, 문자열, 불리안 </Title>
+			</Link>
 
-			<Title weight="semi" size="h2"> 🦍 변수 - variable</Title>
+			<Link id={"variable"} href={"/pythonWebScrapper/variable_string_boolean#variable"}>
+				<Title weight="semi" size="h2"> 🦍 변수 - variable</Title>
+			</Link>
 			
-			<div className="grid grid-cols-2">
+			<div className="md:grid md:grid-cols-2">
 				<CodeBlock code={
 `
 a = 2
@@ -35,7 +41,7 @@ a = 2
 				</Text>
 			</div>
 
-			<div className="grid grid-cols-2">
+			<div className="md:grid md:grid-cols-2">
 				<CodeBlock code={
 `a = 2
 b = 3
@@ -75,7 +81,7 @@ age_10 = 10 # 가능 - 숫자가 뒤에 오는 것은 가능함
 
 			<div className={"flex justify-center items-center"}>
 				<Image 
-					className=" w-[50%]"
+					className="w-[50%]"
 					src={explainVariable} 
 					alt="explains variables" 
 					width={explainVariableMeta.width} 
@@ -88,7 +94,9 @@ age_10 = 10 # 가능 - 숫자가 뒤에 오는 것은 가능함
 
 
 
-			<Title my="s" weight="semi" size="h2">🐘 문자열 - string </Title>
+			<Link id="string" href={"/pythonWebScrapper/variable_string_boolean#string"}>
+				<Title my="s" weight="semi" size="h2">🐘 문자열 - string </Title>
+			</Link>
 			<CodeExplain code={`food = apple # 오류!`}>
 		숫자를 변수의 값으로 만드는 방법은 이제 알았어요. 이제 음식의 이름을 변수의 값으로 만들어 볼까요.
 			<div className="my-1"/>
@@ -115,7 +123,10 @@ print(food)
 	<div />
 2026이 따옴표안에 있음으로 파이썬은 숫자로 이해합니다.
 		</CodeExplain>
-		<Title weight="semi" size="h2">🦁 불리안 boolean</Title>
+
+		<Link id="boolean" href={"/pythonWebScrapper/variable_string_boolean#boolean"}>
+			<Title weight="semi" size="h2">🦁 불리안 boolean</Title>
+		</Link>
 
 		<CodeExplain code={
 `# 파이썬 불리안
@@ -125,7 +136,10 @@ dead = "False" # 오류! 따옴표안에 있으면 문자열임.
 `}>
 			불리안은 참 혹은 거짓의 상태를 표현하는 값이에요. 이러한 값으로  게임에서 죽었는지 살았는지 나타낼 수 있어요. 
 		</CodeExplain>
-		<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
+
+		<Link id="quizz" href={"/pythonWebScrapper/variable_string_boolean#quizz"}>
+			<Title weight="semi" size="h2">❓ Quizz! 문제를 맞춰봐요!</Title>
+		</Link>
 
 		<QuizzWithOptions answer={3} question="1. 변수 a에 변수값으로 2를 지정하는 방법으로 올바른 것을 고르세요">
 			<Option value={1}>1. a = 3</Option>
@@ -167,5 +181,12 @@ print(result)
 			<Option value={3}>3. False</Option>
 			<Option value={4}>4. True</Option>
 		</QuizzWithOptions >
+
+			<NextAndPrev
+			prev={"/pythonWebScrapper/pythonSandBox"}
+			prevPage="Python SandBox.io 소개"
+			next={"/pythonWebScrapper/functions"}
+			nextPage="함수"
+			/>
 	</div>
 )}

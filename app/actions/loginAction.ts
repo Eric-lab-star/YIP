@@ -49,7 +49,7 @@ export type JwtPayloadUser = {
 function signAccessToken(payload: JwtPayloadUser) {
   return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "10m", // access token은 짧게
+    expiresIn: "60m", // access token은 짧게
   });
 }
 
@@ -81,7 +81,7 @@ export async function loginAction(data: z.infer<typeof loginSchema>){
 		cookieStore.set("token", token, {
 			httpOnly: true,
 			sameSite: "lax",
-			maxAge: 60 * 10// 6h
+			maxAge: 60 * 60// 6h
 		})
 
 		return true

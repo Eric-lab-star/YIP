@@ -8,13 +8,14 @@ import Link from "next/link";
 export default async function Page(){
 
 	return <div className="pb-50">
-		<Title size="h1"> Python Web Scrapper</Title>
-		<Title size="h2" weight="semi">요구되는 사전 지식</Title>
+		<Title> Python Web Scrapper</Title>
+		<Title my="m" size="h2" weight="semi">요구되는 사전 지식</Title>
 		<Text>인터넷을 사용할 수 있는 사람이면 누구나</Text>
 		<Title my="l" size="h2" weight="semi">🐍 파이썬이란 무엇인가</Title>
 		<Text>
 파이썬은  컴퓨터에게 말을 걸 수 있는 쉬운 언어예요.  우리가 한국어로 이야기하듯이, 컴퓨터와는 파이썬 말로 이야기해요.  일상생활로 비유하면 리모컨을 생각해 보세요. 버튼을 누르면 TV 가 켜지고, 채널이 바뀌죠? 파이썬은 컴퓨터 리모컨이에요. 우리가 버튼, 즉 코드를 입력하면 컴퓨터가 그대로 행동해요!
 		</Text>
+
 		<Title my="l" size="h2" weight="semi"> 파이썬으로 무엇을 할 수 있는가 </Title>
 		<div className="px-3 space-y-2">
 			<Text> 🧮 계산하기</Text>
@@ -64,6 +65,14 @@ print(fibonacci(9)) `
 			<Text>2. 😴 초반에는 지루할 수 있다.</Text>
 			<Text>3. ✔️ 필요한 것들만 배운다.</Text>
 		</div>
+
+		<Title weight="semi" size="h2" my="l">프로젝트를 완성하면서 파이썬을 배운다</Title>
+		<div className="px-3 space-y-2">
+			<Text>1. 🙅‍♂️  타이핑만 하지 않아서 좋아요</Text>
+			<Text>2. 😴  문법만 배우지 않아서 재미있어요.</Text>
+			<Text>3. ✔️  아두이노를 제어할 수 있어요.</Text>
+		</div>
+
 		<Text my="l">
 			넓은 파이썬 세계를 한번에 배울 수는 없어요. 필요한 부분만 배울 거에요. 초반에는 이론적인 부분을 배우기 때문에 이것을 왜 배우지 의심할 수 있지만, 견디고 따라온다면 멋진 파이썬 프로그램을 만들 수 있게 될 거에요. 
 		</Text>
@@ -80,17 +89,17 @@ print(fibonacci(9)) `
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
 				<Text weight="bold" my="m"> 📕 Python SandBox.io 소개</Text>
 			 </Link>
-			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
 				<Text weight="bold"my="m" >📗 변수, 문자열, 불리안</Text>
 			</Link>
-			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/functions"}>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/functions"}>
 				<Text weight="bold" my="m"> 📘 파이썬 함수</Text>
 			</Link>
-			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
 				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>
 			 </Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_arithmetic"}>
-				<Text weight="bold" my="m"> 📙 도전! 사칙연산</Text>
+				<Text  weight="bold" my="m"> 📙 도전! 사칙연산</Text>
 			</Link>
 		</div>
 	</div>

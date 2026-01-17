@@ -1,6 +1,6 @@
 export default function TwoColumn({children}: {children: React.ReactNode}) {
 	return (
-		<div className="grid grid-cols-2">
+		<div className="md:grid md:grid-cols-2">
 			{children}
 		</div>
 	) 
