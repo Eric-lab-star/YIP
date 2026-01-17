@@ -6,11 +6,12 @@ import Image from "next/image"
 export default async function Banner({id}:{id:string}) {
 	const pythonBanner = await r2GetSignedURL(id)
 	const meta = await imageMetadata(id)
+
 	return (
-		<div className="overflow-hidden max-h-80 w-full bg-zinc-500 z-0 relative">
+		<div className="overflow-hidden h-20 sm:h-30 md:h-50 lg:h-70 w-full bg-zinc-400 z-0 relative">
 		<Image
 			preload={true}
-			className="h-80"
+			className="h-30 sm:h-30 md:h-50 lg:h-70"
 			placeholder="blur"
 			blurDataURL={meta.blurDataURL} 
 			src={pythonBanner}

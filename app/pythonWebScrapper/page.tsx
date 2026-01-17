@@ -5,7 +5,7 @@ import { LibraryBig, Snail } from "lucide-react";
 import Link from "next/link";
 
 
-export default function Page(){
+export default async function Page(){
 
 	return <div className="pb-50">
 		<Title size="h1"> Python Web Scrapper</Title>
