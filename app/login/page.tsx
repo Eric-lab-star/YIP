@@ -23,7 +23,8 @@ import { loginSchema } from "../lib/zod/loginSchema"
 import { loginAction, validateToken } from "../actions/loginAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
-import { useEffect, useTransition } from "react"
+import { useEffect } from "react"
+import { Spinner } from "@/components/ui/spinner"
 
 const checkToken = async () => {
 	const validToken = await validateToken()
@@ -36,7 +37,6 @@ const checkToken = async () => {
 }
 
 export default function Page() {
-	const [isSubmitting, startSubmittion] = useTransition()
 
 	useEffect(() => {
 		checkToken().then((r)=>{
@@ -54,15 +54,16 @@ export default function Page() {
     },
   })
 
+	const {isSubmitting } = form.formState
+
+
   async function onSubmit(data: z.infer<typeof loginSchema>) {
 		const result = await loginAction(data)
 		if (!result) {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			startSubmittion((() => {
-				redirect("/pythonWebScrapper")
-			}))
+			redirect("/pythonWebScrapper")
 		} 
 	}
 
@@ -75,7 +76,8 @@ export default function Page() {
 
 
   return (
-    <Card className="mt-30 mx-auto w-full sm:max-w-md">
+		<div className="pt-30">
+    <Card className={ `mx-auto w-full sm:max-w-md ${isSubmitting && "animate-pulse"}`}>
 			<Link href={"/pythonWebScrapper"}></Link>
       <CardHeader>
         <CardTitle>로그인</CardTitle>
@@ -100,6 +102,7 @@ export default function Page() {
                     aria-invalid={fieldState.invalid}
                     placeholder="김석수"
                     autoComplete="off"
+										disabled={isSubmitting}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -123,6 +126,7 @@ export default function Page() {
                     aria-invalid={fieldState.invalid}
                     placeholder="01034533222"
                     autoComplete="off"
+										disabled={isSubmitting}
 										/>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -136,10 +140,13 @@ export default function Page() {
       <CardFooter>
         <Field orientation="horizontal">
           <Button type="submit" form="form-login" disabled={isSubmitting}>
-					{isSubmitting ? "기다려주세요" : "로그인" }
+					{isSubmitting ? 
+						<><Spinner /> 기다려주세요</> :
+						"로그인" }
           </Button>
         </Field>
       </CardFooter>
     </Card>
+		</div>
   )
 }

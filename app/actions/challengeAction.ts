@@ -1,12 +1,12 @@
 "use server";
 
-import { createChallege, findChallenge } from "../lib/mongo/challenge";
+import { challenges, createChallege, findChallenge } from "../lib/mongo/challenge";
 import { challengeSchema } from "../lib/zod/challengeSchema";
 import * as z from "zod"
 
 export async function challengeAction(
 	data: z.infer<typeof challengeSchema>,
-	name: "sayHello"
+	name: challenges
 ){
 	const result = challengeSchema.safeParse(data)
 	if (!result.success){
@@ -19,7 +19,7 @@ export async function challengeAction(
 
 export async function findChallengeAction(
 	userId: string,
-	name: "sayHello"
+	name: challenges
 ){
 	return await findChallenge(userId, name)
 }

@@ -1,7 +1,7 @@
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import { LibraryBig, Snail } from "lucide-react";
+import { LibraryBig, Rabbit, Snail } from "lucide-react";
 import Link from "next/link";
 
 
@@ -76,15 +76,17 @@ print(fibonacci(9)) `
 		<Text my="l">
 			넓은 파이썬 세계를 한번에 배울 수는 없어요. 필요한 부분만 배울 거에요. 초반에는 이론적인 부분을 배우기 때문에 이것을 왜 배우지 의심할 수 있지만, 견디고 따라온다면 멋진 파이썬 프로그램을 만들 수 있게 될 거에요. 
 		</Text>
-		<div className="flex items-center space-x-2">
+		<div className="my-3 flex items-center space-x-2">
 			<LibraryBig className="text-teal-600"/>
 			<Title mx="x" weight="semi" size="h2">교육과정</Title>
 		</div>
 
-		<div className="flex items-center space-x-2">
-			<Snail className="text-blue-300"/>
-			<Title mx="x" weight="semi" size="h2">Day 1</Title>
-		</div>
+		<Link id="day_1" href="/pythonWebScrapper#day_1"> 
+			<div className="flex items-center space-x-2">
+				<Snail className="text-blue-300"/>
+				<Title mx="x" weight="semi" size="h2">Day 1</Title>
+			</div>
+		</Link>
 		<div className="flex flex-col">
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
 				<Text weight="bold" my="m"> 📕 Python SandBox.io 소개</Text>
@@ -102,5 +104,31 @@ print(fibonacci(9)) `
 				<Text  weight="bold" my="m"> 📙 도전! 사칙연산</Text>
 			</Link>
 		</div>
+		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
+
+		<Link id="day_2" href="/pythonWebScrapper#day_2"> 
+			<div className="flex items-center space-x-2">
+				<Rabbit className="text-red-300"/>
+				<Title mx="x" weight="semi" size="h2">Day 2</Title>
+			</div>
+		</Link>
+		<div className="flex flex-col">
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
+				<Text weight="bold" my="m"> 📕 Python SandBox.io 소개</Text>
+			 </Link>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
+				<Text weight="bold"my="m" >📗 변수, 문자열, 불리안</Text>
+			</Link>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/functions"}>
+				<Text weight="bold" my="m"> 📘 파이썬 함수</Text>
+			</Link>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
+				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>
+			 </Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_arithmetic"}>
+				<Text  weight="bold" my="m"> 📙 도전! 사칙연산</Text>
+			</Link>
+		</div>
+
 	</div>
 }
