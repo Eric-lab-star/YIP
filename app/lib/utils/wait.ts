@@ -5,9 +5,9 @@
 *
 	* */
 export async function delay(time: number) {
-	return new Promise<string>((resolve) => {
+	return new Promise(() => {
 		setTimeout(()=>{
-			return resolve("success")
+			console.info("waiting....")
 		}, time)
 	})
 }

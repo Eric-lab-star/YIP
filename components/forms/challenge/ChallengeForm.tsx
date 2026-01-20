@@ -1,26 +1,42 @@
 "use client";
 
 import { challengeAction, findChallengeAction } from "@/app/actions/challengeAction";
+import { challenges } from "@/app/lib/mongo/challenge";
 import { AuthContext } from "@/components/commons/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { sub } from "date-fns";
+import { PartyPopper } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useContext, useEffect, useState  } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 
-export default function SayHello() {
+interface ChallengForm {
+	challenge: challenges
+}
+
+export default function ChallengForm({challenge}: ChallengForm) {
 	const {loggedIn, id, name} = useContext(AuthContext)
-	const [submitted, setSubmitted] = useState(false) 
+	const [submitted, setSubmitted] = useState<{submitted: boolean, link?: string}>({submitted: false}) 
+
+	const rhform = useForm<{link: string}>({
+		mode: "all",
+		defaultValues: {
+			link: submitted.link ? submitted.link : "",
+		}
+	})
 
 	useEffect(() =>{
 		const find = async () => {
 			if (id && name){
-				const doc = await findChallengeAction(id, "sayHello")
+				const doc = await findChallengeAction(id, challenge)
 				setSubmitted(doc)
+				rhform.setValue("link", doc.link ? doc.link : "")
 			}
 		}
 		find()
@@ -31,12 +47,6 @@ export default function SayHello() {
 	}
 
 
-	const rhform = useForm<{link: string}>({
-		mode: "all",
-		defaultValues: {
-			link: "",
-		}
-	})
 
 	const onSubmit = async ({link}: {link: string}) => {
 		if (!id || !name){
@@ -44,17 +54,17 @@ export default function SayHello() {
 			toast.error("id or name is not valid")
 			redirect("/login")
 		}
-		const saved = await challengeAction({userId: id, name,link}, "sayHello")
+		const saved = await challengeAction({userId: id, name,link}, challenge)
 		if (saved) {
-			setSubmitted(true)
+			setSubmitted({submitted: true, link: link})
 			toast.success("과제를 제출을 완료했습니다.")
 		}
 	}
 
 	return(
-		<Card className="my-6 w-full sm:max-w-md mx-auto">
+		<Card className={ `my-6 w-full sm:max-w-md mx-auto ${rhform.formState.isSubmitting && "animate-pulse"}`}>
 			<CardHeader>
-				<CardTitle>1번째 과제. say_hello()</CardTitle>
+				<CardTitle>도전 과제! {challenge}</CardTitle>
 				<CardDescription>과제를 완성하고 링크를 제출하세요.</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -94,7 +104,7 @@ export default function SayHello() {
 
 			</CardContent>
 			<CardContent>
-				{submitted && <p className="text-red-400">제출을 완료했습니다</p>}
+				{submitted && <div className="text-blue-400 flex space-x-3"> <PartyPopper/> <div>제출되었습니다.</div></div>}
 			</CardContent>
 
       <CardFooter>
@@ -103,6 +113,7 @@ export default function SayHello() {
           	지우기	
           </Button>
           <Button type="submit" form="rhf">
+						{rhform.formState.isSubmitting && <Spinner />}
 						{submitted ? "다시 제출하기" : "제출하기"}
           </Button>
         </Field>

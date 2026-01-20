@@ -29,6 +29,7 @@ export default async function Howto(){
 	return(
 		<>
 			<Title my="m" weight="semi" size="h2">제출 방법</Title>
+			<Text my="l" style="text-red-600">이미 방법을 알고 있다면 맨 아래에서 링크를 제출하세요.</Text>
 			<Link target="_blank" href={"https://codesandbox.io/"}>
 				<Text>1. 여기를 클릭해서 코드샌드박스로 이동! https://codesandbox.io </Text>
 			</Link>

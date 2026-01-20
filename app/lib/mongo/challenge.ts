@@ -2,9 +2,11 @@ import * as z from "zod"
 import { challengeSchema } from "../zod/challengeSchema";
 import { getDB } from "./db";
 
+export type challenges = "sayHello" | "basicCal"
+
 export async function createChallege(
 	data: z.infer< typeof challengeSchema>,
-	name: "sayHello"
+	name: challenges
 ){
 	try {
 		const db = await getDB()
@@ -16,27 +18,26 @@ export async function createChallege(
 		)
 		return true
 	} catch(e) {
-		console.log(e)
 		return false
 	}
 }
 
 export async function findChallenge(
 	userId: string,
-	name: "sayHello"
+	name: challenges
 ){
 	try {
 		const db = await getDB()
 		const coll = db.collection<z.infer<typeof challengeSchema>>(name)
 		const doc = await coll.findOne({userId: userId})
 		if (!doc) {
-			return false
+			return {submitted: false }
 		} else {
-			return true
+			return {submitted: true, link: doc.link}
 		}
 
 	} catch(e) {
-		return false
+		return {submitted: false}
 	}
 }
 
