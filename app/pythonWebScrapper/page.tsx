@@ -113,8 +113,8 @@ print(fibonacci(9)) `
 			</div>
 		</Link>
 		<div className="flex flex-col">
-			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
-				<Text weight="bold" my="m"> 📕 </Text>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/if"}>
+				<Text weight="bold" my="m"> 📕 if, else and elif</Text>
 			 </Link>
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
 				<Text weight="bold"my="m" >📗 변수, 문자열, 불리안</Text>
