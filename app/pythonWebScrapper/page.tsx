@@ -1,7 +1,7 @@
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import { LibraryBig, Rabbit, Snail } from "lucide-react";
+import { LibraryBig, Origami, Rabbit, Snail } from "lucide-react";
 import Link from "next/link";
 
 
@@ -122,6 +122,16 @@ print(fibonacci(9)) `
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/cat_or_dog"}>
 				<Text weight="bold"my="m" >📗 고양이와 강아지</Text>
 			</Link>
+		</div>
+		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
+
+		<Link id="day_3" href="/pythonWebScrapper#day_3"> 
+			<div className="flex items-center space-x-2">
+				<Origami className="text-orange-400"/>
+				<Title mx="x" weight="semi" size="h2">Day 3</Title>
+			</div>
+		</Link>
+		<div className="flex flex-col">
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
 				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>
 			 </Link>
@@ -129,6 +139,5 @@ print(fibonacci(9)) `
 				<Text  weight="bold" my="m"> 📙 도전! 사칙연산</Text>
 			</Link>
 		</div>
-
 	</div>
 }

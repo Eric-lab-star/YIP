@@ -1,5 +1,6 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -31,7 +32,7 @@ export default function Page(){
 	## 조건이 참일 경우 실행될 코드
 `}/>
 				<div>
-					<Text>if문 작성는 이렇게 해요.</Text>
+					<Text><Code>if</Code>문 작성는 이렇게 해요.</Text>
 					<Text>1. if를 입력한다.</Text>
 					<Text>2. 한 칸을 띄우고 조건을 작성한다.</Text>
 					<Text>3. 조건 다음에 <Code>:</Code> 콜론을 작성한다</Text>
@@ -44,7 +45,7 @@ export default function Page(){
 				<Title my="m" size="h2" weight="bold">else</Title>
 			</Link>
 			<Text>
-이번에는 신분증 검사를 하는 상황이라고 가정해 봐요. 19세 이상이면 어른이고 19미만이면 미성년자이니까. 2가지 상황에 알맞는 코드가 필요하겠네요.  이런 상황에서는 else를 사용할 수 있어요.
+이번에는 신분증 검사를 하는 상황이라고 가정해 봐요. 19세 이상이면 어른이고 19세 미만이면 미성년자이니까, 2가지 상황에 알맞은 코드가 필요하겠네요. 이런 상황에서는 else를 사용할 수 있어요.
 			</Text>
 			<TwoColumn>
 				<CodeBlock code={
@@ -79,7 +80,6 @@ else:
 				<Text>elif는 다양한 상황에  대응 가능한 코드를 작성하도록 도와줘요.점수에 따라서 등급을 매길 때, 혹은 나이에 따라서 좌석이 달라질 때와 같은 상황에 자주 사용됩니다. 하지만  elif를 사용할 때 주의 할 점이 있어요. </Text>
 			</TwoColumn>
 
-			<Title my="m" size="h2">알아두기</Title>
 			<TwoColumn>
 				<CodeBlock code={
 `def grades(score):
@@ -137,7 +137,7 @@ elif age > 19:
 
 			`}/>
 			<Option value={1}>
-				<Text>1. 사용자의 입력을 user_input으로 받을 수 있다. </Text>
+				<Text>1. 사용자의 입력을 <Code>input</Code>으로 받을 수 있다. </Text>
 			</Option>
 			<Option value={2}>
 				<Text>2. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
@@ -149,33 +149,12 @@ elif age > 19:
 				<Text>4. 15를 입력하면 청소년 요금을 알려준다.</Text>
 			</Option>
 		</QuizzWithOptions>
-
-		<QuizzWithOptions answer={1} question="3.다음 코드에 관한 설명으로 올바른 것을 고르세요">
-			<CodeBlock code={
-`# if elif 연습문제
-age = int(input("나이를 입력하세요: "))
-
-if age < 10:
-		print("어린이 요금은 300원입니다.")
-elif age > 15:
-		print("청소년 요금은 500원입니다.")
-elif age > 19:
-		print("성인 요금은 1300원입니다.")
-
-			`}/>
-			<Option value={1}>
-				<Text>1. 사용자의 입력을 user_input으로 받을 수 있다. </Text>
-			</Option>
-			<Option value={2}>
-				<Text>2. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
-			</Option>
-			<Option value={3}>
-				<Text>3. 20을 입력하면 성인 요금을 알려준다.</Text>
-			</Option>
-			<Option value={4}>
-				<Text>4. 15를 입력하면 청소년 요금을 알려준다.</Text>
-			</Option>
-		</QuizzWithOptions>
+		<NextAndPrev
+		next="/pythonWebScrapper/cat_or_dog"
+		nextPage="고양이와 강아지"
+		prev="/pythonWebScrapper/input_type_int"
+		prevPage="input, type, int"
+		/>
 		</div>
 	)
 }
