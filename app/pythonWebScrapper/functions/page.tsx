@@ -1,5 +1,5 @@
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { IMAGE_BASE_URL, r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL} from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";

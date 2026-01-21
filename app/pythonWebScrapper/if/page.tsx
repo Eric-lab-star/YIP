@@ -3,6 +3,8 @@ import CodeBlock from "@/components/commons/CodeBlock";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
+import { Option } from "@/components/forms/quizz/Option";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import Link from "next/link";
 
 export default function Page(){
@@ -77,6 +79,7 @@ else:
 				<Text>elif는 다양한 상황에  대응 가능한 코드를 작성하도록 도와줘요.점수에 따라서 등급을 매길 때, 혹은 나이에 따라서 좌석이 달라질 때와 같은 상황에 자주 사용됩니다. 하지만  elif를 사용할 때 주의 할 점이 있어요. </Text>
 			</TwoColumn>
 
+			<Title my="m" size="h2">알아두기</Title>
 			<TwoColumn>
 				<CodeBlock code={
 `def grades(score):
@@ -92,9 +95,87 @@ else:
 grades(70)
 `}/>
 				<Text>
-위에서 조건문이 참이 된다면 다른 조건은 실행하지 않아요. 예를 들어서 여기 있는 score를 볼까요. 90보다 작은 숫자를 넣으면 가장 첫번째 if 에서 1을 출력하고 함수가 종료되요. 다른 elif나 else를 검사하지 않아요. 점수가 75점이나 80이나 모두 score는 90보다 작다는 조건이 참이 되게 함으로 print("1")이 실행하게되고. 다른 조건은 실행되지 않아요.
+파이썬이 <Code>if...elif...elif..else</Code> 와 같은 조건문을 판단할 때, 한번 참인 조건을 발견하면 다른 조건문은 판단하지 않아요. 예를 들어서 여기 있는 <Code> score</Code>를 볼까요. 90보다 작은 숫자를 넣으면 가장 첫번째 <Code>if</ Code>에서 1을 출력하고 함수가 종료되요. 다른 <Code>elif</Code>나 <Code>else</Code>를 검사하지 않아요. 점수가 75점이나 80이나 모두 <Code>score</Code>는 90보다 작다는 조건이 참이 되게 함으로 <Code>print("1")</Code>이 실행하게되고. 다른 조건은 실행되지 않아요.
 			</Text>
 			</TwoColumn> 
+		<Link href={"/pythonWebScrapper/if#quizz"} id="quizz">
+			<Title my="l" size="h2">퀴즈</Title>
+		</Link>
+		<QuizzWithOptions answer={3} question="1.다음 코드에 관한 설명으로 틀린 것을 고르세요">
+		<CodeBlock code={
+`#if else 연습문제
+user_input = int(input("당신은 몇살 입니까?\\n"))
+
+if user_input > 19:
+    print("당신은 미성년자가 아닙니다.")
+else:
+    print("당신은 미성년가가 맞습니다.")
+
+			`}/>
+			<Option value={1}>
+				<Text>1. 사용자의 입력을 user_input으로 받을 수 있다. </Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. 19를 입력받으면 "당신은 미성년자가 맞습니다"가 출력된다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. user_input은 문자열이다.</Text>
+			</Option>
+		</QuizzWithOptions>
+
+		<QuizzWithOptions answer={1} question="2.다음 코드에 관한 설명으로 올바른 것을 고르세요">
+		<CodeBlock code={
+`# if elif 연습문제
+age = int(input("나이를 입력하세요: "))
+
+if age < 10:
+    print("어린이 요금은 300원입니다.")
+elif age > 15:
+    print("청소년 요금은 500원입니다.")
+elif age > 19:
+    print("성인 요금은 1300원입니다.")
+
+			`}/>
+			<Option value={1}>
+				<Text>1. 사용자의 입력을 user_input으로 받을 수 있다. </Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. 20를 입력하면 성인요금을 알려준다.</Text>
+			</Option>
+			<Option value={4}>
+				<Text>4. 15를 입력하면 청소년 요금을 알려준다.</Text>
+			</Option>
+		</QuizzWithOptions>
+
+		<QuizzWithOptions answer={1} question="3.다음 코드에 관한 설명으로 올바른 것을 고르세요">
+			<CodeBlock code={
+`# if elif 연습문제
+age = int(input("나이를 입력하세요: "))
+
+if age < 10:
+		print("어린이 요금은 300원입니다.")
+elif age > 15:
+		print("청소년 요금은 500원입니다.")
+elif age > 19:
+		print("성인 요금은 1300원입니다.")
+
+			`}/>
+			<Option value={1}>
+				<Text>1. 사용자의 입력을 user_input으로 받을 수 있다. </Text>
+			</Option>
+			<Option value={2}>
+				<Text>2. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
+			</Option>
+			<Option value={3}>
+				<Text>3. 20을 입력하면 성인 요금을 알려준다.</Text>
+			</Option>
+			<Option value={4}>
+				<Text>4. 15를 입력하면 청소년 요금을 알려준다.</Text>
+			</Option>
+		</QuizzWithOptions>
 		</div>
 	)
 }

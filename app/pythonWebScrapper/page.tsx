@@ -113,14 +113,14 @@ print(fibonacci(9)) `
 			</div>
 		</Link>
 		<div className="flex flex-col">
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/input_type_int"}>
+				<Text weight="bold" my="m"> 📘 input(), type(), int()</Text>
+			</Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/if"}>
 				<Text weight="bold" my="m"> 📕 if, else and elif</Text>
 			 </Link>
-			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/variable_string_boolean"}>
-				<Text weight="bold"my="m" >📗 변수, 문자열, 불리안</Text>
-			</Link>
-			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/functions"}>
-				<Text weight="bold" my="m"> 📘 파이썬 함수</Text>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/cat_or_dog"}>
+				<Text weight="bold"my="m" >📗 고양이와 강아지</Text>
 			</Link>
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
 				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>

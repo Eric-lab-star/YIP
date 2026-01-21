@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { sub } from "date-fns";
 import { PartyPopper } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useContext, useEffect, useState  } from "react";
@@ -35,6 +34,7 @@ export default function ChallengForm({challenge}: ChallengForm) {
 		const find = async () => {
 			if (id && name){
 				const doc = await findChallengeAction(id, challenge)
+				console.log(doc)
 				setSubmitted(doc)
 				rhform.setValue("link", doc.link ? doc.link : "")
 			}
@@ -104,7 +104,7 @@ export default function ChallengForm({challenge}: ChallengForm) {
 
 			</CardContent>
 			<CardContent>
-				{submitted && <div className="text-blue-400 flex space-x-3"> <PartyPopper/> <div>제출되었습니다.</div></div>}
+				{submitted.submitted && <div className="text-blue-400 flex space-x-3"> <PartyPopper/> <div>제출되었습니다.</div></div>}
 			</CardContent>
 
       <CardFooter>

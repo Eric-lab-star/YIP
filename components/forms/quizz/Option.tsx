@@ -41,7 +41,7 @@ const style = tv({
 			false: "hover:bg-zinc-300 "
 		},
 		layout: {
-			row: "mx-3 px-3 border-b h-13 border-b-gray-400 flex items-center",
+			row: "mx-3 px-3 border-b min-h-13 border-b-gray-400 flex items-center",
 			grid: "px-3 py-2 rounded-sm",
 		}
 	}
