@@ -24,7 +24,7 @@ export default async function RootLayout({
         className={`
 					${kr.className}  flex justify-center antialiased`}
       >
-				<div className="lg:w-[1024px] md:w-[768px] sm:w-[640px] w-[400px]  ">
+				<div className="lg:w-[1300px] md:w-[1000px] sm:w-[800px] w-[400px]  ">
 					{children}
 				</div>
 					<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
