@@ -9,6 +9,7 @@ export default function proxy(req: NextRequest) {
 		console.warn(`current token is ${token}: ${token?.value}`)
 		return NextResponse.redirect(new URL("/login", req.url))
 	}
+	console.log("token: ", token)
 	return NextResponse.next()
 }
 

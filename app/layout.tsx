@@ -22,12 +22,14 @@ export default async function RootLayout({
     <html lang="kr">
       <body
         className={`
-					${kr.className} h-screen   antialiased
-					 lg:w-[1024px] mx-auto md:w-[768px] sm:w-[640px] w-[400px]   bg-zinc-100 `}
+					${kr.className}  flex justify-center antialiased`}
       >
+				<div className="lg:w-[1024px] md:w-[768px] sm:w-[640px] w-[400px]  ">
 					{children}
+				</div>
 					<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
       </body>
     </html>
   );
 }
+
