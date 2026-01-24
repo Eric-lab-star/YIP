@@ -102,7 +102,7 @@ except ValueError:
 
 			<Title my="l" size="h2">퀴즈</Title>
 			
-			<QuizzWithOptions answer={2} question="다음 코드에 관한 설명으로 틀린 것을 고르세요.">
+			<QuizzWithOptions answer={2} question="1. 다음 코드에 관한 설명으로 틀린 것을 고르세요.">
 				<CodeBlock code={
 `age = input("What is your name?: ")
 print(age)
@@ -121,7 +121,7 @@ print(age)
 				</Option>
 			</QuizzWithOptions>
 
-			<QuizzWithOptions answer={3} question="다음 코드에 관한 설명으로 틀린 것을 고르세요.">
+			<QuizzWithOptions answer={3} question="2. 다음 코드에 관한 설명으로 틀린 것을 고르세요.">
 				<CodeBlock code={
 `try:
     age = int(input("Enter your age: "))

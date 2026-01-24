@@ -6,7 +6,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { JwtPayloadUser } from "../actions/loginAction";
 import Link from "next/link";
-import SideBarWrapper from "@/components/commons/SideBar";
 
 
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -38,7 +37,6 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 	return (
 		<div className="flex ">
 			<AuthProvider userCtx={userCtx}>
-				<SideBarWrapper />
 				<div>
 					<Link href={"/pythonWebScrapper"} >
 						<Banner id="pythonBannerBasic.png" />

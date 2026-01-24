@@ -2,7 +2,7 @@ import * as z from "zod"
 import { challengeSchema } from "../zod/challengeSchema";
 import { getDB } from "./db";
 
-export type challenges = "sayHello" | "basicCal"
+export type challenges = "sayHello" | "basicCal" | "ifChallenge"
 
 export async function createChallege(
 	data: z.infer< typeof challengeSchema>,

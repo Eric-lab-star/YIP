@@ -88,7 +88,7 @@ print(fibonacci(9)) `
 				<Title mx="x" weight="semi" size="h2">Day 1</Title>
 			</div>
 		</Link>
-		<div className="flex flex-col">
+		<div className="my-5 flex flex-col">
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/pythonSandBox"}>
 				<Text weight="bold" my="m"> 📕 Python SandBox.io 소개</Text>
 			 </Link>
@@ -113,16 +113,26 @@ print(fibonacci(9)) `
 				<Title mx="x" weight="semi" size="h2">Day 2</Title>
 			</div>
 		</Link>
-		<div className="flex flex-col">
+		<div className="my-5 flex flex-col">
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/input_type_int"}>
 				<Text weight="bold" my="m"> 📘 input(), type(), int()</Text>
 			</Link>
 			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/if"}>
 				<Text weight="bold" my="m"> 📕 if, else and elif</Text>
 			 </Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/and_or_not"}>
+				<Text weight="bold" my="m"> 📕 and or not</Text>
+			 </Link>
 			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/cat_or_dog"}>
-				<Text weight="bold"my="m" >📗 고양이와 강아지</Text>
+				<Text weight="bold"my="m" >📗 고양이와 강아지1</Text>
 			</Link>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/cat_or_dog2"}>
+				<Text weight="bold"my="m" >📗 고양이와 강아지2</Text>
+			</Link>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/if_challenge"}>
+				<Text weight="bold"my="m" >📙 도전! 자율 주제</Text>
+			</Link>
+
 		</div>
 		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
 

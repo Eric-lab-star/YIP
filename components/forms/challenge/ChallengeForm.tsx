@@ -114,7 +114,7 @@ export default function ChallengForm({challenge}: ChallengForm) {
           </Button>
           <Button type="submit" form="rhf">
 						{rhform.formState.isSubmitting && <Spinner />}
-						{submitted ? "다시 제출하기" : "제출하기"}
+						{submitted.submitted ? "다시 제출하기" : "제출하기"}
           </Button>
         </Field>
       </CardFooter>
