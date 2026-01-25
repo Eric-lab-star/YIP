@@ -22,29 +22,23 @@ export default function Page(){
 			<Text> 4. 아주 간단한 MBTI 검사 </Text>
 			<Text> 5. 오늘 저녁 매뉴 추천 </Text>
 		</Text>
-			<Title my="m" size="h2">합격 조건</Title>
+			<Title my="m" size="h2">통과 조건</Title>
 			<Text>1. <Code>if ..elif ..else</Code> 와 같은 조건문 사용 </Text>
 			<Text>2. <Code>input</Code>함수를 사용해서 사용자가 프로그램에 값을 입력할 수 있어야함</Text>
 			<CodeBlock code={`
-print("계산기 version 0.1.0")
+# 자율주제
 
-def add(x, y):
-	# 더하기 
-    pass
-def subtract(x, y):
-	# 빼기 
-    pass
-def divided(x, y):
-	# 나누기
-    pass
-def multiply(x, y):
-	# 곱하기
-    pass
-
-print("20 + 10 = ", add(20,10))
-print("20 - 10 = ", subtract(20,10))
-print("20 / 10 = ", divided(20,10))
-print("20 * 10 = ", multiply(20,10))
+def math_quizz():
+	print("수학 문제를 모두 맞춰라!")
+	print("1 + 1 의 계산 결과로 알맞은 것은?")
+	print("1. 2")
+	print("2. 3")
+	print("3. 3")
+	ans = input("답: ).trim();
+	if ans == "1":
+			pass
+	elif ans == "2": 
+		pass
 				`}/>
 			<Howto/>
 			<ChallengForm challenge="ifChallenge"/>

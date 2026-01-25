@@ -1,7 +1,7 @@
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import { LibraryBig, Origami, Rabbit, Snail } from "lucide-react";
+import { LibraryBig, Origami, Pyramid, Rabbit, Snail } from "lucide-react";
 import Link from "next/link";
 
 
@@ -143,12 +143,100 @@ print(fibonacci(9)) `
 			</div>
 		</Link>
 		<div className="flex flex-col">
-			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_hello"}>
-				<Text weight="bold" my="m"> 📙 도전! say_hello()</Text>
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/loop"}>
+				<Text weight="bold" my="m">📘 반복문 Loop</Text>
 			 </Link>
-			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_arithmetic"}>
-				<Text  weight="bold" my="m"> 📙 도전! 사칙연산</Text>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/library"}>
+				<Text  weight="bold" my="m"> 📙 파이썬 표준 라이블러리</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/numberGuessingGame"}>
+				<Text  weight="bold" my="m"> 📕  숫자 맞추기 게임 만들기</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/fibonacci"}>
+				<Text  weight="bold" my="m">📗  피보나치 수열 만들기</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/christmasTree"}>
+				<Text  weight="bold" my="m"> 📙 도전!  크리스마스 트리 만들기</Text>
 			</Link>
 		</div>
+
+		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
+
+		<Link id="day_4" href="/pythonWebScrapper#day_4"> 
+			<div className="flex items-center space-x-2">
+				<Pyramid className="text-violet-400"/>
+				<Title mx="x" weight="semi" size="h2">Day 4</Title>
+			</div>
+		</Link>
+		<div className="flex flex-col">
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/list"}>
+				<Text weight="bold" my="m">📘 리스트list [a, b, c]</Text>
+			 </Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/tuple"}>
+				<Text  weight="bold" my="m"> 📙 튜플tuple (a, b, c)</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/dictionary"}>
+				<Text  weight="bold" my="m"> 📕 딕셔너리dictionary {`{ age = 12 }`}</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/twoSum"}>
+				<Text  weight="bold" my="m">📗 과제 Two Sum </Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/PascalTriangle"}>
+				<Text  weight="bold" my="m"> 📙 과제 Pascal's Triangle</Text>
+			</Link>
+		</div>
+
+		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
+		<Link id="day_5" href="/pythonWebScrapper#day_5"> 
+			<div className="flex items-center space-x-2">
+				<Pyramid className="text-violet-400"/>
+				<Title mx="x" weight="semi" size="h2">Day 5</Title>
+			</div>
+		</Link>
+
+		<div className="flex flex-col">
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/list"}>
+				<Text weight="bold" my="m">📘 리스트list [a, b, c]</Text>
+			 </Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/tuple"}>
+				<Text  weight="bold" my="m"> 📙 튜플tuple (a, b, c)</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/dictionary"}>
+				<Text  weight="bold" my="m"> 📕 딕셔너리dictionary {`{ age = 12 }`}</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/twoSum"}>
+				<Text  weight="bold" my="m">📗 과제 Two Sum </Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/PascalTriangle"}>
+				<Text  weight="bold" my="m"> 📙 과제 Pascal's Triangle</Text>
+			</Link>
+		</div>
+
+		<div className="border-b-zinc-400 border-b border-dashed my-10"/>
+		<Link id="day_6" href="/pythonWebScrapper#day_6"> 
+			<div className="flex items-center space-x-2">
+				<Pyramid className="text-violet-400"/>
+				<Title mx="x" weight="semi" size="h2">Day 6</Title>
+			</div>
+		</Link>
+
+		<div className="flex flex-col">
+			<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/venv"}>
+				<Text weight="bold" my="m">📘 streamlit - pypi, venv </Text>
+			 </Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/"}>
+				<Text  weight="bold" my="m"> 📙 streamlit - </Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/dictionary"}>
+				<Text  weight="bold" my="m"> 📕 딕셔너리dictionary {`{ age = 12 }`}</Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/twoSum"}>
+				<Text  weight="bold" my="m">📗 과제 Two Sum </Text>
+			</Link>
+			<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/PascalTriangle"}>
+				<Text  weight="bold" my="m"> 📙 과제 Pascal's Triangle</Text>
+			</Link>
+		</div>
+
 	</div>
 }

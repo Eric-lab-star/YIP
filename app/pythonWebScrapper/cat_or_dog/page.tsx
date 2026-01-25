@@ -4,6 +4,7 @@ import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
+import TwoColumn from "@/components/commons/TwoColumn";
 import { Smile} from "lucide-react";
 import Link from "next/link";
 
@@ -59,26 +60,36 @@ export default function Page(){
 			<Text>3. 함수를 사용해서 코드를 정리하는 방법을 익힌다.</Text>
 
 			<Title my="m" size="h2"> start() 함수 만들기 </Title>
+			<TwoColumn>
+
 			<CodeBlock code={
 `def start():
 	print("반려견 또는 반려묘를 추천해 드려요.")
 `} />
-			<Text> 함수를 배운지 너무 오래되어서 잊어버린건 아닌가요? 우리 프로그램의 모든 코드는 <Code>start()</Code>함수가 실행 될 때 실행하도록 만들거에요. <Code>print()</Code>는 그냥 사용해도 문제가 없는데 왜 함수안에서 넣었을까요? 아직은 배우지 않은 개념이지만 프로그램의 안정성을 위해서 만드는거예요. 더 구체적인 이유는 천천히 알아가도록하고 지금은 이런 방식도 있구나 정도로 알아두세요.
+			<Text> 
+함수를 배운지 너무 오래되어서 잊어버린건 아닌가요? 우리 프로그램의 모든 코드는 <Code>start()</Code>함수가 실행 될 때 실행하도록 만들거에요. <Code>print()</Code>는 그냥 사용해도 문제가 없는데 왜 함수안에서 넣었을까요?
+<div className="my-5"/>
+	아직은 배우지 않은 개념이지만 프로그램의 안정성을 위해서 만드는거예요. 더 구체적인 이유는 천천히 알아가도록하고 지금은 이런 방식도 있구나 정도로 알아두세요.
+이제 프로그램을 실행해서 출력창에 {"\"반려견 또는 반려묘를 추천해 드려요.\""}라는 문장이 나오는지 확인해보세요.
 			</Text>
-			<Text>이제 프로그램을 실행해서 출력창에 {"\"반려견 또는 반려묘를 추천해 드려요.\""}라는 문장이 나오는지 확인해보세요.</Text>
-			
+			</TwoColumn>
 
 			<Title my="m" size="h2"> cat or dog </Title>
-			<Text>이제 사용자가 원하는게 고양이인지 강이지인지 확인을 해야겠네요. <Code>input()</Code>를 사용해서 쉽게 사용자가 무엇을 원하는지 확인할 수 있겠네요.</Text>
-			<CodeBlock code={
+			<TwoColumn>
+				<CodeBlock code={
 `def start():
 	print("반려견 또는 반려묘를 추천해 드려요.")
 	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ") # <--- 새롭게 추가됨
 `}/>
-			<Text>하지만 지금은 조금 문제가 생겼네요. 우리는 고양이나  강아지를 입력받기를 원하는데 만약 사용자가 코끼리를 입력해도 해결할 방법이 없네요.</Text>
-			<Text>이렇게 코드가 조금씩 늘어나고 새로운 기능을 추가해야한다면 새로운 함수를 만들어서 분리하는게 좋은 방법이에요. </Text>
+				<Text>
+이제 사용자가 원하는게 고양이인지 강이지인지 확인을 해야겠네요. <Code>input()</Code>를 사용해서 쉽게 사용자가 무엇을 원하는지 확인할 수 있겠네요.
+	<div className="my-5"/>
+하지만 지금은 조금 문제가 생겼네요. 우리는 고양이나  강아지를 입력받기를 원하는데 만약 사용자가 코끼리를 입력해도 막을 방법이 없네요.
+				</Text>
+			</TwoColumn>
+			<TwoColumn>
 
-			<CodeBlock code={
+				<CodeBlock code={
 `
 def start():
     print("반려견 또는 반려묘를 추천해 드려요.")
@@ -88,25 +99,36 @@ def cat_or_dog():
 	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ")
 	return cat_dog.strip()
 `}/>
-			<Text my="m">이렇게 분리를 함으로써, start 함수를 더 간결하게 유지할 수 있고, cat_or_dog 함수만 수정하고 start함수는 그대로 유지할 수 있게되었어요. </Text>
+				<Text>
+				이렇게 코드가 조금씩 늘어나고 새로운 기능을 추가해야한다면 새로운 함수를 만들어서 분리하는게 좋은 방법이에요. 
+					<div className="my-3"/>
+이렇게 분리를 함으로써, start 함수를 더 간결하게 유지할 수 있고, cat_or_dog 함수만 수정하고 start함수는 그대로 유지할 수 있게되었어요. 
+				</Text>
+			</TwoColumn>
+			
+			<Title my="m" size="h2">
+			에러 만들기
+			</Title>
+			<TwoColumn>
 			<CodeBlock code={
 `
 def cat_or_dog():
-    cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ").strip() # <-- 추가
-    if not (cat_dog == "고양이" or  cat_dog  == "강아지"): # <-- 추가
-        raise ValueError("오류!!!!!") # <-- 추가
-    return cat_dog
+	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ").strip() # <-- 추가
+	if not (cat_dog == "고양이" or  cat_dog  == "강아지"): # <-- 추가
+			raise ValueError("오류!!!!!") # <-- 추가
+	return cat_dog
 `}/>
 			<Text>
-				이번에는 오류를 잡아낼 수 있는 몇가지 새로운 코드를 넣어봤어요. 가장 먼저, <Code>.strip()</Code> 이라는 코드를 볼까요? 이 코드는 공백을 제거하는 기능을 해요. 단어 앞뒤에 있을 수 있는 공백을 제거하는 기능을 해요. 공백 또한 코드로 인식을 하기 때문에 공백이 있는 단어와 없는 단어는 서로 같은 값이 아니에요. <Link href={"https://docs.python.org/3/library/stdtypes.html#str.strip"} target="_blank" className="text-orange-500"> 클릭해서 .strip() 더 알아보기</Link>
+이번에는 오류를 잡아낼 수 있는 몇가지 새로운 코드를 넣어봤어요. 가장 먼저, <Code>.strip()</Code> 이라는 코드를 볼까요? 이 코드는 공백을 제거하는 기능을 해요. 단어 앞뒤에 있을 수 있는 공백을 제거하는 기능을 해요. 공백 또한 코드로 인식을 하기 때문에 공백이 있는 단어와 없는 단어는 서로 같은 값이 아니에요.
+					<div className="my-3"/>
+					<Link href={"https://docs.python.org/3/library/stdtypes.html#str.strip"} target="_blank" className="text-orange-500"> 클릭해서 .strip() 더 알아보기</Link>
+					<div className="my-3"/>
+ 그 다음으로는 입력한 값이 고양이도 아니고 강아지도 아닌 조건을 판단해주는 if 조건문을 추가했어요. cat_or_dog 에 고양이라는 값이 있다면 조건문 <Code>cat_dog == "고양이" or  cat_dog  == "강아지"</Code>이 참이 되요. 강아지 일 때도 참이 되지요. 하지만 앞에 <Code>not</Code>을 추가해서 참인 값을 거짓으로 반전시켜버렸어요.
+<div className="my-3"/>
+		 결국 고양이나, 강아지가 아닌 값이라면 if의 조건문이 참이 되는 거에요. 이 상황은 프로그램이 원하는 상황이 아님으로 의도적으로 에러를 발생시켜서 프로그램을 중단시켜버릴거에요. 그 코드가 다음에 나오는 <Code>raise ValueError()</Code>에요. <Code>raise </ Code> 는 의도적으로 오류를 발생시켜서 코드의 흐름을 바꾸는 방법이에요. <Code>ValueError()</Code>는 어떤 에러를 만들었는지 알려주는 코드에요. 에러를 만들고 에러를 회복시키지 않으면 프로그램이 종료됨니다. 이번에는 의도적으로 에러를 잡지 않아서 종료시킬거예요. 이렇게 하면 고양이 또는 강아지만 값으로 얻을 수 있게되었네요.
 			</Text>
-			<div className="my-3"/>
-			<Text> 그 다음으로는 입력한 값이 고양이도 아니고 강아지도 아닌 조건을 판단해주는 if 조건문을 추가했어요. cat_or_dog 에 고양이라는 값이 있다면 조건문 <Code>cat_dog == "고양이" or  cat_dog  == "강아지"</Code>이 참이 되요. 강아지 일 때도 참이 되지요. 하지만 앞에 <Code>not</Code>을 추가해서 참인 값을 거짓으로 반전시켜버렸어요. 결국 고양이나, 강아지가 아닌 값이라면 if의 조건문이 참이 되는 거에요. 이 상황은 프로그램이 원하는 상황이 아님으로 의도적으로 에러를 발생시켜서 프로그램을 중단시켜버릴거에요. 그 코드가 다음에 나오는 <Code>raise ValueError()</Code>에요. 이렇게 하면 고양이 또는 강아지만 값으로 얻을 수 있게되었네요.</Text> 
+			</TwoColumn>
 			
-
-
-
-
 			<Title my="m"> black or white </Title>
 			<Text> 그 다음으로는 어떤 색을 원하는지 확인할 거예요. 간단한 프로그램을 작성하기 위해서 흰색하고 검정색 만 입력받을 수 있다고 제한을 했어요 </Text>
 			<Text>이번에도 앞에서 고양이와 강아지를 구별하고 잘못된 값은 걸러낸 방식을 그대로 사용할 수 있겠네요.  한번 스스로 만들어 볼까요?</Text>
