@@ -28,11 +28,12 @@ export default function LayoutContextWrapper({children}: {children: React.ReactN
 
 	return (
 		<LayoutContext value={value}>
-			<div className="lg:w-[1300px] md:w-[1000px] sm:w-[800px] w-full h-screen flex flex-col box-border ">
+			<div className="lg:w-[1300px] md:w-[1000px] sm:w-[800px] w-full h-screen flex flex-col overflow-hidden">
+
 				<Header />
-				<div className="flex h-full  bg-blue-400">
+				<div className="flex flex-1 min-h-0  bg-blue-400">
 					<SideBar />
-					<div className="flex-1 overflow-scroll">
+					<div className="flex-1 overflow-y-scroll">
 						{children}
 					</div>
 				</div>
