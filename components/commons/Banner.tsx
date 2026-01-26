@@ -7,10 +7,10 @@ export default async function Banner({id}:{id:string}) {
 	const meta = await imageMetadata(id)
 
 	return (
-		<div className="overflow-hidden h-30 md:h-40 lg:h-70 sm:h-30  w-full bg-zinc-400">
+		<div className="overflow-hidden h-45 sm:h-45  w-full bg-zinc-400">
 		<Image
 			preload={true}
-			className="h-30 md:h-40 lg:h-70"
+			className="h-45"
 			placeholder="blur"
 			blurDataURL={meta.blurDataURL} 
 			src={`${IMAGE_BASE_URL}/${id}`}

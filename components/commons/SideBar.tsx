@@ -1,8 +1,8 @@
 "use client";
 
-export default function SideBarWrapper(){
+export default function SideBar(){
 	return (
-		<div className="w-40 bg-red-300 h-screen">
+		<div className="w-40 bg-red-300">
 			SideBar
 		</div>
 	)

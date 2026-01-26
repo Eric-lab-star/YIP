@@ -1,11 +1,9 @@
 import AuthProvider, { userContext }  from "@/components/commons/AuthProvider";
-import Banner from "@/components/commons/Banner";
 
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { JwtPayloadUser } from "../actions/loginAction";
-import Link from "next/link";
 
 
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -38,12 +36,7 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 		<div className="flex ">
 			<AuthProvider userCtx={userCtx}>
 				<div>
-					<Link href={"/pythonWebScrapper"} >
-						<Banner id="pythonBannerBasic.png" />
-					</Link>
-					<div className="">
-						{children}
-					</div>
+					{children}
 				</div>
 			</AuthProvider>
 		</div>

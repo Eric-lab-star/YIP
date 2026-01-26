@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default async function Page(){
 
-	return <div className=" pb-50 ">
+	return <div className="pb-50 ">
 
 		<Title> Python Web Scrapper</Title>
 		<Title my="m" size="h2" weight="semi">요구되는 사전 지식</Title>
