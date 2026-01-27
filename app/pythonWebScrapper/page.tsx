@@ -3,6 +3,7 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import { HandFist, LibraryBig, Origami, PawPrint, Pyramid, Rabbit, Snail } from "lucide-react";
 import Link from "next/link";
+import { delay } from "../lib/utils/wait";
 
 
 export default async function Page(){
