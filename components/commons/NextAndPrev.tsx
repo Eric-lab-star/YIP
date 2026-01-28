@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function NextAndPrev({next, prev, nextPage, prevPage}: {next:string, prev: string, nextPage: string, prevPage: string}){
 	return(
 		<>
-			<div className="flex justify-between">
+			<div className="mt-20 flex justify-between">
 				<Link href={prev} >
 					<div className="w-fit py-2 flex items-center justify-between hover:border-b-red-400 hover:border-b hover:animate-pulse">
 						<ChevronLeft />

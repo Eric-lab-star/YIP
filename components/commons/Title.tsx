@@ -5,6 +5,7 @@ type weight = "light" | "semi" | "bold"
 type levels = "l" | "m" | "s" |"x"
 
 interface Title {
+	style?: string,
 	my?:levels,
 	mx?: levels,
 	weight?: weight,
@@ -30,8 +31,8 @@ type levels = "l" | "m" | "s" |"x"
 *
 */
 
-export default function Title({my="x", mx="x", children, weight="bold", size="h1"}: Title) {
+export default function Title({style, my="x", mx="x", children, weight="bold", size="h1"}: Title) {
 	return (
-		<div className={title({size, weight, my, mx})}>{children}</div>
+		<div className={title({size, weight, my, mx, className: style})}>{children}</div>
 	)
 }

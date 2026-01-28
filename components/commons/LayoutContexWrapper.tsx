@@ -5,7 +5,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 import Header from "./Header";
 import SideBar from "./SideBar";
 
-interface layoutCtx{
+export interface layoutCtx{
 	isSideBarOpen: boolean
 	setIsSideBarOpen: (isOpen: boolean) => void;
 }

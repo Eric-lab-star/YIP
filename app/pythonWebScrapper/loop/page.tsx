@@ -1,12 +1,13 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 
 export default function Page(){
 	return (
-		<div>
+		<div className="mb-50">
 			<Title my="m">반복문 Loop</Title>
 			<Text>
 한번 농부가 되었다고 상상을 해봐요. 밭에 당근을 심을려고 모든 준비를 끝낸 상태에요. 당근 심기 작업 순서는 3 단계로 이루어져있어요. 
@@ -60,13 +61,88 @@ for i in range(0, 4):
 			</TwoColumn>
 			<Title size="h2" my="m"> 강제종료 - break </Title>
 			<Text>
-			이제 앞에서 배운 <Code>while</Code> 또는 <Code>for .. in</Code> 루프를 사용해서 당근을 빠르게 심을 수 있겠네요. 하지만 만약에 땅을 파다가 금이 나오거나, 물이 부족해지면 어떻게 해야할까요?  정지를 하고 다른 일을 해야할 상황이 생길 수 도 있는데 이런 상황에서 어떻게 해야 할까요? 이런 상황에서는 <Code>break</Code>
-
+			이제 앞에서 배운 <Code>while</Code> 또는 <Code>for .. in</Code> 루프를 사용해서 당근을 빠르게 심을 수 있겠네요. 하지만 만약에 땅을 파다가 금이 나오거나, 물이 부족해지면 어떻게 해야할까요?  정지를 하고 다른 일을 해야할 상황이 생길 수 도 있는데 이런 상황에서 어떻게 해야 할까요? 이런 상황에서는 <Code>break</Code>를 사용해서 반복을 종료할 수 있어요.
 			</Text>
+				<Title size="h2" my="m">while</Title>
+			<TwoColumn>
+				<CodeBlock code={
+`
+seeds = 10
+gold = True 
+
+while seeds > 0:
+	print("seed")
+  seeds = seeds - 1
+  if gold:
+		break
+`}/>
+				<Text>
+					이 코드는 <Code>gold</Code>가 <Code>True</Code>이면 "seeds"가 한 번만 출력되고 종료되요. 그래서 원래 10번 나와야하는 문장이 단 한 번만 나오게 되요.
+				</Text>
+			</TwoColumn>
+
+			<TwoColumn >
+				<CodeBlock code={
+`
+for i in range(0, 3):
+    if i == 1:
+        break
+    print(i)
+`}/>
+				<Text>
+				이번에는 <Code>for</Code>에서 <Code>break</Code>를 어떻게 사용하는지 알아봐요. <Code>for</Code> 또한 <Code>break</Code>가 나오면 반복을 중단해요. 그래서 이번에 나온 코드는 i의 값이 1이 될 때 실행을 중단해요.
+				</Text>
+			</TwoColumn>
 
 			<Title size="h2" my="m"> 스킵 - continue </Title>
+			<Text>
+				<Code>continue</Code>는 반복문의 처음으로 돌아가게 만들어요. <Code>break</Code>는 반복을 중단시키지만, <Code>continue</Code>는 현제 반복을 끝내고 다음 반복으로 넘어가게되요.
+			</Text>
+				<TwoColumn>
+				<CodeBlock code={
+`
+a = 0
+while  a < 10:
+	a += 1
+	if a % 2 == 0:
+		continue
+	print(a)
+`}/>
+					<Text>
+이번에도 역시 <Code>while</Code>를 먼저 알아봐요. <Code>continue</Code>가 <Code>if </Code> 안에 들어가 있어요. <Code>a % 2</Code>는 a를 2로 나눈 나머지를 알려주는 코드에요. 2로 나눈 나머지는 홀수일 경우는 1이 나오고 짝수이면 0이 나와요. 그래서 짝수인 경우에는 <Code>continue</Code>가 실행되요.
+					</Text>
+				</TwoColumn>
+				<TwoColumn>
+					<CodeBlock code={
+`
+for i in range(10):
+	i += 1
+	if i % 2 == 0:
+		continue
+	print(i)
+`}/>
+					<Text>
+이번에는 같은 결과를 주는 프로그램이지만 다른 코드로 만들었어요. <Code> continue</Code> 가 <Code>i % 2 == 0</Code>을 만족하는 결과에서만 실행되요.
+					</Text>
+				</TwoColumn>
 			<Title size="h2" my="m"> 무한루프 </Title>
-			<Title size="h2" my="m"> else </Title>
+			<TwoColumn>
+
+				<CodeBlock code={
+`
+while True:
+    print("ping")
+`}/>
+				<Text>
+				무한루프를 만들려고 할 때 <Code>while</Code>문의 조건을 입력하는 자리에 True를 만들어요. 이렇게 코드를 만들면 <Code>while</Code>이 무한반복되요. 이런 무한루프는 게임을 프로그램할 때 자주 사용되는 코드에요.
+				</Text>
+			</TwoColumn>
+			<NextAndPrev
+			next="/pythonWebScrapper/library"
+			nextPage="파이썬 표준 라이블러리"
+			prev="/"
+			prevPage="파이썬"
+			/>
 		</div>
 	)
 }
