@@ -5,31 +5,16 @@ import Link from "next/link";
 
 export default function Page() {
 	return (
-		<div>
-
+		<div className="">
 			<Link id="day_5" href="/pythonWebScrapper#day_5"> 
 				<div className="flex items-center space-x-2">
 					<HandFist className="text-red-400"/>
 					<Title mx="x" weight="semi" size="h2">Day 5</Title>
 				</div>
 			</Link>
-
-			<div className="my-3 flex flex-col">
-				<Link  className="hover:bg-zinc-200" href={"/pythonWebScrapper/list"}>
-					<Text weight="bold" my="m">📘 리스트list [a, b, c]</Text>
-				 </Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/tuple"}>
-					<Text  weight="bold" my="m"> 📙 튜플tuple (a, b, c)</Text>
-				</Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/dictionary"}>
-					<Text  weight="bold" my="m"> 📕 딕셔너리dictionary {`{ age = 12 }`}</Text>
-				</Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/twoSum"}>
-					<Text  weight="bold" my="m">📗 과제 Two Sum </Text>
-				</Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/PascalTriangle"}>
-					<Text  weight="bold" my="m"> 📙 과제 Pascal's Triangle</Text>
-				</Link>
+			<div className="my-5">
+				<Title size="h2" my="m">Cli todo app</Title>
+				<Title size="h2" my="m">배운점 정리하고 To-Do App 발표하기</Title>
 			</div>
 		</div>
 	) 

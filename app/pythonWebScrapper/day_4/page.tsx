@@ -29,7 +29,6 @@ export default function Page() {
 					<Text  weight="bold" my="m"> 📙 과제 Pascal's Triangle</Text>
 				</Link>
 			</div>
-
 		</div>
 	)
 }

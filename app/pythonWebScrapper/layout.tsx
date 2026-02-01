@@ -8,8 +8,6 @@ import { JwtPayloadUser } from "../actions/loginAction";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 export default async function Layout({children}:{children: React.ReactNode}) {
-	console.info("pythonScrapper layout..")
-	
 	const userCtx: userContext = {
 		loggedIn: false
 	}
@@ -17,7 +15,6 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 	try {
 		const cookieStore = await cookies()
 		const token = cookieStore.get("token")?.value
-		console.info("pythonScrapper layout: verifying token...")
 		if (token) {
 			const user = jwt.verify(token, JWT_SECRET) as JwtPayloadUser 
 			userCtx.id = user.id
@@ -30,8 +27,6 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 		redirect("/login")
 	}
 
-
-
 	return (
 		<div className="p-5">
 			<AuthProvider userCtx={userCtx}>
@@ -41,6 +36,5 @@ export default async function Layout({children}:{children: React.ReactNode}) {
 			</AuthProvider>
 		</div>
 	)
-	
 }
 
