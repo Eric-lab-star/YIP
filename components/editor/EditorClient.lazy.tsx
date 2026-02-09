@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
-const EitorClient = dynamic(() => import("./editorClient"), {ssr: false})
+const EditorClient = dynamic(() => import("./editorClient"), {ssr: false})
 
-export default EitorClient
+export default EditorClient
 
 

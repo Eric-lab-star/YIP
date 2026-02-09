@@ -1,30 +1,42 @@
-// components/editor/Editor.client.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
-import EditorJS from "@editorjs/editorjs";
+import { useEffect, useRef } from 'react';
+import Header from "@editorjs/header";
+import { BlockToolConstructable } from '@editorjs/editorjs';
+import { Inter }  from "next/font/google"
 
-export default function EditorClient() {
-  const holderId = "editorjs";
-  const editorRef = useRef<EditorJS | null>(null);
+const inter = Inter({subsets: ['latin']})
+
+export default function Editor() {
+  const holderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (editorRef.current) return;
+    let editor: any;
 
-    const editor = new EditorJS({
-      holder: holderId,
-      // tools: {...}  // 필요하면 여기
-    });
+    (async () => {
+      const EditorJS = (await import('@editorjs/editorjs')).default;
 
-    editorRef.current = editor;
+      editor = new EditorJS({
+        holder: holderRef.current!, // 또는 holder: 'editor'
+				tools: {
+					header: {
+						class: Header as unknown as BlockToolConstructable,
+						shortcut: 'CMD + SHIFT + H',
+						config: {
+							levels: [2, 3, 4],
+							defaultLevel: 3,
+							placeholder: "Enter a header"
+
+						}
+					}
+				}
+      });
+    })();
 
     return () => {
-      editorRef.current?.destroy?.();
-      editorRef.current = null;
+      editor?.destroy?.();
     };
   }, []);
 
-  return <div id={holderId} />;
+  return <div className={inter.className} ref={holderRef} />;
 }
-
-
