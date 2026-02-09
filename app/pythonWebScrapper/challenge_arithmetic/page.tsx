@@ -46,9 +46,6 @@ print("20 * 10 = ", multiply(20,10))
 				prev="/pythonWebScrapper/challenge_hello"
 				prevPage="도전! say_hello()"
 			/>
-			
-
-
 		</div>
 	)
 }

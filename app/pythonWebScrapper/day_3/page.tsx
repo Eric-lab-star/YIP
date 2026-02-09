@@ -22,11 +22,11 @@ export default function Page() {
 				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/numberGuessingGame"}>
 					<Text  weight="bold" my="m"> 📕  숫자 맞추기 게임 만들기</Text>
 				</Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/fibonacci"}>
-					<Text  weight="bold" my="m">📗  피보나치 수열 만들기</Text>
+				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_binary_search"}>
+					<Text  weight="bold" my="m">📗 도전! 이진 탐색 알고리즘이란?</Text>
 				</Link>
-				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/christmasTree"}>
-					<Text  weight="bold" my="m"> 📙 도전!  크리스마스 트리 만들기</Text>
+				<Link className="hover:bg-zinc-200" href={"/pythonWebScrapper/challenge_fibonacci"}>
+					<Text  weight="bold" my="m"> 📙 도전! 피보나치 수열 이란?</Text>
 				</Link>
 			</div>
 		</div>

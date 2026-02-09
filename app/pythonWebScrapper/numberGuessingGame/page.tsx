@@ -1,5 +1,6 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -9,7 +10,7 @@ import Link from "next/link";
 export default function Page(){
 	return (
 		<div>
-			<Title my="m" size="h1"> 숫자 맞추기 게임 </Title>
+			<Title my="m" size="h1"> 숫자 맞히기 게임 </Title>
 			<Text my="m">
 			이번에는 숫자 맞추기 게임을 만들어 볼 거예요. 지금까지 배운 것들을 활용해서 이렇게 재미있는 게임을 만들 수 있다는 점에 놀라지 않을 수 없을 거예요. 게임 방식은 아주 간단해요. 컴퓨터가 생각하고 있는 랜덤한 숫자를 사용자가 알아맞히면 되는 간단한 게임이에요. 3회 안에 정답을 입력하면 사용자가 승리하고 3회를 넘어가면 컴퓨터의 승리예요.
 			</Text>
@@ -195,15 +196,57 @@ def isCorrect(answer, user_input):
 			<div />
 			</Text>
 			</TwoColumn>
+			<Title my="l"> 전체 코드 확인하기 </Title>
+			<CodeBlock code={
+`# main.py 
+import random
+
+def isCorrect(answer, user_input):
+    """
+    사용자가 입력한 답과 정답을 비교하는 함수. 정답일 경우 True를 반환하고
+    다른 모든 경우에는 False를 반환한다.
+    """
+    if user_input > answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return False
+    elif user_input < answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return False
+    elif user_input == answer:
+        print("정답입니다.")
+        return True
+
+def main():
+    """
+    실제 게임 로직이 진행되는 함수
+    """
+    print("number guessing game")
+    answer = random.randint(1, 11) 
+    chances = 3 
+    attempts = 0
+    while attempts < chances: # 루프 종료 조건
+        try: # int에서 발생하는 예외를 처리하기 위한 try 블록
+            user_input = int(input("guess my number: ")) #  input은 문자열 값을 반환하기 때문에 int형으로 변경해줌 
+            if isCorrect(answer, user_input): # <--- 정답 확인 코드
+                break # <--- 정답이면 반복 중단
+            else:
+                attempts += 1 # <-- 오답이면 시도횟수 증가
+        except ValueError: # 예외 발생시 실행되는 블록
+            print("숫자를 입력하세요")
+    else:
+        print("you lose")
+
+main()
+`}/>
+
+			<NextAndPrev
+			prev="loop"
+			prevPage="반복문 loop"
+			next="challenge_binary_search"
+			nextPage="도전과제 - 이진탐색"
+			/>
 		</div>
 	)
 }
 
 
-
-{/* 			<Title size="h2" my="m">til</Title> */}
-{/* 			<TwoColumn> */}
-{/* 			<CodeBlock code={ */}
-{/* ``}/> */}
-{/* 			<Text>ex</Text> */}
-{/* 			</TwoColumn> */}

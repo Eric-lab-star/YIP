@@ -139,7 +139,7 @@ while True:
 			</TwoColumn>
 			<NextAndPrev
 			next="/pythonWebScrapper/library"
-			nextPage="파이썬 표준 라이블러리"
+			nextPage="파이썬 표준 라이브러리"
 			prev="/"
 			prevPage="파이썬"
 			/>
