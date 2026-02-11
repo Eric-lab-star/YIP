@@ -1,6 +1,9 @@
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
+import EditorClient from "@/components/editor/EditorClient.lazy";
+
+
 
 export default function Page() {
 	return (
@@ -9,6 +12,9 @@ export default function Page() {
 			<Text my="m">
 				알고리즘이라는 단어를 들어본적 있나요? 알고리즘이란 어떤 문제를 해결하는 방법을 의미해요. 알고리즘도 다양한 분야가 있는데 그 중에서 탐색 알고리즘의 한 종류인 이진 탐색 알고리즘을 연구해보는게 이번 과제에요.
 			</Text>
+			<div className="h-3 border-b border-dashed my-2 border-zinc-500"/>
+
+			<EditorClient />
 
 			<NextAndPrev
 			next="challenge_fibonacci"
