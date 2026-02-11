@@ -145,6 +145,14 @@ input[type=number] {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@layer components {
+	.codex-editor h1 { @apply text-2xl font-bold leading-2; }
+	.codex-editor h2 { @apply text-xl font-bold;  }
+	.codex-editor h3 { @apple text-lg font-bold; }
+	.codex-editor p  { @apply text-base leading-none; }
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

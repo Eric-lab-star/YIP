@@ -2,41 +2,58 @@
 
 import { useEffect, useRef } from 'react';
 import Header from "@editorjs/header";
-import { BlockToolConstructable } from '@editorjs/editorjs';
+import { type ToolConstructable } from '@editorjs/editorjs';
 import { Inter }  from "next/font/google"
 
 const inter = Inter({subsets: ['latin']})
+
+
+
 
 export default function Editor() {
   const holderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let editor: any;
 
+    let editor: any;
     (async () => {
       const EditorJS = (await import('@editorjs/editorjs')).default;
+			const LinkTool = (await import("@editorjs/link")).default;
 
-      editor = new EditorJS({
-        holder: holderRef.current!, // 또는 holder: 'editor'
-				tools: {
-					header: {
-						class: Header as unknown as BlockToolConstructable,
-						shortcut: 'CMD + SHIFT + H',
-						config: {
-							levels: [2, 3, 4],
-							defaultLevel: 3,
-							placeholder: "Enter a header"
-
-						}
+			const tools = {
+				header: {
+					class: Header as unknown as ToolConstructable,
+					shortcut: "CTRL + SHIFT + H",
+					inlineToolbar: ['link'],
+					config: {
+						placeholder: "제목을 입력하세요",
+						levels: [1,2,3,4],
+						defaultLevel: 1
+					}
+				},
+				linkTool: {
+					class: LinkTool,
+					config: {
+						endpoint: "/api/editorjs/link",
 					}
 				}
+			}
+
+
+			if (!holderRef.current) return;
+      editor = new EditorJS({
+        holder: holderRef.current!, 
+				placeholder: "Type something here...",
+				autofocus: true,
+				tools,
       });
     })();
 
     return () => {
       editor?.destroy?.();
     };
+
   }, []);
 
-  return <div className={inter.className} ref={holderRef} />;
+  return <div id='editorjs' className={inter.className} ref={holderRef} />;
 }
