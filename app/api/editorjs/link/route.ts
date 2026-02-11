@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
 	}
 
 	const {error, result} = await og({url: link})
-	console.log(error, result.ogTitle, result.ogDescription, result.ogImage)
 
 	if (error) {
 		return Response.json({

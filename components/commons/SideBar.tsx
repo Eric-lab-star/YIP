@@ -7,7 +7,6 @@ import Title from './Title';
 
 export default function SideBar(){
 	const pathname = usePathname()
-	console.log(pathname.startsWith("/pythonWebScrapper"))
 	const {isSideBarOpen} = useLayoutCtx()
 	return (
 		<>

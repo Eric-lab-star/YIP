@@ -4,23 +4,35 @@ import { useEffect, useRef } from 'react';
 import Header from "@editorjs/header";
 import { type ToolConstructable } from '@editorjs/editorjs';
 import { Inter }  from "next/font/google"
+import ColorPicker from 'editorjs-color-picker';
 
 const inter = Inter({subsets: ['latin']})
-
-
-
 
 export default function Editor() {
   const holderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     let editor: any;
     (async () => {
       const EditorJS = (await import('@editorjs/editorjs')).default;
 			const LinkTool = (await import("@editorjs/link")).default;
+			const ImageTool = (await import('@editorjs/image')).default;
 
 			const tools = {
+
+				ColorPicker: {
+					class: ColorPicker
+				},
+				image: {
+					class: ImageTool,
+					config: {
+						endpoints: {
+							byFile: "/api/editorjs/image",
+						},
+						field: "/api/editorjs/image"
+					},
+				},
+
 				header: {
 					class: Header as unknown as ToolConstructable,
 					shortcut: "CTRL + SHIFT + H",
@@ -31,6 +43,7 @@ export default function Editor() {
 						defaultLevel: 1
 					}
 				},
+
 				linkTool: {
 					class: LinkTool,
 					config: {
@@ -39,11 +52,10 @@ export default function Editor() {
 				}
 			}
 
-
 			if (!holderRef.current) return;
       editor = new EditorJS({
         holder: holderRef.current!, 
-				placeholder: "Type something here...",
+				placeholder: "기억보다 기록을 합시다...",
 				autofocus: true,
 				tools,
       });
@@ -55,5 +67,5 @@ export default function Editor() {
 
   }, []);
 
-  return <div id='editorjs' className={inter.className} ref={holderRef} />;
+  return <div id='editorjs' className={inter.className + ""} ref={holderRef} />;
 }
