@@ -1,9 +1,10 @@
-import EditorClient from "@/components/editor/editorClient";
+
+import LazyEditorClient from "@/components/editor/EditorClient.lazy";
 
 export default function Page() {
 	return (
 		<div>
-			<EditorClient />
+			<LazyEditorClient/>
 		</div>
 	)
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 
 export interface userContext {
@@ -20,6 +20,11 @@ export const AuthContext = createContext<userContext>({
 		loggedIn: false,
 	});
 
+export function useAuthCtx() {
+	const ctx = useContext(AuthContext)
+	if (!ctx) throw new Error("AuthContext Wrapper isn't found")
+	return ctx
+}
 
 export default function AuthProvider({userCtx, children}: authProviderProp){
 	const [user, setUser] = useState<userContext>(userCtx)

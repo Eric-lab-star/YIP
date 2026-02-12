@@ -49,7 +49,7 @@ export type JwtPayloadUser = {
 function signAccessToken(payload: JwtPayloadUser) {
   return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "60m", // access token은 짧게
+    expiresIn: "4h", // access token은 짧게
   });
 }
 
