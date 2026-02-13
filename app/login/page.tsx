@@ -25,6 +25,7 @@ import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { useEffect } from "react"
 import { Spinner } from "@/components/ui/spinner"
+import { useAuthCtx } from "@/components/commons/AuthProvider"
 
 const checkToken = async () => {
 	const validToken = await validateToken()
@@ -37,11 +38,14 @@ const checkToken = async () => {
 }
 
 export default function Page() {
+	const authCtx = useAuthCtx()
 
 	useEffect(() => {
 		checkToken().then((r)=>{
 			if (!r) {
 				toast.error("로그인 세션이 만료되었습니다.", {position: "top-center"})
+				authCtx.setUser({loggedIn: false})
+
 			}
 		})
 	},[])

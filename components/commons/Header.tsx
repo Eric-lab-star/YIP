@@ -27,7 +27,6 @@ export default function Header() {
 			<div className=" w-100 h-full">
 				<div>{auth.name}</div>
 				<div>{auth.id}</div>
-
 			</div>
 		</div>
 	)

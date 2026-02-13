@@ -57,7 +57,6 @@ def fibonacci(n):
 
 print(fibonacci(9)) `
 		}/>
-
 		<Title weight="semi" size="h2" my="l">시작하기 전 알아두기</Title>
 		<div className="px-3 space-y-2">
 			<Text>1. 🙅‍♂️ 파이썬을 깊게 다루는 강의가 아니다.</Text>

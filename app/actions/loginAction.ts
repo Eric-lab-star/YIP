@@ -8,8 +8,6 @@ import { findStudent } from "../lib/mongo/students";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-
-
 export interface LoginActionRes {
 	login: boolean;
 	message: string;
@@ -49,7 +47,7 @@ export type JwtPayloadUser = {
 function signAccessToken(payload: JwtPayloadUser) {
   return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
-    expiresIn: "4h", // access token은 짧게
+    expiresIn: "3m", // access token은 짧게
   });
 }
 
@@ -81,7 +79,7 @@ export async function loginAction(data: z.infer<typeof loginSchema>){
 		cookieStore.set("token", token, {
 			httpOnly: true,
 			sameSite: "lax",
-			maxAge: 60 * 60// 6h
+			maxAge: 60 * 3
 		})
 
 		return true

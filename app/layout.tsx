@@ -9,7 +9,6 @@ import AuthProvider, { userContext } from "@/components/commons/AuthProvider";
 
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { JwtPayloadUser } from "./actions/loginAction";
 
 
@@ -41,18 +40,15 @@ export default async function RootLayout({
 			userCtx.loggedIn = true
 			userCtx.name = user.name
 		} else{
-			redirect("/login")
+			userCtx.loggedIn = false
 		}
 	} catch(e) {
-		redirect("/login")
+		userCtx.loggedIn = false
 	}
 
   return (
     <html lang="kr">
-      <body
-        className={`
-					${kr.className} bg-zinc-100 flex sm:justify-center  antialiased`}
-      >
+      <body className={`${kr.className} bg-zinc-100 flex sm:justify-center  antialiased`} >
 				<AuthProvider userCtx={userCtx}>
 					<LayoutContextWrapper>
 						{children}
