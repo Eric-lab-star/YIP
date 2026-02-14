@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-
 import Title from "./Title";
 import { Menu } from "lucide-react";
 import { useLayoutCtx } from "./LayoutContexWrapper";
 import { useAuthCtx } from "./AuthProvider";
+
+
 
 export default function Header() {
 	const {isSideBarOpen, setIsSideBarOpen} = useLayoutCtx()
@@ -21,12 +22,16 @@ export default function Header() {
 					<Menu />
 				</div>
 				<Link className="select-none" href={"/"}>
-					<Title> YIP Coding </Title>
+					<Title>YIP</Title>
 				</Link>
 			</div>
 			<div className=" w-100 h-full">
-				<div>{auth.name}</div>
-				<div>{auth.id}</div>
+			{
+				auth.user.loggedIn && <>
+					<div>{auth.user.name}</div>
+					<div>{auth.user.id?.slice(0, 10)}</div>
+				</>
+			}
 			</div>
 		</div>
 	)

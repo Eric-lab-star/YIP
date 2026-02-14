@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
 
-	redirect("/pythonWebScrapper")
 
 	return <div className="flex flex-col">
 		{/* <Link href={"/students"} > students </Link> */}

@@ -1,20 +1,17 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 export interface userContext {
+	user: User
+	setUser: (user: User) => void;
+}
+
+export interface User {
 	loggedIn: boolean,
-	id?: string,
 	name?: string,
-	setUser: (userCtx:{loggedIn: boolean, id?: string, name?: string}) => void;
 }
 
-
-
-export interface authProviderProp {
-	userCtx: userContext
-	children: React.ReactNode
-}
 
 export const AuthContext = createContext<userContext | null>(null);
 
@@ -24,16 +21,27 @@ export function useAuthCtx() {
 	return ctx
 }
 
-export default function AuthProvider({userCtx, children}: authProviderProp){
-	const [user, setUser] = useState<{loggedIn: boolean, id?: string, name?: string}>(userCtx)
-	const value = useMemo(() => ({
-		...user,
-		setUser: setUser
-	}),[user])
+export default function AuthProvider ({children}: {children: React.ReactNode}  ){
+
+
+
+	const [user, setUser] = useState<User>({loggedIn: false})
+
+	useEffect(() => {
+		
+		const name = window.localStorage.getItem("userName") 
+		const defaultUser = name
+			? {loggedIn: true, name} : {loggedIn: false}
+		// setUser(defaultUser)
+	},[])
+
+ const value = useMemo(() => ({
+ 	user,
+ }),[user])
 
 	return (
-		<AuthContext value={value}>
+		<AuthContext.Provider value={{setUser, user: value.user}}>
 			{children}
-		</AuthContext>
+		</AuthContext.Provider>
 	)
 }
