@@ -5,11 +5,18 @@ import * as z from "zod";
 import { loginSchema } from "../lib/zod/loginSchema";
 import { findStudent } from "../lib/mongo/students";
 import { setLoginToken, validateToken } from "../lib/auth/login";
+import { redirect } from "next/navigation";
 
 
 export async function logoutAction() {
 	const cookiesStore = await cookies();
-	cookiesStore.delete("token")
+	cookiesStore.set("logInToken","", {
+			secure: process.env.NODE_ENV === "production",
+			httpOnly: true,
+			sameSite: "lax",
+			maxAge: 0
+	})
+	redirect("/login")
 }
 
 
@@ -32,6 +39,9 @@ export async function loginVerfyAction() {
 }
 
 
+/**
+	*  loginAction creates user token 
+	**/
 export async function loginAction(data: z.infer<typeof loginSchema>): Promise<LoginSuccess | LoginFail> {
 
 	try {

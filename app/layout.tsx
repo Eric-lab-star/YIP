@@ -5,7 +5,6 @@ import { Noto_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
 import LayoutContextWrapper from "@/components/commons/LayoutContexWrapper";
-import AuthProvider from "@/components/commons/AuthProvider";
 
 
 export const metadata: Metadata = {
@@ -24,11 +23,9 @@ export default async function RootLayout({
   return (
     <html lang="kr">
       <body className={`${kr.className} bg-zinc-100 flex sm:justify-center  antialiased`} >
-				<AuthProvider>
 					<LayoutContextWrapper>
 						{children}
 					</LayoutContextWrapper>
-				</AuthProvider>
 				<Toaster icons={{error: <OctagonXIcon className="size-4 text-red-500"/>}}/>
       </body>
     </html>

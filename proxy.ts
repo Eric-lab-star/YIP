@@ -14,7 +14,6 @@ export default function proxy(req: NextRequest) {
 			}
 			break;
 		default:
-			console.log("not login")
 			if (!token) {
 				return NextResponse.redirect(new URL("/login", req.url))
 			}

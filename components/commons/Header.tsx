@@ -2,9 +2,15 @@
 
 import Link from "next/link";
 import Title from "./Title";
-import { Menu } from "lucide-react";
+import { NotebookPen, PanelLeftClose, PanelLeftOpen} from "lucide-react";
 import { useLayoutCtx } from "./LayoutContexWrapper";
-import { useAuthCtx } from "./AuthProvider";
+import useUser from "../SWR/auth/user";
+import { Skeleton } from "../ui/skeleton";
+import { logoutAction } from "@/app/actions/loginAction";
+import { Noto_Sans_KR } from "next/font/google";
+import { Button } from "../ui/button";
+import { redirect } from "next/navigation";
+const kr_font = Noto_Sans_KR({weight: "700", style: "normal"})
 
 
 
@@ -13,26 +19,64 @@ export default function Header() {
 	const handleSideBar = () => {
 		setIsSideBarOpen(!isSideBarOpen)
 	}
-	const auth = useAuthCtx()
 
 	return (
-		<div className="h-15 w-full bg-zinc-200 py-2 px-3 flex justify-between">
+		<div className="px-3 h-15 w-full bg-zinc-200 select-none flex justify-between">
 			<div className="flex space-x-2 items-center">
-				<div onClick={handleSideBar} className="p-2 hover:bg-zine-400 rounded-full text-zinc-800 hover:text-zinc-500">
-					<Menu />
-				</div>
-				<Link className="select-none" href={"/"}>
+				<button onClick={handleSideBar} className="p-2 hover:bg-zine-400 rounded-full text-zinc-800 hover:text-zinc-500">
+					{
+						isSideBarOpen ? 
+							<PanelLeftClose/>
+							: <PanelLeftOpen />
+
+					}
+				</button>
+				<Link className="" href={"/"}>
 					<Title>YIP</Title>
 				</Link>
 			</div>
-			<div className=" w-100 h-full">
-			{
-				auth.user.loggedIn && <>
-					<div>{auth.user.name}</div>
-					<div>{auth.user.id?.slice(0, 10)}</div>
-				</>
-			}
-			</div>
+			<UserProfile />
 		</div>
 	)
 }
+
+function UserProfile() {
+	const {user, isLoading, userMutate} = useUser()
+	const handleLogout = async () => {
+		await logoutAction();
+		userMutate(); 
+	}
+
+	if (isLoading) {
+		return (
+			<div className="w-fit flex ">
+				<Skeleton className="w-15 h-15  rounded-full" />
+				<div className="flex flex-col justify-center space-y-2">
+					<Skeleton className="w-20 h-5  rounded-md" />
+					<Skeleton className="w-20 h-5 rounded-md" />
+				</div>
+			</div>
+		)
+	} else {
+		return (
+			<div className="flex justify-center items-center ">
+				{user?.success &&
+					<>
+						<Link href={`/students/${user.id}`}>
+							<NotebookPen size={40} strokeWidth={"1px"}/>
+						</Link>
+						<div className=" w-20 flex justify-center flex-col items-center">
+							<div className={`${kr_font.className} text-lg`}>{user.name}</div>
+							<Button size={"xs"} className="hover:animate-pulse" onClick={handleLogout}> 로그아웃</Button>
+						</div>
+					</>
+				}
+			</div>
+			
+		)
+	}
+}
+
+
+
+

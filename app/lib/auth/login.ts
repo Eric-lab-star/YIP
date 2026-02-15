@@ -17,11 +17,11 @@ export function signAccessToken(payload: JwtPayloadUser) {
   });
 }
 
-interface ValidationSuccess extends JwtPayloadUser {
+export interface ValidationSuccess extends JwtPayloadUser {
 	success: true,
 }
 
-interface ValidationFail {
+export interface ValidationFail {
 	success: false,
 }
 
@@ -49,6 +49,7 @@ export async function setLoginToken(userInfo:  JwtPayloadUser ) {
 		const cookieStore = await cookies()
 
 		cookieStore.set("logInToken", token, {
+			secure: process.env.NODE_ENV === "production",
 			httpOnly: true,
 			sameSite: "lax",
 			maxAge: TokenMaxAge 

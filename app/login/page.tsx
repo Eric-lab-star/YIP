@@ -24,10 +24,12 @@ import { loginAction } from "../actions/loginAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
-import { useAuthCtx } from "@/components/commons/AuthProvider"
+import useUser from "@/components/SWR/auth/user"
 
 export default function Page() {
-	const authCtx = useAuthCtx()
+	const {userMutate} = useUser() 
+
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -44,8 +46,7 @@ export default function Page() {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			authCtx.setUser(result.userInfo)
-			localStorage.setItem("userName", result.userInfo.name)
+			userMutate()
 			redirect("/pythonWebScrapper")
 		} 
 	}
