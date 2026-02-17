@@ -6,7 +6,7 @@ import { NotebookPen, PanelLeftClose, PanelLeftOpen} from "lucide-react";
 import { useLayoutCtx } from "./LayoutContexWrapper";
 import useUser from "../SWR/auth/user";
 import { Skeleton } from "../ui/skeleton";
-import { logoutAction } from "@/app/actions/loginAction";
+import { logoutAction } from "@/app/actions/authAction";
 import { Noto_Sans_KR } from "next/font/google";
 import { Button } from "../ui/button";
 const kr_font = Noto_Sans_KR({weight: "700", style: "normal"})

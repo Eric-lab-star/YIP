@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { loginSchema } from "../lib/zod/loginSchema"
-import { loginAction } from "../actions/loginAction"
+import { loginAction } from "../actions/authAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
