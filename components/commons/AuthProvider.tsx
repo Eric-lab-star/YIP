@@ -2,13 +2,17 @@
 
 import { createContext, useContext, useMemo, useState } from "react";
 
-export interface userContext {
+
+interface User {
 	loggedIn: boolean,
 	id?: string,
 	name?: string,
-	setUser: (userCtx:{loggedIn: boolean, id?: string, name?: string}) => void;
 }
 
+export interface userContext {
+	user: User
+	setUser: () => void;
+}
 
 
 export interface authProviderProp {
@@ -25,11 +29,9 @@ export function useAuthCtx() {
 }
 
 export default function AuthProvider({userCtx, children}: authProviderProp){
-	const [user, setUser] = useState<{loggedIn: boolean, id?: string, name?: string}>(userCtx)
 	const value = useMemo(() => ({
-		...user,
-		setUser: setUser
-	}),[user])
+		...userCtx
+	}),[userCtx])
 
 	return (
 		<AuthContext value={value}>
