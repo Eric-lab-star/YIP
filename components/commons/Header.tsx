@@ -9,7 +9,6 @@ import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/loginAction";
 import { Noto_Sans_KR } from "next/font/google";
 import { Button } from "../ui/button";
-import { redirect } from "next/navigation";
 const kr_font = Noto_Sans_KR({weight: "700", style: "normal"})
 
 
