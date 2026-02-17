@@ -2,91 +2,79 @@
 import { cookies } from "next/headers";
 import * as z from "zod";
 
-import jwt from "jsonwebtoken";
 import { loginSchema } from "../lib/zod/loginSchema";
 import { findStudent } from "../lib/mongo/students";
+import { setLoginToken, validateToken } from "../lib/auth/login";
+import { redirect } from "next/navigation";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-
-export interface LoginActionRes {
-	login: boolean;
-	message: string;
-}
-
-export async function validateToken() {
-	try {
-		const cookiesStore = await cookies();
-		const token = cookiesStore.get("token");
-		if (!process.env.JWT_SECRET) {
-			throw new Error("Server error, JWT token is missing");
-		}
-		if (!token) {
-			return {result: "no token", pass:true}
-		}
-		if (token.value) {
-			jwt.verify(token.value, process.env.JWT_SECRET) as JwtPayloadUser 
-			return {result: "valid token", pass: true} 
-		}
-		return {result: "something went wrong", pass: false}
-	} catch(e) {
-		return {result: "expired token", pass: false}
-	}
-}
 
 export async function logoutAction() {
 	const cookiesStore = await cookies();
-	cookiesStore.delete("token")
+	cookiesStore.set("logInToken","", {
+			secure: process.env.NODE_ENV === "production",
+			httpOnly: true,
+			sameSite: "lax",
+			maxAge: 0
+	})
+	redirect("/login")
 }
 
-export type JwtPayloadUser = {
-  id: string;      // userId
-  name: string;
-	phoneNumber: string;
-};
 
-function signAccessToken(payload: JwtPayloadUser) {
-  return jwt.sign(payload, JWT_SECRET, {
-    algorithm: "HS256",
-    expiresIn: "3m", // access token은 짧게
-  });
+interface LoginSuccess {
+	success: true
+	userInfo: {
+		loggedIn: boolean;
+		id: string;
+		name: string;
+	}
 }
 
-function signRefreshToken(payload: Pick<JwtPayloadUser, "id">) {
-  return jwt.sign(payload, JWT_SECRET, {
-    algorithm: "HS256",
-    expiresIn: "4h",
-  });
+interface LoginFail {
+	success: false
 }
 
-export async function loginAction(data: z.infer<typeof loginSchema>){
+export async function loginVerfyAction() {
+	const result = await validateToken()
+	return result
+}
+
+
+/**
+	*  loginAction creates user token 
+	**/
+export async function loginAction(data: z.infer<typeof loginSchema>): Promise<LoginSuccess | LoginFail> {
+
 	try {
 		const result = loginSchema.safeParse(data)
 		if (!result.success) {
-			return false
+			return {
+				success: false,
+			} 
 		}
+
 		const student = await findStudent(data.name, data.phoneNumber)
 		if (!student) {
-			return false
+			return {
+				success: false,
+			} 
 		}
 
-		const token = signAccessToken({
+		const userInfo= {
+			loggedIn: true,
 			id: student._id.toString(),
 			name: student.name,
-			phoneNumber: student.studentPhoneNumber.join("")
-		})
-		const cookieStore = await cookies()
+		}
 
-		cookieStore.set("token", token, {
-			httpOnly: true,
-			sameSite: "lax",
-			maxAge: 60 * 3
-		})
+		await setLoginToken(userInfo)
 
-		return true
+		return {
+			success: true,
+			userInfo, 
+		} 
 
 	} catch(e) {
-		console.log(e)
-		return false
-		
+		return {
+			success: false,
+		} 
 	}
 }

@@ -20,35 +20,15 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { loginSchema } from "../lib/zod/loginSchema"
-import { loginAction, validateToken } from "../actions/loginAction"
+import { loginAction } from "../actions/loginAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
-import { useEffect } from "react"
 import { Spinner } from "@/components/ui/spinner"
-import { useAuthCtx } from "@/components/commons/AuthProvider"
-
-const checkToken = async () => {
-	const validToken = await validateToken()
-	if (validToken?.result == "expired token") {
-		return false
-	} else {
-		return true
-	}
-	
-}
+import useUser from "@/components/SWR/auth/user"
 
 export default function Page() {
-	const authCtx = useAuthCtx()
+	const {userMutate} = useUser() 
 
-	useEffect(() => {
-		checkToken().then((r)=>{
-			if (!r) {
-				toast.error("로그인 세션이 만료되었습니다.", {position: "top-center"})
-				authCtx.setUser({loggedIn: false})
-
-			}
-		})
-	},[])
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -60,13 +40,13 @@ export default function Page() {
 
 	const {isSubmitting } = form.formState
 
-
   async function onSubmit(data: z.infer<typeof loginSchema>) {
 		const result = await loginAction(data)
-		if (!result) {
+		if (!result.success) {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
+			userMutate()
 			redirect("/pythonWebScrapper")
 		} 
 	}
@@ -77,7 +57,6 @@ export default function Page() {
 			e.preventDefault( )
 		}
 	}
-
 
   return (
 		<div className="pt-30">
