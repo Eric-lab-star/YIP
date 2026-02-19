@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Tool Preferences
+- Use `rg` (ripgrep) instead of `grep` for searching files
+- Prefer: `rg "pattern" .` over `grep -r "pattern" .`
+```
+
+**2. Via system prompt (if using the API)**
+
+Include an instruction like:
+```
+When searching for patterns in files, always use `rg` (ripgrep) instead of `grep`.
 ## Commands
 
 ```bash
