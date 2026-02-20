@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-export const TokenMaxAge = 60 * 60 * 2;
+export const TokenMaxAge = 60 * 60 * 20;
 
 export interface JwtPayloadUser {
   id: string;      // userId
