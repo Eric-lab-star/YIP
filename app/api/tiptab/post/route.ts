@@ -1,12 +1,12 @@
 import { validateToken } from "@/app/lib/auth/login";
 import { createPost } from "@/app/lib/mongo/posts";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest} from "next/server";
 
 export async function POST(req: NextRequest) {
 	try {
 		const result = await validateToken()
 		if(!result.success) {
-			return result;
+			return Response.json(result);
 		}
 		const formData  = await req.formData()
 		const title = formData.get("title")
