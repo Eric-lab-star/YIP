@@ -1,7 +1,7 @@
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import LazyEditorClient from "@/components/editor/EditorClient.lazy";
+import TipTab from "@/components/editor/TipTab";
 import { Link as Link1 } from "lucide-react";
 import Link from "next/link";
 
@@ -40,7 +40,7 @@ export default function Page() {
 
 			<Title size="h2" my="m"> 이진 탐색 알고리즘 조사 보고서 작성하기 </Title>
 			<Text my="m"> 아래 입력란에 보고서를 작성해 주세요.</Text>
-			<LazyEditorClient />
+			<TipTab/>
 			<NextAndPrev
 			next="challenge_fibonacci"
 			nextPage="도전! 피보나치 수열 만들기"

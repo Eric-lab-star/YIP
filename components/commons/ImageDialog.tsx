@@ -20,6 +20,7 @@ import useUser from "../SWR/auth/user";
 
 export default function ImageUploadDialog({className, editor}: {className: string; editor: Editor}) {
 
+	const ICON_SIZE = 20;
 	const [preview, setPreview] = useState<string | ArrayBuffer | null>()
 	const [file, setFile] = useState<File|null>()
 	const [open, setOpen] = useState(false)
@@ -59,8 +60,8 @@ export default function ImageUploadDialog({className, editor}: {className: strin
 					onClick: () => {}
 			}})
 		};
-		if (selected.size > 3 * 1024 * 1024) {
-			return toast.error("3mb 이하의 파일만 업로드 가능해요", {
+		if (selected.size > 4 * 1024 * 1024) {
+			return toast.error("4MB 이하의 파일만 업로드 가능해요", {
 				position: "top-center",
 				action: {
 					label: "x",
@@ -87,7 +88,7 @@ export default function ImageUploadDialog({className, editor}: {className: strin
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className={className}>
-					<Image strokeWidth={"2"} size={"16"}/>
+					<Image strokeWidth={"2"} size={ICON_SIZE}/>
 				</button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

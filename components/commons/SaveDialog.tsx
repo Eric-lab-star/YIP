@@ -12,47 +12,65 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Editor } from "@tiptap/core";
-import { Youtube } from "lucide-react";
+import { Save } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-export default function YoutubeURLDialog({className, editor}: {className: string; editor: Editor}) {
+export default function SaveDialog({className, editor}: {className?: string; editor: Editor}) {
+	const [title, setTitle] = useState<string>("")
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setTitle(e.currentTarget.value)
+	}
 
-const ICON_SIZE = 20;
+	const ICON_SIZE = 20;
+
 	const [open, setOpen] = useState(false)
-	const handleSubmit =(e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const formdata = new FormData(e.currentTarget)
-		const data = Object.fromEntries(formdata)
-		editor.chain().focus().setYoutubeVideo({
-			src: data.url as string,
-		}).run()
+		if(!title) return;
+		const formdata = new FormData()
+		const contentJSON = editor.getJSON()
+		const content = JSON.stringify(contentJSON)
+
+		formdata.append("content", content)
+		formdata.append("title", title)
+		const response = await fetch("/api/tiptab/post", {
+			method: "POST",
+			body: formdata,
+		})
+
+		if(!response.ok) {
+			toast.error("저장 할 수 없습니다.")
+		}
 		setOpen(false)
 	}
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className={className}>
-					<Youtube strokeWidth={"2"} size={ICON_SIZE}/>
-				</button>
+				<Button className="h-10">
+					<Save className="" size={ICON_SIZE} strokeWidth={2}/>
+					<div>저장하기</div>
+				</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
 			<form className="space-y-3"  onSubmit={(e)=> handleSubmit(e)}>
         <DialogHeader>
-          <DialogTitle>링크 올리기</DialogTitle>
+          <DialogTitle>저장하기</DialogTitle>
           <DialogDescription>
-						유튜브 링크를 입력하세요.
+						제목을 입력하세요.
           </DialogDescription>
         </DialogHeader>
 					<div className="flex items-center gap-2">
 						<div className="grid flex-1 gap-2">
-							<Label htmlFor="link" className="sr-only">
-								URL
+							<Label htmlFor="title" className="sr-only">
+								제목
 							</Label>
 							<Input
-								name="url"
-								id="link"
-								defaultValue="https://www.youtube.com/watch?v=nLRL_NcnK-4"
+								name="title"
+								id="title"
+								onChange={(e)=> handleChange(e)}
+								value={title}
 							/>
 						</div>
 					</div>

@@ -1,15 +1,15 @@
 "use client";
 import { Indent } from "@/lib/tiptapIndent";
 import { Placeholder } from "@tiptap/extensions";
+import TextAlign from '@tiptap/extension-text-align'
 import Image from '@tiptap/extension-image'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
-import DragHandle from '@tiptap/extension-drag-handle-react'
 import Youtube from '@tiptap/extension-youtube'
 import {useEditor, EditorContent, Editor, useEditorState, } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Highlight from '@tiptap/extension-highlight'
-import { AArrowDown, AArrowUp, Bold, Code, CodeXml, Grip, GripVertical, Italic, List, ListIndentDecrease, ListIndentIncrease, ListOrdered, Minus, Pilcrow, Redo, TextQuote, Undo} from "lucide-react";
+import { AArrowDown, AArrowUp, Bold, Code, CodeXml, Italic, List, ListIndentDecrease, ListIndentIncrease, ListOrdered, Minus, Pilcrow, Redo, Save, TextAlignCenter, TextAlignEnd, TextAlignStart, TextQuote, Undo} from "lucide-react";
 import { tv } from "tailwind-variants";
 import {all, createLowlight} from 'lowlight';
 import YoutubeURLDialog from "../commons/YoutubeURLDialog";
@@ -17,12 +17,19 @@ import LinkDialog from "../commons/LinkDialog";
 import ColorDropDown from "../commons/ColorDropdown";
 import HeaderDropdown from "../commons/HeaderDropdown";
 import ImageUploadDialog from "../commons/ImageDialog";
+import SaveDialog from "../commons/SaveDialog";
 const lowlight = createLowlight(all)
+const ICON_SIZE = 20;
+const ICON_STROKE = 2;
 
-const NESTED_CONFIG = { edgeDetection: { threshold: -16 } }
-export default function TipTab() {
+export default function TipTab({content} : {content?: JSON}) {
 	const editor = useEditor({
+		editable: content ? false: true,
+		content: content ? content : "",
 		extensions: [
+      TextAlign.configure({
+        types: ['heading', 'paragraph', 'image'],
+      }),
 			TextStyle,
 			Image.configure({
 				inline: false,
@@ -55,7 +62,14 @@ export default function TipTab() {
 				}
 			}),
 			Placeholder.configure({
-				placeholder: "기억보다 기록을 합시다."
+				placeholder: ({node}) => {
+					switch (node.type.name) {
+						case "heading":
+							return "제목"
+						default:	
+							return "기억보다 기록을"
+					}
+				}
 			}),
 			CodeBlockLowlight.configure({
 				lowlight,
@@ -73,11 +87,9 @@ export default function TipTab() {
 
 	return (
 		<>
-			<MenuBar editor={editor}/>
-			<DragHandle editor={editor} nested={NESTED_CONFIG}>
-				<GripVertical className="hover:cursor-grab"/>
-			</DragHandle>
-			<EditorContent className="p-3 border-zinc-400 border-dashed border-2 h-8/12 overflow-y-auto" editor={editor}/>
+			{!content && <MenuBar editor={editor}/>}
+			<EditorContent className={`p-3 border-zinc-400 ${!content && "border-dashed border-2"}`} editor={editor}/>
+			<div className="h-30"/>
 		</>
 	)
 }
@@ -176,83 +188,101 @@ function MenuBar({editor}: { editor: Editor}) {
 		editor.chain().focus().setHorizontalRule().run()
 	}
 
+	const textAlignStart = () => {
+		editor.chain().focus().toggleTextAlign('left').run()
+	}
+	const textAlignCenter = () => {
+		editor.chain().focus().toggleTextAlign('center').run()
+	}
+	const textAlignEnd = () => {
+		editor.chain().focus().toggleTextAlign('right').run()
+	}
+
+
 
 	return (
-		<div className="h-7 flex items-center relative  divide-zinc-400 my-3  rounded-sm bg-zinc-500">
-			<button onClick={undo} className={editorButton({isActive: editorState?.canUndo, className: "rounded-l-sm"})}>
-				<Undo strokeWidth={"2"} size={"16"}/>
-			</button>
-			<button onClick={redo} className={editorButton({isActive: editorState?.canRedo})}>
-				<Redo strokeWidth={"2"} size={"16"}/>
-			</button>
-			<HeaderDropdown editor={editor} className={editorButton({ isActive: editorState?.isHeading})}/>
+		<div className=" flex flex-col space-y-1   my-3">
+			<div className="w-full overflow-clip grid grid-cols-10 justify-self-center self-center bg-primary text-primary-foreground rounded-lg border-2 border-black">
+				<button onClick={undo} className={editorButton({isActive: editorState?.canUndo})}>
+					<Undo strokeWidth={"2"} size={ICON_SIZE}/>
+				</button>
+				<button onClick={redo} className={editorButton({isActive: editorState?.canRedo})}>
+					<Redo strokeWidth={"2"} size={ICON_SIZE}/>
+				</button>
+				<HeaderDropdown editor={editor} className={editorButton({ isActive: editorState?.isHeading})}/>
 
-			<button onClick={paragraph} className={editorButton()}>
-				<Pilcrow strokeWidth={"2"} size={"16"}/>
-			</button>
-			<button onClick={bold} className={editorButton({isActive: editorState?.isBold})}>
-				<Bold strokeWidth={"3"} size={"16"}/>
-			</button>
+				<button onClick={paragraph} className={editorButton()}>
+					<Pilcrow strokeWidth={"2"} size={ICON_SIZE}/>
+				</button>
+				<button onClick={bold} className={editorButton({isActive: editorState?.isBold})}>
+					<Bold strokeWidth={"3"} size={ICON_SIZE}/>
+				</button>
 
-			<button onClick={italic} className={editorButton({isActive: editorState?.isItalic})}>
-				<Italic strokeWidth={"2"} size={"16"} />
-			</button>
+				<button onClick={italic} className={editorButton({isActive: editorState?.isItalic})}>
+					<Italic strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
 
-			<button onClick={increaseFontSize} className={editorButton()}>
-				<AArrowUp strokeWidth={"2"} size={"16"} />
-			</button>
-			<button onClick={decreaseFontSize} className={editorButton()}>
-				<AArrowDown strokeWidth={"2"} size={"16"} />
-			</button>
+				<button onClick={increaseFontSize} className={editorButton()}>
+					<AArrowUp strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={decreaseFontSize} className={editorButton()}>
+					<AArrowDown strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
 
-			<button onClick={code} className={editorButton({isActive: editorState?.isCode})}>
-				<Code strokeWidth={"2"} size={"16"} />
-			</button>
-			<button onClick={codeBlock} className={editorButton({isActive: editorState?.isCodeBlock})}>
-				<CodeXml strokeWidth={"2"} size={"16"} />
-			</button>
+				<button onClick={code} className={editorButton({isActive: editorState?.isCode})}>
+					<Code strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={codeBlock} className={editorButton({isActive: editorState?.isCodeBlock})}>
+					<CodeXml strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
 
 
-			<div>
-				<LinkDialog className={editorButton({isActive: editorState?.isLink})} editor={editor}/>
+					<LinkDialog className={editorButton({isActive: editorState?.isLink})} editor={editor}/>
+				<ColorDropDown editor={editor} className={editorButton({isActive: editorState?.isHighlight})}/>
+				<button onClick={blockquote} className={editorButton({isActive: editorState?.isBlockQuote})}>
+					<TextQuote strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={indent} className={editorButton()}>
+					<ListIndentIncrease  strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={outdent} className={editorButton()}>
+					<ListIndentDecrease strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={listOrdered} className={editorButton({isActive: editorState?.isOrderedList})}>
+					<ListOrdered strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+
+				<button onClick={listBullet } className={editorButton({isActive: editorState?.isBulletList})}>
+					<List strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+
+				<button onClick={textAlignStart} className={editorButton()}>
+					<TextAlignStart strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={textAlignCenter} className={editorButton()}>
+					<TextAlignCenter strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+				<button onClick={textAlignEnd} className={editorButton()}>
+					<TextAlignEnd strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+
+
+				<button onClick={horizontalRule} className={editorButton({isActive: editorState?.isHorizontal})}>
+					<Minus strokeWidth={"2"} size={ICON_SIZE} />
+				</button>
+					<YoutubeURLDialog className={editorButton()} editor={editor} />
+					<ImageUploadDialog editor={editor} className={editorButton()}/>
 			</div>
-			<ColorDropDown editor={editor} className={editorButton({isActive: editorState?.isHighlight})}/>
-			<button onClick={blockquote} className={editorButton({isActive: editorState?.isBlockQuote})}>
-				<TextQuote strokeWidth={"2"} size={"16"} />
-			</button>
-			<button onClick={indent} className={editorButton()}>
-				<ListIndentIncrease  strokeWidth={"2"} size={"16"} />
-			</button>
-			<button onClick={outdent} className={editorButton()}>
-				<ListIndentDecrease strokeWidth={"2"} size={"16"} />
-			</button>
-			<button onClick={listOrdered} className={editorButton({isActive: editorState?.isOrderedList})}>
-				<ListOrdered strokeWidth={"2"} size={"16"} />
-			</button>
-
-			<button onClick={listBullet } className={editorButton({isActive: editorState?.isBulletList})}>
-				<List strokeWidth={"2"} size={"16"} />
-			</button>
-
-
-			<button onClick={horizontalRule} className={editorButton({isActive: editorState?.isHorizontal})}>
-				<Minus strokeWidth={"2"} size={"16"} />
-			</button>
-			<div>
-				<YoutubeURLDialog className={editorButton()} editor={editor} />
-			</div>
-			<div>
-				<ImageUploadDialog editor={editor} className={editorButton()}/>
-			</div>
+			<SaveDialog editor={editor}/>
 		</div>
 	)
 }
 
 const editorButton = tv({
-	base: "group p-1 h-full hover:text-white",
+	base: "flex justify-center items-center group p-1 h-full hover:text-foreground hover:bg-zinc-100",
 	variants: {
 		isActive: {
-			true: "bg-black text-white",
+			true: "bg-purple-700 text-white",
 			false: "",
 		},
 	},
@@ -260,4 +290,5 @@ const editorButton = tv({
 		isActive: false
 	}
 })
+
 

@@ -1,7 +1,8 @@
+import { readPosts } from "@/app/lib/mongo/posts";
 import { readStudent } from "@/app/lib/mongo/students";
 import Title from "@/components/commons/Title";
 import { Button } from "@/components/ui/button";
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -14,6 +15,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 		return notFound()
 	}
 
+	// param  검증
 	const student = await readStudent(new ObjectId(id))
 	if (!student) {
 		return notFound()
@@ -27,35 +29,35 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 				<Button size={"sm"}>
 					<Link href={"/editor"}> 글쓰기 </Link>
 				</Button>
-
 			</div>
-			<Section />
-			<Title my="m" size="h2"> 과제 </Title>
-			<Section />
-			<Title my="m" size="h2"> 발표영상 </Title>
-			<Section />
+			<Section id={id}/>
 		</div>
 	)
 }
 
-const mockList = Array(10).fill(0);
 
-function Section() {
+async function Section({id}: {id: string}) {
+	const posts = await readPosts({userId: id})
+	if(!posts.ok) {
+		console.log(posts)
+		return <div> 없음 </div>
+	}
+
 	return (
 		<div className="h-100 mx-20 bg-zinc-300 overflow-y-auto space-y-1">
-		{mockList.map( (v,i) => <ListItems key={i}/>) }
+		{posts.db.map((v,i) => <ListItems key={i} index={i} content={v}/>) }
 		</div>
 	)
 }
 
+function ListItems({content, index}:{content: WithId<{title: string; createdAt: Date}>; index: number}) {
+	const date = new Date(content.createdAt)
 
-
-function ListItems() {
 	return (
-		<div className="h-10 bg-zinc-400 flex">
-			<div> 1</div>
-			<div> title </div>
-			<div> 2025-02-03 </div>
-		</div>
+		<Link href={`/editor/${content._id.toString()}`} className="h-10 bg-zinc-400 flex">
+			<div>{index + 1}</div>
+			<div>{content.title}</div>
+			<div>{date.toLocaleDateString("ko-KR")}</div>
+		</Link>
 	)
 }

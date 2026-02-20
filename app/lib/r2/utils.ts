@@ -32,6 +32,8 @@ export async function r2PostURL({
 	await r2client.send(command)
 }
 
+
+
 export const IMAGE_BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://r2.kimkyungsub.com"
