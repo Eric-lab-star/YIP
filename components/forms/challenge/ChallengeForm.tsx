@@ -2,7 +2,7 @@
 
 import { challengeAction, findChallengeAction } from "@/app/actions/challengeAction";
 import { challenges } from "@/app/lib/mongo/challenge";
-import { AuthContext } from "@/components/commons/AuthProvider";
+import useUser from "@/components/SWR/auth/user";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -20,7 +20,7 @@ interface ChallengForm {
 }
 
 export default function ChallengForm({challenge}: ChallengForm) {
-	const {loggedIn, id, name} = useContext(AuthContext)
+	const {user, isLoading} = useUser()
 	const [submitted, setSubmitted] = useState<{submitted: boolean, link?: string}>({submitted: false}) 
 
 	const rhform = useForm<{link: string}>({
@@ -32,29 +32,21 @@ export default function ChallengForm({challenge}: ChallengForm) {
 
 	useEffect(() =>{
 		const find = async () => {
-			if (id && name){
-				const doc = await findChallengeAction(id, challenge)
-				console.log(doc)
+			if (user?.success && user.id && name){
+				const doc = await findChallengeAction(user.id, challenge)
 				setSubmitted(doc)
 				rhform.setValue("link", doc.link ? doc.link : "")
 			}
 		}
 		find()
-	},[])
-
-	if (!loggedIn) {
-		redirect("/login")
-	}
+	},[user])
 
 
 
 	const onSubmit = async ({link}: {link: string}) => {
-		if (!id || !name){
-			console.log("id or name is not valid")
-			toast.error("id or name is not valid")
-			redirect("/login")
-		}
-		const saved = await challengeAction({userId: id, name,link}, challenge)
+		if(!user?.success) return;
+		
+		const saved = await challengeAction({userId: user.id, name: user.name, link}, challenge)
 		if (saved) {
 			setSubmitted({submitted: true, link: link})
 			toast.success("과제를 제출을 완료했습니다.")
