@@ -31,3 +31,13 @@ export async function imageMetadata(key: string) {
 		height,
 	};
 }
+
+
+export async function compressImage(buffer: Buffer<ArrayBuffer>) {
+	const result = await sharp(buffer)
+		.resize(1000, null, {
+			withoutEnlargement: true,
+		}).webp({quality: 80}).toBuffer()
+	return result 
+}
+

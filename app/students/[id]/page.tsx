@@ -2,6 +2,7 @@ import { readStudent } from "@/app/lib/mongo/students";
 import Title from "@/components/commons/Title";
 import { Button } from "@/components/ui/button";
 import { ObjectId } from "mongodb";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 
@@ -23,7 +24,9 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 			<Title my="m" size="h1"> 나의 공간 </Title>
 			<div className="space-x-2 flex  items-center">
 				<Title my="m" size="h2"> TIL - 기억보다 기록 </Title>
-				<Button size={"sm"}> 글쓰기</Button>
+				<Button size={"sm"}>
+					<Link href={"/editor"}> 글쓰기 </Link>
+				</Button>
 
 			</div>
 			<Section />

@@ -1,22 +1,44 @@
 "use client";
 import { Indent } from "@/lib/tiptapIndent";
 import { Placeholder } from "@tiptap/extensions";
+import Image from '@tiptap/extension-image'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-
+import { TextStyle, FontSize } from '@tiptap/extension-text-style'
+import DragHandle from '@tiptap/extension-drag-handle-react'
 import Youtube from '@tiptap/extension-youtube'
 import {useEditor, EditorContent, Editor, useEditorState, } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import { Bold, Code, CodeXml, Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Italic, Link, List, ListIndentDecrease, ListIndentIncrease, ListOrdered, Minus, Pilcrow, Redo, TextQuote, Undo} from "lucide-react";
-import { useState } from "react";
+import Highlight from '@tiptap/extension-highlight'
+import { AArrowDown, AArrowUp, Bold, Code, CodeXml, Grip, GripVertical, Italic, List, ListIndentDecrease, ListIndentIncrease, ListOrdered, Minus, Pilcrow, Redo, TextQuote, Undo} from "lucide-react";
 import { tv } from "tailwind-variants";
 import {all, createLowlight} from 'lowlight';
 import YoutubeURLDialog from "../commons/YoutubeURLDialog";
 import LinkDialog from "../commons/LinkDialog";
+import ColorDropDown from "../commons/ColorDropdown";
+import HeaderDropdown from "../commons/HeaderDropdown";
+import ImageUploadDialog from "../commons/ImageDialog";
 const lowlight = createLowlight(all)
 
+const NESTED_CONFIG = { edgeDetection: { threshold: -16 } }
 export default function TipTab() {
 	const editor = useEditor({
 		extensions: [
+			TextStyle,
+			Image.configure({
+				inline: false,
+				allowBase64: false,
+				resize: {
+					enabled: true,
+					directions: ['top', 'bottom', 'left', 'right'], 
+					minWidth: 50,
+					minHeight: 50,
+					alwaysPreserveAspectRatio: true,
+				}
+			}),
+			FontSize,
+			Highlight.configure({
+				multicolor: true,
+			}),
 			Youtube,
 			Indent.configure({
 				types: ["paragraph", "heading"],
@@ -52,6 +74,9 @@ export default function TipTab() {
 	return (
 		<>
 			<MenuBar editor={editor}/>
+			<DragHandle editor={editor} nested={NESTED_CONFIG}>
+				<GripVertical className="hover:cursor-grab"/>
+			</DragHandle>
 			<EditorContent className="p-3 border-zinc-400 border-dashed border-2 h-8/12 overflow-y-auto" editor={editor}/>
 		</>
 	)
@@ -75,14 +100,13 @@ function MenuBar({editor}: { editor: Editor}) {
 				isItalic: editor.isActive("italic"),
 				isLink: editor.isActive("link"),
 				isCode: editor.isActive("code"),
+				isHighlight: editor.isActive("highlight"),
 				canUndo: editor.can().chain().focus().undo().run(),
 				canRedo: editor.can().chain().focus().redo().run(),
-
 			}
 		}
 	})
 
-	const [showHeadings, setShowHeadings] = useState(false)
 
 	const bold = () => {
 		editor.chain().focus().toggleBold().run()
@@ -92,9 +116,23 @@ function MenuBar({editor}: { editor: Editor}) {
 		editor.chain().focus().toggleItalic().run()
 	}
 
-	const link = () => {
-		editor.chain().focus().toggleLink().run()
-	}
+  const getCurrentFontSize = () => {
+    const fontSize = editor.getAttributes('textStyle').fontSize
+    return fontSize ? parseInt(fontSize) : 16
+  }
+
+  const increaseFontSize = () => {
+    const current = getCurrentFontSize()
+    const newSize = Math.min(50, current + 2) 
+    editor.chain().focus().setFontSize(`${newSize}px`).run()
+  }
+
+  const decreaseFontSize = () => {
+    const current = getCurrentFontSize()
+    const newSize = Math.max(8, current - 2) 
+    editor.chain().focus().setFontSize(`${newSize}px`).run()
+  }
+
 
 	const code = () => {
 		editor.chain().focus().toggleCode().run()
@@ -104,10 +142,6 @@ function MenuBar({editor}: { editor: Editor}) {
 		editor.chain().focus().toggleBlockquote().run()
 	}
 
-	const heading = (e: React.MouseEvent, {level}: {level: 1 | 2 | 3 | 4 | 5 | 6}) => {
-		editor.chain().focus().toggleHeading({level}).run()
-		setShowHeadings(false)
-	}
 	const paragraph = () => {
 		editor.chain().focus().setParagraph().run()
 	}
@@ -120,9 +154,6 @@ function MenuBar({editor}: { editor: Editor}) {
 	}
 
 
-	const handleHeadingBlur = (e: React.FocusEvent) => {
-		setShowHeadings(false)
-	}
 
 	const indent = () => {
 		editor.chain().focus().indent().run()
@@ -146,9 +177,6 @@ function MenuBar({editor}: { editor: Editor}) {
 	}
 
 
-
-
-
 	return (
 		<div className="h-7 flex items-center relative  divide-zinc-400 my-3  rounded-sm bg-zinc-500">
 			<button onClick={undo} className={editorButton({isActive: editorState?.canUndo, className: "rounded-l-sm"})}>
@@ -157,22 +185,8 @@ function MenuBar({editor}: { editor: Editor}) {
 			<button onClick={redo} className={editorButton({isActive: editorState?.canRedo})}>
 				<Redo strokeWidth={"2"} size={"16"}/>
 			</button>
-			<button 
-			onBlur={(e) => handleHeadingBlur(e)} 
-			onClick={()=> setShowHeadings((prev) => !prev)} 
-			className={editorButton({ isActive: editorState?.isHeading})}>
-				<Heading strokeWidth={"2"} size={"16"}/>
-			</button>
-				{
-					showHeadings && <div className="absolute z-10 bg-zinc-500 divide-y-1 left-13 top-8 rounded-sm">
-						<Heading1 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:1})} strokeWidth={"2"} size={"16"} className={header()}/>
-						<Heading2 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:2})} strokeWidth={"2"} size={"16"} className={header()}/>
-						<Heading3 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:3})} strokeWidth={"2"} size={"16"} className={header()}/>
-						<Heading4 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:4})} strokeWidth={"2"} size={"16"} className={header()}/>
-						<Heading5 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:5})} strokeWidth={"2"} size={"16"} className={header()}/>
-						<Heading6 onMouseDown={(e)=> e.preventDefault()} onClick={(e) => heading(e, {level:6})} strokeWidth={"2"} size={"16"} className={header()}/>
-					</div>
-				}
+			<HeaderDropdown editor={editor} className={editorButton({ isActive: editorState?.isHeading})}/>
+
 			<button onClick={paragraph} className={editorButton()}>
 				<Pilcrow strokeWidth={"2"} size={"16"}/>
 			</button>
@@ -184,13 +198,25 @@ function MenuBar({editor}: { editor: Editor}) {
 				<Italic strokeWidth={"2"} size={"16"} />
 			</button>
 
+			<button onClick={increaseFontSize} className={editorButton()}>
+				<AArrowUp strokeWidth={"2"} size={"16"} />
+			</button>
+			<button onClick={decreaseFontSize} className={editorButton()}>
+				<AArrowDown strokeWidth={"2"} size={"16"} />
+			</button>
+
 			<button onClick={code} className={editorButton({isActive: editorState?.isCode})}>
 				<Code strokeWidth={"2"} size={"16"} />
 			</button>
+			<button onClick={codeBlock} className={editorButton({isActive: editorState?.isCodeBlock})}>
+				<CodeXml strokeWidth={"2"} size={"16"} />
+			</button>
+
+
 			<div>
 				<LinkDialog className={editorButton({isActive: editorState?.isLink})} editor={editor}/>
 			</div>
-			
+			<ColorDropDown editor={editor} className={editorButton({isActive: editorState?.isHighlight})}/>
 			<button onClick={blockquote} className={editorButton({isActive: editorState?.isBlockQuote})}>
 				<TextQuote strokeWidth={"2"} size={"16"} />
 			</button>
@@ -208,16 +234,15 @@ function MenuBar({editor}: { editor: Editor}) {
 				<List strokeWidth={"2"} size={"16"} />
 			</button>
 
-			<button onClick={codeBlock} className={editorButton({isActive: editorState?.isCodeBlock})}>
-				<CodeXml strokeWidth={"2"} size={"16"} />
-			</button>
 
 			<button onClick={horizontalRule} className={editorButton({isActive: editorState?.isHorizontal})}>
 				<Minus strokeWidth={"2"} size={"16"} />
 			</button>
-
 			<div>
-				<YoutubeURLDialog className={editorButton({isActive: editorState?.isHorizontal})} editor={editor} />
+				<YoutubeURLDialog className={editorButton()} editor={editor} />
+			</div>
+			<div>
+				<ImageUploadDialog editor={editor} className={editorButton()}/>
 			</div>
 		</div>
 	)
@@ -236,6 +261,3 @@ const editorButton = tv({
 	}
 })
 
-const header = tv({
-	base: "h-7 m-1 hover:text-white"
-})

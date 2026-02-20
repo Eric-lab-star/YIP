@@ -1,8 +1,10 @@
+import { compressImage } from "@/app/lib/r2/sharp/bluarData";
 import { IMAGE_BASE_URL, r2PostURL } from "@/app/lib/r2/utils";
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
 	return Response.json({	
+		image: "image"
 	})
 }
 
@@ -10,6 +12,8 @@ export async function POST(req: NextRequest) {
 	try {
 		const formData = await req.formData()
 		const file = formData.get("image")
+		const userId = formData.get("userId")
+
 
     if (!(file instanceof File)) {
       return NextResponse.json(
@@ -26,10 +30,13 @@ export async function POST(req: NextRequest) {
     }
 
 		const bytes = Buffer.from(await file.arrayBuffer());
-		const ext = (file.name.split(".").pop() || "png").toLocaleLowerCase()
-		const key = `editorjs/${crypto.randomUUID()}.${ext}`
 
-		await r2PostURL({Key: key, Body: bytes, ContentType: file.type})
+		const image = await compressImage(bytes)
+
+		const ext = (file.name.split(".").pop() || "png").toLocaleLowerCase()
+		const key = `tiptab/${userId}/${crypto.randomUUID()}.${ext}`
+
+		await r2PostURL({Key: key, Body: image, ContentType: file.type})
 
 		const url = `${IMAGE_BASE_URL}/${key}`
 

@@ -32,7 +32,7 @@ export default function YoutubeURLDialog({className, editor}: {className: string
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className={className}>
-					<Youtube/>
+					<Youtube strokeWidth={"2"} size={"16"}/>
 				</button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

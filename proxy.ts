@@ -26,6 +26,7 @@ export const config = {
 	matcher: [
 		'/pythonWebScrapper/:path*',
 		"/login",
+		"/editor/:path*",
 		"/",
 	]
 }
