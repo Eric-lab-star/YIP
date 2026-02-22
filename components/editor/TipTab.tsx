@@ -18,6 +18,7 @@ import ColorDropDown from "../commons/ColorDropdown";
 import HeaderDropdown from "../commons/HeaderDropdown";
 import ImageUploadDialog from "../commons/ImageDialog";
 import SaveDialog from "../commons/SaveDialog";
+import { Skeleton } from "../ui/skeleton";
 const lowlight = createLowlight(all)
 const ICON_SIZE = 20;
 const ICON_STROKE = 2;
@@ -35,7 +36,7 @@ export default function TipTab({content} : {content?: JSON}) {
 				inline: false,
 				allowBase64: false,
 				resize: {
-					enabled: true,
+					enabled: content ? false : true,
 					directions: ['top', 'bottom', 'left', 'right'], 
 					minWidth: 50,
 					minHeight: 50,
@@ -82,12 +83,23 @@ export default function TipTab({content} : {content?: JSON}) {
 
 
 	if (!editor) {
-		return <div> loading </div>
+		return (
+			<div className="p-5 space-y-3">
+				<Skeleton className="w-full h-15 bg-zinc-300"/>
+				<Skeleton className="w-full h-[580px] bg-zinc-300"/>
+				<Skeleton className="w-full h-20 bg-zinc-300"/>
+			</div>
+		)
+
 	}
 
 	return (
 		<>
 			{!content && <MenuBar editor={editor}/>}
+			<div onClick={() => {
+				const json = editor.getJSON()
+				Object.entries(json.content).filter(v => v[1].type === "image").forEach(v => console.log(v))
+			}}>get Content</div>
 			<EditorContent className={`p-3 border-zinc-400 ${!content && "border-dashed border-2"}`} editor={editor}/>
 			<div className="h-30"/>
 		</>

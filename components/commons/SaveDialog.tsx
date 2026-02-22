@@ -30,6 +30,9 @@ export default function SaveDialog({className, editor}: {className?: string; edi
 		if(!title) return;
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
+		
+
+
 		const content = JSON.stringify(contentJSON)
 
 		formdata.append("content", content)
