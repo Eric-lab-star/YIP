@@ -1,4 +1,4 @@
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { r2client } from "./client";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -30,6 +30,30 @@ export async function r2PostURL({
 		ContentType
 	})
 	await r2client.send(command)
+}
+
+export async function r2DeleteManyURLs(keys: string[]) {
+	try {
+		await Promise.all(
+			keys.map(key => {
+				console.log("r2", key)
+				const command = new DeleteObjectCommand({
+					Bucket: process.env.R2_BUCKET!,
+					Key: key
+				})
+				return r2client.send(command)
+			})
+		)
+		return Response.json({
+			success: true
+		})
+	} catch(e) {
+		
+		return Response.json({
+			success: false 
+		})
+	}
+
 }
 
 

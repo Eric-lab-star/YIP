@@ -19,9 +19,11 @@ import HeaderDropdown from "../commons/HeaderDropdown";
 import ImageUploadDialog from "../commons/ImageDialog";
 import SaveDialog from "../commons/SaveDialog";
 import { Skeleton } from "../ui/skeleton";
+import { useEffect, useRef } from "react";
+import { getUnusedKeys } from "@/lib/tiptap-utils";
 const lowlight = createLowlight(all)
 const ICON_SIZE = 20;
-const ICON_STROKE = 2;
+// const ICON_STROKE = 2;
 
 export default function TipTab({content} : {content?: JSON}) {
 	const editor = useEditor({
@@ -93,13 +95,10 @@ export default function TipTab({content} : {content?: JSON}) {
 
 	}
 
+
 	return (
 		<>
 			{!content && <MenuBar editor={editor}/>}
-			<div onClick={() => {
-				const json = editor.getJSON()
-				Object.entries(json.content).filter(v => v[1].type === "image").forEach(v => console.log(v))
-			}}>get Content</div>
 			<EditorContent className={`p-3 border-zinc-400 ${!content && "border-dashed border-2"}`} editor={editor}/>
 			<div className="h-30"/>
 		</>
@@ -107,6 +106,31 @@ export default function TipTab({content} : {content?: JSON}) {
 }
 
 function MenuBar({editor}: { editor: Editor}) {
+
+	const uploadedImageKeys = useRef<string[]>([])
+
+	useEffect(() => {
+		console.log(uploadedImageKeys.current.length)
+		const handleBeforeUnload = () => {
+			if (uploadedImageKeys.current.length <= 0) return
+			navigator.sendBeacon("/api/r2", JSON.stringify({ keys: uploadedImageKeys.current}))
+		}
+
+		const cleanup = () => {
+			if (uploadedImageKeys.current.length <= 0) return;
+			navigator.sendBeacon("/api/r2", JSON.stringify({
+					keys: uploadedImageKeys.current,
+			}))
+		}
+		window.addEventListener('beforeunload', handleBeforeUnload)
+		
+		return () => {
+			console.log(uploadedImageKeys.current.length)
+			window.removeEventListener('beforeunload', handleBeforeUnload)
+			cleanup()
+		}
+	}, [])
+
 
 	const editorState = useEditorState({
 		editor,
@@ -283,9 +307,9 @@ function MenuBar({editor}: { editor: Editor}) {
 					<Minus strokeWidth={"2"} size={ICON_SIZE} />
 				</button>
 					<YoutubeURLDialog className={editorButton()} editor={editor} />
-					<ImageUploadDialog editor={editor} className={editorButton()}/>
+					<ImageUploadDialog uploadedImageKeys={uploadedImageKeys} editor={editor} className={editorButton()}/>
 			</div>
-			<SaveDialog editor={editor}/>
+			<SaveDialog editor={editor} uploadedImageKeys={uploadedImageKeys}/>
 		</div>
 	)
 }

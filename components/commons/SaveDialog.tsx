@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { getUnusedKeys } from "@/lib/tiptap-utils";
 import { Editor } from "@tiptap/core";
 import { Save } from "lucide-react";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { toast } from "sonner";
 
-export default function SaveDialog({className, editor}: {className?: string; editor: Editor}) {
+export default function SaveDialog({uploadedImageKeys, className, editor}: {uploadedImageKeys: RefObject<string[]>; className?: string; editor: Editor}) {
 	const [title, setTitle] = useState<string>("")
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
@@ -28,15 +29,30 @@ export default function SaveDialog({className, editor}: {className?: string; edi
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if(!title) return;
+
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
-		
 
+		const keys = contentJSON.content.filter(v => v.type === "image").map(v => {
+			const key = new URL(v.attrs?.src).pathname.slice(1)
+			return key
+		})
+		const unusedKeys = getUnusedKeys(uploadedImageKeys.current, keys)
 
 		const content = JSON.stringify(contentJSON)
 
 		formdata.append("content", content)
 		formdata.append("title", title)
+
+		const re = await fetch("/api/r2", {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({
+				keys: unusedKeys,
+			})
+		})
+
+
 		const response = await fetch("/api/tiptab/post", {
 			method: "POST",
 			body: formdata,
@@ -45,6 +61,12 @@ export default function SaveDialog({className, editor}: {className?: string; edi
 		if(!response.ok) {
 			toast.error("저장 할 수 없습니다.")
 		}
+		if (response.ok) {
+			toast.success("저장되었습니다.")
+		}
+
+		uploadedImageKeys.current = []
+
 		setOpen(false)
 	}
 

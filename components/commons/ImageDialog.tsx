@@ -14,11 +14,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Editor } from "@tiptap/core";
 import { Image } from "lucide-react";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { toast } from "sonner";
 import useUser from "../SWR/auth/user";
 
-export default function ImageUploadDialog({className, editor}: {className: string; editor: Editor}) {
+export default function ImageUploadDialog({className, editor, uploadedImageKeys}: {uploadedImageKeys: RefObject<string[]>; className: string; editor: Editor}) {
 
 	const ICON_SIZE = 20;
 	const [preview, setPreview] = useState<string | ArrayBuffer | null>()
@@ -39,6 +39,8 @@ export default function ImageUploadDialog({className, editor}: {className: strin
 			})
 			const data = await res.json()
 			if(data.file.url) {
+
+				uploadedImageKeys.current.push(new URL(data.file.url).pathname.slice(1))
 				editor.chain().focus().setImage({src: data.file.url}).run()
 			}
 			setOpen(false)
