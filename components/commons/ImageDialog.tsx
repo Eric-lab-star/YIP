@@ -27,9 +27,9 @@ export default function ImageUploadDialog({className, editor, uploadedImageKeys}
 	const {user} = useUser()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
 		if (!user?.success) return;
 		if (!file) return;
-		e.preventDefault()
 		const formdata = new FormData(e.currentTarget)
 		formdata.append("userId", user.id)
 		try {

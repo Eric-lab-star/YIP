@@ -17,7 +17,7 @@ import { Save } from "lucide-react";
 import { RefObject, useState } from "react";
 import { toast } from "sonner";
 
-export default function SaveDialog({uploadedImageKeys, className, editor}: {uploadedImageKeys: RefObject<string[]>; className?: string; editor: Editor}) {
+export default function SaveDialog({uploadedImageKeys, editor}: {uploadedImageKeys: RefObject<string[]>; className?: string; editor: Editor}) {
 	const [title, setTitle] = useState<string>("")
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
@@ -28,6 +28,7 @@ export default function SaveDialog({uploadedImageKeys, className, editor}: {uplo
 	const [open, setOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log("click")
 		e.preventDefault()
 		if(!title) return;
 
@@ -104,7 +105,7 @@ export default function SaveDialog({uploadedImageKeys, className, editor}: {uplo
           <DialogClose asChild>
             <Button type="button">취소</Button>
           </DialogClose>
-					<Button type="submit" onClick={(e) => e.preventDefault()}>확인</Button>
+					<Button type="submit">확인</Button>
         </DialogFooter>
 			</form>
       </DialogContent>
