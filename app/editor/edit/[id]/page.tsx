@@ -16,7 +16,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 	}
 	return (
 		<div className="p-5">
-			<TipTab id={id} editable={true} content={post.db?.content!}/>
+			<TipTab id={id} title={post.db?.title}  editable={true} content={post.db?.content!}/>
 		</div>
 	)
 }

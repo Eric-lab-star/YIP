@@ -52,7 +52,7 @@ export async function readPosts({userId}: {userId: string}): Promise<successPost
 	}
 }
 
-export async function readPost(id: string) {
+export async function readPost(id: string): Promise<{}> {
 	try {
 		const db = await getDB()
 		const post = await db.collection<post>("posts").findOne({_id: new ObjectId(id)})

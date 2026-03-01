@@ -35,9 +35,8 @@ export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDial
 	const [open, setOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		console.log("click")
 		e.preventDefault()
-		if(!title) return;
+		if(!title && !postId) return;
 
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
@@ -46,6 +45,7 @@ export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDial
 			const key = new URL(v.attrs?.src).pathname.slice(1)
 			return key
 		})
+
 		const unusedKeys = getUnusedKeys(uploadedImageKeys.current, keys)
 
 		const content = JSON.stringify(contentJSON)
