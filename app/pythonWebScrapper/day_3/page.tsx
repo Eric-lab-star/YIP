@@ -9,7 +9,7 @@ export default function Page() {
 			<Link id="day_3" href="/pythonWebScrapper/day_3"> 
 				<div className="flex items-center space-x-2">
 					<Origami className="text-orange-400"/>
-					<Title mx="x" weight="semi" size="h2">Day 3</Title>
+					<Title mx="x" weight="semi" size="h2">반복문</Title>
 				</div>
 			</Link>
 			<div className="my-3 flex flex-col">

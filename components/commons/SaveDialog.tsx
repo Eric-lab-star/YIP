@@ -26,6 +26,7 @@ export default function SaveDialog({uploadedImageKeys, className, editor}: {uplo
 	const ICON_SIZE = 20;
 
 	const [open, setOpen] = useState(false)
+	const [loading, setLoading] = useState(false)
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if(!title) return;
@@ -59,10 +60,10 @@ export default function SaveDialog({uploadedImageKeys, className, editor}: {uplo
 		})
 
 		if(!response.ok) {
-			toast.error("저장 할 수 없습니다.")
+			toast.error("저장 할 수 없습니다.", {position: "top-center"})
 		}
 		if (response.ok) {
-			toast.success("저장되었습니다.")
+			toast.success("저장되었습니다.", {position: "top-center"})
 		}
 
 		uploadedImageKeys.current = []
@@ -103,9 +104,8 @@ export default function SaveDialog({uploadedImageKeys, className, editor}: {uplo
           <DialogClose asChild>
             <Button type="button">취소</Button>
           </DialogClose>
-					<Button type="submit">확인</Button>
+					<Button type="submit" onClick={(e) => e.preventDefault()}>확인</Button>
         </DialogFooter>
-				
 			</form>
       </DialogContent>
     </Dialog>

@@ -27,6 +27,7 @@ export const config = {
 		'/pythonWebScrapper/:path*',
 		"/login",
 		"/editor/:path*",
+		"/students:path*",
 		"/",
 	]
 }
