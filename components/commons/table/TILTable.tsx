@@ -4,6 +4,8 @@ import { tv } from "tailwind-variants";
 import { DataTable } from "./data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { MoreHorizontal } from "lucide-react";
+import RowActionBtn from "./rowActionBtn";
 
 
 interface post {
@@ -57,6 +59,12 @@ const colums: ColumnDef<post>[] = [
 		accessorKey: "date",
 		header: () => <div className={header({align: "right"})}>날짜</div>,
 		cell: ({row}) => <div className={cell({align: "right"})}>{row.getValue("date")}</div>
+	},
+	{
+		id: "actions",
+		cell: ({row}) => {
+			return <div className={cell({align: "right"})}><RowActionBtn id={row.original.id}/></div>
+		}
 	},
 ]
 

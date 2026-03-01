@@ -11,12 +11,16 @@ export async function POST(req: NextRequest) {
 		const formData  = await req.formData()
 		const title = formData.get("title")
 		const content = formData.get("content")
+		const postId = formData.get("postId")
+		console.log(postId)
+
 		if (!title || !content)  {
 			return Response.json({
 				ok: false,
 				error: "title or content is missing"
 			})
 		}
+
 		const response = await createPost({userId:result.id, title: String(title), content: JSON.parse(String(content))})
 		return Response.json(response)
 
@@ -25,8 +29,5 @@ export async function POST(req: NextRequest) {
 			ok: false,
 			error: "server error"
 		})
-
 	}
-	
-	
 }

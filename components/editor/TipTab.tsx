@@ -20,15 +20,21 @@ import ImageUploadDialog from "../commons/ImageDialog";
 import SaveDialog from "../commons/SaveDialog";
 import { Skeleton } from "../ui/skeleton";
 import { useEffect, useRef } from "react";
-import { getUnusedKeys } from "@/lib/tiptap-utils";
 const lowlight = createLowlight(all)
 const ICON_SIZE = 20;
 // const ICON_STROKE = 2;
 
-export default function TipTab({content} : {content?: JSON}) {
+interface TibTabInterface {
+	id?: string;
+	content?: JSON;
+	editable: boolean;
+}
+
+export default function TipTab({id, content= {} as JSON, editable} : TibTabInterface) {
+
 	const editor = useEditor({
-		editable: content ? false: true,
-		content: content ? content : "",
+		editable ,
+		content: content,
 		extensions: [
       TextAlign.configure({
         types: ['heading', 'paragraph', 'image'],
@@ -98,14 +104,14 @@ export default function TipTab({content} : {content?: JSON}) {
 
 	return (
 		<>
-			{!content && <MenuBar editor={editor}/>}
-			<EditorContent className={`p-3 border-zinc-400 ${!content && "border-dashed border-2"}`} editor={editor}/>
+			{editable && <MenuBar editor={editor}/>}
+			<EditorContent className={`p-3 border-zinc-400 ${editable && "border-dashed border-2"}`} editor={editor}/>
 			<div className="h-30"/>
 		</>
 	)
 }
 
-function MenuBar({editor}: { editor: Editor}) {
+function MenuBar({id, editor}: {id?: string; editor: Editor}) {
 
 	const uploadedImageKeys = useRef<string[]>([])
 
@@ -309,7 +315,7 @@ function MenuBar({editor}: { editor: Editor}) {
 					<YoutubeURLDialog className={editorButton()} editor={editor} />
 					<ImageUploadDialog uploadedImageKeys={uploadedImageKeys} editor={editor} className={editorButton()}/>
 			</div>
-			<SaveDialog editor={editor} uploadedImageKeys={uploadedImageKeys}/>
+			<SaveDialog postId={id}  editor={editor} uploadedImageKeys={uploadedImageKeys}/>
 		</div>
 	)
 }

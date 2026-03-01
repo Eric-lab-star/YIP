@@ -10,15 +10,14 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 		return notFound()
 	}
 	const post = await readPost(id)
-	console.log(id)
 
-	console.log(post)
 	if (!post.ok) {
 		return notFound()
 	}
+
 	return (
 		<div className="p-5">
-			<TipTab content={post.db?.content!}/>
+			<TipTab editable={false} id={id} content={post.db?.content!}/>
 		</div>
 	)
 }

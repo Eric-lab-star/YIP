@@ -17,7 +17,14 @@ import { Save } from "lucide-react";
 import { RefObject, useState } from "react";
 import { toast } from "sonner";
 
-export default function SaveDialog({uploadedImageKeys, editor}: {uploadedImageKeys: RefObject<string[]>; className?: string; editor: Editor}) {
+interface SaveDialogInterface {
+	uploadedImageKeys: RefObject<string[]>;
+	className?: string;
+	editor: Editor
+	postId?: string
+}
+
+export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDialogInterface) {
 	const [title, setTitle] = useState<string>("")
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
@@ -45,14 +52,22 @@ export default function SaveDialog({uploadedImageKeys, editor}: {uploadedImageKe
 
 		formdata.append("content", content)
 		formdata.append("title", title)
+		if (postId) {
+			formdata.append("postId", postId)
+		}
 
-		const re = await fetch("/api/r2", {
+
+		const deleteResult = await fetch("/api/r2", {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify({
 				keys: unusedKeys,
 			})
 		})
+
+		if (!deleteResult.ok) {
+			console.log("r2 image clean up failed")
+		}
 
 
 		const response = await fetch("/api/tiptab/post", {
