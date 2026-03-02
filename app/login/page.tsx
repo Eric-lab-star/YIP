@@ -24,10 +24,8 @@ import { loginAction } from "../actions/authAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
-import useUser from "@/components/SWR/auth/user"
 
 export default function Page() {
-	const {userMutate} = useUser() 
 
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -46,7 +44,6 @@ export default function Page() {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			userMutate()
 			redirect("/pythonWebScrapper")
 		} 
 	}
@@ -54,7 +51,7 @@ export default function Page() {
 	const acceptOnlyNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		const invalidKeys = ["e", "E", "+", "-"];
 		if ( invalidKeys.includes( e.key ) ) {
-			e.preventDefault( )
+			e.preventDefault()
 		}
 	}
 

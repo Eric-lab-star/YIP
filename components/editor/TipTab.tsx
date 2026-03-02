@@ -27,14 +27,15 @@ const ICON_SIZE = 20;
 interface TibTabInterface {
 	id?: string;
 	content?: JSON;
+	title?: string;
 	editable: boolean;
 }
 
-export default function TipTab({id, content= {} as JSON, editable} : TibTabInterface) {
+export default function TipTab({id, title, content, editable} : TibTabInterface) {
 
 	const editor = useEditor({
 		editable ,
-		content: content,
+		content,
 		extensions: [
       TextAlign.configure({
         types: ['heading', 'paragraph', 'image'],
@@ -104,19 +105,18 @@ export default function TipTab({id, content= {} as JSON, editable} : TibTabInter
 
 	return (
 		<>
-			{editable && <MenuBar editor={editor}/>}
+			{editable && <MenuBar id={id} editor={editor} title={title}/>}
 			<EditorContent className={`p-3 border-zinc-400 ${editable && "border-dashed border-2"}`} editor={editor}/>
 			<div className="h-30"/>
 		</>
 	)
 }
 
-function MenuBar({id, editor}: {id?: string; editor: Editor}) {
+function MenuBar({id, title, editor}: {id?: string; editor: Editor; title?: string}) {
 
 	const uploadedImageKeys = useRef<string[]>([])
 
 	useEffect(() => {
-		console.log(uploadedImageKeys.current.length)
 		const handleBeforeUnload = () => {
 			if (uploadedImageKeys.current.length <= 0) return
 			navigator.sendBeacon("/api/r2", JSON.stringify({ keys: uploadedImageKeys.current}))
@@ -131,7 +131,6 @@ function MenuBar({id, editor}: {id?: string; editor: Editor}) {
 		window.addEventListener('beforeunload', handleBeforeUnload)
 		
 		return () => {
-			console.log(uploadedImageKeys.current.length)
 			window.removeEventListener('beforeunload', handleBeforeUnload)
 			cleanup()
 		}
@@ -315,7 +314,7 @@ function MenuBar({id, editor}: {id?: string; editor: Editor}) {
 					<YoutubeURLDialog className={editorButton()} editor={editor} />
 					<ImageUploadDialog uploadedImageKeys={uploadedImageKeys} editor={editor} className={editorButton()}/>
 			</div>
-			<SaveDialog postId={id}  editor={editor} uploadedImageKeys={uploadedImageKeys}/>
+			<SaveDialog posterTitle={title} postId={id}  editor={editor} uploadedImageKeys={uploadedImageKeys}/>
 		</div>
 	)
 }

@@ -1,5 +1,5 @@
 import { validateToken } from "@/app/lib/auth/login";
-import { createPost } from "@/app/lib/mongo/posts";
+import { createPost, updatePost } from "@/app/lib/mongo/posts";
 import { NextRequest} from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -19,6 +19,13 @@ export async function POST(req: NextRequest) {
 				ok: false,
 				error: "title or content is missing"
 			})
+		}
+
+		if (postId) {
+			const result = await updatePost(
+				postId.toString(), title.toString(), JSON.parse(content.toString())
+			)
+			return Response.json(result)
 		}
 
 		const response = await createPost({userId:result.id, title: String(title), content: JSON.parse(String(content))})

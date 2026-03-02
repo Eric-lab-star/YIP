@@ -9,8 +9,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { PartyPopper } from "lucide-react";
-import { redirect } from "next/navigation";
-import { useContext, useEffect, useState  } from "react";
+import { useEffect, useState  } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -32,14 +31,14 @@ export default function ChallengForm({challenge}: ChallengForm) {
 
 	useEffect(() =>{
 		const find = async () => {
-			if (user?.success && user.id && name){
+			if (user?.success && user.id){
 				const doc = await findChallengeAction(user.id, challenge)
 				setSubmitted(doc)
 				rhform.setValue("link", doc.link ? doc.link : "")
 			}
 		}
 		find()
-	},[user])
+	},[isLoading])
 
 
 

@@ -14,18 +14,23 @@ import { Label } from "@/components/ui/label"
 import { getUnusedKeys } from "@/lib/tiptap-utils";
 import { Editor } from "@tiptap/core";
 import { Save } from "lucide-react";
+import { redirect } from "next/navigation";
 import { RefObject, useState } from "react";
 import { toast } from "sonner";
+import useUser from "../SWR/auth/user";
 
 interface SaveDialogInterface {
 	uploadedImageKeys: RefObject<string[]>;
 	className?: string;
-	editor: Editor
-	postId?: string
+	editor: Editor;
+	postId?: string;
+	posterTitle?: string
 }
 
-export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDialogInterface) {
-	const [title, setTitle] = useState<string>("")
+export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, editor}: SaveDialogInterface) {
+	const {user} = useUser()
+	const userId = user?.success ? user.id : null
+	const [title, setTitle] = useState<string>(posterTitle)
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
 	}
@@ -69,7 +74,6 @@ export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDial
 			console.log("r2 image clean up failed")
 		}
 
-
 		const response = await fetch("/api/tiptab/post", {
 			method: "POST",
 			body: formdata,
@@ -78,11 +82,13 @@ export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDial
 		if(!response.ok) {
 			toast.error("저장 할 수 없습니다.", {position: "top-center"})
 		}
+
 		if (response.ok) {
 			toast.success("저장되었습니다.", {position: "top-center"})
 		}
 
 		uploadedImageKeys.current = []
+		redirect(`/students/${userId}`)
 
 		setOpen(false)
 	}

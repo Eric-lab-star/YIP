@@ -1,4 +1,5 @@
 "use client";
+import { deletePostAction } from "@/app/actions/postAction";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -16,11 +17,13 @@ export default function RowActionBtn({id}: {id: string}) {
             <DropdownMenuItem
             >
 							<Link href={`/editor/edit/${id}`}>
-              수정하기
+								수정하기
 							</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={()=> console.log("delete")}>삭제하기</DropdownMenuItem>
-          </DropdownMenuContent>
+            <DropdownMenuItem onClick={async ()=> {
+							await deletePostAction(id)
+						}}>삭제하기</DropdownMenuItem>
+						</DropdownMenuContent>
         </DropdownMenu>
 	)
 }

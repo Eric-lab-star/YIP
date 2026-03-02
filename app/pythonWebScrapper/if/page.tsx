@@ -151,8 +151,8 @@ elif age > 19:
 			</Option>
 		</QuizzWithOptions>
 		<NextAndPrev
-		next="/pythonWebScrapper/cat_or_dog"
-		nextPage="고양이와 강아지"
+		next="/pythonWebScrapper/and_or_not"
+		nextPage="and or not"
 		prev="/pythonWebScrapper/input_type_int"
 		prevPage="input, type, int"
 		/>
