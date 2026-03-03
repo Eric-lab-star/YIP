@@ -21,12 +21,18 @@ import { Button } from "@/components/ui/button"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+	options?: {
+		btn: boolean;
+		height: "h-[500px]" | "h-fit";
+	}
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+	options={btn: true, height: "h-[500px]"},
 }: DataTableProps<TData, TValue>) {
+
   const table = useReactTable({
     data,
     columns,
@@ -35,7 +41,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-		<div className="h-[500px]">
+		<div className={options.height}>
     <div className=" overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
@@ -81,6 +87,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
+		{options.btn &&
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
@@ -99,6 +106,7 @@ export function DataTable<TData, TValue>({
           다음
         </Button>
       </div>
+		}
 
 
 		</div>
