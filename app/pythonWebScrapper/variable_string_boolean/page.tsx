@@ -183,8 +183,8 @@ print(result)
 		</QuizzWithOptions >
 
 			<NextAndPrev
-			prev={"/pythonWebScrapper/pythonSandBox"}
-			prevPage="Python SandBox.io 소개"
+			prev={"/pythonWebScrapper/helloworld"}
+			prevPage="에디터 소개"
 			next={"/pythonWebScrapper/functions"}
 			nextPage="함수"
 			/>

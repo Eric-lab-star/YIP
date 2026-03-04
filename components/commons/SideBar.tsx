@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default function SideBar(){
 	const pathname = usePathname()
 	const {isSideBarOpen} = useLayoutCtx()
-	console.log(pathname.split("/")[1])
 	const items = sidebarItems(pathname.split("/")[1])
 	return (
 		<>

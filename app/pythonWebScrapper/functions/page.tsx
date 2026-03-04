@@ -3,6 +3,7 @@ import { IMAGE_BASE_URL} from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";
+import HorizontalLine from "@/components/commons/HorizontalLine";
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
@@ -100,6 +101,31 @@ say_hello()
 <div className="h-2"/>
 함수를 실행하기 위해서는 <Code>()</Code> 콜론이 함수 이름 뒤에 반드시 있어야 해요.  콜론이 없으면 함수가 실행되지 않아요.
 			</CodeExplain>
+
+			<Title my="l">연습해보기</Title>
+			<Text> 여기 아래의 코드를 따라서 작성해 봅시다.</Text>
+			<div className="select-none">
+				<CodeBlock code={
+`#안녕함수
+def say_hi():
+	print("안녕")
+
+#여러 줄을 출력하는 함수
+def multi_line_hi():
+	print("""
+				안
+				녕
+				하
+				세
+				요
+				""")
+
+`
+				}/>
+			</div>
+			<HorizontalLine />
+
+
 			
 			<Link id="why_create" href={"/pythonWebScrapper/functions#why_create"}>
 				<Title weight="semi" my="l" size="h2"> 함수는 왜 만들까? </Title>
@@ -323,7 +349,7 @@ print("2026")`}/>
 			</Option>
 		</QuizzWithOptions >
 
-		<QuizzWithOptions answer={2} question="2. 아래 코드에 관한 설명으로 틀린 것을 고르세요." >
+		<QuizzWithOptions answer={3} question="2. 아래 코드에 관한 설명으로 틀린 것을 고르세요." >
 			<div className="flex justify-center">
 				<div className="w-150 ">
 					<CodeBlock code={

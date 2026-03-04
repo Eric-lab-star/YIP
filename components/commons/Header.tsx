@@ -27,7 +27,6 @@ export default function Header() {
 						isSideBarOpen ? 
 							<PanelLeftClose/>
 							: <PanelLeftOpen />
-
 					}
 				</button>
 				<Link className="" href={"/"}>

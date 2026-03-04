@@ -4,9 +4,7 @@ import { tv } from "tailwind-variants";
 import { DataTable } from "./data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { MoreHorizontal } from "lucide-react";
 import RowActionBtn from "./rowActionBtn";
-
 
 interface post {
 	title: string;

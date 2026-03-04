@@ -25,8 +25,6 @@ say_hello("정국")
 				`}/>
 			<Title my="m" weight="semi" size="h2">조건</Title>
 			<Text>1. 매개변수를 이용해서 이름을 만들어야 해요.</Text>
-			
-
 			<Text>2. 함수를 실행할 때, 인수가 없어도 오류없이 작동해야 해요.</Text>
 			<Howto />
 			<ChallengForm  challenge="sayHello"/>
