@@ -23,6 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="kr">
       <body className={`${kr.className} bg-zinc-100 flex sm:justify-center  antialiased`} >
+					<SpeedInsights/>
 					<LayoutContextWrapper>
 						{children}
 					</LayoutContextWrapper>
