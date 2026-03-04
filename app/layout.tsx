@@ -5,7 +5,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
 import LayoutContextWrapper from "@/components/commons/LayoutContexWrapper";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "YIP",
