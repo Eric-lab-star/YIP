@@ -4,20 +4,36 @@ import { usePathname } from 'next/navigation'
 import { useLayoutCtx } from "./LayoutContexWrapper";
 import Link from 'next/link';
 import Title from './Title';
+import { Baby, Globe } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function SideBar(){
 	const pathname = usePathname()
 	const {isSideBarOpen} = useLayoutCtx()
+	console.log(pathname.split("/")[1])
+	const items = sidebarItems(pathname.split("/")[1])
 	return (
 		<>
 			{
 				isSideBarOpen && 
 				<div className="w-50 bg-zinc-200">
-				{
-					pathname.startsWith("/pythonWebScrapper") && 
-						pythonWebscrapperList.map((t, i) => (
+					{items}
+
+				</div>
+			}
+		</>
+	)
+}
+
+function sidebarItems(pathname: string) {
+	let item = null
+	switch (pathname) {
+		case "pythonWebScrapper":
+			item  = pythonWebscrapperList.map((t, i) => (
 							<div key={i} className='px-3'> 
-								<Title my='m' size='h4'>{Object.keys(t)[0]}</Title> 
+								<Title style='flex space-x-2' my='m' size='h4'> 
+									{icons[i]} <div>{Object.keys(t)[0]}</div>
+									</Title> 
 								<div className='flex flex-col'>
 								{
 									Object.values(t)[0].map(
@@ -27,23 +43,38 @@ export default function SideBar(){
 									)
 								}
 								</div>
-							</div>
-					))
-				}
-			</div>
-			}
-		</>
-	)
+							</div>))
+				break;
+		case "students":
+			item = mypageList.map(v => (
+				<div className='px-3' key={v.id}>
+					<Title style='flex space-x-2' my='m' size='h4'>{v.title}</Title>
+				</div>
+		))
+			break;
+		default:
+			item = null
+	}
+	return item
+
 }
+
+
+
+
+const icons = [
+	<Baby strokeWidth={2} color='#8470e6'/>,
+	<Globe strokeWidth={2} color='#24cc8b'/>,
+]
 
 const pythonWebscrapperList = [
 	{
 		"기본 문법":[
-			["Day 1", "day_1"],
-			["Day 2", "day_2"],
-			["Day 3", "day_3"],
-			["Day 4", "day_4"],
-			["Day 5", "day_5"],
+			["변수와 함수", "day_1"],
+			["조건문", "day_2"],
+			["반복문", "day_3"],
+			["자료구조", "day_4"],
+			["졸업 과제 만들기", "day_5"],
 		],
 	},
 	{
@@ -53,4 +84,11 @@ const pythonWebscrapperList = [
 			["Day 8", "day_8"],
 		]
 	}
+]
+
+const mypageList = [
+	{
+		title: "기억보다 기록",
+		id: uuidv4()
+	},
 ]

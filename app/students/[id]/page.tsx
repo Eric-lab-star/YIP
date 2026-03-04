@@ -1,8 +1,9 @@
-import { readPosts } from "@/app/lib/mongo/posts";
+import { failPost, readPosts, successPost } from "@/app/lib/mongo/posts";
 import { readStudent } from "@/app/lib/mongo/students";
+import TILTable from "@/components/commons/table/TILTable";
 import Title from "@/components/commons/Title";
 import { Button } from "@/components/ui/button";
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -21,6 +22,9 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 		return notFound()
 	}
 
+	const posts = await readPosts({userId: student._id.toString()})
+	const serial = getSerialized(posts)
+
 	return (
 		<div className="p-5">
 			<Title my="m" size="h1"> 나의 공간 </Title>
@@ -30,34 +34,17 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 					<Link href={"/editor"}> 글쓰기 </Link>
 				</Button>
 			</div>
-			<Section id={id}/>
+			{
+				serial &&  <TILTable posts={serial}/>
+			}
 		</div>
 	)
 }
 
 
-async function Section({id}: {id: string}) {
-	const posts = await readPosts({userId: id})
-	if(!posts.ok) {
-		console.log(posts)
-		return <div> 없음 </div>
-	}
 
-	return (
-		<div className="h-100 mx-20 bg-zinc-300 overflow-y-auto space-y-1">
-		{posts.db.map((v,i) => <ListItems key={i} index={i} content={v}/>) }
-		</div>
-	)
-}
-
-function ListItems({content, index}:{content: WithId<{title: string; createdAt: Date}>; index: number}) {
-	const date = new Date(content.createdAt)
-
-	return (
-		<Link href={`/editor/${content._id.toString()}`} className="h-10 bg-zinc-400 flex">
-			<div>{index + 1}</div>
-			<div>{content.title}</div>
-			<div>{date.toLocaleDateString("ko-KR")}</div>
-		</Link>
-	)
+function getSerialized(posts: successPost | failPost){
+	if (!posts.ok) return null;
+	const result = posts.db.map((p)=> ({id: p._id.toString(), title: p.title, createdAt: p.createdAt, }))
+	return result
 }

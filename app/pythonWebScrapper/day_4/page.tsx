@@ -9,7 +9,7 @@ export default function Page() {
 			<Link id="day_4" href="/pythonWebScrapper/day_4"> 
 				<div className="flex items-center space-x-2">
 					<Pyramid className="text-violet-400"/>
-					<Title mx="x" weight="semi" size="h2">Day 4</Title>
+					<Title mx="x" weight="semi" size="h2">자료구조</Title>
 				</div>
 			</Link>
 			<div className="my-3 flex flex-col">

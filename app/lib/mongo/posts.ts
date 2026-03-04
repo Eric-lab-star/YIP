@@ -18,16 +18,16 @@ export async function createPost({userId, title, content}: {userId: string; titl
 	}
 }
 
-interface successPost {
+export interface successPost {
 	ok: true,
 	db: post[]
 }
-interface failPost {
+export interface failPost {
 	ok: false,
 	error: Error
 }
 
-interface post {
+export interface post {
 	userId: string;
 	title: string;
 	createdAt: Date;

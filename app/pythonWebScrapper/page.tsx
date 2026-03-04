@@ -7,7 +7,7 @@ export default async function Page(){
 
 	return <div className="pb-50 ">
 
-		<Title> Python Web Scrapper</Title>
+		<Title> Tour of Python </Title>
 		<Title my="m" size="h2" weight="semi">요구되는 사전 지식</Title>
 		<Text>인터넷을 사용할 수 있는 사람이면 누구나</Text>
 		<Title my="l" size="h2" weight="semi">🐍 파이썬이란 무엇인가</Title>
@@ -66,9 +66,8 @@ print(fibonacci(9)) `
 
 		<Title weight="semi" size="h2" my="l">프로젝트를 완성하면서 파이썬을 배운다</Title>
 		<div className="px-3 space-y-2">
-			<Text>1. 🙅‍♂️  타이핑만 하지 않아서 좋아요</Text>
-			<Text>2. 😴  문법만 배우지 않아서 재미있어요.</Text>
-			<Text>3. ✔️  아두이노를 제어할 수 있어요.</Text>
+			<Text>1. ⌨️  타이핑만 하지 않아서 좋아요</Text>
+			<Text>2. 😃  문법만 배우지 않아서 재미있어요.</Text>
 		</div>
 
 		<Text my="l">

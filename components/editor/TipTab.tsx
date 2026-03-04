@@ -18,14 +18,23 @@ import ColorDropDown from "../commons/ColorDropdown";
 import HeaderDropdown from "../commons/HeaderDropdown";
 import ImageUploadDialog from "../commons/ImageDialog";
 import SaveDialog from "../commons/SaveDialog";
+import { Skeleton } from "../ui/skeleton";
+import { useEffect, useRef } from "react";
 const lowlight = createLowlight(all)
 const ICON_SIZE = 20;
-const ICON_STROKE = 2;
+// const ICON_STROKE = 2;
 
-export default function TipTab({content} : {content?: JSON}) {
+interface TibTabInterface {
+	id?: string;
+	content?: JSON;
+	editable: boolean;
+}
+
+export default function TipTab({id, content= {} as JSON, editable} : TibTabInterface) {
+
 	const editor = useEditor({
-		editable: content ? false: true,
-		content: content ? content : "",
+		editable ,
+		content: content,
 		extensions: [
       TextAlign.configure({
         types: ['heading', 'paragraph', 'image'],
@@ -35,7 +44,7 @@ export default function TipTab({content} : {content?: JSON}) {
 				inline: false,
 				allowBase64: false,
 				resize: {
-					enabled: true,
+					enabled: content ? false : true,
 					directions: ['top', 'bottom', 'left', 'right'], 
 					minWidth: 50,
 					minHeight: 50,
@@ -82,19 +91,52 @@ export default function TipTab({content} : {content?: JSON}) {
 
 
 	if (!editor) {
-		return <div> loading </div>
+		return (
+			<div className="p-5 space-y-3">
+				<Skeleton className="w-full h-15 bg-zinc-300"/>
+				<Skeleton className="w-full h-[580px] bg-zinc-300"/>
+				<Skeleton className="w-full h-20 bg-zinc-300"/>
+			</div>
+		)
+
 	}
+
 
 	return (
 		<>
-			{!content && <MenuBar editor={editor}/>}
-			<EditorContent className={`p-3 border-zinc-400 ${!content && "border-dashed border-2"}`} editor={editor}/>
+			{editable && <MenuBar editor={editor}/>}
+			<EditorContent className={`p-3 border-zinc-400 ${editable && "border-dashed border-2"}`} editor={editor}/>
 			<div className="h-30"/>
 		</>
 	)
 }
 
-function MenuBar({editor}: { editor: Editor}) {
+function MenuBar({id, editor}: {id?: string; editor: Editor}) {
+
+	const uploadedImageKeys = useRef<string[]>([])
+
+	useEffect(() => {
+		console.log(uploadedImageKeys.current.length)
+		const handleBeforeUnload = () => {
+			if (uploadedImageKeys.current.length <= 0) return
+			navigator.sendBeacon("/api/r2", JSON.stringify({ keys: uploadedImageKeys.current}))
+		}
+
+		const cleanup = () => {
+			if (uploadedImageKeys.current.length <= 0) return;
+			navigator.sendBeacon("/api/r2", JSON.stringify({
+					keys: uploadedImageKeys.current,
+			}))
+		}
+		window.addEventListener('beforeunload', handleBeforeUnload)
+		
+		return () => {
+			console.log(uploadedImageKeys.current.length)
+			window.removeEventListener('beforeunload', handleBeforeUnload)
+			cleanup()
+		}
+	}, [])
+
 
 	const editorState = useEditorState({
 		editor,
@@ -271,9 +313,9 @@ function MenuBar({editor}: { editor: Editor}) {
 					<Minus strokeWidth={"2"} size={ICON_SIZE} />
 				</button>
 					<YoutubeURLDialog className={editorButton()} editor={editor} />
-					<ImageUploadDialog editor={editor} className={editorButton()}/>
+					<ImageUploadDialog uploadedImageKeys={uploadedImageKeys} editor={editor} className={editorButton()}/>
 			</div>
-			<SaveDialog editor={editor}/>
+			<SaveDialog postId={id}  editor={editor} uploadedImageKeys={uploadedImageKeys}/>
 		</div>
 	)
 }

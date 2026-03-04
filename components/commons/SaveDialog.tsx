@@ -11,12 +11,20 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { getUnusedKeys } from "@/lib/tiptap-utils";
 import { Editor } from "@tiptap/core";
 import { Save } from "lucide-react";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { toast } from "sonner";
 
-export default function SaveDialog({className, editor}: {className?: string; editor: Editor}) {
+interface SaveDialogInterface {
+	uploadedImageKeys: RefObject<string[]>;
+	className?: string;
+	editor: Editor
+	postId?: string
+}
+
+export default function SaveDialog({postId, uploadedImageKeys, editor}: SaveDialogInterface) {
 	const [title, setTitle] = useState<string>("")
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
@@ -25,23 +33,57 @@ export default function SaveDialog({className, editor}: {className?: string; edi
 	const ICON_SIZE = 20;
 
 	const [open, setOpen] = useState(false)
+	const [loading, setLoading] = useState(false)
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log("click")
 		e.preventDefault()
 		if(!title) return;
+
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
+
+		const keys = contentJSON.content.filter(v => v.type === "image").map(v => {
+			const key = new URL(v.attrs?.src).pathname.slice(1)
+			return key
+		})
+		const unusedKeys = getUnusedKeys(uploadedImageKeys.current, keys)
+
 		const content = JSON.stringify(contentJSON)
 
 		formdata.append("content", content)
 		formdata.append("title", title)
+		if (postId) {
+			formdata.append("postId", postId)
+		}
+
+
+		const deleteResult = await fetch("/api/r2", {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({
+				keys: unusedKeys,
+			})
+		})
+
+		if (!deleteResult.ok) {
+			console.log("r2 image clean up failed")
+		}
+
+
 		const response = await fetch("/api/tiptab/post", {
 			method: "POST",
 			body: formdata,
 		})
 
 		if(!response.ok) {
-			toast.error("저장 할 수 없습니다.")
+			toast.error("저장 할 수 없습니다.", {position: "top-center"})
 		}
+		if (response.ok) {
+			toast.success("저장되었습니다.", {position: "top-center"})
+		}
+
+		uploadedImageKeys.current = []
+
 		setOpen(false)
 	}
 
@@ -80,7 +122,6 @@ export default function SaveDialog({className, editor}: {className?: string; edi
           </DialogClose>
 					<Button type="submit">확인</Button>
         </DialogFooter>
-				
 			</form>
       </DialogContent>
     </Dialog>
