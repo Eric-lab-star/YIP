@@ -7,6 +7,8 @@ import Link from "next/link";
 import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import { Option } from "@/components/forms/quizz/Option";
 import NextAndPrev from "@/components/commons/NextAndPrev";
+import Image from "next/image";
+import HorizontalLine from "@/components/commons/HorizontalLine";
 
 
 export default function Page(){
@@ -31,38 +33,49 @@ phonenumber = input("전화번호 뭐에요")
 			<Link id="type" href={"/pythonWebScrapper/input_type_int#type"}>
 				<Title my="m" size="h2">type()</Title>
 			</Link>
-			<Text>
-"2024"는 문자열 2024는 숫자라고 했던 거 기억하나요? 파이썬은 이런 것들은 모두 타입(type)이라고 부르고 있어요. 파이썬은 이런 타입이 다르면 오류가 나기 때문에 어떤 타입을 확인하는 과정이 중요할 때가 있어요. 타입을 확인하기 위해서는<Code>type()</Code>를 사용해요.
+			<Image className="mx-auto" src={`${process.env.R2_CUSTOM}/types.jpg`} alt="types" width={400} height={400}/>
+			<Text my="m">
+			type함수는 값의 형태를 알려주는 기능을 해요. 그렇다면 코드에서 의미하는 형태란 무엇일까요? 형태란 마치 동그라미, 세모, 네모 같은 모양이라고 생각하면 돼요! 동그라미 구멍에는 동그라미만 넣을 수 있고, 세모 구멍에는 세모만 넣을 수 있어요. 코드도 마찬가지에요. 타입이 같지 않으면 오류가 생겨요. 그렇기 때문에 오류 타입이 같은지 확인하는 기능을 type함수를 이용해서 하는 거에요.
 			</Text>
-			<TwoColumn>
-				<CodeBlock code={
-`age = type(20) # type에 20을 전달
-print(age) # 20의 타입을 알려준다.
-`}/>
+			<HorizontalLine />
+			<Title my="m" size="h2">연습하기</Title>
+			<Text> 아래의 코드를 작성하고 나오는 결과를 확인하세요.</Text>
+			<div className="select-none">
+					<CodeBlock code={
+	`age = type(20) # type에 20을 전달
+	print(age) # 20의 타입을 알려준다.
+	`}/>
+</div>
+			<HorizontalLine />
 				<Text>
-<Code>type</Code>이라는 함수도 <Code>built-in</ Code>함수예요. 이 함수는 인수로 받은 값의 타입을 반환해요.
+<Code>type</Code>이라는 함수도 <Code>built-in</ Code>함수예요. 확인하고 싶은 값을 type함수의 인수로 주면 type함수로 부터 타입을 확인 할 수 있어요.
 <div className="h-3"/>
 			이 코드를 실행했을 때 어떤 결과가 나왔나요? <Code>{"<class 'int' >"}</Code> 이런 알 수 없는 영어 단어들이 나와도 겁먹지 않아도 돼요. <Code>class</Code>는 나중에 천천히 알아보도록 하고 지금은 그 다음에 오는 단어만 보면 돼요.
 <div className="h-3"/>
 
 우리가 일상생활에서 주로 사용하는 숫자는 모두 <Code>int</Code>라고 생각해도 좋아요. 
 				</Text>
-			</TwoColumn>
-			<TwoColumn>
+<HorizontalLine />
+			
+			<Title my="m" size="h2">연습하기</Title>
+			<Text> 아래의 코드를 작성하고 나오는 결과를 확인하세요.</Text>
 			<CodeBlock code={
-	`age = input("age?: ")
+`age = input("age?: ")
 	print(type(age))
 					`}/>
+			<HorizontalLine />
 				<Text>
 이번에는 <Code>input()</Code>으로 받은 값의 타입을 확인 해볼까요?
 <div className="h-3"/>
 분명 숫자를 입력했는데 <Code>int</Code>라고 안 나오고, <Code>str</Code>이라고 나와요. <Code>str</Code>은 문자열이라는 의미에요. <Code>input</Code>은 항상 문자열 값만 반환해요. 그렇다면 <Code>int</Code>를 받고 싶을 때는 어떻게 해야 할까요.
 					</Text>
-			</TwoColumn>
+			<HorizontalLine />
+
 			<Link href={"/pythonWebScrapper/input_type_int#int"} id="int">
 				<Title my="m" size="h2">int()</Title>
 			</Link>
 			<TwoColumn>
+
 				<CodeBlock code={
 `age = int(input("age? :"))
 print(type(age))
@@ -70,8 +83,11 @@ print(type(age))
 				<Text>
 					<Code>int</Code>값으로 바꾸고 싶을 때는 <Code>int()</Code>를 사용해요. 이 함수를 사용하면 "23" 와 같은 문자열을 입력 받았을 때 23과 같은 숫자로 바꾸어주는 기능을 해요.
 				</Text>
+
 			</TwoColumn>
+
 			<TwoColumn>
+
 				<CodeBlock code={
 `
 ValueError: invalid literal for int() with base 10: 'asfasfa'

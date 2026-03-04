@@ -40,7 +40,7 @@ export default function Page() {
 
 			<Title size="h2" my="m"> 이진 탐색 알고리즘 조사 보고서 작성하기 </Title>
 			<Text my="m"> 아래 입력란에 보고서를 작성해 주세요.</Text>
-			<TipTab/>
+			<TipTab editable={true}/>
 			<NextAndPrev
 			next="challenge_fibonacci"
 			nextPage="도전! 피보나치 수열 만들기"
