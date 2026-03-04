@@ -28,7 +28,7 @@ export default function LayoutContextWrapper({children}: {children: React.ReactN
 
 	return (
 		<LayoutContext value={value}>
-			<div className="lg:w-[1300px] md:w-[1000px] sm:w-[800px] w-full h-screen flex flex-col">
+			<div className="xl:w-[1280px] lg:w-[1024px] md:w-[768px] sm:w-[640px]  w-full h-screen flex flex-col">
 				<Header />
 				<div className="overflow-y-auto flex flex-1 min-h-0 bg-zinc-100">
 					<SideBar />

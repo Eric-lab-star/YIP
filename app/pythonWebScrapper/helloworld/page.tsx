@@ -1,9 +1,8 @@
 import { DataTable } from "@/components/commons/table/data-table";
-import { vscodeData } from "@/components/commons/table/FeatureTable";
-import { vscodeColumns } from "@/components/commons/table/FeatureTable";
+import { pycharmData, vscodeData } from "@/components/commons/table/FeatureTable";
+import { editorColumns } from "@/components/commons/table/FeatureTable";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
-import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 
 const baseURL = "https://r2.kimkyungsub.com"
@@ -22,11 +21,30 @@ export default function Page() {
 			<Title size="h3">1. vscode</Title>
 			<Image alt="vscode homepage" src={`${baseURL}/vscodeHome.png`} width={500} height={500} className="w-8/12 mx-auto"/>
 			<div className={"my-10"}>
-				<DataTable options={{btn: false, height: "h-fit"}} columns={vscodeColumns} data={vscodeData}/>
+				<DataTable options={{btn: false, height: "h-fit"}} columns={editorColumns} data={vscodeData}/>
 			</div>
-			<Text>2. pycharm</Text>
+			<Title size="h2">2. pycharm</Title>
 			<Image alt="vscode homepage" src={`${baseURL}/pycharmHome.png`} width={500} height={500} className="w-8/12 mx-auto"/>
-			<Title size="h3">특징</Title>
+			<div className={"my-10"}>
+				<DataTable options={{btn: false, height: "h-fit"}} columns={editorColumns} data={pycharmData}/>
+			</div>
+
+			<Title>VSCode으로 파이썬 코드 실행하기</Title>
+			<Text> 먼저 vscode가 설치되었는지 확이 후 진행하세요 </Text>
+			<Title size="h3" my="l">새폴더 만들기</Title>
+			<Image alt="vscode run python code1" src={`${baseURL}/vscode/vscode_howto1.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Text my="l">1. 바탕화면에서 마우스 우클릭을 하면  새로만들기에서 폴더를 클릭해서 새 폴더를 만들 수 있어요.</Text>
+			<Image alt="vscode run python code2" src={`${baseURL}/vscode/vscode_howto2.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Text my="l">2. 폴더 이름은 본인의 이름으로 바꾸세요.</Text>
+			<div className="my-10 border-b-zinc-400 border-b-2 border-dashed"/>
+			<Image alt="vscode run python code3" src={`${baseURL}/vscode/vscode_howto3.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Text my="l">3. 본인 이름의 폴더 안에서 helloworld라는 폴더를 만드세요.</Text>
+			<Image alt="vscode run python code4" src={`${baseURL}/vscode/vscode_howto4.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Text my="l">4. helloworld 폴더에 마우스 커서를 두고 우클릭을 하면 보이는 "Code로 열기"를 클릭하세요. </Text>
+			<Image alt="vscode run python code5" src={`${baseURL}/vscode/vscode_howto5.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Image alt="vscode run python code6" src={`${baseURL}/vscode/vscode_howto6.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Image alt="vscode run python code7" src={`${baseURL}/vscode/vscode_howto7.png`} width={500} height={500} className="w-8/12 mx-auto"/>
+			<Image alt="vscode run python code8" src={`${baseURL}/vscode/vscode_howto8.png`} width={500} height={500} className="w-8/12 mx-auto"/>
 		</div>
 	)
 }
