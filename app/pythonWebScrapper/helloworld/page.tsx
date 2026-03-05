@@ -20,7 +20,8 @@ export default function Page() {
 			<Text>4. 바로실행</Text>
 
 			<Title size="h2">대표적인 IDE</Title>
-			<Title size="h3">1. vscode</Title>
+			<Title  size="h3">1. vscode</Title>
+
 			<Image alt="vscode homepage" src={`${baseURL}/vscodeHome.png`} width={500} height={500} className="w-8/12 mx-auto rounded-lg"/>
 			<div className={"my-10"}>
 				<DataTable options={{btn: false, height: "h-fit"}} columns={editorColumns} data={vscodeData}/>
