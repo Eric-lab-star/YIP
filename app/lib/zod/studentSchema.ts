@@ -26,6 +26,8 @@ const studentSchema =  z.object({
 	classDays: ClassDays,
 	studentPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "앞번호를 입력하세요").min(3, "앞번호를 3자리 이상입력하세요.").max(3, "앞번호는 3자리까지 입력가능합니다."), z.string().regex(/^\d+$/, "중간 번호를 입력하세요").min(4, "중간번호를 4자리 이상입력하세요").max(4, "중간번호는 4 자리까지 입력할 수 있습니다."), z.string().regex(/^\d+$/, "마지막 번호를 입력하세요").min(4, "마지막 번호를 4자리 이상입력하세요").max(4, "마지막 번호는 4 자리까지 입력할 수 있습니다.")]),
 	 guardianPhoneNumber: z.tuple([z.string().regex(/^\d+$/, "앞번호를 입력하세요").min(3, "앞번호를 3자리 이상입력하세요.").max(3, "앞번호는 3자리까지 입력가능합니다."), z.string().regex(/^\d+$/, "중간 번호를 입력하세요").min(4, "중간번호를 4자리 이상입력하세요").max(4, "중간번호는 4 자리까지 입력할 수 있습니다."), z.string().regex(/^\d+$/, "마지막 번호를 입력하세요").min(4, "마지막 번호를 4자리 이상입력하세요").max(4, "마지막 번호는 4 자리까지 입력할 수 있습니다.")]),
+	 role: z.string("역할을 입력하세요."),
+	 password: z.string("비밀번호를 입력하세요.").min(5, "5자리 이상 입력하세요").max(23, "최대 23글자 입력가능합니다.")
 })
 
 

@@ -28,6 +28,7 @@ export const config = {
 		"/login",
 		"/editor/:path*",
 		"/students:path*",
+		"/dashBoard",
 		"/",
 	]
 }
