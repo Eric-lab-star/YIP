@@ -9,6 +9,7 @@ import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
 import { Noto_Sans_KR } from "next/font/google";
 import { Button } from "../ui/button";
+import { useEffect } from "react";
 const kr_font = Noto_Sans_KR({weight: "700", style: "normal"})
 
 
@@ -40,6 +41,7 @@ export default function Header() {
 
 function UserProfile() {
 	const {user, isLoading, userMutate} = useUser()
+
 	const handleLogout = async () => {
 		await logoutAction();
 		userMutate(); 

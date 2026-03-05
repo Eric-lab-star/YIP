@@ -24,8 +24,15 @@ import { loginAction } from "../actions/authAction"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
+import useUser from "@/components/SWR/auth/user"
+import { useEffect } from "react"
 
 export default function Page() {
+	const { userMutate } = useUser()
+	// revalidate user data when client enters login page
+	useEffect(() => {
+		userMutate()
+	},[])
 
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -40,6 +47,7 @@ export default function Page() {
 
   async function onSubmit(data: z.infer<typeof loginSchema>) {
 		const result = await loginAction(data)
+		userMutate() // revalidate user data
 		if (!result.success) {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
