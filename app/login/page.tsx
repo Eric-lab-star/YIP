@@ -52,7 +52,7 @@ export default function Page() {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			redirect("/pythonWebScrapper")
+			redirect("/tourOfPython")
 		} 
 	}
 
@@ -66,7 +66,7 @@ export default function Page() {
   return (
 		<div className="pt-30">
     <Card className={ `mx-auto w-full sm:max-w-md ${isSubmitting && "animate-pulse"}`}>
-			<Link href={"/pythonWebScrapper"}></Link>
+			<Link href={"/tourOfPython"}></Link>
       <CardHeader>
         <CardTitle>로그인</CardTitle>
         <CardDescription>
