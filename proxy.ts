@@ -6,7 +6,7 @@ export default function proxy(req: NextRequest) {
 	const { pathname }=  req.nextUrl
 	switch (pathname) {
 		case "/":
-			return NextResponse.redirect(new URL("/pythonWebScrapper", req.url))
+			return NextResponse.redirect(new URL("/tourOfPython", req.url))
 			break;
 		case "/login":
 			if (token) {
@@ -24,7 +24,7 @@ export default function proxy(req: NextRequest) {
 
 export const config = {
 	matcher: [
-		'/pythonWebScrapper/:path*',
+		'/tourOfPython/:path*',
 		"/login",
 		"/editor/:path*",
 		"/students:path*",
