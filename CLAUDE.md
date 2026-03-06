@@ -49,7 +49,8 @@ There is no `middleware.ts`. Auth is handled per-route: `validateToken()` is cal
 - **Result type** (`app/lib/results.ts`): `safe(fn)` / `safeAsync(fn)` wraps thrown errors into `{ ok, value } | { ok: false, error }`. Use `unwrap(result)` to re-throw. Use this for all MongoDB and R2 calls.
 - **Forms**: `react-hook-form` with `@hookform/resolvers/zod`. Field-level error messages are in Korean, matching the schemas in `app/lib/zod/`.
 - **Styling**: Tailwind v4 with `tailwind-variants` (`tv`) for variant-based component styles. Combine classes with `cn()` (`clsx` + `tailwind-merge`). Style definitions live in `app/lib/tv/`.
-- **In-browser Python**: `react-py` powers the sandbox pages under `app/pythonWebScrapper/`.
+- **In-browser Python**: `react-py` powers the sandbox pages under `app/tourOfPython
+/`.
 - **Rich text editor**: TipTap v3. Editor API routes are under `app/api/tiptab/` (image upload, link preview, post CRUD).
 - **Image storage**: Cloudflare R2 via the AWS S3 SDK. Signed GET URLs expire in 4 hours. Blur placeholders generated with `sharp`.
 - **State management**: Zustand for global client state. Sidebar open/close state is managed via React Context (`LayoutContextWrapper`).

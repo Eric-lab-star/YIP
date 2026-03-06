@@ -27,8 +27,8 @@ export default function SideBar(){
 function sidebarItems(pathname: string) {
 	let item = null
 	switch (pathname) {
-		case "pythonWebScrapper":
-			item  = pythonWebscrapperList.map((t, i) => (
+		case "tourOfPython":
+			item  = tourOfPythonList.map((t, i) => (
 							<div key={i} className='px-3'> 
 								<Title style='flex space-x-2' my='m' size='h4'> 
 									{icons[i]} <div>{Object.keys(t)[0]}</div>
@@ -37,7 +37,7 @@ function sidebarItems(pathname: string) {
 								{
 									Object.values(t)[0].map(
 										( tl: string[], i:number) => 
-											<Link key={i} className='hover:bg-zinc-100 px-3 py-1' href={`/pythonWebScrapper/${tl[1]}`} > {tl[0]}
+											<Link key={i} className='hover:bg-zinc-100 px-3 py-1' href={`/tourOfPython/${tl[1]}`} > {tl[0]}
 											</Link>
 									)
 								}
@@ -66,7 +66,7 @@ const icons = [
 	<Globe strokeWidth={2} color='#24cc8b'/>,
 ]
 
-const pythonWebscrapperList = [
+const tourOfPythonList = [
 	{
 		"기본 문법":[
 			["변수와 함수", "day_1"],
