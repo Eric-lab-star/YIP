@@ -77,10 +77,8 @@ const tourOfPythonList = [
 		],
 	},
 	{
-		"웹사이트 제작": [
-			["Day 6", "day_6"],
-			["Day 7", "day_7"],
-			["Day 8", "day_8"],
+		"깃과 깃허브": [
+			["git and github", "git_and_github"],
 		]
 	}
 ]
