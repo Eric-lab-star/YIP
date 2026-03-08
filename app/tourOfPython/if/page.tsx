@@ -24,7 +24,7 @@ export default function Page(){
 `if light == "red":
 	print("stop")
 					`}/>
-				<Text>예를 들어서 “신호등이 빨간색이면 앞으로 가”라고 컴퓨터에게 알려주고 싶으면 이렇게 작성하면 되요.</Text>
+				<Text>예를 들어서 “신호등이 빨간색이면 앞으로 가”라고 컴퓨터에 알려주고 싶으면 이렇게 작성하면 돼요.</Text>
 			</TwoColumn>
 			<TwoColumn>
 				<CodeBlock code={
@@ -58,6 +58,20 @@ else:
 <Code>else</ Code>안에서는 if 조건이 거짓인 상황에서 실행되는 코드를 작성해 줘야해요. <Code>else</Code> 다음에 오는 콜론을 잊어버리지 마세요. <Code>else</Code> 안에서 작성되는 코드라는 것을 컴퓨터에게 알려줄 때는 들여쓰기를 해야 되요.
 				</Text>
 			</TwoColumn>
+			<Title style="pt-3" size="h3">연습과제</Title>
+			<TwoColumn>
+				<CodeBlock code={
+`if age < 19:
+	print("당신은 미성년자입니다.")
+else:
+	print("당신은 어른입니다.")
+`}/>
+				<div>
+				<Text> 1. <Code>age</Code> 의 값을 <Code>input()</Code> 으로 받으세요. </Text>
+				<Text> 2. <Code>age</Code> 의 형태를 <Code>int</Code>형으로 바꾸세요 </Text> 
+				<Text>3. <Code> age </Code>의 값이 19일 때 "당신은 미성년자입니다"가 나오게 만드세요.</Text>
+				</div>
+			</TwoColumn>
 
 			<Link id="elif"href="/tourOfPython/if#elif">
 				<Title my="m" size="h2" weight="bold">elif</Title>
@@ -79,7 +93,6 @@ else:
 `}/>
 				<Text>elif는 다양한 상황에  대응 가능한 코드를 작성하도록 도와줘요.점수에 따라서 등급을 매길 때, 혹은 나이에 따라서 좌석이 달라질 때와 같은 상황에 자주 사용됩니다. 하지만  elif를 사용할 때 주의 할 점이 있어요. </Text>
 			</TwoColumn>
-
 			<TwoColumn>
 				<CodeBlock code={
 `def grades(score):
@@ -98,6 +111,27 @@ grades(70)
 파이썬이 <Code>if...elif...elif..else</Code> 와 같은 조건문을 판단할 때, 한번 참인 조건을 발견하면 다른 조건문은 판단하지 않아요. 예를 들어서 여기 있는 <Code> score</Code>를 볼까요. 90보다 작은 숫자를 넣으면 가장 첫번째 <Code>if</ Code>에서 1을 출력하고 함수가 종료되요. 다른 <Code>elif</Code>나 <Code>else</Code>를 검사하지 않아요. 점수가 75점이나 80이나 모두 <Code>score</Code>는 90보다 작다는 조건이 참이 되게 함으로 <Code>print("1")</Code>이 실행하게되고. 다른 조건은 실행되지 않아요.
 			</Text>
 			</TwoColumn> 
+
+			<Title size="h2" style="pt-3"> 연습문제 </Title>
+
+			<TwoColumn>
+				<CodeBlock code={
+`def grades(score):
+    if score > 90:
+        print("A")
+    elif score > 80:
+        print("B")
+    elif score > 70:
+        print("C")
+    else:
+        print("D")
+`}/>
+				<Text>
+				1. 이 함수를 실행시켜서 90점일경우 A가 나오게 만드세요.
+				</Text>
+			</TwoColumn>
+
+
 		<Link href={"/tourOfPython/if#quizz"} id="quizz">
 			<Title my="l" size="h2">퀴즈</Title>
 		</Link>

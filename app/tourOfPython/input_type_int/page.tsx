@@ -27,7 +27,7 @@ phonenumber = input("전화번호 뭐에요")
 <Code>input</ Code> 함수를 이용해서 사용자에게 질문을 할 수 있어요. 그리고 사용자가 답을 할 때까지 기다리고 답변을 변수에 저장 시킬 수 있어요.
 	<div className="h-3"/>
 
-<Code>input</Code> 함수는 <Code>print</ Code> 함수와 마찬가지로 <Code>built-int</Code> 함수에요. <Code>built-int</ Code> 함수는  나중에 더 자세하게 이야기하겠지만, 지금은 미리 만들어진 파이썬 프로그램에 항상 들어가는 함수라고 생각하세요.
+<Code>input</Code> 함수는 <Code>print</ Code> 함수와 마찬가지로 <Code>built-in</Code> 함수에요. <Code>built-in</ Code> 함수는  나중에 더 자세하게 이야기하겠지만, 지금은 미리 만들어진 파이썬 프로그램에 항상 들어가는 함수라고 생각하세요.
 				</Text>
 			</TwoColumn>
 			<Link id="type" href={"/tourOfPython/input_type_int#type"}>
@@ -42,7 +42,8 @@ phonenumber = input("전화번호 뭐에요")
 			<Text> 아래의 코드를 작성하고 나오는 결과를 확인하세요.</Text>
 			<div className="select-none">
 					<CodeBlock code={
-	`age = type(20) # type에 20을 전달
+	`
+	age = type(20) # type에 20을 전달
 	print(age) # 20의 타입을 알려준다.
 	`}/>
 </div>
@@ -59,10 +60,13 @@ phonenumber = input("전화번호 뭐에요")
 			
 			<Title my="m" size="h2">연습하기</Title>
 			<Text> 아래의 코드를 작성하고 나오는 결과를 확인하세요.</Text>
+			<div className="select-none">
 			<CodeBlock code={
-`age = input("age?: ")
-	print(type(age))
+`
+age = input("age?: ")
+print(type(age))
 					`}/>
+			</div>
 			<HorizontalLine />
 				<Text>
 이번에는 <Code>input()</Code>으로 받은 값의 타입을 확인 해볼까요?

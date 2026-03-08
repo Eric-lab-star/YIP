@@ -1,5 +1,6 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
+import HorizontalLine from "@/components/commons/HorizontalLine";
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
@@ -34,22 +35,35 @@ export default function Page(){
 			<Title size="h3" my="m">while </Title>
 			<TwoColumn>
 				<CodeBlock code={
-`
+`# while 반복문 
 count = 3
-while count < 0:
+while count > 0:
 	print(count)
 	count = count - 1
+if count == 0:
+		print(" 🚀 로켓 발사!~~~~~")
 `}/>
 				<Text>
 				먼저 확인할 것은 <Code>while</Code>이에요. <Code>while</Code> 코드 다음에는 조건을 입력해요. 그리고 입력한 조건이 참이면 계속 <Code>while</Code>을 실행하고, 거짓이면 <Code>while</Code> 코드 실행을 종료해요.
 					<div className="h-3"/>
 이 코드를 위에서부터 살펴보면 <Code>count</Code>의 값이 처음에 3이에요. 그 다음에 <Code>while</Code>문을 컴퓨터가 읽게됩니다. <Code>while</Code> 뒤에 오는 조건이 참이면, <Code>while</Code>내부에 있는 실행문을 실행합니다. 현제 count의 값이 3임으로 <Code>{"count < 0"}</Code> 이 값이 참이 됩니다. 조건이 참임으로 <Code>while</Code> 내부의 코드가 조건이 거짓일 때 까지 실행됩니다.
 				</Text>
+
 			</TwoColumn>
+			<Title my="m" size="h2">연습하기</Title>
+			<Text> <Code>while</Code> 코드를 이용하여 1부터 10까지 모든 숫자를 출력하게 만드세요.</Text>
+
+				<CodeBlock code={
+`# while 반복문 
+# 코드를 수정해서 1 부터 10까지 출력하는 반복문을 만드세요.
+while #조건:
+		pass
+`}/>
+		<HorizontalLine />
 			<Title size="h3" my="m">for ... in</Title>
 			<TwoColumn>
 				<CodeBlock code={
-`
+`# for 루프
 for i in range(0, 4):
     print(i)
 `}/>

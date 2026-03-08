@@ -2,6 +2,7 @@ import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
 import { IMAGE_BASE_URL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
+import HorizontalLine from "@/components/commons/HorizontalLine";
 import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
@@ -39,6 +40,23 @@ else:
 				</Text>
 			</TwoColumn>
 
+			<Title my="l" size="h2">연습문제</Title>
+				<Text>
+					아래 보이는 코드를 수정해서, "VIP 회원입니다" 가 나오게 만드세요.
+				</Text>
+
+				<CodeBlock code={
+`age = 20 # 만 나이
+visited_number = 20 #1년 동안 방문만 횟수
+duration = 1 #회원기간
+
+if age >= 19 and visited_number >= 12 and duration >= 2:
+		print("you are VIP")
+else:
+		print("welcome!")
+
+		`}/>
+			<HorizontalLine />
 			<Title my="m" size="h2">RGB 색 계산기</Title>
 			<div className="my-6 w-full flex justify-center items-center">
 				<Image placeholder="blur" width={svgMeta.width} blurDataURL={svgMeta.blurDataURL}  height={svgMeta.height} src={`${IMAGE_BASE_URL}/rgb.svg`} alt="rgb.svg" />
@@ -68,6 +86,25 @@ def rgb(r, g, b):
 여기서 빨간불을 표현하기 위해서 r이 1인 조건만 판단해서는 안되요. 흰색불인 경우도 빨간불이 켜진 상태이고, 노란색과 마젠타색 또한 빨간불이 켜진 상태이기 때문이에요. 따라서 빨간불만 켜진 상태를 표현하기 위해서는 <Code>and</Code>를 사용해서 <Code>r == 1 and g == 0 and b == 0</Code>인 조건을 검사해야 해요.
 				</Text>
 			</TwoColumn>
+
+			<Title my="m" size="h2">연습문제</Title>
+			<Text>아래의 함수를 실행시켜서 "green"이 출력되게 만드세요.</Text>
+				<CodeBlock  code={
+`
+def rgb(r, g, b):
+    if r == 1 and g == 1 and b == 1:
+        print("white")
+    elif r == 1 and g == 0 and b == 0:
+        print("red")
+    elif r == 0 and g == 1 and b == 0:
+        print("green")
+    elif r == 0 and g == 0 and b == 1:
+        print("blue")
+    else:
+        print("mixed color")
+
+`}/>
+			<HorizontalLine />
 
 			<Title my="m" size="h2"> or </Title>
 			<Text>
