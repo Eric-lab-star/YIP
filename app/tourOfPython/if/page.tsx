@@ -138,10 +138,10 @@ elif age > 19:
 			`}/>
 
 			<Option value={1}>
-				<Text>2. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
+				<Text>1. 10을 입력하면 청소년 요금이 얼마인지 알려준다.</Text>
 			</Option>
 			<Option value={2}>
-				<Text>1. 사용자의 입력을 <Code>input</Code>으로 받을 수 있다. </Text>
+				<Text>2. 사용자의 입력을 <Code>input</Code>으로 받을 수 있다. </Text>
 			</Option>
 			<Option value={3}>
 				<Text>3. 20를 입력하면 성인요금을 알려준다.</Text>
