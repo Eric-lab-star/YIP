@@ -4,7 +4,7 @@ import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
-import { Code2, Link2 } from "lucide-react";
+import { Link2 } from "lucide-react";
 import Link from "next/link";
 
 export default function Page(){
@@ -240,10 +240,10 @@ main()
 `}/>
 
 			<NextAndPrev
-			prev="loop"
-			prevPage="반복문 loop"
-			next="challenge_binary_search"
-			nextPage="도전과제 - 이진탐색"
+			prev="library"
+			prevPage="표준 라이브러리"
+			next="day_3"
+			nextPage="반복문"
 			/>
 		</div>
 	)

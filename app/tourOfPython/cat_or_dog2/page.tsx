@@ -202,10 +202,10 @@ start()
 				<Text> 혹시 코드를 보면서 조금 비효율 적이라고 생각했나요? 아니면 코드가 더럽다라고 생각했나요? 네 정답이에요. 수집한 정보를 더 이쁘고 깨끗하고 멋있게 다루기 위해서 앞으로 자료구조(data structure)도 공부를 해볼거에요. 기대하세요 😏 </Text>
 
 			<NextAndPrev
-				prev="/tourOfPython/cat_or_dog"
-				prevPage="고양이와 강아지 1"
-				next="/tourOfPython/if_challenge"
-				nextPage="도전! 자율 과제"
+				prev="/tourOfPython/day_3"
+				prevPage="반복문"
+				next="/tourOfPython/loop"
+				nextPage="반복문 loop"
 			/>
 		</div>
 	)

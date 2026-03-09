@@ -5,8 +5,6 @@ import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
-import { Option } from "@/components/forms/quizz/Option";
-import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 
 export default function Page(){
 	return (
@@ -200,10 +198,10 @@ while True:
 		}/>
 
 			<NextAndPrev
-			next="/tourOfPython/library"
+			next="library"
 			nextPage="파이썬 표준 라이브러리"
-			prev="/"
-			prevPage="파이썬"
+			prev="cat_or_dog2"
+			prevPage="강아지와 고양이2"
 			/>
 		</div>
 	)
