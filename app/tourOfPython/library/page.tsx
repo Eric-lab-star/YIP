@@ -10,16 +10,12 @@ import Link from "next/link";
 export default function Page() {
 	return (
 		<div className="mb-50">
-			<Title my="m"> 라이브러리 - Library </Title>
-			<Text>
-			지금까지 파이썬을 공부하면서 열심히 파이썬 코드를 만드느라 힘들지 않았나요? 이렇게 작은 프로그램을 만드는 것도 힘든데 더 큰 프로그램들은 어떻게 만드는 걸까요? 다행이 착한 프로그래머들은 자신이 불편하다고 느끼고 반복적으로 자주하는  일들은 모두 공유하는 문화가 있어요. 자신의 코드를 공유하는 것을 오픈소스라고해요. 그리고 공유된 코드가 더 발전하도록 도와주고 이용하는 사람들과 문화를 오픈소스 커뮤니티라고 해요. 개발자들이 서로서로 도와주기 때문에 프로그래밍이 이렇게 빠르게 발전할 수 있었어요.
-			</Text>
-			<Title my="m" size="h2">내장함수 - built-in</Title>
+			<Title my="m">내장함수 - built-in</Title>
 			<Text>
 			내장함수는 파이썬을 처음 설치할 때 같이 설치되는 함수들이에요. 내장함수는 파이썬을 설치할 때 같이 설치되는 미리 만들어진 함수들이에요. 비유하자면 잘 만들어진 바퀴, 연필, 샤프 심 같은 것들이에요. 만약 그림을 그리려고 하는데 매번 연필부터 만들어야 한다면 상상만 해도 정말 끔찍할 것 같아요. 연필은 미리 만들어진 것을 가져다 사용하고 내가 상상하는 것들은 내가 스스로 그리는 게 더 현명한 방법이겠어요. 정리하면 내장함수는 미리 만들어진 함수라고 이해하는게 좋겠네요. 
 				<div className="my-1"/>
 				<Link className="text-orange-500 hover:text-blue-500 " href={"https://docs.python.org/3/library/functions.html"} target="_blank">
-					<div className=" flex items-center"> 더 많은 내장 함수 구경하기 <Link2 /> </div>
+					<div className="flex items-center"> 더 많은 내장 함수 구경하기 <Link2 /> </div>
 				</Link>
 			</Text>
 			<Title my="m" size="h2">input</Title>
@@ -52,7 +48,7 @@ pi  = float("3.14")
 `len("hello")
 `}/>
 				<Text>
-				<Code>len</Code>함수를 사용하면 문자열의 길이를 알수 있어요. 지금은 배우지 안았지만, 문자열 뿐만 아니라. 리스트의 길이도 나타낼 수 있어요. 
+				<Code>len</Code>함수를 사용하면 문자열의 길이를 알수 있어요. 
 				</Text>
 			</TwoColumn>
 			
@@ -70,8 +66,11 @@ pi  = float("3.14")
 			<Title my="m" size="h2" >max, min</Title>
 			<TwoColumn>
 				<CodeBlock code={
-`max(3, 10, 7)
-min([5, 2, 9])
+`
+big = max(3, 10, 7)
+small = min(5, 2, 9)
+print(big)
+print(small)
 `}/>
 				<Text>
 				<Code>min</Code>은 가장 작은 수를 찾을 때 사용하고, <Code>max</Code>는 가장 큰수를 찾을 때 사용해요.
@@ -80,7 +79,7 @@ min([5, 2, 9])
 
 			<Title my="m" size="h2">표준 라이브러리 사용하기 </Title>
 			<Text>
-표준 라이브러리는 내장함수 처럼 파이썬을 설피할 때 같이 설치되는 미리 만들어진 함수들이에요. 하지만 몇가지 차이점이 있어요. 표준 라이브러리의 종류와 크기는 내장함수와 비교해서 더 크기 때문에 사용하고 싶은 것만 골라서 사용하도록 되어 있어요. 마치 도서관에서 원하는 책만 가져와서 읽어보는 것이라고 생각해볼 수 있어요.
+표준 라이브러리는 내장함수 처럼 파이썬을 설치할 때 함께 설치되는 미리 만들어진 함수들이에요. 하지만 몇가지 차이점이 있어요. 표준 라이브러리의 종류와 크기는 내장함수와 비교해서 더 크기 때문에 사용하고 싶은 것만 골라서 사용하도록 되어 있어요. 마치 도서관에서 원하는 책만 가져와서 읽어보는 것이라고 생각해볼 수 있어요.
 				<div className="my-1"/>
 				<Link className="text-orange-500 hover:text-blue-500 " href={"https://docs.python.org/3/library/index.html"} target="_blank">
 					<div className=" flex items-center"> 더 많은 내장 표준라이브러리 구경하기 <Link2 /> </div>

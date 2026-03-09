@@ -5,6 +5,8 @@ import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
+import { Option } from "@/components/forms/quizz/Option";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 
 export default function Page(){
 	return (
@@ -41,7 +43,7 @@ while count > 0:
 	print(count)
 	count = count - 1
 if count == 0:
-		print(" 🚀 로켓 발사!~~~~~")
+	print(" 🚀 로켓 발사!~~~~~")
 `}/>
 				<Text>
 				먼저 확인할 것은 <Code>while</Code>이에요. <Code>while</Code> 코드 다음에는 조건을 입력해요. 그리고 입력한 조건이 참이면 계속 <Code>while</Code>을 실행하고, 거짓이면 <Code>while</Code> 코드 실행을 종료해요.
@@ -73,6 +75,20 @@ for i in range(0, 4):
 <Code> for ... in </Code> 또한 다양한 곳에서 많이 사용되요. 다양한 곳에서 사용될 수 있기 때문에 잘 알아두세요.
 				</Text>
 			</TwoColumn>
+			<Title size="h2" my="m"> 연습하기 </Title>
+			<CodeBlock code={
+`
+k = 1
+while k < 6:
+    print(f"{' . ' * k:░>19}", end="")
+    print(f"{' . ' * k:░<19}", )
+    k += 1
+`
+			} />
+			<Text>
+			이 코드를 실행했을 때 피라미드 모양이 나와요. 피라미드를 뒤집어서 모래시계모양이 나오게 코드를 작성해 보세요.
+			</Text>
+			<HorizontalLine />
 			<Title size="h2" my="m"> 강제종료 - break </Title>
 			<Text>
 			이제 앞에서 배운 <Code>while</Code> 또는 <Code>for .. in</Code> 루프를 사용해서 당근을 빠르게 심을 수 있겠네요. 하지만 만약에 땅을 파다가 금이 나오거나, 물이 부족해지면 어떻게 해야할까요?  정지를 하고 다른 일을 해야할 상황이 생길 수 도 있는데 이런 상황에서 어떻게 해야 할까요? 이런 상황에서는 <Code>break</Code>를 사용해서 반복을 종료할 수 있어요.
@@ -151,6 +167,38 @@ while True:
 				무한루프를 만들려고 할 때 <Code>while</Code>문의 조건을 입력하는 자리에 True를 만들어요. 이렇게 코드를 만들면 <Code>while</Code>이 무한반복되요. 이런 무한루프는 게임을 프로그램할 때 자주 사용되는 코드에요.
 				</Text>
 			</TwoColumn>
+
+
+		<Title my="l" size="h2">퀴즈</Title>
+		<Title weight="semi" size="h3">1. 1에서 10까지 출력하는 코드를 만드세요.</Title>
+		<Title weight="semi" size="h4" my="m">* 조건 *</Title>
+		<Text>1. 0이 출력되어서는 안됨.</Text>
+		<Text my="m">2. <Code>for ... in</Code> 또는 <Code>while</Code>을 사용해야함</Text>
+		<CodeBlock code={
+`#출력 결과
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+`
+		}/>
+		<HorizontalLine />
+
+		<Title weight="semi" size="h3">2. 1에서 100까지의 합을 구하세요.</Title>
+		<Title weight="semi" size="h4">* 조건 *</Title>
+		<Text my="m">1. <Code>for ... in</Code> 또는 <Code>while</Code>을 사용해야함</Text>
+		<CodeBlock code={
+`#출력 결과
+5050
+`
+		}/>
+
 			<NextAndPrev
 			next="/tourOfPython/library"
 			nextPage="파이썬 표준 라이브러리"

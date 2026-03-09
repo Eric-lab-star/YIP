@@ -42,8 +42,8 @@ export default function Page() {
 			<Text my="m"> 아래 입력란에 보고서를 작성해 주세요.</Text>
 			<TipTab editable={true}/>
 			<NextAndPrev
-			next="challenge_fibonacci"
-			nextPage="도전! 피보나치 수열 만들기"
+			next="day_3"
+			nextPage="반복문"
 			prev="numberGuessingGame"
 			prevPage="숫자 맞히기 게임"
 			/>

@@ -37,19 +37,6 @@ export default function Page(){
 			3. 원하는 크기있어?
 			</Text>
 
-			<Text my="m">
-			 하지만 우리가 만드는 프로그램은 몇가지 제약이 있어요.  
-			</Text>
-
-			 <Text my="m">
-			 1. 인공지능이 아니기 때문에 사람의 언어롤 모두 이해할 수 없어요.
-			 </Text>
-			 <Text my="m">
-			 2. 사용자는 정확한 단어를 입력해야되요. 
-			 </Text>
-			 <Text my="m">
-			 3. 버그가 많이 발생한다.
-			 </Text>
 			 
 			 <Title my="m" size="h2"> 학습 목표 </Title>
 			 <Text my="m">
@@ -63,13 +50,13 @@ export default function Page(){
 			<TwoColumn>
 
 			<CodeBlock code={
-`def start():
+`
+def start():
 	print("반려견 또는 반려묘를 추천해 드려요.")
 `} />
 			<Text> 
-함수를 배운지 너무 오래되어서 잊어버린건 아닌가요? 우리 프로그램의 모든 코드는 <Code>start()</Code>함수가 실행 될 때 실행하도록 만들거에요. <Code>print()</Code>는 그냥 사용해도 문제가 없는데 왜 함수안에서 넣었을까요?
-<div className="my-5"/>
-	아직은 배우지 않은 개념이지만 프로그램의 안정성을 위해서 만드는거예요. 더 구체적인 이유는 천천히 알아가도록하고 지금은 이런 방식도 있구나 정도로 알아두세요.
+함수를 배운지 너무 오래되어서 잊어버린건 아닌가요? 우리 프로그램의 모든 코드는 <Code>start()</Code>함수가 실행 될 때 실행하도록 만들거에요. 
+<div className="my-3"/>
 이제 프로그램을 실행해서 출력창에 {"\"반려견 또는 반려묘를 추천해 드려요.\""}라는 문장이 나오는지 확인해보세요.
 			</Text>
 			</TwoColumn>
@@ -77,12 +64,13 @@ export default function Page(){
 			<Title my="m" size="h2"> cat or dog </Title>
 			<TwoColumn>
 				<CodeBlock code={
-`def start():
+`
+def start():
 	print("반려견 또는 반려묘를 추천해 드려요.")
 	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ") # <--- 새롭게 추가됨
 `}/>
 				<Text>
-이제 사용자가 원하는게 고양이인지 강이지인지 확인을 해야겠네요. <Code>input()</Code>를 사용해서 쉽게 사용자가 무엇을 원하는지 확인할 수 있겠네요.
+이제 사용자가 원하는게 고양이인지 강아지인지 확인을 해야겠네요. <Code>input()</Code>를 사용해서 쉽게 사용자가 무엇을 원하는지 확인할 수 있겠네요.
 	<div className="my-5"/>
 하지만 지금은 조금 문제가 생겼네요. 우리는 고양이나  강아지를 입력받기를 원하는데 만약 사용자가 코끼리를 입력해도 막을 방법이 없네요.
 				</Text>
@@ -92,8 +80,8 @@ export default function Page(){
 				<CodeBlock code={
 `
 def start():
-    print("반려견 또는 반려묘를 추천해 드려요.")
-    animal = cat_or_dog()
+	print("반려견 또는 반려묘를 추천해 드려요.")
+	animal = cat_or_dog()
 
 def cat_or_dog():
 	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ")
@@ -115,7 +103,7 @@ def cat_or_dog():
 def cat_or_dog():
 	cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ").strip() # <-- 추가
 	if not (cat_dog == "고양이" or  cat_dog  == "강아지"): # <-- 추가
-			raise ValueError("오류!!!!!") # <-- 추가
+		raise ValueError("오류!!!!!") # <-- 추가
 	return cat_dog
 `}/>
 			<Text>
@@ -147,7 +135,7 @@ def black_or_white():
 			<CodeBlock code={
 `
 def small_medium_large():
-    size= input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    size= input("원하는 크기가 있어?: \\n 소형 또는 중형 또는 대형 입력: ").strip()
     if not (size == "소형" or size == "중형" or size == "대형"):
         raise ValueError("오류!!!!")
     return size
@@ -157,19 +145,19 @@ def small_medium_large():
 			<CodeBlock code={
 `
 def cat_or_dog():
-    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ").strip()
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ").strip()
     if not (cat_dog == "고양이" or  cat_dog  == "강아지"):
         raise ValueError("오류!!!!!")
     return cat_dog
 
 def black_or_white():
-    color = input("검정색과 흰색중 하나를 입력하세요\n 검정색 또는 흰색 입력: ").strip()
+    color = input("검정색과 흰색중 하나를 입력하세요\\n 검정색 또는 흰색 입력: ").strip()
     if not (color == "검정색" or  color == "흰색"):
         raise ValueError("오류!!!!!")
     return color
 
 def small_medium_large():
-    size= input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    size= input("원하는 크기가 있어?: \\n 소형 또는 중형 또는 대형 입력: ").strip()
     if not (size == "소형" or size == "중형" or size == "대형"):
         raise ValueError("오류!!!!")
     return size

@@ -25,12 +25,6 @@ export default function Page(){
 				<Link  className="hover:bg-zinc-200" href={"/tourOfPython/cat_or_dog"}>
 					<Text weight="bold"my="m" >📗 고양이와 강아지1</Text>
 				</Link>
-				<Link  className="hover:bg-zinc-200" href={"/tourOfPython/cat_or_dog2"}>
-					<Text weight="bold"my="m" >📗 고양이와 강아지2</Text>
-				</Link>
-				<Link  className="hover:bg-zinc-200" href={"/tourOfPython/if_challenge"}>
-					<Text weight="bold"my="m" >📙 도전! 자율 주제</Text>
-				</Link>
 			</div>
 		</div>
 	)

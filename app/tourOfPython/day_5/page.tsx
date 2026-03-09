@@ -13,7 +13,7 @@ export default function Page() {
 				</div>
 			</Link>
 			<div className="my-5">
-				<Title size="h2" my="m">Texture</Title>
+				<Title size="h2" my="m">Textual</Title>
 				<Title size="h2" my="m">배운점 정리하고 To-Do App 발표하기</Title>
 			</div>
 		</div>
