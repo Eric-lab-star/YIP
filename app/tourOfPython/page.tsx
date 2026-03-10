@@ -132,7 +132,6 @@ print(fibonacci(9)) `
 			</Link>
 		</section>
 
-		<HorizontalLine />
 
 		{/* Pygame */}
 		<section className="my-10 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
@@ -151,7 +150,6 @@ print(fibonacci(9)) `
 			</Link>
 		</section>
 
-		<HorizontalLine />
 
 		{/* MicroPython */}
 		<section className="my-10 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
