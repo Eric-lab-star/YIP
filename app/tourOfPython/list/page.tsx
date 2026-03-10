@@ -1,11 +1,9 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
-import HorizontalLine from "@/components/commons/HorizontalLine";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import TwoColumnDes from "@/components/commons/TwoColumnDes";
-import { tv } from "tailwind-variants";
 
 export default function Page() {
 	return (
@@ -227,10 +225,7 @@ l = len(numbers)
 					}
 				/>
 			</TwoColumn>
-			
-
 
 		</div>
 	)
-
 }
