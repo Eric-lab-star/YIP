@@ -316,7 +316,7 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 				url: "/tourOfPython/numberGuessingGame#rand_number"
 			},
 			{
-				name:"예외 처리하기",
+				name: "예외 처리하기",
 				url: "/tourOfPython/numberGuessingGame#exception"
 			},
 			{
@@ -398,8 +398,20 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 				url: "/tourOfPython/tuple"
 			},
 			{
-				name: "",
-				url: "",
+				name: "자료를 읽는 방법",
+				url: "/tourOfPython/tuple#indexing",
+			},
+			{
+				name: "더하기",
+				url: "/tourOfPython/tuple#plus",
+			},
+			{
+				name: "곱하기",
+				url: "/tourOfPython/tuple#repeat",
+			},
+			{
+				name: "길이 구하기",
+				url: "/tourOfPython/tuple#len"
 			}
 		]
 	},
@@ -408,8 +420,49 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 		files: [
 			{
 				name: "시작하기",
-				url: "/tourOfPython/dict"
-			}
+				url: "/tourOfPython/dictionary#title"
+			},
+			{
+				name: "만들기",
+				url: "/tourOfPython/dictionary#create"
+			},
+			{
+				name: "추가하기",
+				url: "/tourOfPython/dictionary#add",
+			},
+			{
+				name: "삭제하기",
+				url: "/tourOfPython/dictionary#delete"
+			},
+			{
+				name: "keys()",
+				url: "/tourOfPython/dictionary#keys"
+			},
+			{
+				name: "values()",
+				url: "/tourOfPython/dictionary#values"
+			},
+			{
+				name: "items()",
+				url: "/tourOfPython/dictionary#items"
+			},
+			{
+				name: "clear()",
+				url: "/tourOfPython/dictionary#clear"
+			},
+			{
+				name: "get()",
+				url: "/tourOfPython/dictionary#get"
+			},
+			{
+				name: "x in y",
+				url: "/tourOfPython/dictionary#in"
+			},
+			{
+				name: "pop()",
+				url: "/tourOfPython/dictionary#pop"
+			},
+
 		],
 	}
 

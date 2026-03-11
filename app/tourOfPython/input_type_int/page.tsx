@@ -159,12 +159,6 @@ except ValueError:
 					<Text>3. <Code>age</Code>의 타입은 문자열이다. </Text>
 				</Option>
 			</QuizzWithOptions>
-			<NextAndPrev
-				next="/tourOfPython/if"
-				nextPage="if, else, elif"
-				prev="/tourOfPython"
-				prevPage="파이썬"
-			/>
 		</div>
 	)
 }

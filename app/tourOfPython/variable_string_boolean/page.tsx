@@ -182,12 +182,6 @@ print(result)
 				<Option value={4}>4. True</Option>
 			</QuizzWithOptions >
 
-			<NextAndPrev
-				prev={"/tourOfPython/helloworld"}
-				prevPage="에디터 소개"
-				next={"/tourOfPython/functions"}
-				nextPage="함수"
-			/>
 		</div>
 	)
 }

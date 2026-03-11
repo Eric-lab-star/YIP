@@ -3,7 +3,6 @@ import { IMAGE_BASE_URL } from "@/app/lib/r2/utils";
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import HorizontalLine from "@/components/commons/HorizontalLine";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -27,7 +26,7 @@ export default async function Page() {
 				위의 3가지 조건을 모두 만족하는지 확인하기 위해서 <Code>if..else</Code>를 반복적으로 사용해도 확인할 수 있어요. 하지만 <Code>if..else</Code>안에 또 다른 <Code>if.. else</Code>가 있으면 코드를 이해하는데 시간이 오래걸리고, 복잡해질거에요. 클린 코드를 작성하고 싶다면 중첩된 <Code>if..else</Code>는 사용하지 않는게 좋아요.
 			</Text>
 
-			<Link id={"not"} href={"/tourOfPython/and_or_not#not"}>
+			<Link id={"and"} href={"/tourOfPython/and_or_not#and"}>
 				<Title>and</Title>
 			</Link>
 			<TwoColumn>
