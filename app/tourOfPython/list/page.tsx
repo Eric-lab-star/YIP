@@ -1,5 +1,6 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
+import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -226,6 +227,205 @@ l = len(numbers)
 				/>
 			</TwoColumn>
 
+			<Title size="h2" my="m">리스트의 수정과 삭제</Title>
+			<Text>
+파이썬 리스트는 이미 들어있는 값을 자유롭게 수정하거나 삭제할 수 있어요. 먼저 값을 수정할 때는 인덱스를 이용해서 원하는 위치의 값을 새로운 값으로 바꿀 수 있는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 "바나나"를 "포도"로 바꾸고 싶다면 <Code>fruits[1] = "포도"</Code> 라고 하면 리스트가 <Code>["사과", "포도", "딸기"]</Code> 로 수정돼요. 값을 삭제할 때는 두 가지 방법을 사용할 수 있는데, <Code>remove()</Code> 를 사용하면 리스트에서 원하는 값을 직접 찾아서 삭제할 수 있고, 예를 들어 <Code>fruits.remove("사과")</Code> 라고 하면 "사과"가 리스트에서 사라져요. 또한 <Code>del</Code> 키워드를 사용하면 인덱스로 원하는 위치의 값을 삭제할 수 있는데, <Code>del fruits[0]</Code> 이라고 하면 0번 인덱스에 있는 값이 삭제된답니다.
+			</Text>
+
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+fruits = ['사과', '바나나', '딸기']
+fruits[1] = '포도'
+
+ive = ['장원영', '이서', '레이']
+ive[0:2] = ['안유진', '리즈']
+
+`} 
+					/>
+				<TwoColumnDes title="리스트 수정" des={
+					<>
+파이썬 리스트는 이미 들어있는 값을 원하는 값으로 자유롭게 수정할 수 있어요. 값을 수정할 때는 인덱스를 이용해서 원하는 위치를 지정한 다음 새로운 값을 대입하면 되는데, 마치 칠판에 적힌 글씨를 지우고 새로운 글씨를 쓰는 것처럼 간단하게 바꿀 수 있어요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 "바나나"를 "포도"로 바꾸고 싶다면 <Code>fruits[1] = "포도"</Code> 라고 입력하면 리스트가 <Code>["사과", "포도", "딸기"]</Code> 로 수정돼요. 또한 한 번에 여러 개의 값을 수정하고 싶다면 슬라이싱을 이용해서 <Code>fruits[0:2] = ["수박", "포도"]</Code> 처럼 원하는 구간의 값을 한꺼번에 바꿀 수도 있답니다.
+					</>
+				}/>
+			</TwoColumn>
+
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+colors = [
+        'red',
+        'orange',
+        'yellow',
+        'green',
+        'blue',
+        ] # 색깔 리스트
+
+colors.remove('red') # red 삭제
+
+del colors[0] # orange 삭제
+
+colors.pop(0) # yellow 삭제
+`} 
+					/>
+				<TwoColumnDes title="리스트 값 삭제" des={
+					<>
+파이썬 리스트에서 값을 삭제하는 방법은 크게 세 가지가 있어요. 첫 번째로 <Code>remove()</Code> 를 사용하면 삭제하고 싶은 값을 직접 지정해서 삭제할 수 있는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.remove("바나나")</Code> 라고 하면 "바나나"가 리스트에서 사라져 <Code>["사과", "딸기"]</Code> 가 돼요. 두 번째로 <Code>del</Code> 키워드를 사용하면 인덱스로 원하는 위치의 값을 삭제할 수 있는데, <Code>del fruits[0]</Code> 이라고 하면 0번 인덱스에 있는 "사과"가 삭제돼요. 세 번째로 <Code>pop()</Code> 을 사용하면 리스트의 맨 마지막 값을 삭제하면서 동시에 그 값을 반환해주는데, <Code>fruits.pop()</Code> 이라고 하면 맨 마지막에 있는 값이 삭제되면서 해당 값을 돌려줘서 삭제된 값을 다른 곳에서 활용할 수도 있답니다.
+					</>
+				}/>
+			</TwoColumn>
+
+			<Title size="h2" my="m"> 리스트 메소드 </Title>
+			<Text>
+파이썬 리스트는 다양한 메소드를 제공해서 리스트를 더욱 편리하게 다룰 수 있어요. 마치 스마트폰에 여러 가지 기능이 내장되어 있는 것처럼, 리스트에도 자주 사용하는 기능들이 미리 만들어져 있어요. 값을 추가할 때는 <Code>append()</Code> 로 맨 뒤에 값을 추가하거나 <Code>insert()</Code> 로 원하는 위치에 값을 삽입할 수 있고, 값을 삭제할 때는 <Code>remove()</Code> 로 특정 값을 삭제하거나 <Code>pop()</Code> 으로 맨 마지막 값을 삭제할 수 있어요. 또한 <Code>sort()</Code> 를 사용하면 리스트의 값을 오름차순으로 정렬할 수 있고, <Code>reverse()</Code> 를 사용하면 리스트의 순서를 뒤집을 수 있으며, <Code>count()</Code> 를 사용하면 특정 값이 리스트 안에 몇 개 들어있는지 셀 수 있고, <Code>index()</Code> 를 사용하면 특정 값이 리스트의 몇 번째 인덱스에 있는지 찾을 수 있답니다.
+			</Text>
+
+
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+colors = [
+        'red',
+        'orange',
+        'yellow',
+        'green',
+        'blue',
+        ]
+colors.append('purple')
+`}
+					/>
+				<TwoColumnDes title="1. 덧붙이기 append()" des={
+					<>
+파이썬 리스트에서 <Code>append()</Code> 는 리스트의 맨 끝에 새로운 값을 추가할 때 사용하는 메소드예요. 마치 줄을 서 있는 사람들의 맨 뒤에 새로운 사람이 줄을 서는 것처럼, <Code>append()</Code> 를 사용하면 리스트의 맨 마지막 자리에 값이 추가돼요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.append("포도")</Code> 라고 하면 리스트가 <Code>["사과", "바나나", "딸기", "포도"]</Code> 로 바뀌어요. 또한 <Code>append()</Code> 는 숫자, 문자열뿐만 아니라 리스트도 추가할 수 있는데, <Code>fruits.append([1, 2, 3])</Code> 처럼 리스트를 넣으면 <Code>["사과", "바나나", "딸기", [1, 2, 3]]</Code> 처럼 리스트 안에 리스트가 통째로 추가된다는 점도 기억해 두면 좋답니다.
+					</>}/>
+			</TwoColumn>
+
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [
+    100,
+    19,
+    98,
+    32,
+    6,
+    1,
+]
+
+n = sorted(numbers)
+print(f"numbers: {numbers}")
+`
+				} />
+				<TwoColumnDes title="2. 정렬하기 sort()" des={
+					<>
+파이썬 리스트에서 <Code>sort()</Code> 는 리스트 안의 값들을 순서대로 정렬할 때 사용하는 메소드예요. 마치 키 순서대로 학생들을 줄 세우는 것처럼, <Code>sort()</Code> 를 사용하면 리스트 안의 값들이 자동으로 오름차순으로 정렬돼요. 예를 들어 <Code>numbers = [3, 1, 4, 1, 5, 9, 2, 6]</Code> 이라는 리스트에서 <Code>numbers.sort()</Code> 라고 하면 리스트가 <Code>[1, 1, 2, 3, 4, 5, 6, 9]</Code> 처럼 작은 수부터 큰 수 순서로 정렬돼요. 만약 반대로 큰 수부터 작은 수 순서인 내림차순으로 정렬하고 싶다면 <Code>numbers.sort(reverse=True)</Code> 처럼 <Code>reverse=True</Code> 옵션을 추가하면 되고, 문자열 리스트에서도 <Code>fruits.sort()</Code> 처럼 사용하면 알파벳 순서대로 정렬할 수 있어요. 단, <Code>sort()</Code> 는 원본 리스트 자체를 변경하기 때문에 원본 리스트를 유지하고 싶다면 <Code>sorted()</Code> 함수를 대신 사용하는 것이 좋답니다.
+					</>}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [
+    100,
+    19,
+    98,
+    32,
+    6,
+    1,
+]
+
+n = numbers[::1]
+numbers.reverse()
+`
+				} />
+				<TwoColumnDes title="3. 리버스 reverse()" des={
+					<>
+파이썬 리스트에서 <Code>reverse()</Code> 는 리스트 안의 값들의 순서를 거꾸로 뒤집을 때 사용하는 메소드예요. 마치 줄을 서 있는 사람들이 뒤돌아서 반대 방향으로 줄을 서는 것처럼, <Code>reverse()</Code> 를 사용하면 리스트 안의 값들이 반대 순서로 뒤집혀요. 예를 들어 <Code>numbers = [1, 2, 3, 4, 5]</Code> 라는 리스트에서 <Code>numbers.reverse()</Code> 라고 하면 리스트가 <Code>[5, 4, 3, 2, 1]</Code> 처럼 순서가 완전히 뒤집혀요. 문자열 리스트에서도 마찬가지로 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 에서 <Code>fruits.reverse()</Code> 를 사용하면 <Code>["딸기", "바나나", "사과"]</Code> 처럼 순서가 뒤집혀요. 단, <Code>sort()</Code> 와 마찬가지로 <Code>reverse()</Code> 도 원본 리스트 자체를 직접 변경하기 때문에 원본 리스트를 유지하고 싶다면 슬라이싱을 이용해서 <Code>numbers[::-1]</Code> 처럼 사용하는 것이 좋답니다.
+					</>
+				}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [
+    100,
+    19,
+    98,
+    32,
+    6,
+    1,
+]
+
+n = numbers.index(1)
+`
+				} />
+				<TwoColumnDes title="4. 번호 알아내기 index()" des={
+					<>
+파이썬 리스트에서 <Code>index()</Code> 는 리스트 안에서 원하는 값이 몇 번째 인덱스에 위치하고 있는지 찾아주는 메소드예요. 마치 책의 목차에서 원하는 내용이 몇 페이지에 있는지 찾아보는 것처럼, <Code>index()</Code> 를 사용하면 특정 값의 위치를 숫자로 알려줘요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기", "포도"]</Code> 라는 리스트에서 <Code>fruits.index("딸기")</Code> 라고 하면 "딸기"가 2번 인덱스에 있기 때문에 <Code>2</Code> 를 반환해줘요. 만약 리스트 안에 같은 값이 여러 개 있다면 <Code>index()</Code> 는 가장 먼저 발견된 값의 인덱스만 반환하고, 리스트 안에 없는 값을 찾으려고 하면 <Code>ValueError</Code> 라는 오류가 발생하기 때문에 찾으려는 값이 리스트 안에 있는지 먼저 확인한 후 사용하는 것이 좋답니다.
+					</>
+				}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [
+    100,
+    19,
+    98,
+    32,
+    6,
+    1,
+]
+
+numbers.insert(1, 3)
+`
+				} />
+				<TwoColumnDes title="5. 삽입하기 insert()" des={
+					<>
+파이썬 리스트에서 <Code>insert()</Code> 는 리스트의 원하는 위치에 새로운 값을 삽입할 때 사용하는 메소드예요. <Code>append()</Code> 가 무조건 맨 끝에만 값을 추가하는 것과 달리, <Code>insert()</Code> 는 원하는 위치를 직접 지정해서 값을 넣을 수 있어요. 마치 줄을 서 있는 사람들 사이에 새로운 사람이 원하는 자리에 끼어드는 것처럼요. 사용 방법은 <Code>insert(인덱스, 값)</Code> 형식으로 첫 번째 인자에는 삽입할 위치의 인덱스를, 두 번째 인자에는 삽입할 값을 넣으면 되는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.insert(1, "포도")</Code> 라고 하면 1번 인덱스 자리에 "포도"가 삽입되어 리스트가 <Code>["사과", "포도", "바나나", "딸기"]</Code> 로 바뀌어요. 이때 삽입된 위치 이후의 값들은 자동으로 한 칸씩 뒤로 밀려나기 때문에 기존의 값들이 사라지지 않고 그대로 유지된답니다.
+					</>
+				}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [100, 0, 1, 100]
+numbers.remove(100)
+`
+				} />
+				<TwoColumnDes title="6. 제거하기 remove() " des={
+					<>
+파이썬 리스트에서 <Code>remove()</Code> 는 리스트 안에서 원하는 값을 찾아서 삭제할 때 사용하는 메소드예요. 인덱스로 위치를 지정해서 삭제하는 <Code>del</Code> 키워드와 달리, <Code>remove()</Code> 는 삭제하고 싶은 값을 직접 지정할 수 있어서 값의 위치를 몰라도 편리하게 삭제할 수 있어요. 마치 줄을 서 있는 사람들 중에서 이름을 불러서 그 사람만 줄에서 빠지게 하는 것처럼요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기", "포도"]</Code> 라는 리스트에서 <Code>fruits.remove("바나나")</Code> 라고 하면 "바나나"가 리스트에서 삭제되어 <Code>["사과", "딸기", "포도"]</Code> 로 바뀌어요. 단, 리스트 안에 같은 값이 여러 개 있을 경우 <Code>remove()</Code> 는 가장 먼저 발견된 값 하나만 삭제하고, 리스트 안에 없는 값을 삭제하려고 하면 <Code>ValueError</Code> 오류가 발생하기 때문에 삭제하려는 값이 리스트 안에 있는지 먼저 확인한 후 사용하는 것이 좋답니다.
+					</>}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [100, 0, 1, 100]
+numbers.pop(0)
+`} />
+				<TwoColumnDes title="7. 꺼내기  pop() " des={
+					<>
+파이썬 리스트에서 <Code>pop()</Code> 은 리스트에서 특정 위치의 값을 삭제하면서 동시에 그 값을 반환해주는 메소드예요. 마치 줄의 맨 끝에 서 있는 사람을 불러내면서 그 사람이 누구인지 알려주는 것처럼, <Code>pop()</Code> 은 값을 삭제하는 동시에 삭제된 값을 돌려줘요. 기본적으로 인자 없이 <Code>fruits.pop()</Code> 처럼 사용하면 리스트의 맨 마지막 값이 삭제되면서 반환되는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.pop()</Code> 을 사용하면 "딸기"가 삭제되면서 "딸기"를 반환하고 리스트는 <Code>["사과", "바나나"]</Code> 로 바뀌어요. 또한 <Code>fruits.pop(0)</Code> 처럼 인덱스를 직접 지정하면 해당 위치의 값을 삭제하면서 반환할 수도 있는데, 이처럼 삭제된 값을 반환해준다는 점이 <Code>remove()</Code> 나 <Code>del</Code> 과의 가장 큰 차이점이라고 할 수 있답니다.
+					</>}/>
+			</TwoColumn>
+			<TwoColumn pb={false}>
+				<CodeBlock code={
+`
+numbers = [100, 0, 1, 100]
+a = numbers.count(100)
+`} />
+				<TwoColumnDes title="8. 갯수 파악하기  count() " des={
+					<>
+파이썬 리스트에서 <Code>count()</Code> 는 리스트 안에 특정 값이 몇 번 들어있는지 세어주는 메소드예요. 마치 교실에서 같은 이름을 가진 학생이 몇 명인지 세어보는 것처럼, <Code>count()</Code> 를 사용하면 원하는 값이 리스트 안에 몇 개 있는지 숫자로 알려줘요. 예를 들어 <Code>numbers = [1, 2, 3, 2, 1, 2, 4, 5]</Code> 라는 리스트에서 <Code>numbers.count(2)</Code> 라고 하면 숫자 2가 리스트 안에 3번 들어있기 때문에 <Code>3</Code> 을 반환해줘요. 문자열 리스트에서도 마찬가지로 <Code>fruits = ["사과", "바나나", "사과", "딸기", "사과"]</Code> 에서 <Code>fruits.count("사과")</Code> 라고 하면 "사과"가 3번 들어있기 때문에 <Code>3</Code> 을 반환하고, 만약 리스트 안에 없는 값을 찾으려고 하면 오류 없이 <Code>0</Code> 을 반환해준다는 점이 <Code>index()</Code> 와의 차이점이라고 할 수 있답니다.
+					</>}/>
+			</TwoColumn>
+
+			<NextAndPrev
+			next="list_train"
+			nextPage="리스트 연습하기"
+			prev="day_4"
+			prevPage="자료구조"
+			/>
 		</div>
 	)
 }

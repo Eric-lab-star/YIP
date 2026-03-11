@@ -172,7 +172,7 @@ def start():
 			<NextAndPrev
 				prev="/tourOfPython/if"
 				prevPage="if, else, elif"
-				next="/tourOfPython/cat_or_dog2"
+				next="/tourOfPython/day_3"
 				nextPage="고양이와 강아지 2"
 			/>
 		</div>
