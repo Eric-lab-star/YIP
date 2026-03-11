@@ -1,6 +1,5 @@
 import Howto from "@/components/codesandbox/Howto";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import ChallengForm from "@/components/forms/challenge/ChallengeForm";
@@ -40,12 +39,6 @@ print("20 * 10 = ", multiply(20,10))
 				`}/>
 			<Howto/>
 			<ChallengForm challenge="basicCal"/>
-			<NextAndPrev 
-				next="day_1"
-				nextPage="변수와 함수"
-				prev="challenge_hello"
-				prevPage="도전! say_hello()"
-			/>
 		</div>
 	)
 }

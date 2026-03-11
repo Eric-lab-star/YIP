@@ -1,6 +1,5 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -18,7 +17,9 @@ export default function Page() {
 					<div className="flex items-center"> 더 많은 내장 함수 구경하기 <Link2 /> </div>
 				</Link>
 			</Text>
-			<Title my="m" size="h2">input</Title>
+			<Link href="/tourOfPython/library#input" id="input">
+				<Title my="m" size="h2">input</Title>
+			</Link>
 			<Text>
 			지금까지 계속 사용했던 <Code>input</Code>이 대표적인 내장함수에요. 이 함수는 키보드로 글자를 입력 받는 함수에요. 공식문서를 읽어보면 <Code>input(prompt, /)</Code> 이렇게 나와있어요. 여기에서 prompt는 입력 안내 문구가 들어가는 공간이에요.  
 			</Text>
@@ -31,7 +32,9 @@ export default function Page() {
 				</Text>
 				
 			</TwoColumn>
-			<Title my="m" size="h2" >int, float</Title>
+			<Link href="/tourOfPython/library#int_float" id="int_float">
+				<Title my="m" size="h2" >int, float</Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `age = int("12") 
@@ -42,7 +45,9 @@ pi  = float("3.14")
 				</Text>
 			</TwoColumn>
 
-			<Title my="m" size="h2" >len</Title>
+			<Link href="/tourOfPython/library#len" id="len">
+				<Title my="m" size="h2" >len</Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `len("hello")
@@ -52,7 +57,9 @@ pi  = float("3.14")
 				</Text>
 			</TwoColumn>
 			
-			<Title my="m" size="h2" >range</Title>
+			<Link href="/tourOfPython/library#range" id="range">
+				<Title my="m" size="h2" >range</Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `for i in range(5):
@@ -63,7 +70,9 @@ pi  = float("3.14")
 				</Text>
 			</TwoColumn>
 
-			<Title my="m" size="h2" >max, min</Title>
+			<Link href="/tourOfPython/library#min_max" id="min_max">
+				<Title my="m" size="h2" >max, min</Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `
@@ -77,7 +86,9 @@ print(small)
 				</Text>
 			</TwoColumn>
 
-			<Title my="m" size="h2">표준 라이브러리 사용하기 </Title>
+			<Link href="/tourOfPython/library#standard_library" id="standard_library">
+				<Title my="m" size="h2">표준 라이브러리 사용하기 </Title>
+			</Link>
 			<Text>
 표준 라이브러리는 내장함수 처럼 파이썬을 설치할 때 함께 설치되는 미리 만들어진 함수들이에요. 하지만 몇가지 차이점이 있어요. 표준 라이브러리의 종류와 크기는 내장함수와 비교해서 더 크기 때문에 사용하고 싶은 것만 골라서 사용하도록 되어 있어요. 마치 도서관에서 원하는 책만 가져와서 읽어보는 것이라고 생각해볼 수 있어요.
 				<div className="my-1"/>
@@ -120,14 +131,6 @@ def main():
 			이제 모든 코드를 작성하고 프로그램을 실행 시켜보면 프로그램이 실행 될 때 마다 출력되는 숫자가 달라지는 것을 볼수 있어요.
 			</Text>
 			</TwoColumn>
-
-			<NextAndPrev 
-			next="numberGuessingGame"
-			nextPage="숫자 맞히기 게임"
-			prev="loop"
-			prevPage="반복문"
-			/>
-
 		</div>
 	)
 }

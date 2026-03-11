@@ -5,6 +5,7 @@ import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
+import Link from "next/link";
 
 export default function Page(){
 	return (
@@ -32,7 +33,9 @@ export default function Page(){
 			<Text>
 			같은 작업을 여러번 반복해서 하는 코드를 반복문이라고 해요. 파이썬에는 다양한 반복문이 있는데 그 중에서 2가지만 배울거예요. 하나는 <Code>while</Code>이고 다른 하나는 <Code>for.. in</Code>이에요.
 			</Text>
-			<Title size="h3" my="m">while </Title>
+			<Link href="/tourOfPython/loop#while" id="while">
+				<Title size="h3" my="m">while </Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `# while 반복문 
@@ -60,7 +63,9 @@ while #조건:
 		pass
 `}/>
 		<HorizontalLine />
-			<Title size="h3" my="m">for ... in</Title>
+			<Link href="/tourOfPython/loop#for_in" id="for_in">
+				<Title size="h3" my="m">for ... in</Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `# for 루프
@@ -87,11 +92,12 @@ while k < 6:
 			이 코드를 실행했을 때 피라미드 모양이 나와요. 피라미드를 뒤집어서 모래시계모양이 나오게 코드를 작성해 보세요.
 			</Text>
 			<HorizontalLine />
-			<Title size="h2" my="m"> 강제종료 - break </Title>
+			<Link href="/tourOfPython/loop#break" id="break">
+				<Title size="h2" my="m"> 강제종료 - break </Title>
+			</Link>
 			<Text>
 			이제 앞에서 배운 <Code>while</Code> 또는 <Code>for .. in</Code> 루프를 사용해서 당근을 빠르게 심을 수 있겠네요. 하지만 만약에 땅을 파다가 금이 나오거나, 물이 부족해지면 어떻게 해야할까요?  정지를 하고 다른 일을 해야할 상황이 생길 수 도 있는데 이런 상황에서 어떻게 해야 할까요? 이런 상황에서는 <Code>break</Code>를 사용해서 반복을 종료할 수 있어요.
 			</Text>
-				<Title size="h2" my="m">while</Title>
 			<TwoColumn>
 				<CodeBlock code={
 `
@@ -102,7 +108,7 @@ while seeds > 0:
 	print("seed")
   seeds = seeds - 1
   if gold:
-		break
+		break # <--- 종료!
 `}/>
 				<Text>
 					이 코드는 <Code>gold</Code>가 <Code>True</Code>이면 "seeds"가 한 번만 출력되고 종료되요. 그래서 원래 10번 나와야하는 문장이 단 한 번만 나오게 되요.
@@ -114,7 +120,7 @@ while seeds > 0:
 `
 for i in range(0, 3):
     if i == 1:
-        break
+        break # <-- 종료
     print(i)
 `}/>
 				<Text>
@@ -122,7 +128,9 @@ for i in range(0, 3):
 				</Text>
 			</TwoColumn>
 
-			<Title size="h2" my="m"> 스킵 - continue </Title>
+			<Link href="/tourOfPython/loop#continue" id="continue">
+				<Title size="h2" my="m"> 스킵 - continue </Title>
+			</Link>
 			<Text>
 				<Code>continue</Code>는 반복문의 처음으로 돌아가게 만들어요. <Code>break</Code>는 반복을 중단시키지만, <Code>continue</Code>는 현제 반복을 끝내고 다음 반복으로 넘어가게되요.
 			</Text>
@@ -153,7 +161,9 @@ for i in range(10):
 이번에는 같은 결과를 주는 프로그램이지만 다른 코드로 만들었어요. <Code> continue</Code> 가 <Code>i % 2 == 0</Code>을 만족하는 결과에서만 실행되요.
 					</Text>
 				</TwoColumn>
-			<Title size="h2" my="m"> 무한루프 </Title>
+			<Link href="/tourOfPython/loop#infinite_loop" id="infinite_loop">
+				<Title size="h2" my="m"> 무한루프 </Title>
+			</Link>
 			<TwoColumn>
 
 				<CodeBlock code={
@@ -167,11 +177,15 @@ while True:
 			</TwoColumn>
 
 
-		<Title my="l" size="h2">퀴즈</Title>
+		<Link href="/tourOfPython/loop#quiz" id="quiz">
+			<Title my="l" size="h2">퀴즈</Title>
+		</Link>
 		<Title weight="semi" size="h3">1. 1에서 10까지 출력하는 코드를 만드세요.</Title>
 		<Title weight="semi" size="h4" my="m">* 조건 *</Title>
 		<Text>1. 0이 출력되어서는 안됨.</Text>
 		<Text my="m">2. <Code>for ... in</Code> 또는 <Code>while</Code>을 사용해야함</Text>
+
+		<Title weight="semi" size="h4" my="m">* 예상되는 출력결과 *</Title>
 		<CodeBlock code={
 `#출력 결과
 1
@@ -191,18 +205,13 @@ while True:
 		<Title weight="semi" size="h3">2. 1에서 100까지의 합을 구하세요.</Title>
 		<Title weight="semi" size="h4">* 조건 *</Title>
 		<Text my="m">1. <Code>for ... in</Code> 또는 <Code>while</Code>을 사용해야함</Text>
+		<Title weight="semi" size="h4" my="m">* 예상되는 출력결과 *</Title>
 		<CodeBlock code={
 `#출력 결과
 5050
 `
 		}/>
 
-			<NextAndPrev
-			next="library"
-			nextPage="파이썬 표준 라이브러리"
-			prev="cat_or_dog2"
-			prevPage="강아지와 고양이2"
-			/>
 		</div>
 	)
 }

@@ -1,19 +1,23 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import TwoColumnDes from "@/components/commons/TwoColumnDes";
+import Link from "next/link";
 
 export default function Page() {
 	return (
 		<div className="p-5 mb-100">
-			<Title my="m" size="h1"> 리스트list [a, b, c] </Title>
+			<Link href="/tourOfPython/list#title" id="title"> 
+				<Title my="m" size="h1"> 리스트list [a, b, c] </Title>
+			</Link>
 			<Text>
 지금까지 우리는 숫자랑 글자(문자열)에 대해서 배웠는데요, 숫자랑 글자만으로는 불편한 경우가 생겨요! 예를 들어 1부터 10까지 숫자 중에서 홀수만 모아보면 1, 3, 5, 7, 9가 되는데, 이걸 숫자나 글자로 표현하려면 너무 불편하겠죠? 마치 소풍 갈 때 가방 없이 김밥, 음료수, 과자를 손으로 들고 가는 것처럼요! 그래서 파이썬에는 여러 가지를 한 번에 담을 수 있는 가방 같은 것이 있는데, 그게 바로 오늘 배울 <Text weight="bold" style="inline-block" mx="x" size="sm">리스트(list)</Text>예요!
 			</Text>
-			<Title  my="l" size="h2">리스트 만드는 방법 </Title>
+			<Link href="/tourOfPython/list#how_to_make" id="how_to_make">
+				<Title  my="l" size="h2">리스트 만드는 방법 </Title>
+			</Link>
 			<CodeBlock code={
 `#리스트 만들기 
 numbers = [1, 2, 3, 4, 5]
@@ -23,7 +27,10 @@ numbers = [1, 2, 3, 4, 5]
 			리스트를 만들 때는 대괄호(`[]`)를 가방이라고 생각하면 돼요. 가방 안에 물건을 넣을 때 하나씩 쉼표(`,`)로 구분해서 넣어주면 끝이에요! 예를 들어 소풍 가방을 싼다면 <Code>["김밥", "음료수", "과자"]</Code> 이렇게 만들 수 있어요! 참 쉽죠? 
 			</Text>
 
-			<Title size="h2">리스트의 특징</Title>
+
+			<Link href={"/tourOfPython/list#features"} id="features">
+				<Title size="h2">리스트의 특징</Title>
+			</Link>
 
 			<TwoColumn pb={false}>
 			<CodeBlock code={
@@ -168,7 +175,9 @@ numbers = [1, 1, 2, 2, 3, 3]  # 중복 OK! ✅
 			</TwoColumn>
 
 
-			<Title size="h2" my="m">리스트의 연산</Title>
+			<Link href={"/tourOfPython/list#plus_repeat"} id="plus_repeat">
+				<Title size="h2" my="m">리스트의 연산</Title>
+			</Link>
 			<Text>
 파이썬 리스트는 덧셈과 곱셈 연산이 가능하다는 재미있는 특징이 있어요. 먼저 두 개의 리스트를 더하면 두 리스트가 하나로 합쳐지는데, 예를 들어 <Code>["사과", "바나나"] + ["딸기", "포도"]</Code> 라고 하면 <Code>["사과", "바나나", "딸기", "포도"]</Code> 처럼 두 리스트가 하나로 연결돼요. 마치 두 줄로 서 있던 학생들이 하나의 줄로 합쳐지는 것처럼요. 또한 리스트에 숫자를 곱하면 리스트가 그 숫자만큼 반복되는데, <Code>[1, 2, 3] * 3</Code> 이라고 하면 <Code>[1, 2, 3, 1, 2, 3, 1, 2, 3]</Code> 처럼 리스트가 3번 반복된 결과를 얻을 수 있어요. 이러한 리스트 연산은 데이터를 합치거나 반복적인 초기값을 설정할 때 매우 편리하게 활용할 수 있답니다.
 			</Text>
@@ -227,7 +236,9 @@ l = len(numbers)
 				/>
 			</TwoColumn>
 
-			<Title size="h2" my="m">리스트의 수정과 삭제</Title>
+			<Link id="edit" href={"/tourOfPython/list#edit"} >
+				<Title size="h2" my="m">리스트의 수정과 삭제</Title>
+			</Link>
 			<Text>
 파이썬 리스트는 이미 들어있는 값을 자유롭게 수정하거나 삭제할 수 있어요. 먼저 값을 수정할 때는 인덱스를 이용해서 원하는 위치의 값을 새로운 값으로 바꿀 수 있는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 "바나나"를 "포도"로 바꾸고 싶다면 <Code>fruits[1] = "포도"</Code> 라고 하면 리스트가 <Code>["사과", "포도", "딸기"]</Code> 로 수정돼요. 값을 삭제할 때는 두 가지 방법을 사용할 수 있는데, <Code>remove()</Code> 를 사용하면 리스트에서 원하는 값을 직접 찾아서 삭제할 수 있고, 예를 들어 <Code>fruits.remove("사과")</Code> 라고 하면 "사과"가 리스트에서 사라져요. 또한 <Code>del</Code> 키워드를 사용하면 인덱스로 원하는 위치의 값을 삭제할 수 있는데, <Code>del fruits[0]</Code> 이라고 하면 0번 인덱스에 있는 값이 삭제된답니다.
 			</Text>
@@ -275,12 +286,15 @@ colors.pop(0) # yellow 삭제
 				}/>
 			</TwoColumn>
 
-			<Title size="h2" my="m"> 리스트 메소드 </Title>
+			<Link href={"/tourOfPython/list#method"} id="medthod">
+				<Title size="h2" my="m"> 리스트 메소드 </Title>
+			</Link>
 			<Text>
 파이썬 리스트는 다양한 메소드를 제공해서 리스트를 더욱 편리하게 다룰 수 있어요. 마치 스마트폰에 여러 가지 기능이 내장되어 있는 것처럼, 리스트에도 자주 사용하는 기능들이 미리 만들어져 있어요. 값을 추가할 때는 <Code>append()</Code> 로 맨 뒤에 값을 추가하거나 <Code>insert()</Code> 로 원하는 위치에 값을 삽입할 수 있고, 값을 삭제할 때는 <Code>remove()</Code> 로 특정 값을 삭제하거나 <Code>pop()</Code> 으로 맨 마지막 값을 삭제할 수 있어요. 또한 <Code>sort()</Code> 를 사용하면 리스트의 값을 오름차순으로 정렬할 수 있고, <Code>reverse()</Code> 를 사용하면 리스트의 순서를 뒤집을 수 있으며, <Code>count()</Code> 를 사용하면 특정 값이 리스트 안에 몇 개 들어있는지 셀 수 있고, <Code>index()</Code> 를 사용하면 특정 값이 리스트의 몇 번째 인덱스에 있는지 찾을 수 있답니다.
 			</Text>
 
 
+			<Link href={"/tourOfPython/list#append"} id="append" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -294,12 +308,14 @@ colors = [
 colors.append('purple')
 `}
 					/>
+					
 				<TwoColumnDes title="1. 덧붙이기 append()" des={
 					<>
 파이썬 리스트에서 <Code>append()</Code> 는 리스트의 맨 끝에 새로운 값을 추가할 때 사용하는 메소드예요. 마치 줄을 서 있는 사람들의 맨 뒤에 새로운 사람이 줄을 서는 것처럼, <Code>append()</Code> 를 사용하면 리스트의 맨 마지막 자리에 값이 추가돼요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.append("포도")</Code> 라고 하면 리스트가 <Code>["사과", "바나나", "딸기", "포도"]</Code> 로 바뀌어요. 또한 <Code>append()</Code> 는 숫자, 문자열뿐만 아니라 리스트도 추가할 수 있는데, <Code>fruits.append([1, 2, 3])</Code> 처럼 리스트를 넣으면 <Code>["사과", "바나나", "딸기", [1, 2, 3]]</Code> 처럼 리스트 안에 리스트가 통째로 추가된다는 점도 기억해 두면 좋답니다.
 					</>}/>
 			</TwoColumn>
 
+			<Link href={"/tourOfPython/list#sort"} id="sort" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -321,6 +337,7 @@ print(f"numbers: {numbers}")
 파이썬 리스트에서 <Code>sort()</Code> 는 리스트 안의 값들을 순서대로 정렬할 때 사용하는 메소드예요. 마치 키 순서대로 학생들을 줄 세우는 것처럼, <Code>sort()</Code> 를 사용하면 리스트 안의 값들이 자동으로 오름차순으로 정렬돼요. 예를 들어 <Code>numbers = [3, 1, 4, 1, 5, 9, 2, 6]</Code> 이라는 리스트에서 <Code>numbers.sort()</Code> 라고 하면 리스트가 <Code>[1, 1, 2, 3, 4, 5, 6, 9]</Code> 처럼 작은 수부터 큰 수 순서로 정렬돼요. 만약 반대로 큰 수부터 작은 수 순서인 내림차순으로 정렬하고 싶다면 <Code>numbers.sort(reverse=True)</Code> 처럼 <Code>reverse=True</Code> 옵션을 추가하면 되고, 문자열 리스트에서도 <Code>fruits.sort()</Code> 처럼 사용하면 알파벳 순서대로 정렬할 수 있어요. 단, <Code>sort()</Code> 는 원본 리스트 자체를 변경하기 때문에 원본 리스트를 유지하고 싶다면 <Code>sorted()</Code> 함수를 대신 사용하는 것이 좋답니다.
 					</>}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#reverse"} id="reverse" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -337,12 +354,14 @@ n = numbers[::1]
 numbers.reverse()
 `
 				} />
+
 				<TwoColumnDes title="3. 리버스 reverse()" des={
 					<>
 파이썬 리스트에서 <Code>reverse()</Code> 는 리스트 안의 값들의 순서를 거꾸로 뒤집을 때 사용하는 메소드예요. 마치 줄을 서 있는 사람들이 뒤돌아서 반대 방향으로 줄을 서는 것처럼, <Code>reverse()</Code> 를 사용하면 리스트 안의 값들이 반대 순서로 뒤집혀요. 예를 들어 <Code>numbers = [1, 2, 3, 4, 5]</Code> 라는 리스트에서 <Code>numbers.reverse()</Code> 라고 하면 리스트가 <Code>[5, 4, 3, 2, 1]</Code> 처럼 순서가 완전히 뒤집혀요. 문자열 리스트에서도 마찬가지로 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 에서 <Code>fruits.reverse()</Code> 를 사용하면 <Code>["딸기", "바나나", "사과"]</Code> 처럼 순서가 뒤집혀요. 단, <Code>sort()</Code> 와 마찬가지로 <Code>reverse()</Code> 도 원본 리스트 자체를 직접 변경하기 때문에 원본 리스트를 유지하고 싶다면 슬라이싱을 이용해서 <Code>numbers[::-1]</Code> 처럼 사용하는 것이 좋답니다.
 					</>
 				}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#index"} id="index" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -364,6 +383,7 @@ n = numbers.index(1)
 					</>
 				}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#insert"} id="insert" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -385,6 +405,7 @@ numbers.insert(1, 3)
 					</>
 				}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#remove"} id="remove" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
@@ -392,40 +413,40 @@ numbers = [100, 0, 1, 100]
 numbers.remove(100)
 `
 				} />
+
 				<TwoColumnDes title="6. 제거하기 remove() " des={
 					<>
 파이썬 리스트에서 <Code>remove()</Code> 는 리스트 안에서 원하는 값을 찾아서 삭제할 때 사용하는 메소드예요. 인덱스로 위치를 지정해서 삭제하는 <Code>del</Code> 키워드와 달리, <Code>remove()</Code> 는 삭제하고 싶은 값을 직접 지정할 수 있어서 값의 위치를 몰라도 편리하게 삭제할 수 있어요. 마치 줄을 서 있는 사람들 중에서 이름을 불러서 그 사람만 줄에서 빠지게 하는 것처럼요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기", "포도"]</Code> 라는 리스트에서 <Code>fruits.remove("바나나")</Code> 라고 하면 "바나나"가 리스트에서 삭제되어 <Code>["사과", "딸기", "포도"]</Code> 로 바뀌어요. 단, 리스트 안에 같은 값이 여러 개 있을 경우 <Code>remove()</Code> 는 가장 먼저 발견된 값 하나만 삭제하고, 리스트 안에 없는 값을 삭제하려고 하면 <Code>ValueError</Code> 오류가 발생하기 때문에 삭제하려는 값이 리스트 안에 있는지 먼저 확인한 후 사용하는 것이 좋답니다.
 					</>}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#pop"} id="pop" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
 numbers = [100, 0, 1, 100]
 numbers.pop(0)
 `} />
+
 				<TwoColumnDes title="7. 꺼내기  pop() " des={
 					<>
 파이썬 리스트에서 <Code>pop()</Code> 은 리스트에서 특정 위치의 값을 삭제하면서 동시에 그 값을 반환해주는 메소드예요. 마치 줄의 맨 끝에 서 있는 사람을 불러내면서 그 사람이 누구인지 알려주는 것처럼, <Code>pop()</Code> 은 값을 삭제하는 동시에 삭제된 값을 돌려줘요. 기본적으로 인자 없이 <Code>fruits.pop()</Code> 처럼 사용하면 리스트의 맨 마지막 값이 삭제되면서 반환되는데, 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.pop()</Code> 을 사용하면 "딸기"가 삭제되면서 "딸기"를 반환하고 리스트는 <Code>["사과", "바나나"]</Code> 로 바뀌어요. 또한 <Code>fruits.pop(0)</Code> 처럼 인덱스를 직접 지정하면 해당 위치의 값을 삭제하면서 반환할 수도 있는데, 이처럼 삭제된 값을 반환해준다는 점이 <Code>remove()</Code> 나 <Code>del</Code> 과의 가장 큰 차이점이라고 할 수 있답니다.
 					</>}/>
 			</TwoColumn>
+			<Link href={"/tourOfPython/list#count"} id="count"/>
 			<TwoColumn pb={false}>
 				<CodeBlock code={
 `
 numbers = [100, 0, 1, 100]
 a = numbers.count(100)
 `} />
+
 				<TwoColumnDes title="8. 갯수 파악하기  count() " des={
+				
 					<>
 파이썬 리스트에서 <Code>count()</Code> 는 리스트 안에 특정 값이 몇 번 들어있는지 세어주는 메소드예요. 마치 교실에서 같은 이름을 가진 학생이 몇 명인지 세어보는 것처럼, <Code>count()</Code> 를 사용하면 원하는 값이 리스트 안에 몇 개 있는지 숫자로 알려줘요. 예를 들어 <Code>numbers = [1, 2, 3, 2, 1, 2, 4, 5]</Code> 라는 리스트에서 <Code>numbers.count(2)</Code> 라고 하면 숫자 2가 리스트 안에 3번 들어있기 때문에 <Code>3</Code> 을 반환해줘요. 문자열 리스트에서도 마찬가지로 <Code>fruits = ["사과", "바나나", "사과", "딸기", "사과"]</Code> 에서 <Code>fruits.count("사과")</Code> 라고 하면 "사과"가 3번 들어있기 때문에 <Code>3</Code> 을 반환하고, 만약 리스트 안에 없는 값을 찾으려고 하면 오류 없이 <Code>0</Code> 을 반환해준다는 점이 <Code>index()</Code> 와의 차이점이라고 할 수 있답니다.
 					</>}/>
 			</TwoColumn>
 
-			<NextAndPrev
-			next="list_train"
-			nextPage="리스트 연습하기"
-			prev="day_4"
-			prevPage="자료구조"
-			/>
 		</div>
 	)
 }

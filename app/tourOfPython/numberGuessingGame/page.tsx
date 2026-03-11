@@ -1,6 +1,5 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
@@ -14,34 +13,40 @@ export default function Page(){
 			<Text my="m">
 			이번에는 숫자 맞추기 게임을 만들어 볼 거예요. 지금까지 배운 것들을 활용해서 이렇게 재미있는 게임을 만들 수 있다는 점에 놀라지 않을 수 없을 거예요. 게임 방식은 아주 간단해요. 컴퓨터가 생각하고 있는 랜덤한 숫자를 사용자가 알아맞히면 되는 간단한 게임이에요. 3회 안에 정답을 입력하면 사용자가 승리하고 3회를 넘어가면 컴퓨터의 승리예요.
 			</Text>
-			<Title my="m" size="h2"> 활용할 지식 모음 </Title>
-			<Title my="x" size="h3">알고 있는 것</Title>
+			<Title my="x" size="h3">이번에 활용할 코드</Title>
 				<div className="px-1">
 					<Text> 1. 내장 함수 <Code> print</Code> </Text>
 					<Text> 2. 표준 라이브러리  <Code> random</Code> </Text>
 					<Text> 3. 반복문  <Code> while </Code> </Text>
 					<Text> 4. 조건문 <Code> if...elif...else</Code> </Text>
 					<Text> 5. 변수 만들기</Text>
+					<Text>6. 예외 처리 <Code>try...except</Code></Text>
 				</div>
-			<Title my="x" size="h3">새롭게 배울 것</Title>
-				<Text mx="m">1. 예외 처리 <Code>try...except</Code></Text>
 			<div className="border-dashed border-zinc-200 border-1 my-3"/>
-			<Title my="m" size="h2"> 게임 환영 타이틀 만들기 </Title>
+			<Link href="/tourOfPython/numberGuessingGame#title" id="title">
+				<Title my="m" size="h2"> 게임 환영 타이틀 만들기 </Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `# main.py
 def main():
+	print("=====================")
 	print("number guessing game") # 게임 타이틀
+	print("=====================")
 main() # main 함수 호출
 `}/>
 			<Text> <Code>main()</Code> 내부에 게임관련 중요한 로직을 만들거예요. <Code>print()</Code>는 게임이 실행 될 때 어떤 게임인지 알려주는 제목이에요. 간단 하지만 의미는 확실하게 전달 할 수 있을 것 같아요. </Text>
 			</TwoColumn>
-			<Title my="m" size="h2"> while 루프 만들기  </Title>
+			<Link href="/tourOfPython/numberGuessingGame#while" id="while">
+				<Title my="m" size="h2"> while 루프 만들기  </Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `# main.py
 def main():
+	print("=====================")
 	print("number guessing game")
+	print("=====================")
 	chances = 3
 	attempts = 0
 	while attempts < chances:
@@ -61,7 +66,9 @@ main()
 			<CodeBlock code={
 `# main.py
 def main():
+		print("=====================")
     print("number guessing game")
+		print("=====================")
     chances = 3
     attempts = 0
     while attempts < chances:  # while 조건
@@ -79,14 +86,18 @@ main()
 			</Text>
 			</TwoColumn>
 
-			<Title size="h2" my="m">랜덤 숫자 생성하기 </Title>
+			<Link href="/tourOfPython/numberGuessingGame#rand_number" id="title">
+				<Title size="h2" my="m">랜덤 숫자 생성하기 </Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `#main.py
 import random  # <-- 라이브러리 가져오기
 
 def main():
+		print("=====================")
     print("number guessing game")
+		print("=====================")
     answer = random.randint(1, 11) # < -- 난수 생성
     chances = 3
     attempts = 0
@@ -107,14 +118,18 @@ main()
 			</Text>
 			</TwoColumn>
 
-			<Title size="h2" my="m">예외 처리하기</Title>
+			<Link href="/tourOfPython/numberGuessingGame#exception" id="exception">
+				<Title size="h2" my="m">예외 처리하기</Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `#main.py
 import random  
 
 def main():
+		print("=====================")
     print("number guessing game")
+		print("=====================")
     answer = random.randint(1, 11) 
     chances = 3
     attempts = 0
@@ -137,12 +152,16 @@ main()
 			</Text>
 			</TwoColumn>
 
+			<Link href="/tourOfPython/numberGuessingGame#answer_checker" id="answer_chekcer">
 			<Title size="h2" my="m">정답인가요? 아닌가요?</Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `#main.py
 def main():
+		print("=====================")
     print("number guessing game")
+		print("=====================")
     answer = random.randint(1, 11)
     chances = 3
     attempts = 0
@@ -176,7 +195,9 @@ main()
 			</TwoColumn>
 
 
-			<Title size="h2" my="m">isCorrect() 함수 구현하기</Title>
+			<Link href="/tourOfPython/numberGuessingGame#isCorrect" id="isCorrect">
+				<Title size="h2" my="m">isCorrect() 함수 구현하기</Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `#main.py
@@ -196,7 +217,9 @@ def isCorrect(answer, user_input):
 			<div />
 			</Text>
 			</TwoColumn>
-			<Title my="l"> 전체 코드 확인하기 </Title>
+			<Link href="/tourOfPython/numberGuessingGame#full_code" id="full_code">
+				<Title my="l"> 전체 코드 확인하기 </Title>
+			</Link>
 			<CodeBlock code={
 `# main.py 
 import random
@@ -220,7 +243,9 @@ def main():
     """
     실제 게임 로직이 진행되는 함수
     """
+		print("=====================")
     print("number guessing game")
+		print("=====================")
     answer = random.randint(1, 11) 
     chances = 3 
     attempts = 0
@@ -238,13 +263,6 @@ def main():
 
 main()
 `}/>
-
-			<NextAndPrev
-			prev="library"
-			prevPage="표준 라이브러리"
-			next="day_3"
-			nextPage="반복문"
-			/>
 		</div>
 	)
 }

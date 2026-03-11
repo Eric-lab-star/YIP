@@ -38,17 +38,16 @@ export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] })
 			)
 		}
 		return (
-			<Button
-				key={fileItem.name}
-				variant="link"
-				size="sm"
-				className="w-full justify-start text-foreground"
-			>
-				<Link href={fileItem.url} className="flex gap-2">
-					<FileTextIcon />
-					<span>{fileItem.name}</span>
-				</Link>
-			</Button>
+			<Link key={fileItem.name} href={fileItem.url} className="">
+				<Button
+					variant="link"
+					size="sm"
+					className="w-full justify-start text-foreground"
+				>
+						<FileTextIcon />
+						<span>{fileItem.name}</span>
+				</Button>
+		</Link>
 		)
 	}
 

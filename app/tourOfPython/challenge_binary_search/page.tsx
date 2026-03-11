@@ -1,4 +1,3 @@
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TipTab from "@/components/editor/TipTab";
@@ -41,12 +40,6 @@ export default function Page() {
 			<Title size="h2" my="m"> 이진 탐색 알고리즘 조사 보고서 작성하기 </Title>
 			<Text my="m"> 아래 입력란에 보고서를 작성해 주세요.</Text>
 			<TipTab editable={true}/>
-			<NextAndPrev
-			next="day_3"
-			nextPage="반복문"
-			prev="numberGuessingGame"
-			prevPage="숫자 맞히기 게임"
-			/>
 		</div>
 	)
 }

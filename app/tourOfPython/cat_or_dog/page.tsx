@@ -11,7 +11,9 @@ import Link from "next/link";
 export default function Page(){
 	return (
 		<div className="mb-50">
-			<Title my="m" > CLI app 고양이 또는 강아지를 추천해드려요 </Title>
+			<Link  id="title" href={"/tourOfPython/cat_or_dog#title"}>
+				<Title my="m" > CLI app 고양이 또는 강아지를 추천해드려요 </Title>
+			</Link>
 			<Text my="l" >
 				와~~~ 지금까지 파이썬에 대해서 정말 많은 것을 배웠어요.
 				<Smile className="inline text-orange-300 mx-1 "/>
@@ -46,7 +48,9 @@ export default function Page(){
 			<Text>2. <Code> if..elif...else</Code> 의 사용 방법을 학습한다. </Text>
 			<Text>3. 함수를 사용해서 코드를 정리하는 방법을 익힌다.</Text>
 
-			<Title my="m" size="h2"> start() 함수 만들기 </Title>
+			<Link href={"/tourOfPython/cat_or_dog#start"} id="start">
+				<Title my="m" size="h2"> start() 함수 만들기 </Title>
+			</Link>
 			<TwoColumn>
 
 			<CodeBlock code={
@@ -61,7 +65,9 @@ def start():
 			</Text>
 			</TwoColumn>
 
-			<Title my="m" size="h2"> cat or dog </Title>
+			<Link href={"/tourOfPython/cat_or_dog#cat_or_dog"} id={"cat_or_dog"}>
+				<Title my="m" size="h2"> cat or dog() </Title>
+			</Link>
 			<TwoColumn>
 				<CodeBlock code={
 `
@@ -94,9 +100,11 @@ def cat_or_dog():
 				</Text>
 			</TwoColumn>
 			
-			<Title my="m" size="h2">
-			에러 만들기
-			</Title>
+			<Link href={"/tourOfPython/cat_or_dog#raise_error"} id={"raise_error"}>
+				<Title my="m" size="h2">
+					에러 만들기
+				</Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `
@@ -117,7 +125,9 @@ def cat_or_dog():
 			</Text>
 			</TwoColumn>
 			
-			<Title my="m"> black or white </Title>
+			<Link href={"/tourOfPython/cat_or_dog#black_or_white"} id={"black_or_white"}>
+				<Title my="m"> black or white </Title>
+			</Link>
 			<Text> 그 다음으로는 어떤 색을 원하는지 확인할 거예요. 간단한 프로그램을 작성하기 위해서 흰색하고 검정색 만 입력받을 수 있다고 제한을 했어요 </Text>
 			<Text>이번에도 앞에서 고양이와 강아지를 구별하고 잘못된 값은 걸러낸 방식을 그대로 사용할 수 있겠네요.  한번 스스로 만들어 볼까요?</Text>
 				
@@ -130,7 +140,9 @@ def black_or_white():
     return color
 `}/>
 
-			<Title my="m" size="h2"> small_medium_large()</Title>
+			<Link href={"/tourOfPython/cat_or_dog#small_medium_large"} id={"small_medium_large"}>
+				<Title my="m" size="h2"> small_medium_large()</Title>
+			</Link>
 			<Text>이번에는 크기를 확인할 거예요. 이것도 같은 방식으로 함수를 만들어 주세요.</Text>
 			<CodeBlock code={
 `
@@ -140,7 +152,9 @@ def small_medium_large():
         raise ValueError("오류!!!!")
     return size
 `}/>
-			<Title my="m" size="h2">중간 점검 </Title>
+			<Link href={"/tourOfPython/cat_or_dog#checkpoint"} id={"checkpoint"}>
+				<Title my="m" size="h2">중간 점검 </Title>
+			</Link>
 			<Text my="m">잘 따라오고 있나요? 지금까지 설명한 내용을 모두 작성했으면 아래와 같은 코드가 나왔을 거예요.</Text>
 			<CodeBlock code={
 `
@@ -169,12 +183,6 @@ def start():
     color = black_or_white()
     size = small_medium_large()
 				`}/>
-			<NextAndPrev
-				prev="/tourOfPython/if"
-				prevPage="if, else, elif"
-				next="/tourOfPython/day_3"
-				nextPage="고양이와 강아지 2"
-			/>
 		</div>
 	)
 }

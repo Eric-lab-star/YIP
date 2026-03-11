@@ -4,6 +4,7 @@ import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
+import Link from "next/link";
 
 export default function Page(){
 	return (
@@ -40,7 +41,9 @@ def small_medium_large():
 `}/>
 			<Text> 우리의 목표는 고양이나 강아지를 추천해주는 거였어요. 현제 우리가 알고 있는 정보는 모두 3 가지에요. 우선 고양이와 강아지중 어느 것을 원하는지 알고 있어요. 두번째로 흰색과 검정색중 어는 것을 원하는지 확인했어요. 마지막으로 원하는 크기도 확인했어요. 이제 수집한 정보를 바탕으로 추천을 해주면 될거 같네요.</Text>
 
-			<Title size="h2" my="m">suggest()</Title>
+			<Link id="suggest" href={"/tourOfPython/cat_or_dog2#suggest"}>
+				<Title size="h2" my="m">suggest()</Title>
+			</Link>
 			<TwoColumn>
 			<CodeBlock code={
 `
@@ -108,7 +111,9 @@ elif color == "흰색":
 `}/>
 				<Text> 크기를 판단하는 조건식을 넣어주고 각각 적절한 고양이 품종을 작성해줬어요. 같은 방식으로 강아지도 만들면 프로그램이 완셩됩니다. </Text>
 			</TwoColumn>
-			<Title size="h2" my="l">모든 코드</Title>
+			<Link href={"/tourOfPython/cat_or_dog2#birdEyeView"} id={"birdEyeView"}>
+				<Title size="h2" my="l">모든 코드</Title>
+			</Link>
 			<Text my="l">와 이제 파이썬을 이용해서 작은 프로젝트를 만들 수 있는 단계까지 왔네요. 혹시 여기까지 따라오면서 잘 안된 부분이 있다면 아래의 코드를 보고 본인이 작성한 코드와 비교해보세요. 참고로 정해진 정답은 없어요. 그러니 변경하고 싶은 부분이 있다면 과감하게 변경을 시도해보세요. </Text>
 			<CodeBlock code={`
 def start():
@@ -199,14 +204,7 @@ def suggest(animal, color, size):
 
 start()
 				`}/>
-				<Text> 혹시 코드를 보면서 조금 비효율 적이라고 생각했나요? 아니면 코드가 더럽다라고 생각했나요? 네 정답이에요. 수집한 정보를 더 이쁘고 깨끗하고 멋있게 다루기 위해서 앞으로 자료구조(data structure)도 공부를 해볼거에요. 기대하세요 😏 </Text>
 
-			<NextAndPrev
-				prev="/tourOfPython/day_3"
-				prevPage="반복문"
-				next="/tourOfPython/loop"
-				nextPage="반복문 loop"
-			/>
 		</div>
 	)
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { IBM_Plex_Sans, Noto_Sans_KR } from "next/font/google";
+import { IBM_Plex_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
 import LayoutContextWrapper from "@/components/commons/LayoutContexWrapper";
@@ -31,7 +31,13 @@ export const metadata: Metadata = {
   },
 };
 
-const kr = IBM_Plex_Sans({weight: "300", style: "normal"})
+const kr = IBM_Plex_Sans_KR(
+	{
+		weight: "400",
+		style: "normal",
+		subsets: ['latin', 'latin-ext'],
+		fallback: ["sans-serif", "arial", "system-ui"],
+	})
 
 
 export default async function RootLayout({

@@ -1,17 +1,23 @@
 "use client";
 
+
+
+
 import { usePathname } from 'next/navigation'
 import { useLayoutCtx } from "./LayoutContexWrapper";
 import { SideBarTree, SideBarTreeItem } from './SideBarItems';
+import Title from './Title';
 
 export default function SideBar() {
 	const pathname = usePathname()
+	const root = pathname.split("/")[1]
 	const { isSideBarOpen } = useLayoutCtx()
 	return (
 		<>
 			{
 				isSideBarOpen &&
-				<div className="w-65 bg-zinc-200">
+				<div className="w-65 bg-zinc-200 overflow-y-scroll">
+					<Title size='h2' mx={"m"} weight='semi'>{root} </Title>
 					<SideBarTree sideBarTree={pythonLangCurriculum} />
 				</div>
 			}
@@ -184,10 +190,227 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 		name: "강아지와 고양이 1",
 		files: [
 			{
+				name: "시작하기",
+				url: "/tourOfPython/cat_or_dog#title",
+			},
+			{
+				name: "start()",
+				url: "/tourOfPython/cat_or_dog#start",
+			},
+
+			{
+				name: "cat_or_dog()",
+				url: "/tourOfPython/cat_or_dog#cat_or_dog",
+			},
+			{
+				name: "에러 만들기",
+				url: "/tourOfPython/cat_or_dog#raise_error"
+			},
+			{
+				name: "중간점검",
+				url: "/tourOfPython/cat_or_dog#checkpoint"
+			},
+
+		]
+	},
+	{
+		name: "강아지와 고양이 2",
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/cat_or_dog2#title"
+			},
+			{
+				name: "suggest()",
+				url: "/tourOfPython/cat_or_dog2#suggest"
+			},
+			{
+				name: "모든 코드",
+				url: "/tourOfPython/cat_or_dog2#birdEyeView"
+			},
+		],
+	},
+	{
+		name: "반복문 loop",
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/loop",
+			},
+			{
+				name: "while",
+				url: "/tourOfPython/loop#while",
+			},
+			{
+				name: "for...in",
+				url: "/tourOfPython/loop#for_in"
+			},
+			{
+				name: "break",
+				url: "/tourOfPython/loop#break",
+			},
+			{
+				name: "continue",
+				url: "/tourOfPython/loop#continue"
+			},
+			{
+				name: "무한 루프",
+				url: "/tourOfPython/loop#infinite_loop"
+			},
+			{
+				name: "퀴즈",
+				url: "/tourOfPython/loop#quiz"
+			}
+		]
+	},
+	{
+		name: "파이썬 표준 라이브러리",
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/library",
+			},
+			{
+				name: "input()",
+				url: "/tourOfPython/library#input"
+			},
+			{
+				name: "int(), float()",
+				url: "/tourOfPython/library#int_float"
+			},
+			{
+				name: "len()",
+				url: "/tourOfPython/library#len"
+			},
+			{
+				name: "range()",
+				url: "/tourOfPython/library#range"
+			},
+			{
+				name: "min(), max()",
+				url: "/tourOfPython/library#min_max"
+			},
+			{
+				name: "표준 라이브러리",
+				url: "/tourOfPython/library#standard_library"
+			}
+		],
+	},
+	{
+		name: "숫자	맞추기 게임 만들기",
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/numberGuessingGame"
+			},
+			{
+				name: "타이틀 만들기",
+				url: "/tourOfPython/numberGuessingGame#title",
+			},
+			{
+				name: "while 루프",
+				url: "/tourOfPython/numberGuessingGame#while"
+			},
+			{
+				name: "랜덤숫자 생성하기",
+				url: "/tourOfPython/numberGuessingGame#rand_number"
+			},
+			{
+				name:"예외 처리하기",
+				url: "/tourOfPython/numberGuessingGame#exception"
+			},
+			{
+				name: "정답인가요?",
+				url: "/tourOfPython/numberGuessingGame#answer_checker"
+			},
+			{
+				name: "isCorrect() 함수 만들기",
+				url: "/tourOfPython/numberGuessingGame#isCorrect"
+			},
+			{
+				name: "전체 코드 확인하기",
+				url: "/tourOfPython/numberGuessingGame#full_code"
+			}
+		],
+	},
+	{
+		name: `리스트 ['a', 'b']`,
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/list#title"
+			},
+			{
+				name: "만드는 방법",
+				url: "/tourOfPython/list#how_to_make"
+			},
+			{
+				name: "특징",
+				url: "/tourOfPython/list#features",
+			},
+			{
+				name: "연산",
+				url: "/tourOfPython/list#plus_repeat",
+			},
+			{
+				name: "수정과 삭제",
+				url: "/tourOfPython/list#edit",
+			},
+			{
+				name: "append()",
+				url: "/tourOfPython/list#append",
+			},
+			{
+				name: "sort()",
+				url: "/tourOfPython/list#sort"
+			},
+			{
+				name: "reverse()",
+				url: "/tourOfPython/list#reverse"
+			},
+			{
+				name: "index()",
+				url: "/tourOfPython/list#index",
+			},
+			{
+				name: "insert()",
+				url: "/tourOfPython/list#insert"
+			},
+			{
+				name: "remove()",
+				url: "/tourOfPython/list#remove"
+			},
+			{
+				name: "pop()",
+				url: "/tourOfPython/list#pop"
+			},
+			{
+				name: "count()",
+				url: "/tourOfPython/list#count"
+			}
+		],
+	},
+	{
+		name: `튜플 ('a', 'b')`,
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/tuple"
+			},
+			{
 				name: "",
 				url: "",
 			}
 		]
+	},
+	{
+		name: `딕셔너리 {"age": 12}"`,
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/dict"
+			}
+		],
 	}
 
 ]
