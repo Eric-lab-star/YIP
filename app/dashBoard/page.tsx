@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { validateToken } from "../lib/auth/login"
-import { readStudent } from "../lib/mongo/students";
+import { readManyStudent, readManyStudentFlat, readStudent } from "../lib/mongo/students";
+import StudentsTable from "@/components/commons/table/StudentsTable";
 
 
 export default async function Page() {
@@ -10,14 +11,16 @@ export default async function Page() {
 	if (!id) return <div>failed</div>;
 
 	const student = await readStudent(new ObjectId(id))
-	console.log(student)
 	if (!student) return <div>user not found</div>
+	if (student.role !== "admin") return <div>권한이 없습니다.</div>
+
+	const students = await readManyStudentFlat()
 	return (
-		<div>
-		{student.role}
+		<div className="p-5">
+			<StudentsTable students={students} />
 		</div>
 	)
 
 
-	
+
 }

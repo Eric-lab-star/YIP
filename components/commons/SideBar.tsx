@@ -1,31 +1,63 @@
 "use client";
 
-
-
-
 import { usePathname } from 'next/navigation'
 import { useLayoutCtx } from "./LayoutContexWrapper";
 import { SideBarTree, SideBarTreeItem } from './SideBarItems';
 import Title from './Title';
+import { useEffect, useState } from 'react';
+import useUser from '../SWR/auth/user';
 
 export default function SideBar() {
 	const pathname = usePathname()
+	const { user, isLoading } = useUser()
 	const root = pathname.split("/")[1]
 	const { isSideBarOpen } = useLayoutCtx()
+	const [items, setItems] = useState<SideBarTreeItem[]>([])
+	useEffect(() => {
+		setItems(itemSelector(root))
+	}, [pathname])
+	const [title, setTitle] = useState("")
+	useEffect(() => {
+		setTitle(titleSelector(root))
+	}, [root])
 	return (
 		<>
 			{
 				isSideBarOpen &&
 				<div className="w-65 bg-zinc-200 overflow-y-scroll">
-					<Title size='h2' mx={"m"} weight='semi'>{root} </Title>
-					<SideBarTree sideBarTree={pythonLangCurriculum} />
+					<Title size='h2' mx={"m"} weight='semi'>{title} </Title>
+					<SideBarTree sideBarTree={items} />
 				</div>
 			}
 		</>
 	)
 }
 
+const titleSelector = (root: string) => {
+	switch (root) {
+		case "students":
+			return "My Info"
+		case "tourOfPython":
+			return "Tour of Python"
+		default:
+			return ""
+	}
 
+}
+
+const itemSelector = (path: string) => {
+	switch (path) {
+		case "tourOfPython":
+			return pythonLangCurriculum
+		case "students":
+			return studentPage
+		default:
+			return []
+	}
+}
+
+
+const studentPage: SideBarTreeItem[] = []
 
 
 

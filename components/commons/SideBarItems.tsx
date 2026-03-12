@@ -5,7 +5,7 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { FileIcon, FileTextIcon, FolderIcon, FolderOpenIcon } from "lucide-react"
+import { FileTextIcon, FolderIcon, FolderOpenIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -14,8 +14,8 @@ interface File { name: string; url: string; }
 export type SideBarTreeItem = Folder | File
 
 export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] }) {
+	const [isOpen, setIsOpen] = useState(false)
 	const renderItem = (fileItem: SideBarTreeItem) => {
-		const [isOpen, setIsOpen] = useState(false)
 		if ("files" in fileItem) {
 			return (
 				<Collapsible open={isOpen} onOpenChange={setIsOpen} key={fileItem.name}>
@@ -44,10 +44,10 @@ export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] })
 					size="sm"
 					className="w-full justify-start text-foreground"
 				>
-						<FileTextIcon />
-						<span>{fileItem.name}</span>
+					<FileTextIcon />
+					<span>{fileItem.name}</span>
 				</Button>
-		</Link>
+			</Link>
 		)
 	}
 
