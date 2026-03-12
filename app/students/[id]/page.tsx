@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
 	const posts = await readPosts({ userId: student._id.toString() })
 	const serial = getSerialized(posts)
-	const list = Array(10).fill(0)
+	const list = Array(1).fill(0)
 
 	return (
 		<div className="p-5">
