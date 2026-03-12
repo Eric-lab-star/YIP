@@ -13,13 +13,17 @@ export default function SideBar() {
 	const root = pathname.split("/")[1]
 	const { isSideBarOpen } = useLayoutCtx()
 	const [items, setItems] = useState<SideBarTreeItem[]>([])
+
 	useEffect(() => {
 		setItems(itemSelector(root))
 	}, [pathname])
+
 	const [title, setTitle] = useState("")
+
 	useEffect(() => {
 		setTitle(titleSelector(root))
 	}, [root])
+
 	return (
 		<>
 			{
@@ -39,6 +43,8 @@ const titleSelector = (root: string) => {
 			return "My Info"
 		case "tourOfPython":
 			return "Tour of Python"
+		case "login":
+			return "Login"
 		default:
 			return ""
 	}
@@ -51,13 +57,18 @@ const itemSelector = (path: string) => {
 			return pythonLangCurriculum
 		case "students":
 			return studentPage
+		case "login":
+			return []
 		default:
 			return []
 	}
 }
 
 
-const studentPage: SideBarTreeItem[] = []
+const studentPage: SideBarTreeItem[] = [
+]
+
+
 
 
 
@@ -497,7 +508,4 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 
 		],
 	}
-
 ]
-
-

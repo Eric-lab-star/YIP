@@ -10,11 +10,11 @@ import { redirect } from "next/navigation";
 
 export async function logoutAction() {
 	const cookiesStore = await cookies();
-	cookiesStore.set("logInToken","", {
-			secure: process.env.NODE_ENV === "production",
-			httpOnly: true,
-			sameSite: "lax",
-			maxAge: 0
+	cookiesStore.set("logInToken", "", {
+		secure: process.env.NODE_ENV === "production",
+		httpOnly: true,
+		sameSite: "lax",
+		maxAge: 0
 	})
 	redirect("/login")
 }
@@ -43,23 +43,22 @@ export async function loginVerfyAction() {
 	*  loginAction creates user token 
 	**/
 export async function loginAction(data: z.infer<typeof loginSchema>): Promise<LoginSuccess | LoginFail> {
-
 	try {
 		const result = loginSchema.safeParse(data)
 		if (!result.success) {
 			return {
 				success: false,
-			} 
+			}
 		}
 
-		const student = await findStudent(data.name, data.phoneNumber)
+		const student = await findStudent(data.name, data.phoneNumber.replace(/-/g, ""))
 		if (!student) {
 			return {
 				success: false,
-			} 
+			}
 		}
 
-		const userInfo= {
+		const userInfo = {
 			loggedIn: true,
 			id: student._id.toString(),
 			name: student.name,
@@ -69,12 +68,12 @@ export async function loginAction(data: z.infer<typeof loginSchema>): Promise<Lo
 
 		return {
 			success: true,
-			userInfo, 
-		} 
+			userInfo,
+		}
 
-	} catch(e) {
+	} catch (e) {
 		return {
 			success: false,
-		} 
+		}
 	}
 }

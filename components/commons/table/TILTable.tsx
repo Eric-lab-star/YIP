@@ -45,32 +45,32 @@ const header = tv({
 const colums: ColumnDef<post>[] = [
 	{
 		accessorKey: "index",
-		header: () => <div className={header({align: "left"})}>번호</div>,
-		cell: ({row}) => <div className={cell({align: "left"})}>{row.getValue("index")}</div>
+		header: () => <div className={header({ align: "left" })}>번호</div>,
+		cell: ({ row }) => <div className={cell({ align: "left" })}>{row.getValue("index")}</div>
 	},
-	{ 
+	{
 		accessorKey: "title",
-		header: ()=> <div className={header({align: "center"})}>제목</div>,
-		cell: ({row}) => <Link href={`/editor/${row.original.id}`}> <div className={cell({align: "center"})}>{row.getValue("title")}</div> </Link>
+		header: () => <div className={header({ align: "center" })}>제목</div>,
+		cell: ({ row }) => <Link href={`/editor/${row.original.id}`}> <div className={cell({ align: "center" })}>{row.getValue("title")}</div> </Link>
 	},
-	{ 
+	{
 		accessorKey: "date",
-		header: () => <div className={header({align: "right"})}>날짜</div>,
-		cell: ({row}) => <div className={cell({align: "right"})}>{row.getValue("date")}</div>
+		header: () => <div className={header({ align: "right" })}>날짜</div>,
+		cell: ({ row }) => <div className={cell({ align: "right" })}>{row.getValue("date")}</div>
 	},
 	{
 		id: "actions",
-		cell: ({row}) => {
-			return <div className={cell({align: "right"})}><RowActionBtn id={row.original.id}/></div>
+		cell: ({ row }) => {
+			return <div className={cell({ align: "right" })}><RowActionBtn id={row.original.id} /></div>
 		}
 	},
 ]
 
-export default function TILTable({posts}: {posts: {id: string; title: string; createdAt: Date}[]}) {
-	const filtered = posts.map((v,i) => ({id: v.id, index: i + 1, title: v.title, date: v.createdAt.toLocaleDateString("ko-kr")}))
+export default function TILTable({ posts }: { posts: { id: string; title: string; createdAt: Date }[] }) {
+	const filtered = posts.map((v, i) => ({ id: v.id, index: i + 1, title: v.title, date: v.createdAt.toLocaleDateString("ko-kr") }))
 	return (
-		<div className="container mx-auto py-10">
-			<DataTable columns={colums} data={filtered}/>
+		<div className="container mx-auto pt-4">
+			<DataTable columns={colums} data={filtered} />
 		</div>
 	)
 }
