@@ -13,7 +13,13 @@ const colums: ColumnDef<StudentData>[] = [
 	{
 		accessorKey: "studentPhoneNumber",
 		header: () => <div className="font-extrabold text-center">전화번호</div>,
-		cell: ({ row }) => <div className="text-center">{row.getValue("studentPhoneNumber")}</div>
+		cell: ({ row }) =>{
+			const {studentPhoneNumber} = row.original
+			return (
+				<div className="text-center">
+					{studentPhoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1 - $2 - $3")}
+				</div>
+			)}
 	},
 	{
 		accessorKey: "role",

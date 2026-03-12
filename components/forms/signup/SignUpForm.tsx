@@ -1,5 +1,4 @@
 "use client";
-import { signUpSchema } from "@/app/lib/zod/signUpSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -32,7 +31,7 @@ export default function SignUpForm() {
 		mode: "onChange",
 		defaultValues: {
 			name: "",
-			phoneNumber: "",
+			studentPhoneNumber: "",
 			role: "student",
 		}
 	})
@@ -75,7 +74,7 @@ export default function SignUpForm() {
 								)}
 						/>
 						<Controller 
-								name="phoneNumber"
+								name="studentPhoneNumber"
 								control={form.control}
 								render={({ field, fieldState }) => (
 									<Field data-invalid={fieldState.invalid}>
@@ -149,4 +148,31 @@ function formatPhoneNumber(input: string) {
   }
 }
 
+function nameIput(){ 
 
+	return (
+
+		<Controller 
+				name="name"
+				control={form.control}
+				render={({ field, fieldState }) => (
+					<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor="form-name">
+								이름
+							</FieldLabel>
+							<Input
+									{...field}
+									id="form-name"
+									aria-invalid={fieldState.invalid}
+									placeholder="김경섭"
+									autoComplete="off"
+							/>
+							{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]}/>
+							)}
+					</Field>
+				)}
+		/>
+	)
+}
+}

@@ -2,6 +2,10 @@ import { ObjectId } from "mongodb";
 import { validateToken } from "../lib/auth/login"
 import { readManyStudentFlat, readStudent } from "../lib/mongo/students";
 import StudentsTable from "@/components/commons/table/StudentsTable";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { UserPlus } from "lucide-react";
+import Link from "next/link";
 
 
 export default async function Page() {
@@ -17,8 +21,21 @@ export default async function Page() {
 	const students = await readManyStudentFlat()
 	return (
 		<div className="p-5">
-			<StudentsTable students={students} />
+			<Card className="w-full">
+				<CardContent className="space-y-5">
+					<Link href={"/dashBoard/new"} className="inline-block">
+						<Button variant={"outline"} size={"sm"}>
+							신규등록
+							<UserPlus/>
+						</Button>
+					</Link>
+					<StudentsTable students={students} />
+
+				</CardContent>
+				
+			</Card>
 		</div>
+
 	)
 
 
