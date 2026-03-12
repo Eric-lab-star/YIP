@@ -22,21 +22,22 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner";
+import studentSchema from "@/app/lib/zod/studentSchema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
 export default function SignUpForm() {
-	const form = useForm<z.infer<typeof signUpSchema>>({
-		resolver: zodResolver(signUpSchema),
+	const form = useForm<z.infer<typeof studentSchema>>({
+		resolver: zodResolver(studentSchema),
 		mode: "onChange",
 		defaultValues: {
 			name: "",
-			password: "",
 			phoneNumber: "",
 			role: "student",
 		}
 	})
 
-	function onSubmit(data: z.infer<typeof signUpSchema>) {
+	function onSubmit(data: z.infer<typeof studentSchema>) {
 		toast.success("회원가입이 완료되었습니다.", {position: "top-center"})
 		console.log(data)
 	}
@@ -44,9 +45,9 @@ export default function SignUpForm() {
 	return (
 		<Card className="w-full sm:max-w-md">
 			<CardHeader>
-				<CardTitle>회원가입</CardTitle>
+				<CardTitle>회원등록</CardTitle>
 				<CardDescription>
-					아래의 양식을 작성하여 회원가입을 완료하세요.
+					아래의 양식을 작성하여 회원등록을 완료하세요.
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -73,29 +74,6 @@ export default function SignUpForm() {
 									</Field>
 								)}
 						/>
-
-						<Controller 
-								name="password"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor="form-password">
-												비밀번호
-											</FieldLabel>
-											<Input
-													{...field}
-													id="form-password"
-													aria-invalid={fieldState.invalid}
-													placeholder="********"
-													autoComplete="off"
-											/>
-											{fieldState.invalid && (
-													<FieldError errors={[fieldState.error]}/>
-											)}
-									</Field>
-								)}
-						/>
-
 						<Controller 
 								name="phoneNumber"
 								control={form.control}
@@ -106,6 +84,10 @@ export default function SignUpForm() {
 											</FieldLabel>
 											<Input
 													{...field}
+													onChange={(e) => {
+														const value = e.target.value
+														field.onChange( formatPhoneNumber(value))
+													}}
 													id="form-phoneNumber"
 													aria-invalid={fieldState.invalid}
 													placeholder="010-2222-3211"
@@ -116,6 +98,26 @@ export default function SignUpForm() {
 											)}
 									</Field>
 								)}
+						/>
+						<Controller 
+							name="role"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<Field>
+									<FieldLabel htmlFor="form-role">
+										권한
+									</FieldLabel>
+									<Select onValueChange={field.onChange} defaultValue={field.value}>
+										<SelectTrigger>
+											<SelectValue placeholder="권한 선택" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="student">학생</SelectItem>
+											<SelectItem value="admin">관리자</SelectItem>
+										</SelectContent>
+									</Select>
+								</Field>
+							)}
 						/>
 					</FieldGroup>
 				</form>
@@ -129,3 +131,22 @@ export default function SignUpForm() {
 		</Card>
 	)
 }
+
+
+
+
+function formatPhoneNumber(input: string) {
+  const digits = input.replace(/-/g, "");
+  switch (true) {
+    case digits.length < 4:
+      return digits;
+
+    case digits.length < 8:
+      return digits.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+
+    default:
+      return digits.replace(/(\d{3})(\d{4})(\d{1,4})/, "$1-$2-$3");
+  }
+}
+
+

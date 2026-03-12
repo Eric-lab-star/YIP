@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { validateToken } from "../lib/auth/login"
-import { readManyStudent, readManyStudentFlat, readStudent } from "../lib/mongo/students";
+import { readManyStudentFlat, readStudent } from "../lib/mongo/students";
 import StudentsTable from "@/components/commons/table/StudentsTable";
 
 

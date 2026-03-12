@@ -47,12 +47,13 @@ export default function Page() {
 
   async function onSubmit(data: z.infer<typeof loginSchema>) {
 		const result = await loginAction(data)
+		
 		userMutate() // revalidate user data
 		if (!result.success) {
 			form.reset()
 			toast.error("로그인 정보가 없습니다.",{position:"top-center"})
 		} else {
-			redirect("/tourOfPython")
+			redirect(`/students/${result.userInfo.id}`)
 		} 
 	}
 
@@ -66,7 +67,6 @@ export default function Page() {
   return (
 		<div className="pt-30">
     <Card className={ `mx-auto w-full sm:max-w-md ${isSubmitting && "animate-pulse"}`}>
-			<Link href={"/tourOfPython"}></Link>
       <CardHeader>
         <CardTitle>로그인</CardTitle>
         <CardDescription>
