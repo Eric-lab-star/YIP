@@ -25,6 +25,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { formatPhoneNumber } from "@/lib/utils";
 import { Control, FieldValues, Path } from "react-hook-form"
 import { studentCreateAction } from "@/app/actions/studentAction";
+import {  FormToggleGroup} from "@/components/commons/ToggleGroupSpacing";
 
 interface FormInputProps<T extends FieldValues>
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "name"> {
@@ -45,18 +46,20 @@ export default function SignUpForm() {
 			name: "",
 			studentPhoneNumber: "",
 			role: "student",
+			date: [],
 		}
 	})
 
 	async function onSubmit(data: z.infer<typeof studentSchema>) {
-		const result = await studentCreateAction(data)
-		if (result.success) {
-			toast.success("회원가입이 완료되었습니다.", { position: "top-center" })
-			form.reset()
-		} else {
-			toast.error("회원가입에 실패하였습니다. 입력값을 확인해주세요.", { position: "top-center" })
-		}
-		console.log(result)
+		console.log(data)
+		// const result = await studentCreateAction(data)
+		// if (result.success) {
+		// 	toast.success("회원가입이 완료되었습니다.", { position: "top-center" })
+		// 	form.reset()
+		// } else {
+		// 	toast.error("회원가입에 실패하였습니다. 입력값을 확인해주세요.", { position: "top-center" })
+		// }
+		// console.log(result)
 	}
 
 	return (
@@ -77,6 +80,12 @@ export default function SignUpForm() {
 								transform={formatPhoneNumber}
 								name={"studentPhoneNumber"} id="form-phoneNumber" control={form.control} placeholder="010-0000-0000" />
 						</div>
+						<FormToggleGroup 
+							name="date"
+							control={form.control}
+							label="희망 수업 요일"
+						/>
+
 						<Controller
 							name="role"
 							control={form.control}
@@ -89,6 +98,7 @@ export default function SignUpForm() {
 										<SelectTrigger>
 											<SelectValue placeholder="권한 선택" />
 										</SelectTrigger>
+
 										<SelectContent>
 											<SelectItem value="student">학생</SelectItem>
 											<SelectItem value="admin">관리자</SelectItem>
@@ -110,10 +120,6 @@ export default function SignUpForm() {
 	)
 }
 
-
-
-
-
 function FormInput<T extends FieldValues>({
 	name,
 	control,
@@ -129,7 +135,7 @@ function FormInput<T extends FieldValues>({
 			name={name}
 			control={control}
 			render={({ field, fieldState }) => (
-				<Field data-invalid={fieldState.invalid}>
+				<Field data-invalid={fieldState.invalid} className="h-20">
 					<FieldLabel htmlFor={id}>
 						{label}
 					</FieldLabel>

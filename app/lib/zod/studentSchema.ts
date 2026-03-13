@@ -7,6 +7,7 @@ const studentSchema = z.object({
 		"올바른 전화번호 형식으로 입력하세요."
 	),
 	role: z.enum(["student", "admin"]),
+	date:z.array(z.string())
 })
 
 

@@ -2,10 +2,7 @@ import { ObjectId } from "mongodb";
 import { validateToken } from "../lib/auth/login"
 import { readManyStudentFlat, readStudent } from "../lib/mongo/students";
 import StudentsTable from "@/components/commons/table/StudentsTable";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { UserPlus } from "lucide-react";
-import Link from "next/link";
 import SignUpForm from "@/components/forms/signup/SignUpForm";
 
 
@@ -24,7 +21,6 @@ export default async function Page() {
 		<div className="p-5">
 			<Card className="w-full">
 				<CardContent className="space-y-5">
-
 					<SignUpForm />
 					<StudentsTable students={students} />
 
