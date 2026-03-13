@@ -1,28 +1,40 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {Controller, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card"
 import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner";
 import studentSchema from "@/app/lib/zod/studentSchema";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { formatPhoneNumber } from "@/lib/utils";
+import { Control, FieldValues, Path } from "react-hook-form"
+import { studentCreateAction } from "@/app/actions/studentAction";
+
+interface FormInputProps<T extends FieldValues>
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "name"> {
+	name: Path<T>
+	control: Control<T>
+	label: string
+	id: string
+	placeholder?: string
+	transform?: (input: string) => string
+}
 
 
 export default function SignUpForm() {
@@ -36,13 +48,19 @@ export default function SignUpForm() {
 		}
 	})
 
-	function onSubmit(data: z.infer<typeof studentSchema>) {
-		toast.success("회원가입이 완료되었습니다.", {position: "top-center"})
-		console.log(data)
+	async function onSubmit(data: z.infer<typeof studentSchema>) {
+		const result = await studentCreateAction(data)
+		if (result.success) {
+			toast.success("회원가입이 완료되었습니다.", { position: "top-center" })
+			form.reset()
+		} else {
+			toast.error("회원가입에 실패하였습니다. 입력값을 확인해주세요.", { position: "top-center" })
+		}
+		console.log(result)
 	}
 
 	return (
-		<Card className="w-full sm:max-w-md">
+		<Card className="w-full">
 			<CardHeader>
 				<CardTitle>회원등록</CardTitle>
 				<CardDescription>
@@ -52,53 +70,14 @@ export default function SignUpForm() {
 			<CardContent>
 				<form id="form-signup" onSubmit={form.handleSubmit(onSubmit)}>
 					<FieldGroup>
-						<Controller 
-								name="name"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor="form-name">
-												이름
-											</FieldLabel>
-											<Input
-													{...field}
-													id="form-name"
-													aria-invalid={fieldState.invalid}
-													placeholder="김경섭"
-													autoComplete="off"
-											/>
-											{fieldState.invalid && (
-													<FieldError errors={[fieldState.error]}/>
-											)}
-									</Field>
-								)}
-						/>
-						<Controller 
-								name="studentPhoneNumber"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor="form-phoneNumber">
-												전화번호
-											</FieldLabel>
-											<Input
-													{...field}
-													onChange={(e) => {
-														const value = e.target.value
-														field.onChange( formatPhoneNumber(value))
-													}}
-													id="form-phoneNumber"
-													aria-invalid={fieldState.invalid}
-													placeholder="010-2222-3211"
-													autoComplete="off"
-											/>
-											{fieldState.invalid && (
-													<FieldError errors={[fieldState.error]}/>
-											)}
-									</Field>
-								)}
-						/>
-						<Controller 
+						<div className="grid w-full items-center gap-4 md:grid-cols-2">
+							<FormInput label="이름" name={"name"} id="form-name" control={form.control} placeholder="김경섭" />
+							<FormInput
+								label="전화번호"
+								transform={formatPhoneNumber}
+								name={"studentPhoneNumber"} id="form-phoneNumber" control={form.control} placeholder="010-0000-0000" />
+						</div>
+						<Controller
 							name="role"
 							control={form.control}
 							render={({ field, fieldState }) => (
@@ -134,45 +113,43 @@ export default function SignUpForm() {
 
 
 
-function formatPhoneNumber(input: string) {
-  const digits = input.replace(/-/g, "");
-  switch (true) {
-    case digits.length < 4:
-      return digits;
 
-    case digits.length < 8:
-      return digits.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+function FormInput<T extends FieldValues>({
+	name,
+	control,
+	label,
+	id,
+	placeholder,
+	transform,
+	...props
 
-    default:
-      return digits.replace(/(\d{3})(\d{4})(\d{1,4})/, "$1-$2-$3");
-  }
-}
-
-function nameIput(){ 
-
+}: FormInputProps<T>) {
 	return (
-
-		<Controller 
-				name="name"
-				control={form.control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor="form-name">
-								이름
-							</FieldLabel>
-							<Input
-									{...field}
-									id="form-name"
-									aria-invalid={fieldState.invalid}
-									placeholder="김경섭"
-									autoComplete="off"
-							/>
-							{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]}/>
-							)}
-					</Field>
-				)}
+		<Controller
+			name={name}
+			control={control}
+			render={({ field, fieldState }) => (
+				<Field data-invalid={fieldState.invalid}>
+					<FieldLabel htmlFor={id}>
+						{label}
+					</FieldLabel>
+					<Input
+						{...field}
+						onChange={(e) => {
+							const value = transform ? transform(e.target.value) : e.target.value
+							field.onChange(value)
+						}}
+						{...props}
+						id={id}
+						aria-invalid={fieldState.invalid}
+						placeholder={placeholder}
+						autoComplete="off"
+					/>
+					{fieldState.invalid && (
+						<FieldError errors={[fieldState.error]} />
+					)}
+				</Field>
+			)}
 		/>
 	)
-}
 }

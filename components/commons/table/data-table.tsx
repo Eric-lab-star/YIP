@@ -17,7 +17,6 @@ import {
 	TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -108,8 +107,6 @@ export function DataTable<TData, TValue>({
 					</Button>
 				</div>
 			}
-
-
 		</div>
 	)
 }

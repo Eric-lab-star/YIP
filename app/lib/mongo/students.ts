@@ -29,14 +29,19 @@ export async function updateStudent(student: WithId<StudentData>) {
 export async function readManyStudent() {
 	const db = await getDB();
 	const student = db.collection<StudentData>("students")
-	return await student.find({}).toArray();
+	return await student.find({}).sort({ _id: -1 }).toArray();
 }
 
 
 export async function readManyStudentFlat() {
 	const db = await getDB();
 	const student = db.collection<StudentData>("students")
-	return await student.find({}).map((doc) => ({ ...doc, _id: doc._id.toString() })).toArray();
+	const result = await student
+		.find({})
+		.sort({ _id: -1 })
+		.map((doc) => ({ ...doc, _id: doc._id.toString() }))
+		.toArray();
+	return result
 }
 
 export async function readStudent(id: ObjectId) {

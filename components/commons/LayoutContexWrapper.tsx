@@ -5,7 +5,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 import Header from "./Header";
 import SideBar from "./SideBar";
 
-export interface layoutCtx{
+export interface layoutCtx {
 	isSideBarOpen: boolean
 	setIsSideBarOpen: (isOpen: boolean) => void;
 }
@@ -18,13 +18,12 @@ export function useLayoutCtx() {
 	return ctx;
 }
 
-
-export default function LayoutContextWrapper({children}: {children: React.ReactNode}) {
+export default function LayoutContextWrapper({ children }: { children: React.ReactNode }) {
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-	const value = useMemo(()=> ({
+	const value = useMemo(() => ({
 		isSideBarOpen,
 		setIsSideBarOpen
-	}),[isSideBarOpen, setIsSideBarOpen])
+	}), [isSideBarOpen, setIsSideBarOpen])
 
 	return (
 		<LayoutContext value={value}>

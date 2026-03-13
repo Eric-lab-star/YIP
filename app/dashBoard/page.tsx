@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
+import SignUpForm from "@/components/forms/signup/SignUpForm";
 
 
 export default async function Page() {
@@ -23,16 +24,12 @@ export default async function Page() {
 		<div className="p-5">
 			<Card className="w-full">
 				<CardContent className="space-y-5">
-					<Link href={"/dashBoard/new"} className="inline-block">
-						<Button variant={"outline"} size={"sm"}>
-							신규등록
-							<UserPlus/>
-						</Button>
-					</Link>
+
+					<SignUpForm />
 					<StudentsTable students={students} />
 
 				</CardContent>
-				
+
 			</Card>
 		</div>
 
