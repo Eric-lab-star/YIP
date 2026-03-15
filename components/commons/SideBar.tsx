@@ -5,11 +5,9 @@ import { useLayoutCtx } from "./LayoutContexWrapper";
 import { SideBarTree, SideBarTreeItem } from './SideBarItems';
 import Title from './Title';
 import { useEffect, useState } from 'react';
-import useUser from '../SWR/auth/user';
 
 export default function SideBar() {
 	const pathname = usePathname()
-	const { user, isLoading } = useUser()
 	const root = pathname.split("/")[1]
 	const { isSideBarOpen } = useLayoutCtx()
 	const [items, setItems] = useState<SideBarTreeItem[]>([])
@@ -507,5 +505,14 @@ const pythonLangCurriculum: SideBarTreeItem[] = [
 			},
 
 		],
-	}
+	},
+	{
+		name: "Todo App 만들기",
+		files: [
+			{
+				name: "시작하기",
+				url: "/tourOfPython/todo/#title",
+			}
+		]
+	},
 ]
