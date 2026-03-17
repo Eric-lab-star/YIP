@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button"
@@ -46,9 +46,19 @@ export default function SignUpForm() {
 			name: "",
 			studentPhoneNumber: "",
 			role: "student",
-			date: [],
+			class: [{
+				title: "python",
+				day:"mon",
+				startTime: "18:00",
+				endTime: "20:00"
+			}],
 		}
 	})
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "class", // 배열 필드 이름
+  });
+
 
 	async function onSubmit(data: z.infer<typeof studentSchema>) {
 		console.log(data)
@@ -61,6 +71,8 @@ export default function SignUpForm() {
 		// }
 		// console.log(result)
 	}
+
+
 
 	return (
 		<Card className="w-full">
@@ -80,11 +92,19 @@ export default function SignUpForm() {
 								transform={formatPhoneNumber}
 								name={"studentPhoneNumber"} id="form-phoneNumber" control={form.control} placeholder="010-0000-0000" />
 						</div>
-						<FormToggleGroup 
-							name="date"
-							control={form.control}
-							label="희망 수업 요일"
-						/>
+						{
+							fields.map((field, index) => (
+								<div key={field.id}>
+									<Controller
+									name={`class.${index}.title`}
+									control={form.control}
+									render={({field: f, fieldState: s}) => (<div>.</div>)}
+									/>
+								</div>
+							))
+						}
+
+						
 
 						<Controller
 							name="role"

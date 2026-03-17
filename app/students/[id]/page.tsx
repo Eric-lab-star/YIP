@@ -25,7 +25,15 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
 	const posts = await readPosts({ userId: student._id.toString() })
 	const serial = getSerialized(posts)
-	const list = Array(1).fill(0)
+	const list = [
+		{
+			link: "/tourOfPython",
+			imagekey: "python-logo-only.png",
+			title: "Tour of Python",
+			state: "기초",
+			description: "기본적인 파이썬 문법을 둘러보면서 파이썬 코드를 이해할 수 있는 수준으로 성장하는 것을 목표로 합니다."
+		}
+	]
 
 	return (
 		<div className="p-5">
