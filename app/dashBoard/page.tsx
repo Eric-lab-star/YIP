@@ -18,19 +18,14 @@ export default async function Page() {
 
 	const students = await readManyStudentFlat()
 	return (
-		<div className="p-5">
+		<div className="space-y-5 p-5">
+			<SignUpForm />
 			<Card className="w-full">
 				<CardContent className="space-y-5">
-					<SignUpForm />
 					<StudentsTable students={students} />
-
 				</CardContent>
-
 			</Card>
 		</div>
 
 	)
-
-
-
 }

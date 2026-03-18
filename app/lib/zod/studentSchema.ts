@@ -4,7 +4,7 @@ const classSchema = z.object({
 	title: z.string(),
 	day: z.string(),
 	startTime: z.string(),
-	endTime:z.string(),
+	endTime: z.string(),
 })
 
 const studentSchema = z.object({
@@ -14,7 +14,8 @@ const studentSchema = z.object({
 		"올바른 전화번호 형식으로 입력하세요."
 	),
 	role: z.enum(["student", "admin"]),
-	class:z.array(classSchema).min(1, "등원 날짜를 최소 한 개 이상 입력하세요.")
+	class: z.array(classSchema).min(1, "등원 날짜를 최소 한 개 이상 입력하세요."),
+	birthday: z.date()
 })
 
 

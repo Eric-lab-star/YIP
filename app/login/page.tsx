@@ -29,10 +29,10 @@ import { formatPhoneNumber } from "@/lib/utils"
 
 export default function Page() {
 	const { userMutate } = useUser()
-	// revalidate user data when client enters login page
-	useEffect(() => {
-		userMutate()
-	}, [])
+	// // revalidate user data when client enters login page
+	// useEffect(() => {
+	// 	userMutate()
+	// }, [])
 
 
 	const form = useForm<z.infer<typeof loginSchema>>({

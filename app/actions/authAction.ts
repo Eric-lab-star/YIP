@@ -16,7 +16,7 @@ export async function logoutAction() {
 		sameSite: "lax",
 		maxAge: 0
 	})
-	redirect("/login")
+	redirect("/")
 }
 
 
@@ -26,6 +26,7 @@ interface LoginSuccess {
 		loggedIn: boolean;
 		id: string;
 		name: string;
+		role: string;
 	}
 }
 
@@ -62,6 +63,7 @@ export async function loginAction(data: z.infer<typeof loginSchema>): Promise<Lo
 			loggedIn: true,
 			id: student._id.toString(),
 			name: student.name,
+			role: student.role,
 		}
 
 		await setLoginToken(userInfo)

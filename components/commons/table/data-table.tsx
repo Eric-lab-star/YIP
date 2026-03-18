@@ -22,15 +22,15 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
 	options?: {
-		btn: boolean;
-		height: "h-[500px]" | "h-fit";
+		btn?: boolean;
+		height?: "h-[500px]" | "h-fit";
 	}
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	options = { btn: true, height: "h-[500px]" },
+	options = { btn: true, height: "h-fit" },
 }: DataTableProps<TData, TValue>) {
 
 	const table = useReactTable({
@@ -67,6 +67,7 @@ export function DataTable<TData, TValue>({
 						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
+									className="hover:bg-zinc-200"
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
 								>

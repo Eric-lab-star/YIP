@@ -5,16 +5,17 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 export const TokenMaxAge = 60 * 60 * 20;
 
 export interface JwtPayloadUser {
-  id: string;      // userId
-  name: string;
+	id: string;      // userId
+	name: string;
+	role: string;
 };
 
 
 export function signAccessToken(payload: JwtPayloadUser) {
-  return jwt.sign(payload, JWT_SECRET, {
-    algorithm: "HS256",
-    expiresIn: TokenMaxAge, // access token은 짧게
-  });
+	return jwt.sign(payload, JWT_SECRET, {
+		algorithm: "HS256",
+		expiresIn: TokenMaxAge, // access token은 짧게
+	});
 }
 
 export interface ValidationSuccess extends JwtPayloadUser {
@@ -30,29 +31,29 @@ export async function validateToken(): Promise<ValidationFail | ValidationSucces
 		const cookiesStore = await cookies();
 		const token = cookiesStore.get("logInToken");
 		if (!token) {
-			return {success: false}
+			return { success: false }
 		}
 		if (token.value) {
-			 const result =  jwt.verify(token.value, JWT_SECRET) as JwtPayloadUser 
-			return {...result, success: true} 
+			const result = jwt.verify(token.value, JWT_SECRET) as JwtPayloadUser
+			return { ...result, success: true }
 		}
-		return {success: false}
-	} catch(e) {
-		return {success: false}
+		return { success: false }
+	} catch (e) {
+		return { success: false }
 	}
 }
 
 
-export async function setLoginToken(userInfo:  JwtPayloadUser ) {
-	
-		const token = signAccessToken(userInfo)
-		const cookieStore = await cookies()
+export async function setLoginToken(userInfo: JwtPayloadUser) {
 
-		cookieStore.set("logInToken", token, {
-			secure: process.env.NODE_ENV === "production",
-			httpOnly: true,
-			sameSite: "lax",
-			maxAge: TokenMaxAge 
-		})
-	
+	const token = signAccessToken(userInfo)
+	const cookieStore = await cookies()
+
+	cookieStore.set("logInToken", token, {
+		secure: process.env.NODE_ENV === "production",
+		httpOnly: true,
+		sameSite: "lax",
+		maxAge: TokenMaxAge
+	})
+
 }

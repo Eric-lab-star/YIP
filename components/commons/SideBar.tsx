@@ -5,14 +5,17 @@ import { useLayoutCtx } from "./LayoutContexWrapper";
 import { SideBarTree, SideBarTreeItem } from './SideBarItems';
 import Title from './Title';
 import { useEffect, useState } from 'react';
+import useUser from '../SWR/auth/user';
 
 export default function SideBar() {
 	const pathname = usePathname()
 	const root = pathname.split("/")[1]
 	const { isSideBarOpen } = useLayoutCtx()
 	const [items, setItems] = useState<SideBarTreeItem[]>([])
+	const { userMutate } = useUser()
 
 	useEffect(() => {
+		userMutate()
 		setItems(itemSelector(root))
 	}, [pathname])
 

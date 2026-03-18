@@ -30,7 +30,7 @@ export async function studentCreateAction(formdata: StudentData): Promise<studen
 	return { success: true, created: newStudent.insertedId.toString() }
 }
 
-export async function updateStudentAction(formdata: WithId<StudentData>) {
+export async function updateStudentAction(formdata: { _id: string } & StudentData) {
 
 	const zodResult = studentSchema.safeParse(formdata)
 	if (!zodResult.success) {

@@ -15,7 +15,8 @@ export async function createStudent(student: StudentData) {
 
 
 // update Studnent
-export async function updateStudent(student: WithId<StudentData>) {
+export async function updateStudent(student: { _id: string } & StudentData) {
+	console.log(student)
 	const { _id, ...withoutId } = student;
 	const db = await getDB();
 	const students = db.collection<StudentData>("students")
@@ -43,6 +44,8 @@ export async function readManyStudentFlat() {
 		.toArray();
 	return result
 }
+
+
 
 export async function readStudent(id: ObjectId) {
 	try {
