@@ -198,14 +198,12 @@ function WhyLearn() {
 function Hero() {
 	return (
 		<section id="hero" className="relative min-h-screen flex items-center overflow-hidden" style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%)" }}>
-			<div className="absolute inset-0 overflow-hidden">
-			</div>
-			<style>{`@keyframes pulse { from { opacity: 0.3; transform: scale(1); } to { opacity: 1; transform: scale(1.5); } }`}</style>
 
 			<div className="relative max-w-6xl mx-auto px-6 py-32">
 				<div className="max-w-3xl">
 					<h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-						코드 한 줄이<br />
+						코드 한 줄이
+						<br />
 						<span className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">
 							미래를 바꿉니다
 						</span>
@@ -215,7 +213,7 @@ function Hero() {
 					</p>
 				</div>
 
-				<div className="hidden lg:block absolute   w-96">
+				<div className="hidden lg:block  w-96">
 					<div className="relative">
 						<div className="bg-slate-800/80 backdrop-blur rounded-2xl border border-slate-700/50 p-5 font-mono text-sm shadow-2xl">
 							<div className="flex gap-2 mb-4">

@@ -10,10 +10,8 @@ import { logoutAction } from "@/app/actions/authAction";
 import { Noto_Sans_KR } from "next/font/google";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 const kr_font = Noto_Sans_KR({ weight: "700", style: "normal" })
-
-
 
 export default function Header() {
 	const pathname = usePathname()
@@ -59,11 +57,11 @@ export default function Header() {
 
 function UserProfile() {
 	const { user, isLoading, userMutate } = useUser()
-	console.log(user)
 
 	const handleLogout = async () => {
 		await logoutAction();
 		userMutate();
+		redirect("/")
 	}
 
 	if (isLoading) {

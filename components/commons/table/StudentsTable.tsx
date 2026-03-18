@@ -4,10 +4,9 @@ import { DataTable } from "./data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ko } from 'date-fns/locale'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { FilePenLineIcon, MoreHorizontal, Trash2Icon, UserRound } from "lucide-react";
-import { WithId } from "mongodb";
+import { ArrowUpDown, FilePenLineIcon, MoreHorizontal, Trash2Icon, UserRound } from "lucide-react";
 import Link from "next/link";
 import { deleteStudentAction } from "@/app/actions/studentAction";
 
@@ -22,16 +21,28 @@ const koDatesTable = {
 }
 
 const koClassTable = {
-	python: "파이썬",
-	bridge: "도브",
-	hd_class: "수업",
-	research: "연구"
+	"Tour of Python": "Tour of Python",
+	"bridge": "도브",
+	"hd_class": "수업",
+	"research": "연구",
+	"Spaceship Captain": "Spaceship Captain",
+	"Simple Web Dev": "Simple Web Dev",
 }
 
 const colums: ColumnDef<StudentTableData>[] = [
 	{
 		accessorKey: "name",
-		header: () => <div className="font-extrabold pl-5 text-left">이름</div>,
+		header: ({ column }) => {
+			return (
+				<Button
+					variant={"ghost"}
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<div className="font-extrabold pl-5 text-left">이름</div>
+					<ArrowUpDown />
+				</Button>
+			)
+		},
 		cell: ({ row }) => <div className="pl-5 text-left">{row.getValue("name")}</div>
 	},
 	{
@@ -70,7 +81,6 @@ const colums: ColumnDef<StudentTableData>[] = [
 		accessorKey: "birthday",
 		header: () => <div className="font-extrabold text-center">생년월일</div>,
 		cell: ({ row }) => <div className="text-center">{row.getValue("birthday") ? format(row.getValue("birthday"), "yy/MM/dd", { locale: ko }) : "x"}</div>
-
 	},
 	{
 		id: "actions",
@@ -115,7 +125,7 @@ type StudentTableData = { _id: string } & StudentData
 export default function StudentsTable({ students }: { students: StudentTableData[] }) {
 	return (
 		<div className="container mx-auto">
-			<DataTable options={{ btn: true, height: "h-fit" }} columns={colums} data={students} />
+			<DataTable options={{ btn: true, height: "h-fit", search: "name" }} columns={colums} data={students} />
 		</div>
 	)
 }
