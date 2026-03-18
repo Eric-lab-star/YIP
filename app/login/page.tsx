@@ -24,15 +24,10 @@ import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
 import useUser from "@/components/SWR/auth/user"
-import { useEffect } from "react"
 import { formatPhoneNumber } from "@/lib/utils"
 
 export default function Page() {
 	const { userMutate } = useUser()
-	// // revalidate user data when client enters login page
-	// useEffect(() => {
-	// 	userMutate()
-	// }, [])
 
 
 	const form = useForm<z.infer<typeof loginSchema>>({

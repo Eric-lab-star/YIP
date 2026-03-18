@@ -5,7 +5,7 @@ import * as z from "zod";
 import { loginSchema } from "../lib/zod/loginSchema";
 import { findStudent } from "../lib/mongo/students";
 import { setLoginToken, validateToken } from "../lib/auth/login";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 
 export async function logoutAction() {
@@ -16,7 +16,7 @@ export async function logoutAction() {
 		sameSite: "lax",
 		maxAge: 0
 	})
-	redirect("/")
+	revalidatePath("/")
 }
 
 
