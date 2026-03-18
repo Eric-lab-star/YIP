@@ -42,7 +42,6 @@ export default function Page() {
 
 	async function onSubmit(data: z.infer<typeof loginSchema>) {
 		const result = await loginAction(data)
-
 		userMutate() // revalidate user data
 		if (!result.success) {
 			form.reset()

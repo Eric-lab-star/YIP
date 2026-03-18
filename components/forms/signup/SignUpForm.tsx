@@ -30,7 +30,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { redirect } from "next/navigation";
-import { refresh } from "next/cache";
+import { Booklist } from "@/app/dashBoard/books";
 
 interface FormInputProps<T extends FieldValues>
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "name"> {
@@ -53,20 +53,48 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 			birthday: new Date(Date.now()),
 			role: "student",
 			class: [{
-				title: "python",
+				title: "Tour of Python",
 				day: "mon",
 				startTime: "18:00",
 				endTime: "20:00"
 			}],
+			books: [
+				{
+					title: "Tour of Python",
+					link: "/tourOfPython",
+					imagekey: "python-logo-only.png",
+					state: "기초",
+					description: "기본적인 파이썬 문법을 둘러보면서 파이썬 코드를 이해할 수 있는 수준으로 성장하는 것을 목표로 합니다."
+				}
+			]
 		}
 	})
-	const { fields, append, remove } = useFieldArray({
+
+	const { fields: bookFields, append: appendBook, remove: removeBook } = useFieldArray({
+		control: form.control,
+		name: "books", // 배열 필드 이름
+	});
+
+	const { fields: classFields, append: appendClass, remove: removeClass } = useFieldArray({
 		control: form.control,
 		name: "class", // 배열 필드 이름
 	});
 
 
+
 	async function onSubmit(data: z.infer<typeof studentSchema>) {
+		data.books = data.books.map((v, _) => {
+			for (const k in Booklist) {
+				if (k === v.title) {
+					return Booklist[k as keyof typeof Booklist]
+				}
+			}
+			return v
+
+		})
+		data.studentPhoneNumber = data.studentPhoneNumber.replace(/-/g, "")
+		console.log(data)
+
 		const action = async () => {
 			if (studentData) {
 				return await updateStudentAction({ ...data, _id: studentData._id })
@@ -87,10 +115,6 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 			toast.error(studentData ? "다시 확인하세요." : "회원가입에 실패하였습니다. 입력값을 확인해주세요.", { position: "top-center" })
 		}
 	}
-
-
-
-
 
 	return (
 		<Card className="w-full">
@@ -137,7 +161,7 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 							/>
 						</div>
 						{
-							fields.map((field, index) => (
+							classFields.map((field, index) => (
 								<div key={field.id} className="grid w-full items-center gap-2 sm:grid-cols-5">
 									<Controller
 										name={`class.${index}.title`}
@@ -152,8 +176,10 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 													<SelectContent>
 														<SelectItem value="hd_class">아두이노(수업)</SelectItem>
 														<SelectItem value="research">연구</SelectItem>
-														<SelectItem value="python">파이썬</SelectItem>
 														<SelectItem value="bridge">도브</SelectItem>
+														<SelectItem value="Tour of Python">Tour of Python</SelectItem>
+														<SelectItem value="Spaceship Captain">Spaceship Captain</SelectItem>
+														<SelectItem value="Simple Web Dev">Simple Web Dev</SelectItem>
 													</SelectContent>
 												</Select>
 											</Field>
@@ -227,8 +253,8 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 										<div>
 											<Button size={"icon"} variant={"destructive"}
 												type="button"
-												onClick={(e) => { e.preventDefault(); remove(index) }}
-												disabled={fields.length <= 1 ? true : false}>
+												onClick={(e) => { e.preventDefault(); removeClass(index) }}
+												disabled={classFields.length <= 1 ? true : false}>
 												<Trash2Icon />
 											</Button>
 										</div>
@@ -241,8 +267,8 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 							<Button variant={"default"} type="button"
 								onClick={(e) => {
 									e.preventDefault()
-									append({
-										title: "python",
+									appendClass({
+										title: "Tour of Python",
 										day: "mon",
 										startTime: "14:00",
 										endTime: "16:00"
@@ -252,9 +278,61 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 								<PlusIcon />
 							</Button>
 						</div>
+						{
+							bookFields.map((book, index) => (
+								<div key={book.id} className="flex gap-2 md:grid md:grid-cols-3">
+									<Controller
+										name={`books.${index}.title`}
+										control={form.control}
+										render={({ field: f, fieldState: s }) => (
+											<Field data-invalid={s.invalid} className="col-span-2">
+												{index == 0 && <FieldLabel htmlFor={`books.${index}.title`}>열람 가능 교재</FieldLabel>}
+												<Select
+													onValueChange={f.onChange}
+													defaultValue={f.value}>
+													<SelectTrigger>
+														<SelectValue placeholder="교재 선택" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="Tour of Python">Tour of Python</SelectItem>
+														<SelectItem value="Spaceship Captain">Spaceship Captain</SelectItem>
+														<SelectItem value="Simple Web Dev">Simple Web Dev</SelectItem>
+													</SelectContent>
+												</Select>
+											</Field>
+										)}
+									/>
+									<Field>
+										{index == 0 && <FieldLabel> 삭제 </FieldLabel>}
+										<div>
+											<Button size={"icon"} variant={"destructive"}
+												type="button"
+												onClick={(e) => { e.preventDefault(); removeBook(index) }}
+												disabled={classFields.length <= 1 ? true : false}>
+												<Trash2Icon />
+											</Button>
+										</div>
+									</Field>
 
-
-
+								</div>
+							))
+						}
+						<div className="flex w-full gap-2">
+							<Button variant={"default"} type="button"
+								onClick={(e) => {
+									e.preventDefault()
+									appendBook({
+										title: "Tour of Python",
+										link: "/tourOfPython",
+										imagekey: "python-logo-only.png",
+										state: "기초",
+										description: "기본적인 파이썬 문법을 둘러보면서 파이썬 코드를 이해할 수 있는 수준으로 성장하는 것을 목표로 합니다."
+									})
+								}}>
+								추가
+								<PlusIcon />
+							</Button>
+						</div>
 
 						<Controller
 							name="role"

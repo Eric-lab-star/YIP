@@ -16,7 +16,6 @@ export async function logoutAction() {
 		sameSite: "lax",
 		maxAge: 0
 	})
-	revalidatePath("/")
 }
 
 
@@ -53,6 +52,7 @@ export async function loginAction(data: z.infer<typeof loginSchema>): Promise<Lo
 		}
 
 		const student = await findStudent(data.name, data.phoneNumber.replace(/-/g, ""))
+
 		if (!student) {
 			return {
 				success: false,
