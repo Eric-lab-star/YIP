@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 		return link
 	}
 
-	const {error, result} = await og({url: link})
+	const { error, result } = await og({ url: link })
 
 	if (error) {
 		return Response.json({
@@ -18,12 +18,12 @@ export async function GET(req: NextRequest) {
 	}
 
 	return Response.json({
-		success : 1,
+		success: 1,
 		link,
 		meta: {
 			title: result.ogTitle,
 			description: result.ogDescription,
-			image: result.ogImage && result.ogImage[0] 
+			image: result.ogImage && result.ogImage[0]
 		}
 	})
 }
@@ -32,12 +32,12 @@ export async function GET(req: NextRequest) {
 function validateURL(param: URLSearchParams) {
 	try {
 
-		const link  = param.get("url")
+		const link = param.get("url")
 		if (!link) {
 			return Response.json({
 				success: 0,
 				error: "Missing URL",
-			},{status: 400})
+			}, { status: 400 })
 		}
 
 		const url = new URL(link);
@@ -45,14 +45,15 @@ function validateURL(param: URLSearchParams) {
 			return Response.json({
 				success: 0,
 				error: "Invliad protocol",
-			},{status: 400})
+			}, { status: 400 })
 		}
 		return link
-	} catch(e) {
+	} catch (e) {
+		console.log(e)
 		return Response.json({
 			success: 0,
 			errro: "Invalid URL",
-		},{status:400})
+		}, { status: 400 })
 	}
 
 }

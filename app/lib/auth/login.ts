@@ -39,6 +39,7 @@ export async function validateToken(): Promise<ValidationFail | ValidationSucces
 		}
 		return { success: false }
 	} catch (e) {
+		console.log(e)
 		return { success: false }
 	}
 }
