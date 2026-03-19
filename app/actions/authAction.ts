@@ -74,6 +74,7 @@ export async function loginAction(data: z.infer<typeof loginSchema>): Promise<Lo
 		}
 
 	} catch (e) {
+		console.log(e)
 		return {
 			success: false,
 		}

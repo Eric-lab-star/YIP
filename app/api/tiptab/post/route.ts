@@ -1,20 +1,20 @@
 import { validateToken } from "@/app/lib/auth/login";
 import { createPost, updatePost } from "@/app/lib/mongo/posts";
-import { NextRequest} from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
 	try {
 		const result = await validateToken()
-		if(!result.success) {
+		if (!result.success) {
 			return Response.json(result);
 		}
-		const formData  = await req.formData()
+		const formData = await req.formData()
 		const title = formData.get("title")
 		const content = formData.get("content")
 		const postId = formData.get("postId")
 		console.log(postId)
 
-		if (!title || !content)  {
+		if (!title || !content) {
 			return Response.json({
 				ok: false,
 				error: "title or content is missing"
@@ -28,10 +28,11 @@ export async function POST(req: NextRequest) {
 			return Response.json(result)
 		}
 
-		const response = await createPost({userId:result.id, title: String(title), content: JSON.parse(String(content))})
+		const response = await createPost({ userId: result.id, title: String(title), content: JSON.parse(String(content)) })
 		return Response.json(response)
 
-	} catch(e) {
+	} catch (e) {
+		console.log(e)
 		return Response.json({
 			ok: false,
 			error: "server error"

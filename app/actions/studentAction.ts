@@ -3,7 +3,7 @@
 import { StudentData } from "@/types";
 import { createStudent, deleteStudent, updateStudent } from "../lib/mongo/students";
 import studentSchema from "../lib/zod/studentSchema";
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
 /** 
