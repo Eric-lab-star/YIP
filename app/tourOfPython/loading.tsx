@@ -20,9 +20,6 @@ function Title(){
 	return <Skeleton className="my-3 w-45 h-10"/>
 }
 
-function Text() {
-	return <Skeleton className="my-1 w-full h-6"/>
-}
 
 function Paragraph(){
 	return <div className="my-7">
@@ -46,8 +43,3 @@ function List() {
 	</div>
 }
 
-function Image(){
-	return <div className="flex justify-center items-center">
-		<Skeleton className="h-200 w-120"/>
-	</div>
-}

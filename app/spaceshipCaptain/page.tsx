@@ -1,6 +1,6 @@
 
 export default function Page() {
-	return <div>
+	return <div className="p-5">
 		game
 	</div>
 }

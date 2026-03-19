@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/collapsible"
 import { FileTextIcon, FolderIcon, FolderOpenIcon } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 interface Folder { name: string; files: File[]; }
 interface File { name: string; url: string; }
@@ -18,7 +18,7 @@ export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] })
 
 	return (
 		<div className="flex flex-col gap-1 px-3">
-			{sideBarTree.map((item, i) => <TreeItem key={item.name} fileItem={item} />)}
+			{sideBarTree.map((item, _) => <TreeItem key={item.name} fileItem={item} />)}
 		</div>
 	)
 }

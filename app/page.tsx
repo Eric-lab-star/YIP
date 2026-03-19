@@ -1,7 +1,6 @@
 import { FadeIn } from "@/components/commons/FadeIn";
 import { aiReasons, careers, universities, whyCards } from "./landingDB";
 
-
 export default function LandingPage() {
 	return (
 		<div style={{ fontFamily: "'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif" }} className="bg-white text-slate-900 overflow-x-hidden">
@@ -13,7 +12,6 @@ export default function LandingPage() {
 		</div>
 	);
 }
-
 
 function Footer() {
 	return (
