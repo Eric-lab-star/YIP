@@ -29,9 +29,10 @@ export default function Page() {
 			<ReactPlayer
 				src={`${process.env.R2_CUSTOM}/SpaceShooterPlay.mp4`}
 				controls={false}
-				className="rounded-3xl bg-black mx-auto"
+				className="h-dvh overflow-hidden  aspect-9/16 rounded-lg p-2 bg-black mx-auto"
 				width="auto"
 				height={"auto"}
+				muted={true}
 				playing={true}
 				loop={true}
 			/>
