@@ -7,12 +7,18 @@ import { useLayoutCtx } from "./LayoutContexWrapper";
 import useUser from "../SWR/auth/user";
 import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
-import { Noto_Sans_KR } from "next/font/google";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { redirect, usePathname } from "next/navigation";
-const kr_font = Noto_Sans_KR({ weight: "700", style: "normal" })
 
+import { IBM_Plex_Sans_KR } from "next/font/google";
+
+const kr_font = IBM_Plex_Sans_KR({
+	weight: "700",
+	style: "normal",
+	subsets: ['latin', 'latin-ext'],
+	fallback: ["sans-serif", "arial", "system-ui"],
+})
 export default function Header() {
 	const pathname = usePathname()
 	const { isSideBarOpen, setIsSideBarOpen } = useLayoutCtx()

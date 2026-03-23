@@ -1,9 +1,26 @@
 import { tv } from "tailwind-variants";
-import { Noto_Sans_KR } from "next/font/google";
 
-const kr_800 = Noto_Sans_KR({weight: "800", style: "normal"})
-const kr_500 = Noto_Sans_KR({weight: "500", style: "normal"})
-const kr_300 = Noto_Sans_KR({weight: "300", style: "normal"})
+import { IBM_Plex_Sans_KR } from "next/font/google";
+
+const kr_700 = IBM_Plex_Sans_KR({
+	weight: "700",
+	style: "normal",
+	subsets: ['latin', 'latin-ext'],
+	fallback: ["sans-serif", "arial", "system-ui"],
+})
+const kr_500 =IBM_Plex_Sans_KR({
+	weight: "500",
+	style: "normal",
+	subsets: ['latin', 'latin-ext'],
+	fallback: ["sans-serif", "arial", "system-ui"],
+
+})
+const kr_300 =IBM_Plex_Sans_KR({
+	weight: "300",
+	style: "normal",
+	subsets: ['latin', 'latin-ext'],
+	fallback: ["sans-serif", "arial", "system-ui"],
+})
 
 export const text = tv({
 	variants:{
@@ -48,7 +65,7 @@ export const title = tv({
 			h4: "text-md",
 		},
 		weight: {
-			bold: kr_800.className,
+			bold: kr_700.className,
 			semi: kr_500.className,
 			light: kr_300.className,
 		},
