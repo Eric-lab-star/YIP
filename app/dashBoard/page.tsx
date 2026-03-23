@@ -5,6 +5,7 @@ import StudentsTable from "@/components/commons/table/StudentsTable";
 import { Card, CardContent } from "@/components/ui/card";
 import SignUpForm from "@/components/forms/signup/SignUpForm";
 
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
 	const result = await validateToken()
