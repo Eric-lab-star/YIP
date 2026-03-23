@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import useUser from '../SWR/auth/user';
 import { pythonLangCurriculum } from '@/utils/sideBarTree/tourOfPythonTree';
 import { spaceshipCaptainTree } from '@/utils/sideBarTree/spaceshipCaptainTree';
+import Link from 'next/link';
 
 export default function SideBar() {
 	const pathname = usePathname()
@@ -27,12 +28,15 @@ export default function SideBar() {
 		setTitle(titleSelector(root))
 	}, [root])
 
+
 	return (
 		<>
 			{
 				isSideBarOpen &&
 				<div className=" w-65 bg-zinc-200 overflow-y-scroll">
-					<Title size='h2' my='m' mx={"m"} weight='semi'>{title} </Title>
+					<Link href={`/${root}`}>
+						<Title size='h2' my='m' mx={"m"} weight='semi'>{title} </Title>
+					</Link>
 					<SideBarTree sideBarTree={items} />
 				</div>
 			}
@@ -63,7 +67,7 @@ const itemSelector = (path: string) => {
 		case "students":
 			return studentPage
 		case "spaceshipCaptain":
-			return  spaceshipCaptainTree
+			return spaceshipCaptainTree
 		case "login":
 			return []
 		default:
