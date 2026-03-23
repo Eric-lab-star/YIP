@@ -7,7 +7,7 @@ export default function Page() {
         width={450}
         height={800}
         style={{ border: "none" }}
-        allow="autoplay"
+        allow="cross-origin-isolated"
       />
     </div>
 	</div>
