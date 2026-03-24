@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 export default function Page() {
 	return (
 		<div className="p-10">
-			<Title>Space Shooter Demo</Title>
+			<Title>Space Ship Captain Intro</Title>
 			<Text my="m" size="md">
 				이번 시간에는 파이썬을 이용해서 게임을 만들어 볼 거예요.
 			</Text>
