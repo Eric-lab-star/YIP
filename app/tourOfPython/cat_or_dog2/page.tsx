@@ -126,19 +126,19 @@ def start():
 
 
 def cat_or_dog():
-    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ").strip()
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\\n 고양이 또는 강아지 입력: ").strip()
     if not (cat_dog == "고양이" or  cat_dog  == "강아지"):
         raise ValueError("오류!!!!!")
     return cat_dog
 
 def black_or_white():
-    color = input("검정색과 흰색중 하나를 입력하세요\n 검정색 또는 흰색 입력: ").strip()
+    color = input("검정색과 흰색중 하나를 입력하세요\\n 검정색 또는 흰색 입력: ").strip()
     if not (color == "검정색" or  color == "흰색"):
         raise ValueError("오류!!!!!")
     return color
 
 def small_medium_large():
-    size= input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    size= input("원하는 크기가 있어?: \\n 소형 또는 중형 또는 대형 입력: ").strip()
     if not (size == "소형" or size == "중형" or size == "대형"):
         raise ValueError("오류!!!!")
     return size
