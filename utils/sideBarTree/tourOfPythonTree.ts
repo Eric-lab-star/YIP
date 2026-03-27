@@ -441,6 +441,10 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 			{
 				name: "시작하기",
 				url: "/tourOfPython/todo/#title",
+			},
+			{
+				name: "결과확인",
+				url: "/tourOfPython/todo/#result",
 			}
 		]
 	},

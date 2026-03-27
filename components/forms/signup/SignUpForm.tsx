@@ -308,7 +308,7 @@ export default function SignUpForm({ studentData }: { studentData?: { _id: strin
 											<Button size={"icon"} variant={"destructive"}
 												type="button"
 												onClick={(e) => { e.preventDefault(); removeBook(index) }}
-												disabled={classFields.length <= 1 ? true : false}>
+												disabled={bookFields.length <= 1 ? true : false}>
 												<Trash2Icon />
 											</Button>
 										</div>

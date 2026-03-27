@@ -65,13 +65,23 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 			{
 				name: "결과 확인하기",
 				url: "/spaceshipCaptain/surface/#result"
-			}
+			},
 
 		],
 	},
 	{
 		name: "색바꾸기 과제",
 		url: "/spaceshipCaptain/surface_challenge",
+	},
+	{
+		name: "우주선 조종하기",
+		files: [
+			{
+				name: "이미지 가져오기",
+				url: "/spaceshipCaptain/playerSurf",
+
+			}
+		],
 	}
 
 ]
