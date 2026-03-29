@@ -4,6 +4,8 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import TwoColumnDes from "@/components/commons/TwoColumnDes";
+import { Option } from "@/components/forms/quizz/Option";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import Link from "next/link";
 
 export default function Page() {
@@ -308,7 +310,12 @@ colors = [
 colors.append('purple')
 `}
 					/>
-					
+			<QuizzWithOptions answer={1} question="5. 문자열 값을 고르세요.">
+				<Option value={1}>1. "2025"</Option>
+				<Option value={2}>2. 20205</Option>
+				<Option value={3}>3. False</Option>
+				<Option value={4}>4. True</Option>
+			</QuizzWithOptions >
 				<TwoColumnDes title="1. 덧붙이기 append()" des={
 					<>
 파이썬 리스트에서 <Code>append()</Code> 는 리스트의 맨 끝에 새로운 값을 추가할 때 사용하는 메소드예요. 마치 줄을 서 있는 사람들의 맨 뒤에 새로운 사람이 줄을 서는 것처럼, <Code>append()</Code> 를 사용하면 리스트의 맨 마지막 자리에 값이 추가돼요. 예를 들어 <Code>fruits = ["사과", "바나나", "딸기"]</Code> 라는 리스트에서 <Code>fruits.append("포도")</Code> 라고 하면 리스트가 <Code>["사과", "바나나", "딸기", "포도"]</Code> 로 바뀌어요. 또한 <Code>append()</Code> 는 숫자, 문자열뿐만 아니라 리스트도 추가할 수 있는데, <Code>fruits.append([1, 2, 3])</Code> 처럼 리스트를 넣으면 <Code>["사과", "바나나", "딸기", [1, 2, 3]]</Code> 처럼 리스트 안에 리스트가 통째로 추가된다는 점도 기억해 두면 좋답니다.

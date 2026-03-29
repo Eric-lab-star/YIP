@@ -73,15 +73,15 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 		]
 	},
 	{
-		name: "함수 연습문제",
+		name: "함수 연습하기",
 		files: [
 			{
-				name: "도전! say_hello() ",
-				url: "/tourOfPython/challenge_hello"
+				name: "Level 1",
+				url: "/tourOfPython/functionExcercise"
 			},
 			{
-				name: "도전! 사칙연산",
-				url: "/tourOfPython/challenge_arithmetic"
+				name: "Level 2",
+				url: "/tourOfPython/functionExcerciseLevel2"
 			},
 		],
 	},

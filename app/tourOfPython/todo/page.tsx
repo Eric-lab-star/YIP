@@ -1,6 +1,4 @@
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
-import CodeBlockExplainSection from "@/components/commons/CodeBlockExplainSection";
-import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import Link from "next/link";
 
@@ -10,11 +8,6 @@ export default function Page() {
 			<Link href="/tourOfPython/todo/#title" id="title">
 				<Title> To-Do App 만들기</Title>
 			</Link>
-			<CodeBlockExplainSection
-			code=""
-			title=""
-			des=""
-			/>
 
 			<Link href="/tourOfPython/todo/#result" id="result"/>
 			<CodeBlock code={
