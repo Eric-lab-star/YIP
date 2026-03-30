@@ -129,7 +129,7 @@ print(drink)
 			<Option value={4}>ice_maker에서 return이 없다면 drink의 값은 None가 된다.</Option>
 		</QuizzWithOptions>
 
-		<QuizzWithOptions answer={2} question="다음 설명 중 틀린 것을 고르세요.">
+		<QuizzWithOptions answer={2} question="7. 다음 설명 중 틀린 것을 고르세요.">
 			<Option value={1}>함수를 정의할 때는 def를 반드시 입력해야한다.</Option>
 			<Option value={2}>함수를 정의하면 함수가 자동으로 실행된다.</Option>
 			<Option value={3}>매개변수는 함수안에서만 사용할 수 있다.</Option>
