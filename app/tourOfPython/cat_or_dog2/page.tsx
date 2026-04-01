@@ -1,19 +1,18 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import TwoColumn from "@/components/commons/TwoColumn";
 import Link from "next/link";
 
-export default function Page(){
+export default function Page() {
 	return (
 		<div className="mb-50">
 			<Title my="m" > CLI app 고양이 또는 강아지를 추천해드려요 2 </Title>
 			<Title my="m" size="h2">이어서 작성하기</Title>
 			<Text> 고양이와 강아지 1의 마지막 부분에서 계속 코드를 이어서 작성해 볼거에요. 코드가 사라졌거나 기억이 나지 않는다면 아래의 코드를 다시 입력해주세요.</Text>
 			<CodeBlock code={
-`
+				`
 def start():
     print("반려견 또는 반려묘를 추천해 드려요.")
     animal = cat_or_dog()
@@ -38,36 +37,36 @@ def small_medium_large():
         raise ValueError("오류!!!!")
     return size
 
-`}/>
+`} />
 			<Text> 우리의 목표는 고양이나 강아지를 추천해주는 거였어요. 현제 우리가 알고 있는 정보는 모두 3 가지에요. 우선 고양이와 강아지중 어느 것을 원하는지 알고 있어요. 두번째로 흰색과 검정색중 어는 것을 원하는지 확인했어요. 마지막으로 원하는 크기도 확인했어요. 이제 수집한 정보를 바탕으로 추천을 해주면 될거 같네요.</Text>
 
 			<Link id="suggest" href={"/tourOfPython/cat_or_dog2#suggest"}>
 				<Title size="h2" my="m">suggest()</Title>
 			</Link>
 			<TwoColumn>
-			<CodeBlock code={
-`
+				<CodeBlock code={
+					`
 def suggest(animal, color, size):
     print(f"너에게 알맞는 {size} {color} {animal}는")
-`}/>
+`} />
 
-			<Text my="m">우선 suggest함수를 만들어서 추천 동물을 출력하는 함수를 만들거에요. 여기 print 함수를 보면 <Code>{`f \"너에게 알맞는 {size} {color} {animal}는\"`}</Code> 이라고 쓰여 있는 처음보는 코드가 있어요. 이 코드는 문자열에 변수를 넣을 수 있게 만들어 주는 코드에요. 앞에 f를 쓰면 <Code>{"\{ \}"}</Code> 이 부분은 변수로 인식해요. 다시 말해서 <Code>{"\{animal\}"}</Code>으로 되어 있는 부분의 코드는 함수가 실행 될 때 <Code>고양이</Code> 또는 <Code>강아지</Code>로 바뀌게 됩니다.</Text> 
+				<Text my="m">우선 suggest함수를 만들어서 추천 동물을 출력하는 함수를 만들거에요. 여기 print 함수를 보면 <Code>{`f \"너에게 알맞는 {size} {color} {animal}는\"`}</Code> 이라고 쓰여 있는 처음보는 코드가 있어요. 이 코드는 문자열에 변수를 넣을 수 있게 만들어 주는 코드에요. 앞에 f를 쓰면 <Code>{"\{ \}"}</Code> 이 부분은 변수로 인식해요. 다시 말해서 <Code>{"\{animal\}"}</Code>으로 되어 있는 부분의 코드는 함수가 실행 될 때 <Code>고양이</Code> 또는 <Code>강아지</Code>로 바뀌게 됩니다.</Text>
 			</TwoColumn>
 
 			<TwoColumn>
 				<CodeBlock code={
-`def suggest(animal, color, size):
+					`def suggest(animal, color, size):
 	print(f"너에게 알맞는 {size} {color} {animal}는")
 	if animal == "고양이":
 		print("고양이 선택")
 	elif animal == "강아지":
 		print("강아지 선택")
-`}/>
+`} />
 				<Text>3가지 조건중 우선 강아지와 고양이중 어느것을 선택했는지 구별해하니까 <Code>if</Code> 를 사용해서 animal 값을 판별해주었어요. </Text>
 			</TwoColumn>
-		<TwoColumn>
-			<CodeBlock code={
-`
+			<TwoColumn>
+				<CodeBlock code={
+					`
 def suggest(animal, color, size):
     print(f"너에게 알맞는 {size} {color} {animal}는")
     if animal == "고양이":
@@ -76,12 +75,12 @@ def suggest(animal, color, size):
 		elif animal == "강아지":
         if color == "검정색":
 				elif color == "흰색":
-`}/>
-			<Text>그 다음으로는 색을 판단해요. 흑 또는 백. 고양이 또는 강아지. 단 두가지 상황이기에 <Code>if..else</Code>를 사용해도 문제가 되지 않을 수 있지만 의미를 분명하게 하고 나중에 수정이 필요한 상황이 있다면 빠르고 편하게 수정가능하도록 <Code>elif</Code>를 사용했어요. 이제 마지막으로 크기를 반별해주면 되겠네요.</Text> 
-		</TwoColumn>
-		<TwoColumn>
+`} />
+				<Text>그 다음으로는 색을 판단해요. 흑 또는 백. 고양이 또는 강아지. 단 두가지 상황이기에 <Code>if..else</Code>를 사용해도 문제가 되지 않을 수 있지만 의미를 분명하게 하고 나중에 수정이 필요한 상황이 있다면 빠르고 편하게 수정가능하도록 <Code>elif</Code>를 사용했어요. 이제 마지막으로 크기를 반별해주면 되겠네요.</Text>
+			</TwoColumn>
+			<TwoColumn>
 				<CodeBlock code={
-`
+					`
 if color == "검정색":
 		if size == "소형":
 				print("1. 봄베이")
@@ -108,7 +107,7 @@ elif color == "흰색":
 				print("1. 메인쿤")
 				print("2. 브리티시 쇼트헤어")
 				print("3. 차우시")
-`}/>
+`} />
 				<Text> 크기를 판단하는 조건식을 넣어주고 각각 적절한 고양이 품종을 작성해줬어요. 같은 방식으로 강아지도 만들면 프로그램이 완셩됩니다. </Text>
 			</TwoColumn>
 			<Link href={"/tourOfPython/cat_or_dog2#birdEyeView"} id={"birdEyeView"}>
@@ -203,7 +202,7 @@ def suggest(animal, color, size):
                 print("3. 아크바시")
 
 start()
-				`}/>
+				`} />
 
 		</div>
 	)

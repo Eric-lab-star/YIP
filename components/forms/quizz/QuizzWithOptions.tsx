@@ -64,7 +64,7 @@ const style = tv({
 	variants:{
 		layout: {
 			grid: " mx-3 grid grid-cols-2",
-			row: "",
+			row: "space-y-3",
 		}
 	}
 })

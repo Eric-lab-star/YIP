@@ -14,8 +14,8 @@ export function Option({ value, children }: OptionProps) {
   const { selected, select, answer, layout } = useSelectCodeQuizz();
 
   const isSelected = selected === value;
-  const isCorrect = selected !== null && value === answer;
-  const isWrongSelected = selected !== null && isSelected && value !== answer;
+  // const isCorrect = selected !== null && value === answer;
+  // const isWrongSelected = selected !== null && isSelected && value !== answer;
 	const clickHandler = () => {
 		if (selected === value){
 			select(null)
@@ -37,11 +37,11 @@ const style = tv({
 	base: "",
 	variants: {
 		isSelected:{
-			true: " hover:bg-yellow-400  bg-yellow-400",
-			false: "hover:bg-zinc-300 "
+			true: " bg-linear-65 from-purple-500 to-pink-500",
+			false: " hover:bg-linear-65 from-purple-500/30 to-pink-500/30"
 		},
 		layout: {
-			row: "mx-3 px-3 border-b min-h-13 border-b-gray-400 flex items-center",
+			row: "mx-3 px-3  min-h-13 shadow-sm flex items-center rounded-sm",
 			grid: "px-3 py-2 rounded-sm",
 		}
 	}
