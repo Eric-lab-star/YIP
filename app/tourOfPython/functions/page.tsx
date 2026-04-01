@@ -4,7 +4,6 @@ import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock";
 import CodeExplain from "@/components/commons/CodeExplain";
 import HorizontalLine from "@/components/commons/HorizontalLine";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import { Option } from "@/components/forms/quizz/Option";

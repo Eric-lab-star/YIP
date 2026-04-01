@@ -1,14 +1,14 @@
 import { Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
 import { attachDatabasePool } from "@vercel/functions";
 
-if(!process.env.YIPDB_MONGODB_URI) {
+if (!process.env.YIPDB_MONGODB_URI) {
 	throw new Error("YIPDB_MONGODB_URI is not defined")
 }
 
 const uri = process.env.YIPDB_MONGODB_URI;
 const options: MongoClientOptions = {
 	maxPoolSize: 10,
-	serverApi : {
+	serverApi: {
 		version: ServerApiVersion.v1,
 		strict: true,
 		deprecationErrors: true,
@@ -20,13 +20,13 @@ let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 
-if(process.env.NODE_ENV === "development"){
- if (!global._mongoClientPromise) {
- 	client = new MongoClient(uri, options);
-	attachDatabasePool(client);
- 	global._mongoClientPromise = client.connect();
- }
- clientPromise = global._mongoClientPromise;
+if (process.env.NODE_ENV === "development") {
+	if (!global._mongoClientPromise) {
+		client = new MongoClient(uri, options);
+		attachDatabasePool(client);
+		global._mongoClientPromise = client.connect();
+	}
+	clientPromise = global._mongoClientPromise;
 } else {
 	client = new MongoClient(uri, options);
 	attachDatabasePool(client);
@@ -49,8 +49,8 @@ export async function getDB() {
 	* isExists function returns null if collection does not
 * exist.
 	*/
-export async function isExists(db:Db, name: string ){
-	const exists = await db.listCollections({name}).next();
+export async function isExists(db: Db, name: string) {
+	const exists = await db.listCollections({ name }).next();
 	return exists
 }
 
@@ -66,5 +66,5 @@ export async function initCollection(db: Db, name: string) {
 	return await db.createCollection(name)
 }
 
- export default clientPromise;
+export default clientPromise;
 

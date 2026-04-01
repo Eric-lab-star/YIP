@@ -155,6 +155,23 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 			},
 		]
 	},
+	{
+		name: "조건문과 타입 연습하기",
+		files: [
+			{
+				name: "Level 1",
+				url: "/tourOfPython/condition_and_type_level1",
+			},
+			{
+				name: "Level 2",
+				url: "/tourOfPython/condition_and_type_level2",
+			},
+			{
+				name: "Level 3",
+				url: "/tourOfPython/condition_and_type_level3",
+			},
+		]
+	},
 
 	{
 		name: "강아지와 고양이 1",
