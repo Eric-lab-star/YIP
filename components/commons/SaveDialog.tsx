@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,8 +27,8 @@ interface SaveDialogInterface {
 	posterTitle?: string
 }
 
-export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, editor}: SaveDialogInterface) {
-	const {user} = useUser()
+export default function SaveDialog({ posterTitle = "", postId, uploadedImageKeys, editor }: SaveDialogInterface) {
+	const { user } = useUser()
 	const userId = user?.success ? user.id : null
 	const [title, setTitle] = useState<string>(posterTitle)
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,9 +39,10 @@ export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, e
 
 	const [open, setOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+		setLoading(true)
 		e.preventDefault()
-		if(!title && !postId) return;
+		if (!title && !postId) return;
 
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
@@ -64,7 +65,7 @@ export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, e
 
 		const deleteResult = await fetch("/api/r2", {
 			method: "POST",
-			headers: {"Content-Type": "application/json"},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				keys: unusedKeys,
 			})
@@ -79,36 +80,36 @@ export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, e
 			body: formdata,
 		})
 
-		if(!response.ok) {
-			toast.error("저장 할 수 없습니다.", {position: "top-center"})
+		if (!response.ok) {
+			toast.error("저장 할 수 없습니다.", { position: "top-center" })
 		}
 
 		if (response.ok) {
-			toast.success("저장되었습니다.", {position: "top-center"})
+			toast.success("저장되었습니다.", { position: "top-center" })
 		}
 
 		uploadedImageKeys.current = []
+		setLoading(false)
 		redirect(`/students/${userId}`)
 
-		setOpen(false)
 	}
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+	return (
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger asChild>
 				<Button className="h-10">
-					<Save className="" size={ICON_SIZE} strokeWidth={2}/>
+					<Save className="" size={ICON_SIZE} strokeWidth={2} />
 					<div>저장하기</div>
 				</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-			<form className="space-y-3"  onSubmit={(e)=> handleSubmit(e)}>
-        <DialogHeader>
-          <DialogTitle>저장하기</DialogTitle>
-          <DialogDescription>
-						제목을 입력하세요.
-          </DialogDescription>
-        </DialogHeader>
+			</DialogTrigger>
+			<DialogContent className="sm:max-w-md">
+				<form className="space-y-3" onSubmit={(e) => handleSubmit(e)}>
+					<DialogHeader>
+						<DialogTitle>저장하기</DialogTitle>
+						<DialogDescription>
+							제목을 입력하세요.
+						</DialogDescription>
+					</DialogHeader>
 					<div className="flex items-center gap-2">
 						<div className="grid flex-1 gap-2">
 							<Label htmlFor="title" className="sr-only">
@@ -117,19 +118,19 @@ export default function SaveDialog({posterTitle="", postId, uploadedImageKeys, e
 							<Input
 								name="title"
 								id="title"
-								onChange={(e)=> handleChange(e)}
+								onChange={(e) => handleChange(e)}
 								value={title}
 							/>
 						</div>
 					</div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button">취소</Button>
-          </DialogClose>
-					<Button type="submit">확인</Button>
-        </DialogFooter>
-			</form>
-      </DialogContent>
-    </Dialog>
-  )
+					<DialogFooter className="sm:justify-start">
+						<DialogClose asChild>
+							<Button disabled={loading} type="button">취소</Button>
+						</DialogClose>
+						<Button disabled={loading} type="submit">{loading ? "저장중..." : "확인"}</Button>
+					</DialogFooter>
+				</form>
+			</DialogContent>
+		</Dialog>
+	)
 }

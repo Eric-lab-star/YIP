@@ -2,6 +2,7 @@ import { FadeIn } from "@/components/commons/FadeIn";
 import { aiReasons, careers, universities, whyCards } from "./landingDB";
 import { MongoClient } from "mongodb";
 
+
 export default async function LandingPage() {
 	const client = new MongoClient(process.env.YIPDB_MONGODB_URI!);
 	client.connect().then(() => { console.log("Connected to MongoDB") }).catch(err => console.error("MongoDB connection error:", err));

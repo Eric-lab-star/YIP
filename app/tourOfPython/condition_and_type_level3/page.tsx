@@ -18,7 +18,6 @@ export default function() {
 	)
 }
 
-
 const questions = [
 	{
 		question: "문제1. 은행 ATM 프로그램",
