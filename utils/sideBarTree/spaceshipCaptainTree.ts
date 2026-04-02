@@ -2,37 +2,46 @@ import { SideBarTreeItem } from "@/components/commons/SideBarItems";
 
 export const spaceshipCaptainTree: SideBarTreeItem[] = [
 	{
+		kind: "folder",
 		name: "프로젝트 설정하기",
 		files: [
 			{
+				kind: "file",
 				name: "uv 설치",
 				url: "/spaceshipCaptain/setup#uv_setup"
 			},
 			{
+				kind: "file",
 				name: "uv 실행",
 				url: "/spaceshipCaptain/setup#uv_init"
 			},
 			{
+				kind: "file",
 				name: "pygame-ce 설치하기",
 				url: "/spaceshipCaptain/setup#pygame-ce"
 			},
 			{
+				kind: "file",
 				name: "main.py: 파이게임 초기화",
 				url: "/spaceshipCaptain/setup#pygame-init",
 			},
 			{
+				kind: "file",
 				name: "main.py: display_surface",
 				url: "/spaceshipCaptain/setup#display_surface",
 			},
 			{
+				kind: "file",
 				name: "main.py: while 루프",
 				url: "/spaceshipCaptain/setup#while-setup",
 			},
 			{
+				kind: "file",
 				name: "main.py: 이벤트",
 				url: "/spaceshipCaptain/setup#event"
 			},
 			{
+				kind: "file",
 				name: "결과 확인하기",
 				url: "/spaceshipCaptain/setup#result",
 			}
@@ -40,29 +49,36 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 	},
 
 	{
+		kind: "folder",
 		name: "surface 이해하기",
 		files: [
 			{
+				kind: "file",
 				name: "창: display",
 				url: "/spaceshipCaptain/surface/#display"
 			},
 			{
+				kind: "file",
 				name: "창 제목: caption",
 				url: "/spaceshipCaptain/surface/#caption"
 			},
 			{
+				kind: "file",
 				name: "창 업데이트: flip()",
 				url: "/spaceshipCaptain/surface/#flip"
 			},
 			{
+				kind: "file",
 				name: "창 색칠하기: fill()",
 				url: "/spaceshipCaptain/surface/#fill"
 			},
 			{
+				kind: "file",
 				name: "모양 추가하기: Surface()",
 				url: "/spaceshipCaptain/surface/#surface"
 			},
 			{
+				kind: "file",
 				name: "결과 확인하기",
 				url: "/spaceshipCaptain/surface/#result"
 			},
@@ -70,13 +86,16 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 		],
 	},
 	{
+		kind: "file",
 		name: "색바꾸기 과제",
 		url: "/spaceshipCaptain/surface_challenge",
 	},
 	{
+		kind: "folder",
 		name: "우주선 조종하기",
 		files: [
 			{
+				kind: "file",
 				name: "이미지 가져오기",
 				url: "/spaceshipCaptain/playerSurf",
 
