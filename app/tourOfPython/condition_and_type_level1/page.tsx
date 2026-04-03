@@ -23,7 +23,7 @@ else:
 				<Option value={4}>50</Option>
 			</QuizzWithOptions>
 
-			<QuizzWithOptions answer={3} question={`2. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
+			<QuizzWithOptions answer={2} question={`2. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
 				<CodeBlock code={
 					`
 if distance <= 20:
@@ -55,24 +55,7 @@ else:
 				<Option value={4}>빨간불은 조건 없이 항상 출력된다.</Option>
 			</QuizzWithOptions>
 
-			<QuizzWithOptions answer={2} question={`4. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
-				<CodeBlock code={
-					`
-if time >= 50:
-    print("초록불")
-elif time >= 20:
-    print("노란불")
-else:
-    print("빨간불")
-				`
-				} />
-				<Option value={1}>if 의 조건이 참이 되면 초록불이 출력된다.</Option>
-				<Option value={2}>time의 값이 20이라면 노란불이 출력된다.</Option>
-				<Option value={3}>time의 값이 0 이라면 빨간불이 출력된다.</Option>
-				<Option value={4}>빨간불은 조건 없이 항상 출력된다.</Option>
-			</QuizzWithOptions>
-
-			<QuizzWithOptions answer={3} question={`5. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
+			<QuizzWithOptions answer={3} question={`4. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
 				<CodeBlock code={
 					`
 def main():
@@ -98,7 +81,7 @@ def main():
 				<Option value={3}>12를 입력할 경우 프로그램이 강제로 종료된다.</Option>
 				<Option value={4}>main함수를 실행하지 않으면 어떤 글자도 출력되지 않는다.</Option>
 			</QuizzWithOptions>
-			<QuizzWithOptions answer={3} question={`6. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
+			<QuizzWithOptions answer={3} question={`5. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
 				<CodeBlock code={
 					`
 try:
@@ -117,7 +100,7 @@ except ValueError:
 				<Option value={4}>try..except는 오류를 처리해준다.</Option>
 			</QuizzWithOptions>
 
-			<QuizzWithOptions answer={3} question={`7. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
+			<QuizzWithOptions answer={3} question={`6. 다음 코드에 관한 설명으로 틀린 것을 고르세요.`}>
 				<CodeBlock code={
 					`
 def main():
