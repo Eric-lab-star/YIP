@@ -4,12 +4,13 @@ import useSWR from "swr";
 async function userFetcher(url: string)  {
 	const res = await fetch(url)
 	const json:  ValidationFail | ValidationSuccess  = await res.json()
+	console.log(json)
 	return json
 }
 
 
 export default function useUser() {
-	const {data, isLoading, mutate} = useSWR("/api/auth/user", userFetcher)
+	const {data, isLoading, mutate} = useSWR("api/auth/user", userFetcher)
 	return {
 		user: data,
 		isLoading,

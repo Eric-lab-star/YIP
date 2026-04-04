@@ -31,7 +31,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 	return (
 		<div className="p-5">
 			<Title size="h1" my="m"> {student.name}의 학습정보 </Title>
-			<Title my="m" size="h2"> 학습진도 </Title>
 			<Title size="h2" my="m"> 교재  </Title>
 			<div className="space-y-10 flex flex-col items-center sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-5">
 				{
@@ -58,9 +57,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 			{
 				serial && <TILTable posts={serial} />
 			}
-
-
-
 		</div>
 	)
 }
