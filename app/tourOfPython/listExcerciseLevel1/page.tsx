@@ -86,7 +86,7 @@ print(a)`.trim(),
 	{
 		question: "다음 중 리스트에서 요소를 제거하는 방법이 아닌 것은?",
 		answer: 4,
-		options: [`de a[0]`, `a.remove(값)`, `a.pop()`, `a.delete(0)`]
+		options: [`del a[0]`, `a.remove(값)`, `a.pop()`, `a.delete(0)`]
 	},
 	{
 		question: "다음 코드의 출력 결과는?",
