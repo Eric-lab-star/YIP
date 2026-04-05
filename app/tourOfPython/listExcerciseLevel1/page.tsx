@@ -51,7 +51,7 @@ const questions: IQuestion[] = [
 		question: "다음 코드의 출력 결과는?",
 		code: `
 a = [1,2,3]
-a.ppend([4,5])
+a.append([4,5])
 print(len(a))`.trim(),
 		answer: 2,
 		options: [`3`, `4`, `5`, `에러 발생`]

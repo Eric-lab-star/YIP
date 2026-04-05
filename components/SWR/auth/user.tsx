@@ -10,7 +10,7 @@ async function userFetcher(url: string)  {
 
 
 export default function useUser() {
-	const {data, isLoading, mutate} = useSWR("api/auth/user", userFetcher)
+	const {data, isLoading, mutate} = useSWR("/api/auth/user", userFetcher)
 	return {
 		user: data,
 		isLoading,
