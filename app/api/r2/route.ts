@@ -9,3 +9,7 @@ export async function POST(req: NextRequest) {
 	const res = await r2DeleteManyURLs(body.keys)
 	return res
 }
+
+
+
+

@@ -1,4 +1,5 @@
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
+import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 import Link from "next/link";
 
@@ -8,7 +9,7 @@ export default function Page() {
 			<Link href="/tourOfPython/todo/#title" id="title">
 				<Title> To-Do App 만들기</Title>
 			</Link>
-
+			<Text> 지금까지 우리가 배운 모든 것들을 종합해서 멋있는 프로그램을 만들 수 있어요. 아래의 코드를 따라서 작성해보면서 코드를 분석하고 나만의 프로그램을 만들어 봐요.</Text>
 			<Link href="/tourOfPython/todo/#result" id="result"/>
 			<CodeBlock code={
 `#main.py
