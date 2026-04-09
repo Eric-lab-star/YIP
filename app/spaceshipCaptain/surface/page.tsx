@@ -2,22 +2,34 @@
 import Code from "@/components/commons/Code";
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import CodeBlockExplainSection from "@/components/commons/CodeBlockExplainSection";
+import References from "@/components/commons/References";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 
-import Link from "next/link";
-
+const moreLinks = [
+	{
+		label: "set_caption",
+		src: "https://pyga.me/docs/ref/display.html#pygame.display.set_caption",
+	},
+	{
+		label: "Surface.blit",
+		src: "https://pyga.me/docs/ref/surface.html#pygame.Surface.blit",
+	},
+	{
+		label: "Surface.fill",
+		src: "https://pyga.me/docs/ref/surface.html#pygame.Surface.fill",
+	},
+]
 
 export default function SurfacePage() {
 	return (
 		<div className="p-10 mb-100">
-			<Link href={"/spaceshipCaptain/surface/#display"} id={"display"}/>
-			<Title my="m" size="h2">pygame.display</Title>
+			<Title id={"display"} my="m" size="h2">pygame.display</Title>
 			<Text>
 <Code>pygame.display</Code>는 파이게임에서 화면 창과 관련된 모든 것을 담당하는 모듈로, 마치 TV 본체라고 생각하면 이해하기 쉬운데 TV를 켜고, 화면 크기를 설정하고, 화면에 영상을 뿌려주는 역할을 하는 것처럼 <Code>pygame.display</Code>도 창을 만들고, 제목을 붙이고, 화면을 새로 그려주는 기능들을 모아놓은 도구 모음이에요. 가장 자주 쓰이는 함수들로는 창을 생성하는 <Code>pygame.display.set_mode()</Code>, 창 상단에 제목을 붙이는 <Code>pygame.display.set_caption()</Code>, 그리고 매 프레임마다 화면 전체를 새로 갱신해 주는 <Code>pygame.display.flip()</Code>이 있는데, 특히 <Code>flip()</Code>은 그림을 다 그린 다음 도화지를 뒤집어서 완성된 그림을 보여주는 것과 같은 원리로 이걸 호출하지 않으면 화면에 아무것도 나타나지 않아요.
 			</Text>
 
-		<Link href={"/spaceshipCaptain/surface/#caption"} id={"caption"}/>
+		<div id={"caption"}/>
 		<CodeBlockExplainSection
 		code={
 			`#main.py
@@ -34,7 +46,7 @@ def main():
 <Code>pygame.display.set_caption("space shooter")</Code>는 게임 창 상단 제목 표시줄에 이름을 붙여주는 함수로, 마치 가게 간판처럼 창을 열었을 때 맨 위에 어떤 이름을 보여줄지 정하는 역할을 해요. 큰따옴표 안에 원하는 문자열을 넣으면 그게 그대로 창 제목이 되는데, 지금은 <Code>"space shooter"</Code>라고 넣었으니 창 상단에 "space shooter"라는 이름이 표시되고, 이 함수는 보통 창을 생성하는 <Code>pygame.display.set_mode()</Code> 바로 다음에 한 번만 호출하면 게임이 실행되는 내내 그 제목이 유지돼요.
 			</>}
 		/>	
-		<Link href={"/spaceshipCaptain/surface/#flip"} id={"flip"}/>
+		<div id={"flip"}/>
 		<CodeBlockExplainSection 
 		code={`#main.py
 ... #기존코드
@@ -50,7 +62,7 @@ pygame.quit()
 			</>}
 		/>
 		
-		<Link href={"/spaceshipCaptain/surface/#fill"} id={"fill"}/>
+		<div id={"fill"}/>
 		<CodeBlockExplainSection 
 		code={`#main.py
 ...#기존 코드	
@@ -69,7 +81,7 @@ while running:
 			</>}
 		/>
 		
-		<Link href={"/spaceshipCaptain/surface/#surface"} id={"surface"}/>
+		<div id={"surface"}/>
 		<CodeBlockExplainSection
 		code={`#main.py
 ....#기존 코드
@@ -94,10 +106,9 @@ def main():
 			</>}
 		/>
 
-		<Link href={"/spaceshipCaptain/surface/#result"} id={"result"} >
-			<Title size="h2" my="m">결과 확인하기</Title>
-		</Link>
-		<CodeBlock 
+		<Title id="result" size="h2" my="m">결과 확인하기</Title>
+		<div className="select-none">
+			<CodeBlock 
 		code={`#main.py
 import pygame
 
@@ -107,19 +118,23 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("pygame shooter")
 
 def main():
-    running = True
-    surf = pygame.Surface((100, 150))
-    surf.fill("orange")
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+		running = True
+		surf = pygame.Surface((100, 150))
+		surf.fill("orange")
+		while running:
+				for event in pygame.event.get():
+						if event.type == pygame.QUIT:
+								running = False
 
-        display_surface.fill((0,0,0))
-        display_surface.blit(surf, (100,100))
-        pygame.display.flip()
-    pygame.quit() `}
-		/>
+				display_surface.fill((0,0,0))
+				display_surface.blit(surf, (100,100))
+				pygame.display.flip()
+		pygame.quit() `}
+			/>
+		</div>
+
+			<References moreLinks={moreLinks} />
 		</div>
 	)
 }
+

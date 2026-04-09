@@ -10,7 +10,8 @@ interface Title {
 	mx?: levels,
 	weight?: weight,
 	children: React.ReactNode,
-	size?: size
+	size?: size,
+	id?: string
 }
 
 /**
@@ -31,8 +32,8 @@ type levels = "l" | "m" | "s" |"x"
 *
 */
 
-export default function Title({style, my="x", mx="x", children, weight="bold", size="h1"}: Title) {
+export default function Title({id, style, my="x", mx="x", children, weight="bold", size="h1"}: Title) {
 	return (
-		<div className={title({size, weight, my, mx, className: style})}>{children}</div>
+		<div id={id ?? id} className={title({size, weight, my, mx, className: style})}>{children}</div>
 	)
 }

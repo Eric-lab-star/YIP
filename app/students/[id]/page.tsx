@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 			<Title size="h2" my="m"> 교재  </Title>
 			<div className="space-y-10 flex flex-col items-center sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-5">
 				{
-					student.books.map((v, i) =>
+					student.books.map((v, _) =>
 						<CardImage key={v.title} link={v.link} imagekey={v.imagekey} title={v.title} state={v.state} description={v.description} />
 					)
 
@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 				<Text my="m">
 					내가 배운 내용을 글로 정리하는 것은 내가 무엇을 알고 무엇을 모르는지 객관적으로 바라볼 수 있게 해줍니다. 또한, 시간이 지나서 다시 봤을 때 그때의 나의 생각과 배움을 떠올릴 수 있는 좋은 방법입니다.
 				</Text>
-				{user?.success && user.id === id && <Button variant={"outline"} >
+				{user?.success && user.id === student._id.toString() && <Button asChild variant={"outline"} >
 					<Link href={"/editor"} className="flex gap-2 justify-center items-center">
 						<div className="">기록하기</div>
 						<FilePlusIcon />

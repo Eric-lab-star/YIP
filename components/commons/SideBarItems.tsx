@@ -17,8 +17,6 @@ interface Line { kind: "line"; name: "line" }
 export type SideBarTreeItem = Folder | FileItem | Line
 
 export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] }) {
-
-
 	return (
 		<div className="flex flex-col gap-1 px-3">
 			{sideBarTree.map((item, i) => <TreeItem key={item.name + (i + 1)} fileItem={item} />)}
@@ -34,20 +32,23 @@ function TreeItem({ fileItem }: { fileItem: SideBarTreeItem }) {
 			<FolderItem key={fileItem.name} fileItem={fileItem} />
 		)
 	}
+
 	if (fileItem.kind === "line") {
 		return <HorizontalLine my="s" />
 	}
+
 	return (
-		<Link key={fileItem.name} href={fileItem.url} className="">
-			<Button
-				variant="link"
-				size="sm"
-				className="w-full justify-start text-foreground"
-			>
-				<FileTextIcon />
-				<span>{fileItem.name}</span>
-			</Button>
-		</Link>
+		<Button
+			variant="link"
+			size="sm"
+			className="w-full justify-start text-foreground"
+			asChild
+		>
+			<Link key={fileItem.name} href={fileItem.url} className="">
+					<FileTextIcon />
+					<span>{fileItem.name}</span>
+			</Link>
+		</Button>
 	)
 }
 

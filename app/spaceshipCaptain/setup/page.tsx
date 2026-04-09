@@ -8,15 +8,29 @@ import TwoColumn from "@/components/commons/TwoColumn";
 
 
 import TwoColumnDes from "@/components/commons/TwoColumnDes";
-import { Link2 } from "lucide-react";
-import Link from "next/link";
 
+const moreLinks = [
+	{
+		src: "https://pyga.me/",
+		label: "pygame-ce 공식 홈페이지 주소",
+	},
+	{
+		src: "https://pyga.me/docs/ref/display.html",
+		label: "pygame.display",
+	},
+	{
+		src: "https://pyga.me/docs/ref/display.html#pygame.display.set_mode",
+		label: "pygame.display.set_mode()",
+	},
+	{
+		src: "https://pyga.me/docs/ref/event.html#pygame.event.get",
+		label: "pygame.event.get()"
+	}
+]
 export default function SetupPage() {
 	return (
 		<div className="p-5 pb-80">
-			<Link href={"/spaceshipCaptain/setup#uv_setup"} id="uv_setup">
-				<Title my="m" size="h2"> uv 설치하기</Title>
-			</Link>
+			<Title id="uv_setup" my="m" size="h2"> uv 설치하기</Title>
 
 			<Text my="l">
 				<Code>uv</Code>는 파이썬 패키지를 설치하고 관리하는 도구인데, 기존에 많이 쓰던 <Code>pip</Code>보다 훨씬 빠르고 편리한 차세대 패키지 매니저예요. 마치 동네 작은 슈퍼마켓(pip)이 있었는데, 어느 날 재고 관리, 배달, 계산까지 한 번에 처리하는 대형 마트(uv)가 생긴 것과 같아요. <Code>pip</Code>은 패키지 설치만 하고, 가상 환경은 <Code>venv</Code>, 의존성 관리는 또 다른 도구를 써야 했지만, <Code>uv</Code>는 이 모든 것을 하나로 통합해서 처리해줘요. Rust 언어로 만들어져 있어서 속도도 기존 <Code>pip</Code>보다 10~100배 빠르고, <Code>uv init</Code>으로 프로젝트 생성부터 <Code>uv add 패키지명</Code>으로 패키지 추가, <Code>uv run</Code>으로 실행까지 하나의 도구로 깔끔하게 해결할 수 있어요.
@@ -45,7 +59,8 @@ uv pip install requests
 
 			<Title my="l" size="h2"> 프로젝트 만들기</Title>
 
-			<Link href={"/spaceshipCaptain/setup#uv_init"} id="uv_init" />
+			<div id="uv_init" />
+
 			<TwoColumn pb={false}>
 				<CodeBlock code={`
 uv init my_project
@@ -71,7 +86,7 @@ uv run main.py
 					</>} />
 			</TwoColumn>
 
-			<Link href={"/spaceshipCaptain/setup#pygame-ce"} id="pygame-ce" />
+			<div  id="pygame-ce" />
 			<TwoColumn pb={false}>
 				<CodeBlock code={`
 # pygame-ce 패키지 추가
@@ -98,7 +113,7 @@ uv sync
 			<Title size="h2" my="m"> pygame 프로젝트 준비하기</Title>
 			<Text my="m">main.py 파일에 아래의 코드를 작성해 주세요.</Text>
 
-			<Link href="/spaceshipCaptain/setup#pygame-init" id={"pygame-init"} />
+			<div id={"pygame-init"} />
 			<TwoColumn pb={false}>
 				<CodeBlock code={` import pygame `} />
 				<TwoColumnDes title="import pygame" des={
@@ -116,7 +131,7 @@ uv sync
 					</>} />
 			</TwoColumn>
 
-			<Link href="/spaceshipCaptain/setup#display_surface" id={"display_surface"} />
+			<div id={"display_surface"} />
 			<TwoColumn pb={false}>
 				<CodeBlock code={`
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
@@ -128,7 +143,7 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 					</>} />
 			</TwoColumn>
 
-			<Link href="/spaceshipCaptain/setup#while-setup" id={"while-setup"} />
+			<div id={"while-setup"} />
 			<CodeBlockExplainSection
 				code={
 					`
@@ -145,7 +160,7 @@ def main():
 				</>}
 			/>
 
-			<Link href="/spaceshipCaptain/setup#event" id={"event"} />
+			<div id={"event"} />
 			<CodeBlockExplainSection
 				code={
 					`
@@ -163,28 +178,28 @@ def main():
 						파이게임에서 <Code>pygame.event.get()</Code>은 마치 회사 민원 접수함처럼 사용자가 키보드를 누르거나 마우스를 클릭하거나 창을 닫으려 할 때 발생하는 모든 사건(이벤트)들을 리스트로 모아서 한꺼번에 꺼내주는 함수인데, <Code>for event in pygame.event.get():</Code>은 그 접수함 안에 쌓인 사건들을 하나씩 꺼내서 확인하는 반복문이에요. 꺼낸 사건이 <Code>event.type == pygame.QUIT</Code>, 즉 사용자가 창의 X 버튼을 눌러 종료를 요청한 사건인지 확인하고, 맞다면 <Code>running = False</Code>로 게임 루프 스위치를 꺼서 프로그램이 종료될 수 있도록 신호를 보내는 구조예요.
 					</>}
 			/>
-			<Link href={"/spaceshipCaptain/setup#result"} id={"result"}>
-				<Title size="h2" my="l">결과확인</Title>
-			</Link>
-			<CodeBlock
-				code={`
+			<Title id="result" size="h2" my="l">결과확인</Title>
+			<div className="select-none">
+				<CodeBlock
+					code={`
 import pygame
 
 pygame.init()
 WINDOW_WIDTH,  WINDOW_HEIGHT = 1280, 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 def main():
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-    pygame.quit()
+		running = True
+		while running:
+				for event in pygame.event.get():
+						if event.type == pygame.QUIT:
+								running = False
+		pygame.quit()
 
 
 if __name__ == "__main__":
-    main()
-		`} />
+		main()
+			`} />
+		</div>
 
 
 			<References moreLinks={moreLinks} />
@@ -193,21 +208,3 @@ if __name__ == "__main__":
 	)
 }
 
-const moreLinks = [
-	{
-		src: "https://pyga.me/",
-		label: "pygame-ce 공식 홈페이지 주소",
-	},
-	{
-		src: "https://pyga.me/docs/ref/display.html",
-		label: "pygame.display",
-	},
-	{
-		src: "https://pyga.me/docs/ref/display.html#pygame.display.set_mode",
-		label: "pygame.display.set_mode()",
-	},
-	{
-		src: "https://pyga.me/docs/ref/event.html#pygame.event.get",
-		label: "pygame.event.get()"
-	}
-]

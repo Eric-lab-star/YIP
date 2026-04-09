@@ -96,10 +96,29 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 		files: [
 			{
 				kind: "file",
-				name: "이미지 가져오기",
-				url: "/spaceshipCaptain/playerSurf",
-
-			}
+				name: "이미지 저장하기",
+				url: "/spaceshipCaptain/playerSurf#download",
+			},
+			{
+				kind: "file",
+				name: "이미지 코드",
+				url: "/spaceshipCaptain/playerSurf#image_surf",
+			},
+			{
+				kind: "file",
+				name: "이미지 코드 점검",
+				url: "/spaceshipCaptain/playerSurf#checkpoint1",
+			},
+			{
+				kind: "file",
+				name: "연습하기",
+				url: "/spaceshipCaptain/playerSurf#practice",
+			},
+			{
+				kind: "file",
+				name: "배경 추가하기",
+				url: "/spaceshipCaptain/playerSurf#addingBG",
+			},
 		],
 	}
 

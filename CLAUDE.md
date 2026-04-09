@@ -21,16 +21,17 @@ No test suite is configured.
 
 The app throws at startup if these are missing:
 
-| Variable | Purpose |
-|---|---|
-| `YIPDB_MONGODB_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | JWT signing secret for auth cookies |
-| `R2_URL` | Cloudflare R2 endpoint URL |
-| `R2_ACCESS_KEY` | R2 access key ID |
-| `R2_SECRET_KEY` | R2 secret access key |
-| `R2_BUCKET` | R2 bucket name |
-| `R2_ID` | R2 account ID |
-| `R2_PUBLIC` | R2 public read URL |
+| Variable            | Purpose                             |
+|---------------------|-------------------------------------|
+| `YIPDB_MONGODB_URI` | MongoDB Atlas connection string     |
+| `JWT_SECRET`        | JWT signing secret for auth cookies |
+| `R2_URL`            | Cloudflare R2 endpoint URL          |
+| `R2_ACCESS_KEY`     | R2 access key ID                    |
+| `R2_SECRET_KEY`     | R2 secret access key                |
+| `R2_BUCKET`         | R2 bucket name                      |
+| `R2_ID`             | R2 account ID                       |
+| `R2_PUBLIC`         | R2 public read URL                  |
+| `R2_CUSTOM`          | R2 custom read URL                  |
 
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 

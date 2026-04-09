@@ -22,6 +22,7 @@ export default function proxy(req: NextRequest) {
 export const config = {
 	matcher: [
 		'/tourOfPython/:path*',
+		'/spaceshipCaptain/:path*',
 		"/login",
 		"/editor/:path*",
 		"/students:path*",
