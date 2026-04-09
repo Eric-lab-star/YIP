@@ -112,7 +112,7 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 	},
 	{
 		kind: "folder",
-		name: "input(), type(), int(), try..catch",
+		name: "input, type, int, try..except",
 		files: [
 			{
 				kind: "file",
@@ -134,7 +134,7 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 			{
 				kind: "file",
 				name: "예외처리",
-				url: "/tourOfPython/input_type_int#try_catch"
+				url: "/tourOfPython/input_type_int#try_except"
 			}
 		]
 	},

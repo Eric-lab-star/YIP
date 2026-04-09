@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
+import { Card, CardContent, CardHeader as CardFooter } from "../ui/card";
+import { useState } from "react";
 
 
 interface IDownloadBtn {
@@ -11,12 +12,16 @@ interface IDownloadBtn {
 }
 
 export default function DownloadBtn({
-fileKey,
-label="다운로드"
-}:IDownloadBtn ) {
+	fileKey,
+	label = "다운로드"
+}: IDownloadBtn) {
+	const [loading, setLoding] = useState(false)
 
 	const handleDownload = async () => {
+		if (loading) return;
+		console.log("downloading...")
 		try {
+			setLoding(true)
 			const res = await fetch(`/api/r2/download/${fileKey}`)
 
 			if (!res.ok) {
@@ -24,7 +29,7 @@ label="다운로드"
 				throw new Error(errorData.error ?? `HTTP ${res.status}`)
 			}
 
-			const {url}= await res.json()
+			const { url } = await res.json()
 
 			const a = document.createElement("a");
 			a.href = url;
@@ -32,21 +37,26 @@ label="다운로드"
 			document.body.appendChild(a);
 			a.click();
 			a.remove()
-		} catch(error) {
+			setLoding(false)
+		} catch (error) {
 			console.error(error)
 			alert("다운로드중 에러 발생")
 		}
 	}
 
 
-	return  <>
-		<Card className="w-fit" onClick={handleDownload}>
-			{label}
-			<Image 
-			src={`https://r2.kimkyungsub.com/${fileKey}`} 
-			alt="player image" 
-			width={48} height={48} 
-			className=""/>
+	return <>
+		<Card className="w-50 relative pt-0 overflow-clip" onClick={handleDownload}>
+			<div className="absolute inset-0 hover:bg-white/20 hover:backdrop-blur-xs w-full h-full z-30 cursor-pointer" />
+
+			<Image
+				src={`https://r2.kimkyungsub.com/${fileKey}`}
+				alt="player image"
+				width={48} height={48}
+				className="w-50 h-40 object-contain p-2  relative top-0 z-20" />
+			<CardFooter className="relative bottom-0">
+				<Button className="w-full">{label}</Button>
+			</CardFooter>
 		</Card>
 	</>
 }

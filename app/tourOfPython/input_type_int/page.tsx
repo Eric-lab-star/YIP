@@ -102,8 +102,8 @@ ValueError: invalid literal for int() with base 10: 'asfasfa'
 				</Text>
 			</TwoColumn>
 
-			<Link href={"/tourOfPython/input_type_int#try_catch"} id="try_catch">
-				<Title my="m" size="h2">try...catch</Title>
+			<Link href={"/tourOfPython/input_type_int#try_except"} id="try_catch">
+				<Title my="m" size="h2">try...except</Title>
 			</Link>
 			<TwoColumn >
 				<CodeBlock code={
