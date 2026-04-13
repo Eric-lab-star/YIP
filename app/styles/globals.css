@@ -1,0 +1,37 @@
+
+/* globals.css */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@import "./theme.css";
+@import "./base.css";
+@import "./utilities.css";
+
+
+@import "./components/tiptab.css";
+@import "./components/tiptab-code.css";
+@import "./components/tiptab-resize.css";
+
+/* no icon */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px black  inset !important;
+	box-shadow: 0 0 0px 1000px black inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* for Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

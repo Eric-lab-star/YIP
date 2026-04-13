@@ -1,66 +1,61 @@
-import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { r2client } from "./client";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const HOUR = 3600
+const HOUR = 3600;
 
 export async function r2GetSignedURL(key: string) {
-	const command = new GetObjectCommand({
-		Bucket: process.env.R2_BUCKET!,
-		Key: key
-	})
-	const url = await getSignedUrl(r2client, command, { expiresIn: HOUR * 4})
-	return url
-
+  const command = new GetObjectCommand({
+    Bucket: process.env.R2_BUCKET!,
+    Key: key,
+  });
+  const url = await getSignedUrl(r2client, command, { expiresIn: HOUR * 4 });
+  return url;
 }
 
 interface postUrl {
-	Key: string,
-	Body: any,
-	ContentType: string
+  Key: string;
+  Body: any;
+  ContentType: string;
 }
 
-export async function r2PostURL({
-	Key, Body, ContentType,
-}: postUrl){
-	const command = new PutObjectCommand({
-		Bucket: process.env.R2_BUCKET!,
-		Key,
-		Body,
-		ContentType
-	})
-	await r2client.send(command)
+export async function r2PostURL({ Key, Body, ContentType }: postUrl) {
+  const command = new PutObjectCommand({
+    Bucket: process.env.R2_BUCKET!,
+    Key,
+    Body,
+    ContentType,
+  });
+  await r2client.send(command);
 }
 
 export async function r2DeleteManyURLs(keys: string[]) {
-	try {
-		await Promise.all(
-			keys.map(key => {
-				console.log("r2", key)
-				const command = new DeleteObjectCommand({
-					Bucket: process.env.R2_BUCKET!,
-					Key: key
-				})
-				return r2client.send(command)
-			})
-		)
-		return Response.json({
-			success: true
-		})
-	} catch(e) {
-		
-		return Response.json({
-			success: false 
-		})
-	}
-
+  try {
+    await Promise.all(
+      keys.map((key) => {
+        console.log("r2", key);
+        const command = new DeleteObjectCommand({
+          Bucket: process.env.R2_BUCKET!,
+          Key: key,
+        });
+        return r2client.send(command);
+      }),
+    );
+    return Response.json({
+      success: true,
+    });
+  } catch (e) {
+    return Response.json({
+      success: false,
+    });
+  }
 }
-
-
 
 export const IMAGE_BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://r2.kimkyungsub.com"
-    : "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev"
-
-	
+    : "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev";
