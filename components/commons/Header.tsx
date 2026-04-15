@@ -29,6 +29,7 @@ export default function Header() {
 		switch (section) {
 			case "":
 			case "students":
+			case "login":
 				sidebarCtx?.setOpen(false)
 				setShowIcon(false)
 				break;
@@ -102,7 +103,3 @@ function UserProfile() {
 		)
 	}
 }
-
-
-
-
