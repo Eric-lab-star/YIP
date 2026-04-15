@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import Title from "./Title";
-import { LogInIcon, NotebookPen, PanelLeftClose, PanelLeftOpen, UserRoundCog } from "lucide-react";
-import { useLayoutCtx } from "./LayoutContexWrapper";
+import { LogInIcon, NotebookPen, UserRoundCog } from "lucide-react";
 import useUser from "../SWR/auth/user";
 import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
 import { redirect, usePathname } from "next/navigation";
 
 import { IBM_Plex_Sans_KR } from "next/font/google";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const kr_font = IBM_Plex_Sans_KR({
 	weight: "700",
@@ -21,39 +20,13 @@ const kr_font = IBM_Plex_Sans_KR({
 })
 export default function Header() {
 	const pathname = usePathname()
-	const { isSideBarOpen, setIsSideBarOpen } = useLayoutCtx()
-	const handleSideBar = () => {
-		setIsSideBarOpen(!isSideBarOpen)
-	}
-	const [showSideBarIcon, setSideBarIcon] = useState(true)
-
-	useEffect(() => {
-		switch (true) {
-			case pathname === "/":
-			case pathname === "/login":
-			case pathname.startsWith("/students"):
-				setSideBarIcon(false)
-				setIsSideBarOpen(false)
-				break;
-			default:
-				setSideBarIcon(true)
-		}
-	}, [pathname])
 
 	return (
-		<div className="px-3 h-15 w-full  bg-linear-to-r from-[#0f172a] via-[#1e3a5f] to-[#0f172a] select-none flex justify-between">
+		<div className="px-3 h-15 w-full bg-accent  select-none flex justify-between">
 			<div className="flex space-x-2 items-center">
-				{
-					showSideBarIcon && <button onClick={handleSideBar} className="p-2 hover:bg-zine-400 rounded-full text-white hover:text-zinc-500">
-						{
-							isSideBarOpen ?
-								<PanelLeftClose strokeWidth={"1.3px"} />
-								: <PanelLeftOpen strokeWidth={"1.3px"} />
-						}
-					</button>
-				}
+				<SidebarTrigger />
 				<Link className="" href={"/"}>
-					<Title style="text-white">YIP</Title>
+					<Title style="">sss</Title>
 				</Link>
 			</div>
 			<UserProfile />
@@ -82,7 +55,7 @@ function UserProfile() {
 		)
 	} else {
 		return (
-			<div className="text-white flex gap-2 justify-center items-center ">
+			<div className=" flex gap-2 justify-center items-center ">
 				{user?.success &&
 					<>
 						{user.role === "admin" &&
@@ -101,7 +74,7 @@ function UserProfile() {
 				}
 				{
 					user?.success === false && (
-						<Link className="text-white" href={`/login`}>
+						<Link className="" href={`/login`}>
 							<LogInIcon size={30} strokeWidth={"2px"} />
 						</Link>)
 

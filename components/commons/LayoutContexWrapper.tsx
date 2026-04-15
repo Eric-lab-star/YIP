@@ -3,7 +3,7 @@
 
 import { createContext, useContext, useMemo, useState } from "react";
 import Header from "./Header";
-import SideBar from "./SideBar";
+import AppSideBar from "./AppSideBar";
 
 export interface layoutCtx {
 	isSideBarOpen: boolean
@@ -27,10 +27,10 @@ export default function LayoutContextWrapper({ children }: { children: React.Rea
 
 	return (
 		<LayoutContext value={value}>
-			<div className="xl:w-[1280px] lg:w-[1024px] md:w-[768px] sm:w-[640px]  w-full h-dvh flex flex-col">
+			<div className="xl:w-7xl lg:w-5xl md:w-3xl sm:w-160  w-full h-dvh flex flex-col">
 				<Header />
 				<div className="overflow-y-auto flex flex-1 min-h-0 bg-zinc-100">
-					<SideBar />
+					<AppSideBar />
 					<div className="flex-1 overflow-y-auto">
 						{children}
 					</div>

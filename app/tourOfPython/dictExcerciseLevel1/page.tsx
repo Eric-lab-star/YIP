@@ -1,4 +1,3 @@
-
 import CodeBlock from "@/components/commons/CodeBlock.lazy";
 import Title from "@/components/commons/Title";
 import { Option } from "@/components/forms/quizz/Option";

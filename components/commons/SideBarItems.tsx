@@ -8,13 +8,11 @@ import {
 import { FileTextIcon, FolderIcon, FolderOpenIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import HorizontalLine from "./HorizontalLine"
 
 interface Folder { kind: "folder"; name: string; files: FileItem[]; }
 interface FileItem { kind: "file"; name: string; url: string; }
-interface Line { kind: "line"; name: "line" }
 
-export type SideBarTreeItem = Folder | FileItem | Line
+export type SideBarTreeItem = Folder | FileItem
 
 export function SideBarTree({ sideBarTree }: { sideBarTree: SideBarTreeItem[] }) {
 	return (
@@ -33,10 +31,6 @@ function TreeItem({ fileItem }: { fileItem: SideBarTreeItem }) {
 		)
 	}
 
-	if (fileItem.kind === "line") {
-		return <HorizontalLine my="s" />
-	}
-
 	return (
 		<Button
 			variant="link"
@@ -45,8 +39,8 @@ function TreeItem({ fileItem }: { fileItem: SideBarTreeItem }) {
 			asChild
 		>
 			<Link key={fileItem.name} href={fileItem.url} className="">
-					<FileTextIcon />
-					<span>{fileItem.name}</span>
+				<FileTextIcon />
+				<span>{fileItem.name}</span>
 			</Link>
 		</Button>
 	)

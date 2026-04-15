@@ -107,10 +107,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 		],
 	},
 	{
-		kind: "line",
-		name: "line",
-	},
-	{
 		kind: "folder",
 		name: "input, type, int, try..except",
 		files: [
@@ -216,11 +212,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 				url: "/tourOfPython/condition_and_type_level3",
 			},
 		]
-	},
-
-	{
-		kind: "line",
-		name: "line",
 	},
 	{
 		kind: "folder",
@@ -404,11 +395,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 			}
 		],
 	},
-
-	{
-		kind: "line",
-		name: "line",
-	},
 	{
 		kind: "folder",
 		name: `리스트 ['a', 'b']`,
@@ -501,11 +487,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 			},
 		],
 	},
-
-	{
-		kind: "line",
-		name: "line",
-	},
 	{
 		kind: "folder",
 		name: `튜플 ('a', 'b')`,
@@ -557,11 +538,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 				url: "/tourOfPython/tupleExcerciseLevel3",
 			},
 		],
-	},
-
-	{
-		kind: "line",
-		name: "line",
 	},
 	{
 		kind: "folder",
@@ -645,11 +621,6 @@ export const pythonLangCurriculum: SideBarTreeItem[] = [
 				url: "/tourOfPython/dictExcerciseLevel3",
 			},
 		],
-	},
-
-	{
-		kind: "line",
-		name: "line",
 	},
 	{
 		kind: "folder",
