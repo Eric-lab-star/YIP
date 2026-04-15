@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/colla
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { pythonLangCurriculum } from '@/utils/sideBarTree/tourOfPythonTree';
+import { spaceshipCaptainTree } from '@/utils/sideBarTree/spaceshipCaptainTree';
 
 export default function AppSideBar() {
 	const pathname = usePathname();
@@ -17,13 +18,14 @@ export default function AppSideBar() {
 
 	return (
 		<Sidebar side="left">
+
 			<SidebarHeader >
 				<SidebarMenu>
 					<Title size='h2'> {title} </Title>
 				</SidebarMenu>
 			</SidebarHeader>
-			<SidebarContent>
 
+			<SidebarContent>
 				{
 					sidebarItems && sidebarItems.map((item, i) => (
 						<Collapsible className='group/collapsible' key={i}>
@@ -71,6 +73,8 @@ function getTitle(section: string) {
 	switch (section) {
 		case "tourOfPython":
 			return "파이썬 탐험하기"
+		case "spaceshipCaptain":
+			return "우주의 수호자"
 	}
 }
 
@@ -78,6 +82,8 @@ function getSidebarItems(section: string) {
 	switch (section) {
 		case "tourOfPython":
 			return pythonLangCurriculum
+		case "spaceshipCaptain":
+			return spaceshipCaptainTree
 	}
 
 }

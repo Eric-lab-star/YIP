@@ -10,7 +10,8 @@ import { Button } from "../ui/button";
 import { redirect, usePathname } from "next/navigation";
 
 import { IBM_Plex_Sans_KR } from "next/font/google";
-import { SidebarTrigger } from "../ui/sidebar";
+import { SidebarContext, SidebarTrigger } from "../ui/sidebar";
+import { useContext, useEffect, useState } from "react";
 
 const kr_font = IBM_Plex_Sans_KR({
 	weight: "700",
@@ -20,13 +21,30 @@ const kr_font = IBM_Plex_Sans_KR({
 })
 export default function Header() {
 	const pathname = usePathname()
+	const sidebarCtx = useContext(SidebarContext)
+	const [showIcon, setShowIcon] = useState(true)
+
+	const section = pathname.split("/")[1]
+	useEffect(() => {
+		switch (section) {
+			case "":
+			case "students":
+				sidebarCtx?.setOpen(false)
+				setShowIcon(false)
+				break;
+			default:
+				sidebarCtx?.setOpen(true)
+				setShowIcon(true)
+
+		}
+	}, [section])
 
 	return (
-		<div className="px-3 h-15 w-full bg-accent  select-none flex justify-between">
+		<div className="px-3 h-20 w-full bg-accent  select-none flex justify-between">
 			<div className="flex space-x-2 items-center">
-				<SidebarTrigger />
+				{showIcon && <SidebarTrigger className="" />}
 				<Link className="" href={"/"}>
-					<Title style="">sss</Title>
+					<Title style="">불안 걱정말고 Just Do It</Title>
 				</Link>
 			</div>
 			<UserProfile />

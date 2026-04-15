@@ -49,7 +49,7 @@ export default async function RootLayout({
 				className={`${kr.className} flex sm:justify-center  antialiased`}
 			>
 				<SpeedInsights />
-				<SidebarProvider open={true}>
+				<SidebarProvider defaultOpen={false} >
 					<AppSideBar />
 					<main className="w-full h-dvh flex flex-col ">
 						<Header />
