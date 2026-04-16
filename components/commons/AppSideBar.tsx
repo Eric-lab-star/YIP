@@ -1,8 +1,8 @@
 "use client";
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarRail } from '../ui/sidebar';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from '../ui/sidebar';
 import Title from './Title';
-import { ChevronDown, Plus } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -17,15 +17,14 @@ export default function AppSideBar() {
 
 
 	return (
-		<Sidebar side="left">
-
+		<Sidebar side="left" variant={"floating"}>
 			<SidebarHeader >
 				<SidebarMenu>
 					<Title size='h2'> {title} </Title>
 				</SidebarMenu>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent className='pb-50'>
 				{
 					sidebarItems && sidebarItems.map((item, i) => (
 						<Collapsible className='group/collapsible' key={i}>
@@ -45,9 +44,6 @@ export default function AppSideBar() {
 													<SidebarMenuButton asChild isActive>
 														<Link href={v.url}>{v.name}</Link>
 													</SidebarMenuButton>
-													<SidebarMenuAction>
-														<Plus />
-													</SidebarMenuAction>
 												</SidebarMenuItem>
 											))}
 										</SidebarMenu>
@@ -58,11 +54,6 @@ export default function AppSideBar() {
 					))
 				}
 			</SidebarContent>
-			<SidebarFooter>
-				<SidebarMenu>
-					username
-				</SidebarMenu>
-			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
 	)
@@ -85,5 +76,4 @@ function getSidebarItems(section: string) {
 		case "spaceshipCaptain":
 			return spaceshipCaptainTree
 	}
-
 }

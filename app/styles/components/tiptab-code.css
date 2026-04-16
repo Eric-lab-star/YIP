@@ -1,36 +1,70 @@
 @layer components {
 	.tiptap,
 	.tiptap.ProseMirror {
-
 		code {
 			background-color: var(--color-zinc-600);
 			border-radius: 0.4rem;
 			color: var(--color-zinc-200);
 			font-size: 0.85rem;
 			padding: 0.25em 0.3em;
+			/* 긴 코드가 줄바꿈되지 않도록 */
+			white-space: pre-wrap;
+			word-break: break-word;
 		}
-
+		pre::before {
+			content: attr(data-language);
+			display: block;
+			text-align: right;
+			font-size: 0.7rem;
+			color: var(--color-zinc-400);
+			margin-bottom: 0.5rem;
+		}
+		
 		pre {
 			background: var(--color-black);
 			border-radius: 0.5rem;
 			color: var(--color-white);
 			font-family: 'JetBrainsMono', monospace;
-			padding: 0.75rem 1rem;
-			margin: 1rem 3rem;
-
+			
+			/* 반응형 패딩 */
+			padding: 0.75rem;
+			margin: 1rem 0;
+			
+			/* 가로 스크롤 처리 */
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+			
+			/* 스크롤바 스타일링 (선택사항) */
+			&::-webkit-scrollbar {
+				height: 8px;
+			}
+			&::-webkit-scrollbar-track {
+				background: var(--color-zinc-800);
+				border-radius: 0.5rem;
+			}
+			&::-webkit-scrollbar-thumb {
+				background: var(--color-zinc-600);
+				border-radius: 0.5rem;
+			}
+			&::-webkit-scrollbar-thumb:hover {
+				background: var(--color-zinc-500);
+			}
+			
 			code {
 				background: none;
 				color: inherit;
-				font-size: 0.8rem;
+				font-size: 0.75rem; /* 모바일: 작게 */
 				padding: 0;
+				/* 코드 줄바꿈 방지 */
+				white-space: pre;
+				word-break: normal;
 			}
-
+			
 			/* Code styling */
 			.hljs-comment,
 			.hljs-quote {
 				color: #616161;
 			}
-
 			.hljs-variable,
 			.hljs-template-variable,
 			.hljs-attribute,
@@ -42,7 +76,6 @@
 			.hljs-selector-class {
 				color: #f98181;
 			}
-
 			.hljs-number,
 			.hljs-meta,
 			.hljs-built_in,
@@ -52,29 +85,54 @@
 			.hljs-params {
 				color: #fbbc88;
 			}
-
 			.hljs-string,
 			.hljs-symbol,
 			.hljs-bullet {
 				color: #b9f18d;
 			}
-
 			.hljs-title,
 			.hljs-section {
 				color: #faf594;
 			}
-
 			.hljs-keyword,
 			.hljs-selector-tag {
 				color: #70cff8;
 			}
-
 			.hljs-emphasis {
 				font-style: italic;
 			}
-
 			.hljs-strong {
 				font-weight: 700;
+			}
+		}
+	}
+	
+	/* 태블릿 이상 */
+	@media (min-width: 640px) {
+		.tiptap,
+		.tiptap.ProseMirror {
+			pre {
+				padding: 0.75rem 1rem;
+				margin: 1rem 1rem;
+				
+				code {
+					font-size: 0.8rem;
+				}
+			}
+		}
+	}
+	
+	/* 데스크톱 */
+	@media (min-width: 1024px) {
+		.tiptap,
+		.tiptap.ProseMirror {
+			pre {
+				padding: 0.75rem 1rem;
+				margin: 1rem 3rem;
+				
+				code {
+					font-size: 0.85rem; /* 원래 크기보다 약간 크게 */
+				}
 			}
 		}
 	}

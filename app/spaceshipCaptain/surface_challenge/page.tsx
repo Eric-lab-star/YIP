@@ -4,15 +4,13 @@ import Title from "@/components/commons/Title";
 
 
 export default function SurfaceChallenge() {
-
-
 	return (
 		<div className="p-10 mb-100">
 			<Title my="m">색 바꾸기 과제</Title>
 			<Text my="m"> 아래의 코드와 지금까지 배운 것을 활용해서 아래의 4가지 과제를 완료하세요.</Text>
-			<CodeBlock 
-			code={
-				`#main.py
+			<CodeBlock
+				code={
+					`#main.py
 import pygame
 
 pygame.init()

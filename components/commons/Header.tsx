@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Title from "./Title";
-import { LogInIcon, NotebookPen, UserRoundCog } from "lucide-react";
+import { LogInIcon, LogOut, NotebookPen, UserRoundCog } from "lucide-react";
 import useUser from "../SWR/auth/user";
 import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
@@ -12,6 +12,7 @@ import { redirect, usePathname } from "next/navigation";
 import { IBM_Plex_Sans_KR } from "next/font/google";
 import { SidebarContext, SidebarTrigger } from "../ui/sidebar";
 import { useContext, useEffect, useState } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const kr_font = IBM_Plex_Sans_KR({
 	weight: "700",
@@ -30,6 +31,7 @@ export default function Header() {
 			case "":
 			case "students":
 			case "login":
+			case "editor":
 				sidebarCtx?.setOpen(false)
 				setShowIcon(false)
 				break;
@@ -41,11 +43,12 @@ export default function Header() {
 	}, [section])
 
 	return (
-		<div className="px-3 h-20 w-full bg-accent  select-none flex justify-between">
+		<div className=" p-2  sm:h-15 shrink-0 w-full bg-accent  select-none flex justify-between">
 			<div className="flex space-x-2 items-center">
 				{showIcon && <SidebarTrigger className="" />}
-				<Link className="" href={"/"}>
-					<Title style="">불안 걱정말고 Just Do It</Title>
+				<Link className="hidden sm:block" href={"/"}>
+					<Title style="text-md sm:text-xl sm:inline-block">불안 걱정말고</Title>
+					<Title style="text-md sm:text-xl sm:inline-block sm:px-2">Just Do It</Title>
 				</Link>
 			</div>
 			<UserProfile />
@@ -74,26 +77,35 @@ function UserProfile() {
 		)
 	} else {
 		return (
-			<div className=" flex gap-2 justify-center items-center ">
+			<div className="pr-3 flex gap-2 justify-center items-center ">
 				{user?.success &&
 					<>
 						{user.role === "admin" &&
 							<Link href={`/dashBoard`}>
-								<UserRoundCog size={30} strokeWidth={"1.5px"} />
+								<UserRoundCog className="size-5 sm:size-6" strokeWidth={"1.5px"} />
 							</Link>
 						}
 						<Link href={`/students/${user.id}`}>
-							<NotebookPen size={30} strokeWidth={"1.5px"} />
+							<NotebookPen className="size-5 sm:size-6" strokeWidth={"1.5px"} />
 						</Link>
-						<div className=" w-20 flex justify-center flex-col items-center">
-							<div className={`${kr_font.className} text-lg`}>{user.name}</div>
-							<Button size={"xs"} className="hover:animate-pulse" onClick={handleLogout}> 로그아웃</Button>
-						</div>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild >
+								<div className={`${kr_font.className} text-lg`}>{user.name}</div>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent className="w-10" align="end">
+								<DropdownMenuItem>
+									<div className="flex justify-between items-center w-full" onClick={handleLogout}>
+										<div className="text-sm font-medium text-zinc-800">로그아웃</div>
+										<LogOut color={"black"} size={12} />
+									</div>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					</>
 				}
 				{
 					user?.success === false && (
-						<Link className="" href={`/login`}>
+						<Link className="size-5 sm:size-6" href={`/login`}>
 							<LogInIcon size={30} strokeWidth={"2px"} />
 						</Link>)
 

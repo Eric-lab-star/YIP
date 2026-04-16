@@ -1,47 +1,71 @@
 @layer components {
 	.tiptap,
 	.tiptap.ProseMirror > * {
-		margin-left: 3rem;
-		margin-right: 3rem;
+		/* 반응형 좌우 마진 */
+		margin-left: 1rem;
+		margin-right: 1rem;
 	}
-
+	
+	/* 태블릿 이상 */
+	@media (min-width: 640px) {
+		.tiptap,
+		.tiptap.ProseMirror > * {
+			margin-left: 2rem;
+			margin-right: 2rem;
+		}
+	}
+	
+	/* 데스크톱 */
+	@media (min-width: 1024px) {
+		.tiptap,
+		.tiptap.ProseMirror > * {
+			margin-left: 3rem;
+			margin-right: 3rem;
+		}
+	}
+	
 	.tiptap,
 	.tiptap.ProseMirror {
-		min-height: 700px;
+		/* 반응형 최소 높이 */
+		min-height: 400px;
+		padding: 1rem 1rem 1rem 0;
+		caret-color: var(--color-purple-600);
+		
 		img {
 			display: block;
 			height: auto;
 			margin-top: 1rem;
 			margin-bottom: 1rem;
-			max-width: 1000px;
+			/* 반응형 이미지 크기 */
+			max-width: 100%;
 			min-width: 50px;
-			min-height:50px;
-			width: 400px;
+			min-height: 50px;
+			width: 100%; /* 모바일: 전체 너비 */
 		}
+		
 		img.ProseMirror-selectednode {
 			outline: 3px solid var(--color-purple-400);
 		}
-		padding: 1rem 1rem 1rem 0;
-	  caret-color: var(--color-purple-600);
-
+		
 		blockquote {
 			border-left: 3px solid var(--color-orange-500);
 			padding-left: 1rem;
 			margin-top: 1rem;
 			margin-bottom: 1rem;
 		}
-
+		
+		/* 반응형 헤딩 크기 */
 		h1 {
-			font-size: var(--text-5xl);
+			font-size: clamp(1.875rem, 4vw, var(--text-5xl));
 		}
 		h2 {
-			font-size: var(--text-4xl);
+			font-size: clamp(1.5rem, 3.5vw, var(--text-4xl));
 		}
 		h3 {
-			font-size: var(--text-3xl);
+			font-size: clamp(1.25rem, 3vw, var(--text-3xl));
 		}
 		h4 {
-			font-size: var(--text-2xl);
+			font-size: clamp(1.125rem, 2.5vw, var(--text-2xl));
 		}
 		h5 {
 			font-size: var(--text-xl);
@@ -49,49 +73,85 @@
 		h6 {
 			font-size: var(--text-lg);
 		}
-
+		
 		a {
 			color: var(--color-purple-500);
 			cursor: pointer;
-  	}
+			/* 모바일에서 터치하기 쉽게 */
+			text-decoration: underline;
+			text-decoration-color: transparent;
+			transition: text-decoration-color 0.2s;
+		}
+		
 		a:hover {
 			color: var(--color-purple-400);
+			text-decoration-color: currentColor;
 		}
-
+		
 		ol {
 			list-style-type: decimal;
 		}
-
+		
 		ul {
 			list-style-type: disc;
 		}
-
+		
 		ul,
 		ol {
 			padding: 0 1rem;
-
 			li p {
 				margin-top: 0.25em;
 				margin-bottom: 0.25em;
 			}
 		}
+		
 		hr {
 			border: none;
 			border-top: 1px dashed var(--color-zinc-500);
-			margin: 0.5rem 3rem;
+			/* 반응형 마진 */
+			margin: 0.5rem 1rem;
 			cursor: pointer;
-
+			
 			&.ProseMirror-selectednode {
 				border-top: 1px solid var(--color-purple-600);
 			}
 		}
 	}
-
-
+	
+	/* 태블릿 이상: 이미지 크기 제한 */
+	@media (min-width: 640px) {
+		.tiptap,
+		.tiptap.ProseMirror {
+			min-height: 500px;
+			
+			img {
+				width: 80%;
+				max-width: 600px;
+			}
+		}
+	}
+	
+	/* 데스크톱: 원래 설정 */
+	@media (min-width: 1024px) {
+		.tiptap,
+		.tiptap.ProseMirror {
+			min-height: 700px;
+			
+			img {
+				width: 400px;
+				max-width: 1000px;
+			}
+			
+			hr {
+				margin: 0.5rem 3rem;
+			}
+		}
+	}
+	
 	.tiptap:focus {
 		outline: unset;
 	}
-
+	
 	.tiptap p.is-empty::before {
 		color: var(--color-zinc-400);
 		content: attr(data-placeholder);
@@ -99,10 +159,9 @@
 		height: 0;
 		pointer-events: none;
 	}
-
+	
 	.tiptap.ProseMirror ::selection {
-		background-color: var(--color-purple-200); /* 선택 배경색 */
-		color: inherit; /* 텍스트 색상은 유지 */
+		background-color: var(--color-purple-200);
+		color: inherit;
 	}
-
 }

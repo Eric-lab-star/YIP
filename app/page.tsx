@@ -1,12 +1,8 @@
 import { FadeIn } from "@/components/commons/FadeIn";
 import { aiReasons, careers, universities, whyCards } from "./landingDB";
-import { MongoClient } from "mongodb";
 
 
 export default async function LandingPage() {
-	const client = new MongoClient(process.env.YIPDB_MONGODB_URI!);
-	client.connect().then(() => { console.log("Connected to MongoDB") }).catch(err => console.error("MongoDB connection error:", err));
-
 	return (
 		<div style={{ fontFamily: "'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif" }} className="bg-white text-slate-900 overflow-x-hidden">
 			<Hero />

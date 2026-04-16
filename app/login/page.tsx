@@ -59,8 +59,8 @@ export default function Page() {
 	}
 
 	return (
-		<div className="pt-30">
-			<Card className={`mx-auto w-full sm:max-w-md ${isSubmitting && "animate-pulse"}`}>
+		<div className="pt-5">
+			<Card className={`rounded-none sm:rounded-xl shadow-none sm:shadow-sm border-0 sm:border sm:mx-auto w-full sm:max-w-md ${isSubmitting && "animate-pulse"}`}>
 				<CardHeader>
 					<CardTitle>로그인</CardTitle>
 					<CardDescription>
