@@ -156,5 +156,42 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 				url: "/spaceshipCaptain/moveSpaceShipChallenge",
 			},
 		],
+	},
+	{
+		kind: "folder",
+		name: "FPS 와 Vector",
+		files: [
+			{
+				kind: "file",
+				name: "Vector",
+				url: "/spaceshipCaptain/FPSAndVector#vector",
+			},
+			{
+				kind: "file",
+				name: "FPS",
+				url: "/spaceshipCaptain/FPSAndVector#FPS",
+			},
+			{
+				kind: "file",
+				name: "확인하기",
+				url: "/spaceshipCaptain/FPSAndVector#check",
+			},
+		],
+	},
+	{
+		kind: "folder",
+		name: "방향키 설정하기",
+		files: [
+			{
+				kind: "file",
+				name: "pygame.key",
+				url: "/spaceshipCaptain/keyboardInput#key",
+			},
+			{
+				kind: "file",
+				name: "",
+				url: "",
+			},
+		],
 	}
 ];

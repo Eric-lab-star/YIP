@@ -38,8 +38,7 @@ main()
 			<Title> 과제 </Title>
 			<Title size="h3" weight="light">1. 창의 제목을 colors로 바꾸세요.</Title>
 			<Title size="h3" weight="light">2. display_surface의 색상이 계속해서 랜덤한 색으로 바뀌게 만드세요.</Title>
-			<Title size="h3" weight="light">3. surf의 위치를 화면 정중앙으로 옮기세요.</Title>
-			<Title size="h3" weight="light">4. surf의 색을 흰색으로 바꾸세요.</Title>
+			<Title size="h3" weight="light">3. surf의 색을 흰색으로 바꾸세요.</Title>
 
 		</div>
 	)

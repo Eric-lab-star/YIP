@@ -56,7 +56,54 @@ export default function Page() {
 					pyga.me에서 frect사용방법 확인하기
 				</Link>
 			</Text>
-			<ToggleCodeBlock header={"코드 확인하기"} code={``} />
+			<ToggleCodeBlock header={"코드 확인하기"} code={`
+import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+def main():
+    running = True
+    x = 1 
+    y = 1
+    speed = 0.5
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0:
+            x *= -1
+
+        if player_rect.top <= 0 or player_rect.bottom >= WINDOW_HEIGHT:
+            y *= -1
+
+        player_rect.centerx += speed * x
+        player_rect.centery += speed * y
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+
+				`} />
 		</div>
 	);
 }
