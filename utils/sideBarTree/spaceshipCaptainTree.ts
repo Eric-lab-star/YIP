@@ -237,8 +237,18 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
     files: [
       {
         kind: "file",
-        name: "클래스 문제",
-        url: "/spaceshipCaptain/classExcercise",
+        name: "Level 1",
+        url: "/spaceshipCaptain/classExcerciseLevel1",
+      },
+      {
+        kind: "file",
+        name: "Level 2",
+        url: "/spaceshipCaptain/classExcerciseLevel2",
+      },
+      {
+        kind: "file",
+        name: "Level 3",
+        url: "/spaceshipCaptain/classExcerciseLevel3",
       },
     ],
   },
