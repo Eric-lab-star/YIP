@@ -252,4 +252,56 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
       },
     ],
   },
+  {
+    kind: "folder",
+    name: "Sprite Class",
+    files: [
+      {
+        kind: "file",
+        name: "sprite class",
+        url: "/spaceshipCaptain/spriteClass#spriteClass",
+      },
+      {
+        kind: "file",
+        name: "Player 클래스 정의하기",
+        url: "/spaceshipCaptain/spriteClass#definePlayerClass",
+      },
+      {
+        kind: "file",
+        name: "중간 점검 1",
+        url: "/spaceshipCaptain/spriteClass#check1",
+      },
+      {
+        kind: "file",
+        name: "플레이어 이동시키기",
+        url: "/spaceshipCaptain/spriteClass#updatePlayerClass",
+      },
+      {
+        kind: "file",
+        name: "중간점검 2",
+        url: "/spaceshipCaptain/spriteClass#check2",
+      },
+      {
+        kind: "file",
+        name: "키보드 입력받기",
+        url: "/spaceshipCaptain/spriteClass#keyboardInput",
+      },
+      {
+        kind: "file",
+        name: "코드확인",
+        url: "/spaceshipCaptain/spriteClass#check3",
+      },
+    ],
+  },
+  {
+    kind: "folder",
+    name: "모듈과 패키지",
+    files: [
+      {
+        kind: "file",
+        name: "모듈과 패키지 개념",
+        url: "/spaceshipCaptain/moduleNPackage",
+      },
+    ],
+  },
 ];
