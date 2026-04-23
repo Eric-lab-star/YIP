@@ -46,7 +46,7 @@ export default function Header() {
   }, [section]);
 
   return (
-    <div className=" p-2  sm:h-15 shrink-0 w-full bg-accent  select-none flex justify-between">
+    <div className="sm:h-15 shrink-0 w-full border-b  bg-white/80 sticky top-0 backdrop-blur z-50 select-none flex justify-between px-10 py-2">
       <div className="flex space-x-2 items-center">
         {showIcon && <SidebarTrigger className="" />}
         <Link className="hidden sm:block" href={"/"}>
