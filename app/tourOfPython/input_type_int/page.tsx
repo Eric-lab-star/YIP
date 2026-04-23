@@ -6,7 +6,6 @@ import TwoColumn from "@/components/commons/TwoColumn";
 import Link from "next/link";
 import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
 import { Option } from "@/components/forms/quizz/Option";
-import NextAndPrev from "@/components/commons/NextAndPrev";
 import Image from "next/image";
 import HorizontalLine from "@/components/commons/HorizontalLine";
 

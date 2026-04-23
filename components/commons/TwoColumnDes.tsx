@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 
 export default function TwoColumnDes({ title, des }: { title?: React.ReactNode; des: React.ReactNode }) {
 	return (
-		<div className="p-3">
+		<div className="px-3 pb-3">
 			{title && <DesHead title={title} />}
 			<DesBody des={des} />
 		</div>
