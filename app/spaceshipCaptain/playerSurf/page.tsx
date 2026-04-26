@@ -267,7 +267,7 @@ def main():
 
         player_rect.right += speed * direction #<-- 위치 업데이트
         display_surface.blit(bg_surf, (0, 0))
-        display_surface.blit(player_surf, player_rect)
+        display_surface.blit(player_surf, player_rect) # <--- 위치 업데이트
 
         pygame.display.flip()
     pygame.quit()
