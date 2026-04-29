@@ -101,7 +101,9 @@ def main():
         code={`#main.py
 ....# 기존코드
 clock = pygame.time.Clock()
-	....
+def main():
+	running = True
+....#기존코드
 			`}
         title={`pygame.time.Clock() `}
         des={
