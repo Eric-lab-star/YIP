@@ -368,32 +368,37 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 			{
 				kind: "file",
 				name: "운석 클래스",
-				url: "/spaceshipCaptain/meteorClass"
+				url: "/spaceshipCaptain/meteorClass",
 			},
 			{
 				kind: "file",
 				name: "운석 클래스 만들기",
-				url: "/spaceshipCaptain/meteorClass#createMeteorClass"
+				url: "/spaceshipCaptain/meteorClass#createMeteorClass",
 			},
 			{
 				kind: "file",
 				name: "운석 클래스 이동시키기",
-				url: "/spaceshipCaptain/meteorClass#move"
+				url: "/spaceshipCaptain/meteorClass#move",
 			},
 			{
 				kind: "file",
 				name: "운석 이벤트",
-				url: "/spaceshipCaptain/meteorClass#spawn"
+				url: "/spaceshipCaptain/meteorClass#spawn",
 			},
 			{
 				kind: "file",
 				name: "중간 점검",
-				url: "/spaceshipCaptain/meteorClass#check1"
+				url: "/spaceshipCaptain/meteorClass#check1",
 			},
 			{
 				kind: "file",
 				name: "최적화",
-				url: "/spaceshipCaptain/meteorClass#surfOptimization"
+				url: "/spaceshipCaptain/meteorClass#surfOptimization",
+			},
+			{
+				kind: "file",
+				name: "코드확인하기",
+				url: "/spaceshipCaptain/meteorClass#finalCode",
 			},
 		],
 	},
@@ -404,10 +409,8 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 			{
 				kind: "file",
 				name: "충돌하기",
-				url: "/spaceshipCaptain/collision"
-			}
-		]
-
-	}
-
+				url: "/spaceshipCaptain/collision",
+			},
+		],
+	},
 ];

@@ -451,8 +451,133 @@ from entity.meteor import Meteor
 #... 기존의 main.py 코드
 				`}
 				title="main.py 파일에서 import 위치 수정하기"
-				des={<>위에서 설명했던 이유로 때문에 코드를 수정합니다.</>}
+				des={
+					<>
+						위에서 운석 클래스를 최적화하면서 <Code>main.py</Code>에서 Meteor를
+						import 하는 위치를 화면 초기화 코드 아래로 옮겼는데, Player 클래스도
+						마찬가지로 최적화가 필요한 상태예요. Player 클래스의 이미지도
+						<Code>pygame.display.set_mode()</Code> 이후에 불러와야 하니까,
+						<Code>main.py</Code>에서 Player를 import 하는 위치도 화면 초기화
+						코드 아래로 옮겨주세요
+					</>
+				}
+			/>
+			<Title id="finalCode" my="l" size="h2">
+				코드 확인하기
+			</Title>
 
+			<ToggleCodeBlock
+				header="main.py"
+				code={`
+import pygame
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from entity.bg import Background
+
+pygame.init()
+display_surface = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT),
+)
+
+from entity.player import Player
+from entity.meteor import Meteor  # <-- 추가
+
+pygame.display.set_caption("space shooter")
+
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    direction = pygame.Vector2(0, 0)
+    all_sprite_group = pygame.sprite.Group()
+    Background(all_sprite_group)
+    Player(all_sprite_group)
+    meteor_event = pygame.event.custom_type()  # <-- 운석 이벤트
+    pygame.time.set_timer(meteor_event, 400)  # <-- 타이머 설정
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:  # <-- 이벤트 발생 시 운석 생성
+                Meteor.spawn(all_sprite_group, 3)
+
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        display_surface.fill("gray")
+
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+				`}
+			/>
+			<ToggleCodeBlock
+				header="entity/meteor.py"
+				code={`
+from os.path import join
+import random
+import pygame
+from settings import WINDOW_HEIGHT, WINDOW_WIDTH
+
+
+class Meteor(pygame.sprite.Sprite):
+    path: str = join("images", "meteor.png")
+    surf: pygame.Surface = pygame.image.load(path).convert_alpha()
+
+    def __init__(self, group: pygame.sprite.Group):
+        self._layer = 1
+        super().__init__(group)
+        self.image = Meteor.surf
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(random.randint(0, WINDOW_WIDTH), random.randint(-100, 0))
+        )
+        self.speed: float = random.randint(300, 500)
+        self.direction: pygame.Vector2 = pygame.Vector2(random.randint(-1, 1), 1)
+
+    @classmethod
+    def spawn(cls, group: pygame.sprite.Group, n: int):
+        if n <= 0:
+            raise ValueError("n must be greater than 0")
+        for _ in range(n):
+            Meteor(group)
+
+    def update(self, dt: float):
+        self.rect.center += self.direction * dt * self.speed
+        if self.rect.top > WINDOW_HEIGHT:
+            self.kill()
+				`}
+			/>
+			<ToggleCodeBlock
+				header="entity/missile.py"
+				code={`
+import pygame
+from os.path import join
+
+
+class Missile(pygame.sprite.Sprite):
+    path: str = join("images", "missile.png")
+    surf: pygame.Surface = pygame.image.load(path).convert_alpha()
+    speed: float = 200
+
+    def __init__(self, group: pygame.sprite.Group, pos: pygame.Vector2):
+        super().__init__(group)
+        self.image = Missile.surf
+        self.rect: pygame.FRect = self.image.get_frect(midbottom=(pos))
+
+    def update(self, dt: float):
+        self.rect.centery -= dt * Missile.speed
+        if self.rect.bottom < 0:
+            self.kill()
+				`}
 			/>
 		</div>
 	);
