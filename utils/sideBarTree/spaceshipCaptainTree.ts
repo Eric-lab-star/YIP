@@ -408,8 +408,49 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 		files: [
 			{
 				kind: "file",
-				name: "충돌하기",
-				url: "/spaceshipCaptain/collision",
+				name: "충돌의 개념",
+				url: "/spaceshipCaptain/collision#collision",
+			},
+			{
+				kind: "file",
+				name: "충돌 구현하기",
+				url: "/spaceshipCaptain/collision#spritecollide",
+			},
+			{
+				kind: "file",
+				name: "결과확인하기 1",
+				url: "/spaceshipCaptain/collision#collisionResult",
+			},
+			{
+				kind: "file",
+				name: "종료하기",
+				url: "/spaceshipCaptain/collision#quit",
+			},
+			{
+				kind: "file",
+				name: "중간점검",
+				url: "/spaceshipCaptain/collision#check",
+			},
+			{
+				kind: "file",
+				name: "미사일 충돌",
+				url: "/spaceshipCaptain/collision#missileCollision",
+			},
+			{
+				kind: "file",
+				name: "결과 확인하기 2",
+				url: "/spaceshipCaptain/collision#fincalCheck",
+			},
+		],
+	},
+	{
+		kind: "folder",
+		name: "과제: 정지하기",
+		files: [
+			{
+				kind: "file",
+				name: "충돌 할때 정지하기",
+				url: "/spaceshipCaptain/collisionTask",
 			},
 		],
 	},

@@ -770,7 +770,7 @@ export default function Page() {
 					</>
 				}
 			/>
-			<Title my="m" size="h2">
+			<Title my="m" id="check" size="h2">
 				코드 확인하기
 			</Title>
 			{codeCheck.map((v, i) => (
@@ -797,7 +797,7 @@ export default function Page() {
 				/>
 			))}
 
-			<Title my="m" size="h2" id="check">
+			<Title my="m" size="h2" id="fincalCheck">
 				코드 확인하기
 			</Title>
 			{finalCodeCheck.map((v, i) => (
