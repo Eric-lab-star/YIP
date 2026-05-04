@@ -122,7 +122,7 @@ def main():
 ....# 기존코드
 def main():
     running = True
-    speed = pygame.Vector2(20, 10)
+    speed = pygame.Vector2(20, 10) # <-- 속도를 높이기
     while running:
         dt = clock.tick(30) / 1000 # <-- 새롭게 추가된 부분
         for event in pygame.event.get():
