@@ -438,54 +438,54 @@ class Missile(pygame.sprite.Sprite):
 			<CodeBlockExplainSection
 				code={`
 import pygame
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
-from entity.bg import Background
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 
 pygame.init()
-display_surface = pygame.display.set_mode(
+display_surface: pygame.Surface = pygame.display.set_mode(
     (WINDOW_WIDTH, WINDOW_HEIGHT),
 )
-
-from entity.player import Player # <-- 위치수정
-from entity.meteor import Meteor  
-#... 기존의 main.py 코드
+pygame.display.set_caption("space shooter")
 				`}
-				title="main.py 파일에서 import 위치 수정하기"
+				title="settings.py 수정하기"
 				des={
 					<>
-						위에서 운석 클래스를 최적화하면서 <Code>main.py</Code>에서 Meteor를
-						import 하는 위치를 화면 초기화 코드 아래로 옮겼는데, Player 클래스도
-						마찬가지로 최적화가 필요한 상태예요. Player 클래스의 이미지도
-						<Code>pygame.display.set_mode()</Code> 이후에 불러와야 하니까,
-						<Code>main.py</Code>에서 Player를 import 하는 위치도 화면 초기화
-						코드 아래로 옮겨주세요
+						클래스에서 코드를 최적화 시켰다면 settings.py에서
+						display.set_mode함수를 호출 할 수 있게 변경시킵니다.
+						pygame.image.load 함수가 실행되기 전에 화면이 만들어져 있어야 하기
+						때문입니다. 또한 게임 세팅과 관련된 기능들은 모두 settings.py로
+						이동시켜서 관리하게 편하도록 만들어봅시다.
 					</>
 				}
 			/>
 			<Title id="finalCode" my="l" size="h2">
 				코드 확인하기
 			</Title>
+			<ToggleCodeBlock
+				header="settings.py"
+				code={`
+import pygame
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+
+pygame.init()
+display_surface: pygame.Surface = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT),
+)
+pygame.display.set_caption("space shooter")
+				`}
+			/>
 
 			<ToggleCodeBlock
 				header="main.py"
 				code={`
 import pygame
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from settings import display_surface
 from entity.bg import Background
-
-pygame.init()
-display_surface = pygame.display.set_mode(
-    (WINDOW_WIDTH, WINDOW_HEIGHT),
-)
-
 from entity.player import Player
-from entity.meteor import Meteor  # <-- 추가
-
-pygame.display.set_caption("space shooter")
-
+from entity.meteor import Meteor
 
 clock = pygame.time.Clock()
-
 
 def main():
     running = True
