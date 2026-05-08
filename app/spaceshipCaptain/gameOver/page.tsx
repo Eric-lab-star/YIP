@@ -1,5 +1,6 @@
 import Code from "@/components/commons/Code";
 import CodeBlockExplainSection from "@/components/commons/CodeBlockExplainSection";
+import DownloadBtn from "@/components/commons/DownloadBtn";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 
@@ -195,6 +196,80 @@ def main():
   },
 ];
 
+const gameOverCondition = [
+  {
+    code: `
+#                       ┌─ 추가하기
+def __init__(self, msg=""):
+		super().__init__(all_sprite_group)
+		#                                       ┌─ 추가하기
+		self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+		self.rect: pygame.FRect = self.image.get_frect(
+				center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+		)
+		`,
+    title: "hud.py: init 함수 수정하기",
+    des: (
+      <>
+        hud.py 파일의 init함수를 수정합니다. 이렇게 수정을 하면 Hud 인스턴스를
+        만들때 글자가 나오지 않게 할 수 있습니다. 하지만 self.image에 필요한
+        surface를 만드는 것은 가능하게 만들 수 있습니다.
+      </>
+    ),
+  },
+  {
+    code: `
+#                   ┌─ 추가하기
+def draw(self, msg: str):
+		#                                         ┌─ 추가하기
+		self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+		self.rect: pygame.FRect = self.image.get_frect(
+				center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+		)
+		`,
+    title: "hud.py: draw 함수 만들기",
+    des: (
+      <>
+        다음으로는 draw 함수를 만들어 볼 거예요. 이 함수는 Hud 클래스의
+        인스턴스가 화면에 글자를 띄우도록 하는 역할을 해요. draw 함수는 msg라는
+        문자열을 매개변수로 받아서, 그 문자열을 화면에 띄울 수 있는 이미지로
+        변환하는 역할을 해요. 이렇게 하면 게임이 끝났을 때 draw 함수를 호출해서
+        "Game Over"라는 글자가 화면에 보이도록 할 수 있어요.
+      </>
+    ),
+  },
+  {
+    code: `
+
+# ... 생략된 기존 코드
+if not game_over:
+		all_sprite_group.update(dt)
+		if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+				game_over = True
+		all_sprite_group.draw(display_surface)
+else:
+		display_surface.blit(bg.image)
+		#   ┌───── 추가하기
+		hud.draw("Game Over")
+		#   ┌───── 추가하기
+		display_surface.blit(hud.image, hud.rect)
+
+		player.kill()
+		meteor_sprite_group.empty()
+# ... 생략된 기존 코드
+		`,
+    title: "main,py 파일 수정하기",
+    des: (
+      <>
+        main.py 파일의 main 함수에서 게임이 끝났을 때 화면에 글자가 보이도록
+        수정해 볼 거예요. <Code>if...else </Code> 구문에서
+        <Code>game_over</Code>가 참일 경우, hud.draw 함수와 display_surface.blit
+        함수가 실행되도록 만들어주세요.
+      </>
+    ),
+  },
+];
+
 export default function Page() {
   return (
     <div className="pb-100 p-10">
@@ -234,6 +309,32 @@ export default function Page() {
       <Title my="m" size="h2" id="conditional">
         게임 종료이 종료될 때 표시하기
       </Title>
+      <Text>
+        화면에 글자를 표시하기까지는 잘 구현이 되었어요. 이제는 이 기능을 조금
+        변형시켜서 게임이 종료되었을 때 게임이 끝났다는 글자가 나오도록
+        프로그램밍을 해볼 차례에요.
+      </Text>
+      {gameOverCondition.map((v, i) => (
+        <CodeBlockExplainSection
+          code={v.code}
+          title={v.title}
+          des={v.des}
+          key={i}
+        />
+      ))}
+      <Title id="uploadFont" my="m" size="h3">
+        폰트 변경하기
+      </Title>
+      <Text my="m">
+        화면에 나오는 글자를 더 멋있게 만들어 주기 위해서 폰트를 변경시킬
+        차례에요. 그리고 한국어를 지원하는 폰트를 사용해서 한글을 화면에 그려볼
+        것 입니다.
+      </Text>
+      <DownloadBtn
+        eager={false}
+        label="갈무리 폰트"
+        fileKey="spaceShooter/Galmuri9.ttf"
+      />
     </div>
   );
 }
