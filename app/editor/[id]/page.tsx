@@ -3,21 +3,25 @@ import TipTab from "@/components/editor/TipTab";
 import { ObjectId } from "mongodb";
 import { notFound } from "next/navigation";
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-	const { id } = await params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-	if (!ObjectId.isValid(id)) {
-		return notFound()
-	}
-	const post = await readPost(id)
+  if (!ObjectId.isValid(id)) {
+    return notFound();
+  }
+  const post = await readPost(id);
 
-	if (!post.ok) {
-		return notFound()
-	}
+  if (!post.ok) {
+    return notFound();
+  }
 
-	return (
-		<div className="p-5">
-			<TipTab editable={false} id={id} content={post.db.content} />
-		</div>
-	)
+  return (
+    <div className="w-full p-5">
+      <TipTab editable={false} id={id} content={post.db.content} />
+    </div>
+  );
 }
