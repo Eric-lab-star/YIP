@@ -63,7 +63,11 @@ export default function DownloadBtn({
 
         <Image
           onError={() => setError(true)}
-          src={error ? "" : `https://r2.kimkyungsub.com/${fileKey}`}
+          src={
+            error
+              ? `https://r2.kimkyungsub.com/placeholder_image.png`
+              : `https://r2.kimkyungsub.com/${fileKey}`
+          }
           alt="player image"
           width={48}
           height={48}
