@@ -1,6 +1,7 @@
 import Code from "@/components/commons/Code";
 import CodeBlockExplainSection from "@/components/commons/CodeBlockExplainSection";
 import DownloadBtn from "@/components/commons/DownloadBtn";
+import ToggleCodeBlock from "@/components/commons/table/ToggleBlock";
 import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 
@@ -270,6 +271,384 @@ else:
   },
 ];
 
+const checkpoint1 = [
+  {
+    code: `
+import pygame
+
+from settings import (
+    all_sprite_group,
+    meteor_sprite_group,
+    missile_sprite_group,
+    display_surface,
+)
+from entity.bg import Background
+from entity.player import Player
+from entity.meteor import Meteor
+from entity.hud import Hud
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    game_over = False
+    direction = pygame.Vector2(0, 0)
+    bg = Background()
+    hud = Hud()
+    player = Player()
+    meteor_event = pygame.event.custom_type()
+    if not game_over:
+        pygame.time.set_timer(meteor_event, 400)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if not game_over:
+            all_sprite_group.update(dt)
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.draw(display_surface)
+        else:
+            display_surface.blit(bg.image)
+            #   ┌───── 추가하기
+            hud.draw("Game Over")
+            #   ┌───── 추가하기
+            display_surface.blit(hud.image, hud.rect)
+
+            player.kill()
+            meteor_sprite_group.empty()
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+		`,
+    header: "main.py",
+  },
+  {
+    code: `
+import pygame
+from settings import (
+    all_sprite_group,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+)
+
+
+class Hud(pygame.sprite.Sprite):
+    font = pygame.font.Font(size=100)
+
+    #                       ┌─ 추가하기
+    def __init__(self, msg=""):
+        super().__init__(all_sprite_group)
+        #                                       ┌─ 추가하기
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    #                   ┌─ 추가하기
+    def draw(self, msg: str):
+        #                                         ┌─ 추가하기
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self, dt: float):
+
+        pass
+		`,
+    header: "entity/hud.py",
+  },
+];
+
+const galmuriFont = [
+  {
+    code: `
+# entity/hud.py
+#.... 기존 코드 생략
+class Hud(pygame.sprite.Sprite):
+    #   ┌─ 추가하기
+    font_path = join("images", "Galmuri9.ttf")
+    #                           ┌─ 추가하기
+    font = pygame.font.Font(font_path, size=100)
+
+    def __init__(self, msg=""):
+        super().__init__(all_sprite_group)
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def draw(self, msg: str):
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self, dt: float):
+        pass
+#.... 기존 코드 생략
+		`,
+    title: "폰트 바꾸기",
+    des: (
+      <>
+        entity/hud.py 파일에서 Hud 클래스를 수정해서 폰트를 바꾸기를 해볼께요.
+        우선 위에서 갈무리 폰트를 다운 받아서, images 폴더에 넣어주세요. 그 다음
+        폰트 파일이 저장된 장소를 프로그램에게 알려주기 위해서
+        <Code>font_path = join("images", "Galmuri9.ttf")</Code>를 입력해서
+        클래스 변수로 설정하세요. 이제 Font 객체를 만들 때,{" "}
+        <Code>pygame.font.Font(font_path, size=100)</Code> 로 수정해서
+        폰트파일을 사용하도록 만들어주세요. 이렇게 수정을 하면 화면에 나오는
+        글자가 갈무리 폰트로 바뀌어서 보이게 될 거예요.
+      </>
+    ),
+  },
+];
+
+const restartCode = [
+  {
+    code: `
+#entity/player.py
+#... 기존 코드 생략
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 300
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200
+    missile_timer: float = 0
+
+#... 기존 코드 생략
+    #   ┌─ 추가하기
+    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.add(self)
+
+#... 기존 코드 생략
+		`,
+    title: "entity/player.py: reset 함수 만들기",
+    des: (
+      <>
+        player 클래스에 reset 메소드를 추가하세요. <Code>reset</Code> 메소드는
+        플레이어의 위치를 중앙으로 옮기고, 플레이어를
+        <Code>all_sprite_group</Code>에 다시 추가하는 역할을 해요. 이렇게 하면
+        게임이 끝났을 때 플레이어가 사라졌다가, 다시 시작할 때 중앙에서
+        나타나도록 만들 수 있어요.
+      </>
+    ),
+  },
+  {
+    code: `
+#... 기존 코드 생략
+
+def main():
+#... 기존 코드 생략
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            #   ┌─ 추가하기
+            elif event.type == meteor_event:
+                Meteor.spawn(3)
+            #   ┌─ 추가하기
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                if game_over:
+                    all_sprite_group.add(bg)
+                    player.reset()
+                    hud.kill()
+                    game_over = False
+#... 기존 코드 생략
+		`,
+    title: "r 키를 눌렀을 때 게임 재시작하기",
+    des: (
+      <>
+        r 키를 눌렀을 때 게임을 재시작하려면 r가 눌렸는지 감지를 해야합니다.
+        지금가지 배웠던 <Code>pygame.key.get_just_presses()</Code>를 사용해하는
+        것도 가능하지만 이번에는 다른 방법으로 감지하는 방법을 사용해 볼거에요.{" "}
+        <Code>event.type</Code>로 <Code>KEYDOWN</Code> 이벤트를 감지해서 r키의
+        눌림을 판단할 거에요. 그리고 r키가 눌렸다면 <Code>game_over</Code>가
+        참인지 확인해서 게임이 끝난 상태에서만 재시작이 가능하도록 만들어주세요.
+        게임이 재시작될 때는 배경화면과 플레이어를 다시 화면에 추가하고, hud는
+        제거하는 방식으로 구현할 수 있어요.
+      </>
+    ),
+  },
+  {
+    code: `
+# main.py 의 main 함수
+		# 이벤트 루푸 아님
+        if not game_over:
+            all_sprite_group.update(dt)
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.draw(display_surface)
+
+        else:
+            #   ┌─ 추가하기
+            all_sprite_group.empty()
+            #   ┌─ 추가하기
+            meteor_sprite_group.empty()
+            #   ┌─ 추가하기
+            missile_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
+            display_surface.blit(hud.image, hud.rect)
+		`,
+    title: "game_over 상태에서 스프라이트 그룹 초기화하기",
+    des: <></>,
+  },
+];
+
+const checkpoint2 = [
+  {
+    code: `
+import pygame
+
+from settings import (
+    all_sprite_group,
+    meteor_sprite_group,
+    missile_sprite_group,
+    display_surface,
+)
+from entity.bg import Background
+from entity.player import Player
+from entity.meteor import Meteor
+from entity.hud import Hud
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    game_over = False
+    direction = pygame.Vector2(0, 0)
+    bg = Background()
+    hud = Hud()
+    player = Player()
+    meteor_event = pygame.event.custom_type()
+    if not game_over:
+        pygame.time.set_timer(meteor_event, 400)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            #   ┌─ 추가하기
+            elif event.type == meteor_event:
+                Meteor.spawn(3)
+            #   ┌─ 추가하기
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                if game_over:
+                    all_sprite_group.add(bg)
+                    player.reset()
+                    hud.kill()
+                    game_over = False
+
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if not game_over:
+            all_sprite_group.update(dt)
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.draw(display_surface)
+
+        else:
+            #   ┌─ 추가하기
+            all_sprite_group.empty()
+            meteor_sprite_group.empty()
+            missile_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
+            display_surface.blit(hud.image, hud.rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+
+		`,
+    header: `main.py`,
+  },
+  {
+    code: `
+import pygame
+from os.path import join
+from entity.missile import Missile
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 300
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200
+    missile_timer: float = 0
+
+    def __init__(self):
+        super().__init__(all_sprite_group)
+        self.image: pygame.Surface = pygame.image.load(Player.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def spawn_missile(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE]:
+            Missile(pygame.Vector2(self.rect.midtop))
+            Player.missile_timer = pygame.time.get_ticks()
+
+    def handleMissile(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Player.missile_timer > Player.missile_cooldown:
+            self.spawn_missile()
+
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.normalize_ip()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        self.handleMissile()
+
+    #   ┌─ 추가하기
+    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.add(self)
+		`,
+    header: "entity/player.py",
+  },
+];
+
 export default function Page() {
   return (
     <div className="pb-100 p-10">
@@ -307,7 +686,7 @@ export default function Page() {
         />
       ))}
       <Title my="m" size="h2" id="conditional">
-        게임 종료이 종료될 때 표시하기
+        게임 종료 표시하기
       </Title>
       <Text>
         화면에 글자를 표시하기까지는 잘 구현이 되었어요. 이제는 이 기능을 조금
@@ -322,6 +701,13 @@ export default function Page() {
           key={i}
         />
       ))}
+      <Title size="h3" id="checkpoint1">
+        코드 확인하기
+      </Title>
+      {checkpoint1.map((v, i) => (
+        <ToggleCodeBlock header={v.header} code={v.code} key={i} />
+      ))}
+
       <Title id="uploadFont" my="m" size="h3">
         폰트 변경하기
       </Title>
@@ -335,6 +721,31 @@ export default function Page() {
         label="갈무리 폰트"
         fileKey="spaceShooter/Galmuri9.ttf"
       />
+      {galmuriFont.map((v, i) => (
+        <CodeBlockExplainSection
+          code={v.code}
+          title={v.title}
+          des={v.des}
+          key={i}
+        />
+      ))}
+      <Title size="h2" id="restart">
+        게임 재시작하기
+      </Title>
+      {restartCode.map((v, i) => (
+        <CodeBlockExplainSection
+          code={v.code}
+          title={v.title}
+          des={v.des}
+          key={i}
+        />
+      ))}
+      <Title id="checkpoint2" size="h2">
+        코드 확인하기2
+      </Title>
+      {checkpoint2.map((v, i) => (
+        <ToggleCodeBlock header={v.header} code={v.code} key={i} />
+      ))}
     </div>
   );
 }
