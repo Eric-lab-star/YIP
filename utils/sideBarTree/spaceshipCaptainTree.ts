@@ -484,4 +484,26 @@ export const spaceshipCaptainTree: SideBarTreeItem[] = [
 			},
 		],
 	},
+	{
+		kind: "folder",
+		name: "모든 코드 확인하기",
+		files: [
+			{
+				kind: "file",
+				name: "main.py",
+				url: "/spaceshipCaptain/source_code/main",
+			},
+			{
+				kind: "folder",
+				name: "entity",
+				files: [
+					{
+						kind: "file",
+						name: "player.py",
+						url: "/spaceshipCaptain/source_code/entity/player",
+					},
+				],
+			},
+		],
+	},
 ];
