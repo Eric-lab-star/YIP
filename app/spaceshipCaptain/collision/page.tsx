@@ -247,11 +247,13 @@ const missileCollisionCodeBlock = [
 import pygame
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+pygame.init()
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
 
-
-all_sprite_group = pygame.sprite.Group() # <-- 추가
-meteor_sprite_group = pygame.sprite.Group() # <-- 추가
-missile_sprite_group = pygame.sprite.Group() # <-- 추가
+all_sprite_group = pygame.sprite.Group()
+meteor_sprite_group = pygame.sprite.Group()
+missile_sprite_group = pygame.sprite.Group()
 		`,
 		title: "settings.py 수정하기",
 		des: (
@@ -265,13 +267,16 @@ missile_sprite_group = pygame.sprite.Group() # <-- 추가
 	{
 		code: `
 # main.py 파일 수정하기
+import pygame
 from settings import (
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT,
-    all_sprite_group,  # <-- 추가하기
-    meteor_sprite_group,  # <-- 추가하기
-    missile_sprite_group,  # <-- 추가하기
+    display_surface,
+    all_sprite_group, # <-- 추가하기
+    meteor_sprite_group, # <-- 추가하기
+    missile_sprite_group, # <-- 추가하기
 )
+from entity.bg import Background
+from entity.meteor import Meteor
+from entity.player import Player
 		`,
 		title: "main.py 파일 수정하기",
 		des: (
@@ -313,10 +318,30 @@ def main():
 	{
 		code: `
 # ...main.py의 main 함수 while 루프안 코드
-        # ┌───── 추가하기
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+
+        if direction.length() > 0:
+            direction.normalize_ip()
+				# ┌─── 추가하기
         pygame.sprite.groupcollide(
             meteor_sprite_group, missile_sprite_group, True, True
         )
+
+        if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+            running = False
+
+        display_surface.fill("gray")
+
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
 # ...main.py의 main 함수 while 루프안 코드
 		`,
 		title: "def main() 함수에 미사일과 운석 충돌 감지 코드 추가하기",

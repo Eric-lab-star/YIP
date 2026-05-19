@@ -153,7 +153,7 @@ export default function Page() {
 				운석 생성 이벤트
 			</Title>
 			<Text>
-				운석이 한 개만 있으면 재미없어요. 게임의 재미을 위해서 운석이 여러개
+				운석이 한 개만 있으면 재미없어요. 게임의 재미를 위해서 운석이 여러개
 				날아오게 만들어 봅시다.
 			</Text>
 			<CodeBlockExplainSection
@@ -371,38 +371,6 @@ class Meteor(pygame.sprite.Sprite):
 						않았고 <Code>init</Code>이 호출되지도 않았지만, 클래스라는 "빵집
 						자체"가 세워지는 순간에 <Code>pygame.image.load()</Code>가 실행돼서
 						이미지가 메모리에 올라가는 거예요
-					</>
-				}
-			/>
-			<CodeBlockExplainSection
-				code={`
-import pygame
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
-from entity.player import Player
-from entity.bg import Background
-
-pygame.init()
-display_surface = pygame.display.set_mode(
-    (WINDOW_WIDTH, WINDOW_HEIGHT),
-)
-
-from entity.meteor import Meteor  # <-- 위치 수정하기
-					`}
-				title="main.py 파일에서 import 위치 수정하기"
-				des={
-					<>
-						파이썬에서 <Code>import</Code>는 단순히 파일을 "가져오기"만 하는 게
-						아니라 그 파일 안의 코드를 위에서부터 아래로 실제로 실행하는
-						동작이에요. 마치 요리책을 펼치는 순간 그 자리에서 바로 레시피대로
-						요리가 시작되는 것과 같아요. 그래서 main.py에서 Meteor를 import 하는
-						순간 meteor.py 안에 있는 클래스 속성{" "}
-						<Code>surf = pygame.image.load(path).convert_alpha()</Code>도 즉시
-						실행돼요. 그런데 <Code>convert_alpha()</Code>는{" "}
-						<Code>pygame.display.set_mode()</Code>로 화면이 먼저 만들어져 있어야
-						제대로 작동하기 때문에, 만약 import 문을 화면 초기화 코드보다 위에
-						적으면 아직 화면이 없는 상태에서 이미지를 불러오려다가 에러가 나요.
-						그래서 main.py에서는 pygame 초기화 코드를 먼저 실행한 뒤에 Meteor
-						클래스를 import 해야 안전하답니다.
 					</>
 				}
 			/>
