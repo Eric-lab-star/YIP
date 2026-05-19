@@ -17,9 +17,7 @@ def main():
     bg = Background()
     player = Player()
     meteor_event = pygame.event.custom_type()
-    #   ┌───── 추가하기
-    if not game_over:
-        pygame.time.set_timer(meteor_event, 400)
+		pygame.time.set_timer(meteor_event, 400)
 #... 기존코드를 생략함
 		`,
 		title: "main 함수에 game_over 상태 추가하기",
@@ -28,26 +26,42 @@ def main():
 				현재 상태에서는 우주선이 운석과 충돌하면 게임이 바로 종료되도록
 				프로그래밍되어 있어요. 이런 방식이라면 게임이 너무 자주 종료되므로 다른
 				방식으로 수정해볼 거예요. 우선 충돌하면 우주선과 운석이 사라지도록
-				수정할 거예요. <Code>main.py</Code>의 main 함수를 수정해 주세요. 지금
-				수정하는 부분에서는 게임이 시작될 때 운석이 생성되는 타이머가 설정되어
-				있는데, 게임이 끝났을 때는 타이머가 멈추도록 수정해 주세요.
+				수정할 거예요. <Code>main.py</Code>의 main 함수를 수정해 주세요.
 			</>
 		),
 	},
 	{
 		code: `
 #... 기존코드 생략함
-        #   ┌───── 추가하기
+# while 루프를 잘 보고 따라서 수정하세요.
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+    #   ┌───── 추가하기
         if not game_over:
-            all_sprite_group.update(dt)
             if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
                 game_over = True
-
+            all_sprite_group.update(dt)
             all_sprite_group.draw(display_surface)
         else:
-            display_surface.blit(bg.image)
             player.kill()
             meteor_sprite_group.empty()
+            display_surface.blit(bg.image)
+
+        pygame.display.flip()
+    pygame.quit()
 #... 기존코드를 생략함
 		`,
 		title: "game_over 상태에 따른 화면 수정하기",
@@ -177,14 +191,15 @@ clock = pygame.time.Clock()
 #... 생략된 기존의 main.py 코드
 def main():
     running = True
-    game_over = False
     direction = pygame.Vector2(0, 0)
+    game_over = False
+
     bg = Background()
     player = Player()
-    hud = Hud()  # <--- 추가
+    hud = Hud() # <-- 추가하기
     meteor_event = pygame.event.custom_type()
-    if not game_over:
-        pygame.time.set_timer(meteor_event, 400)
+
+    pygame.time.set_timer(meteor_event, 400)
 #... 생략된 기존의 main.py 코드
 		`,
 		title: "Hud 클래스 인스턴스 만들기",
@@ -220,13 +235,13 @@ def __init__(self, msg=""):
 	},
 	{
 		code: `
-#                   ┌─ 추가하기
-def draw(self, msg: str):
-		#                                         ┌─ 추가하기
-		self.image: pygame.Surface = Hud.font.render(msg, True, "white")
-		self.rect: pygame.FRect = self.image.get_frect(
-				center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
-		)
+# hud 클래스에 draw 메소드 추가하기
+    def draw(self, msg: str):
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+        display_surface.blit(self.image, self.rect)
 		`,
 		title: "hud.py: draw 함수 만들기",
 		des: (
@@ -243,23 +258,38 @@ def draw(self, msg: str):
 		code: `
 
 # ... 생략된 기존 코드
-if not game_over:
-		all_sprite_group.update(dt)
-		if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
-				game_over = True
-		all_sprite_group.draw(display_surface)
-else:
-		display_surface.blit(bg.image)
-		#   ┌───── 추가하기
-		hud.draw("Game Over")
-		#   ┌───── 추가하기
-		display_surface.blit(hud.image, hud.rect)
 
-		player.kill()
-		meteor_sprite_group.empty()
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if not game_over:
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.update(dt)
+            all_sprite_group.draw(display_surface)
+        else: 
+						player.kill()
+            meteor_sprite_group.empty()
+            display_surface.blit(bg.image)
+						# ┌─── 추가하기
+            hud.draw("Game Over")
+
+        pygame.display.flip()
 # ... 생략된 기존 코드
 		`,
-		title: "main,py 파일 수정하기",
+		title: "main.py 파일 수정하기",
 		des: (
 			<>
 				main.py 파일의 main 함수에서 게임이 끝났을 때 화면에 글자가 보이도록
@@ -275,16 +305,15 @@ const checkpoint1 = [
 	{
 		code: `
 import pygame
-
 from settings import (
+    display_surface,
     all_sprite_group,
     meteor_sprite_group,
     missile_sprite_group,
-    display_surface,
 )
 from entity.bg import Background
-from entity.player import Player
 from entity.meteor import Meteor
+from entity.player import Player
 from entity.hud import Hud
 
 clock = pygame.time.Clock()
@@ -292,22 +321,24 @@ clock = pygame.time.Clock()
 
 def main():
     running = True
-    game_over = False
     direction = pygame.Vector2(0, 0)
+    game_over = False
+
     bg = Background()
-    hud = Hud()
     player = Player()
+    hud = Hud()
     meteor_event = pygame.event.custom_type()
-    if not game_over:
-        pygame.time.set_timer(meteor_event, 400)
+
+    pygame.time.set_timer(meteor_event, 400)
 
     while running:
-        dt = clock.tick(60) / 1000
+        dt = clock.tick(30) / 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == meteor_event:
                 Meteor.spawn(3)
+
         if direction.length() > 0:
             direction.normalize_ip()
 
@@ -316,19 +347,15 @@ def main():
         )
 
         if not game_over:
-            all_sprite_group.update(dt)
             if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
                 game_over = True
+            all_sprite_group.update(dt)
             all_sprite_group.draw(display_surface)
         else:
-            display_surface.blit(bg.image)
-            #   ┌───── 추가하기
-            hud.draw("Game Over")
-            #   ┌───── 추가하기
-            display_surface.blit(hud.image, hud.rect)
-
             player.kill()
             meteor_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
 
         pygame.display.flip()
     pygame.quit()
@@ -342,35 +369,25 @@ if __name__ == "__main__":
 	{
 		code: `
 import pygame
-from settings import (
-    all_sprite_group,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
-)
+from settings import all_sprite_group, WINDOW_HEIGHT, WINDOW_WIDTH, display_surface
 
 
 class Hud(pygame.sprite.Sprite):
     font = pygame.font.Font(size=100)
 
-    #                       ┌─ 추가하기
     def __init__(self, msg=""):
         super().__init__(all_sprite_group)
-        #                                       ┌─ 추가하기
         self.image: pygame.Surface = Hud.font.render(msg, True, "white")
-        self.rect: pygame.FRect = self.image.get_frect(
-            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
-        )
+        self.rect = self.image.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
 
-    #                   ┌─ 추가하기
     def draw(self, msg: str):
-        #                                         ┌─ 추가하기
         self.image: pygame.Surface = Hud.font.render(msg, True, "white")
         self.rect: pygame.FRect = self.image.get_frect(
             center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         )
+        display_surface.blit(self.image, self.rect)
 
     def update(self, dt: float):
-
         pass
 		`,
 		header: "entity/hud.py",
@@ -464,11 +481,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            #   ┌─ 추가하기
-            elif event.type == meteor_event:
+            if event.type == meteor_event:
                 Meteor.spawn(3)
             #   ┌─ 추가하기
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 if game_over:
                     all_sprite_group.add(bg)
                     player.reset()
@@ -509,7 +525,6 @@ def main():
             missile_sprite_group.empty()
             display_surface.blit(bg.image)
             hud.draw("Game Over")
-            display_surface.blit(hud.image, hud.rect)
 		`,
 		title: "game_over 상태에서 스프라이트 그룹 초기화하기",
 		des: (
