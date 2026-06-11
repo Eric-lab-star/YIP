@@ -22,6 +22,7 @@ export const config = {
   matcher: [
     "/tourOfPython/:path*",
     "/spaceshipCaptain/:path*",
+    "/AIDeveloper/:path*",
     "/login",
     "/editor/:path*",
     "/students/:path*",
