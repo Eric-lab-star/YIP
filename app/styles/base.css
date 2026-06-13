@@ -2,7 +2,66 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Scale up the whole type system. rem-based Tailwind text utilities
+     inherit this, so every page gets larger text at once. Gaegu also
+     renders small, so the bump keeps the handwritten look readable. */
+  html {
+    font-size: 18px;
+  }
   body {
     @apply bg-background text-foreground;
+    /* Handwritten, doodle-style type across the whole app */
+    font-family: "Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive;
+    /* Warm notebook dot-grid paper */
+    background-image: radial-gradient(
+      rgba(38, 61, 91, 0.08) 1.4px,
+      transparent 1.4px
+    );
+    background-size: 24px 24px;
+  }
+
+  /* Monospace surfaces keep a legible mono (code blocks, kbd, etc.) */
+  code,
+  pre,
+  kbd,
+  samp,
+  .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+}
+
+@layer components {
+  /* Reusable hand-drawn box: irregular radii read as an imperfect ink line. */
+  .doodle-box {
+    border: 2.5px solid var(--border);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
+  .doodle-box-alt {
+    border: 2.5px solid var(--border);
+    border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
+  }
+
+  /* Apply the sketch look to shared shadcn primitives app-wide.
+     They expose data-slot hooks, so one rule reaches every page. */
+  [data-slot="card"],
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="popover-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dialog-content"],
+  [data-slot="alert"] {
+    border-width: 2.5px;
+    border-style: solid;
+    border-color: var(--border);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
+
+  /* Buttons get a wobbly outline; alternate the radius for a sketchy rhythm. */
+  [data-slot="button"] {
+    border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
+  }
+  [data-slot="badge"] {
+    border-radius: 12px 4px 12px 4px / 4px 12px 4px 12px;
   }
 }

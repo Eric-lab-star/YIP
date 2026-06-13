@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import { IBM_Plex_Sans_KR } from "next/font/google";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -31,13 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-const kr = IBM_Plex_Sans_KR({
-  weight: "400",
-  style: "normal",
-  subsets: ["latin", "latin-ext"],
-  fallback: ["sans-serif", "arial", "system-ui"],
-});
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -45,7 +37,20 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="kr-ko">
-      <body className={`${kr.className} flex sm:justify-center  antialiased`}>
+      <head>
+        {/* Doodle design system: handwritten Korean + swashy display + mono */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Delius+Swash+Caps&family=JetBrains+Mono:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="flex sm:justify-center antialiased">
         <SpeedInsights />
         <SidebarProvider defaultOpen={false}>
           <AppSideBar />

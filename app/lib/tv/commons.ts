@@ -1,40 +1,12 @@
 import { tv } from "tailwind-variants";
 
-import { IBM_Plex_Sans_KR } from "next/font/google";
-
-const kr = IBM_Plex_Sans_KR(
-	{
-		weight: "400",
-		style: "normal",
-		subsets: ['latin', 'latin-ext'],
-		fallback: ["sans-serif", "arial", "system-ui"],
-	})
-
-const kr_700 = IBM_Plex_Sans_KR({
-	weight: "700",
-	style: "normal",
-	subsets: ['latin', 'latin-ext'],
-	fallback: ["sans-serif", "arial", "system-ui"],
-})
-const kr_500 = IBM_Plex_Sans_KR({
-	weight: "500",
-	style: "normal",
-	subsets: ['latin', 'latin-ext'],
-	fallback: ["sans-serif", "arial", "system-ui"],
-
-})
-const kr_300 = IBM_Plex_Sans_KR({
-	weight: "300",
-	style: "normal",
-	subsets: ['latin', 'latin-ext'],
-	fallback: ["sans-serif", "arial", "system-ui"],
-})
-
+// Doodle: type inherits the global handwritten font (Gaegu) from base.css.
+// Gaegu ships 300/400/700, so we lean on weight utilities only.
 export const text = tv({
 	variants: {
 		weight: {
-			bold: kr_500.className,
-			base: kr.className,
+			bold: "font-bold",
+			base: "font-normal",
 		},
 		size: {
 			md: "text-lg",
@@ -73,9 +45,9 @@ export const title = tv({
 			h4: "text-md",
 		},
 		weight: {
-			bold: kr_700.className,
-			semi: kr_500.className,
-			light: kr_300.className,
+			bold: "font-bold",
+			semi: "font-bold",
+			light: "font-light",
 		},
 		my: {
 			l: "my-6",

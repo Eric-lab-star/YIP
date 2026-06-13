@@ -3,12 +3,17 @@ import { SideBarTreeItem } from "@/components/commons/SideBarItems";
 export const aIDeveloperTree: SideBarTreeItem[] = [
   {
     kind: "folder",
-    name: "프로젝트 설정하기",
+    name: "Jupyter NoteBook",
     files: [
       {
         kind: "file",
-        name: "AI Developer",
-        url: "/AIDeveloper",
+        name: "학습 목표",
+        url: "/AIDeveloper/noteBook/goal",
+      },
+      {
+        kind: "file",
+        name: "실습 과제",
+        url: "/AIDeveloper/noteBook/task",
       },
     ],
   },

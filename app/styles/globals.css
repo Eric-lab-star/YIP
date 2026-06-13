@@ -36,14 +36,15 @@ input[type=number] {
 }
 
 :root {
-  --sidebar: hsl(0 0% 98%);
-  --sidebar-foreground: hsl(240 5.3% 26.1%);
-  --sidebar-primary: hsl(240 5.9% 10%);
-  --sidebar-primary-foreground: hsl(0 0% 98%);
-  --sidebar-accent: hsl(240 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --sidebar-border: hsl(220 13% 91%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* Doodle sidebar tokens (paper + ink, sky accent) */
+  --sidebar: #fffdf7;
+  --sidebar-foreground: #263d5b;
+  --sidebar-primary: #49b6e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e6f4fb;
+  --sidebar-accent-foreground: #263d5b;
+  --sidebar-border: #263d5b;
+  --sidebar-ring: #49b6e5;
 }
 
 .dark {

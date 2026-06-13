@@ -8,7 +8,6 @@ import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
 import { redirect, usePathname } from "next/navigation";
 
-import { IBM_Plex_Sans_KR } from "next/font/google";
 import { SidebarContext, SidebarTrigger } from "../ui/sidebar";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -18,12 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const kr_font = IBM_Plex_Sans_KR({
-  weight: "700",
-  style: "normal",
-  subsets: ["latin", "latin-ext"],
-  fallback: ["sans-serif", "arial", "system-ui"],
-});
 export default function Header() {
   const pathname = usePathname();
   const sidebarCtx = useContext(SidebarContext);
@@ -46,7 +39,7 @@ export default function Header() {
   }, [section]);
 
   return (
-    <div className="sm:h-15 shrink-0 w-full border-b  bg-white/80 sticky top-0 backdrop-blur z-50 select-none flex justify-between px-10 py-2">
+    <div className="sm:h-15 shrink-0 w-full border-b-[2.5px] border-foreground bg-[#fffdf7]/85 sticky top-0 backdrop-blur z-50 select-none flex justify-between px-10 py-2">
       <div className="flex space-x-2 items-center">
         {showIcon && <SidebarTrigger className="" />}
         <Link className="hidden sm:block" href={"/"}>
@@ -100,7 +93,7 @@ function UserProfile() {
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className={`${kr_font.className} text-lg`}>
+                <div className="text-lg font-bold cursor-pointer">
                   {user.name}
                 </div>
               </DropdownMenuTrigger>
