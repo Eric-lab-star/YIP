@@ -1,8 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-// oneDark is a Prism theme, so pair it with the Prism highlighter (the default
-// export is the hljs build and would ignore the theme).
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -168,7 +166,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
               fontSize: "1rem",
             }}
             codeTagProps={{
-              style: { fontFamily: '"JetBrains Mono", ui-monospace, monospace' },
+              style: {
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+              },
             }}
           >
             {String(children).replace(/\n$/, "")}

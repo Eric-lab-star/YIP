@@ -1,0 +1,214 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '청킹 & 검색 실습 — 나만의 문서 검색기 만들기',
+  description: '긴 텍스트를 청크로 나누고, 각 청크를 임베딩해서 질문과 가장 유사한 조각을 찾아내는 검색기를 직접 완성해보자냥!',
+  session: 8,
+}
+
+# 🐾 청킹 & 검색 실습 — 나만의 문서 검색기 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 긴 문서를 **청크로 나누고**
+  각 청크를 **임베딩**해서, 질문과 가장 비슷한 조각을 찾아주는 **검색기**를
+  직접 만들어볼 거다냥. 빈칸을 하나씩 채우면서 천천히, 즐겁게 가보자냥! 🐱
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `google-generativeai`, `numpy` 패키지 설치 확인
+  - 실습용 **긴 텍스트 문서** 준비 (5~6개 문단 이상 — 학교 소개, 동아리 안내, 특정 주제 설명문 등)
+  - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 문서 내용을 기반으로 한 **테스트 질문** 몇 개 미리 생각해두기
+</Callout>
+
+---
+
+<MissionCard number={1} title="실습용 긴 문서 준비하기" time="5분">
+
+먼저 검색기로 다룰 **긴 텍스트 자료**를 준비해보자냥. 학교 소개 글, 동아리 안내, 좋아하는 주제 설명문 등 **여러 문단으로 이루어진 글**이면 좋다냥. (최소 5~6개 문단 이상 추천이다냥!)
+
+```python
+# 실습용 긴 문서 예시 (학생들에게 미리 배포된 텍스트로 대체 가능)
+document = """
+(여기에 여러 문단으로 구성된 긴 텍스트가 들어갑니다.
+예: 학교 소개, 동아리 안내, 특정 주제에 대한 설명 등
+최소 5~6개 문단 이상 권장)
+"""
+```
+
+> ✅ **확인해보자냥**
+> - 문서가 한 가지 주제만 다루지 않고, **여러 소주제(문단)**를 담고 있냥?
+> - 글이 너무 짧으면 청킹 효과를 느끼기 어렵다냥. 충분히 긴 글로 준비했냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="문서를 청크로 쪼개기 ✂️" time="8~10분">
+
+이제 긴 문서를 **일정 글자 수 단위**로 잘라서 여러 청크로 나눠보자냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+# 실습용 긴 문서 예시 (학생들에게 미리 배포된 텍스트로 대체 가능)
+document = """
+(여기에 여러 문단으로 구성된 긴 텍스트가 들어갑니다.
+예: 학교 소개, 동아리 안내, 특정 주제에 대한 설명 등
+최소 5~6개 문단 이상 권장)
+"""
+
+def split_into_chunks(text, chunk_size=200):
+    # 텍스트를 chunk_size 글자 단위로 나누는 코드를 작성해보세요
+    chunks = []
+    for i in range(0, len(text), ____):
+        chunk = text[i:i + ____]
+        chunks.append(chunk)
+    return chunks
+
+chunks = split_into_chunks(document, chunk_size=200)
+print(f"총 {len(chunks)}개의 청크로 나뉘었습니다.")
+print("첫 번째 청크:", chunks[0])
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - 두 빈칸 모두 **얼마만큼씩 자를지**를 정하는 값이다냥. 함수에 이미 들어와 있는 어떤 변수일까냥? 🤔
+> - 실행하면 "총 N개의 청크로 나뉘었습니다."가 출력되냥? 첫 번째 청크 내용도 보이냥?
+
+✍️ **직접 해보기**
+출력된 청크 개수를 확인해보자냥. 문서가 길수록 청크가 더 많이 나온다냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="청크 임베딩 + 검색 함수 만들기 🔍" time="8~10분">
+
+이제 모든 청크를 **임베딩**으로 바꾸고, 질문과 가장 비슷한 청크를 찾아주는 `search` 함수를 완성해보자냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import google.generativeai as genai
+import numpy as np
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+
+def get_embedding(text):
+    result = genai.embed_content(model="models/text-embedding-004", content=text)
+    return result["embedding"]
+
+def cosine_similarity(vec1, vec2):
+    vec1, vec2 = np.array(vec1), np.array(vec2)
+    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+
+# 모든 청크를 임베딩으로 변환
+chunk_embeddings = [get_embedding(chunk) for chunk in chunks]
+
+def search(query, top_k=1):
+    query_embedding = get_embedding(query)
+
+    # 각 청크와 질문 사이의 유사도를 계산해보세요
+    similarities = []
+    for chunk_emb in chunk_embeddings:
+        sim = ____  # cosine_similarity 함수를 사용해보세요
+        similarities.append(sim)
+
+    # 유사도가 가장 높은 청크의 인덱스(top_k개) 찾기
+    top_indices = np.argsort(similarities)[::-1][:top_k]
+
+    return [chunks[i] for i in top_indices]
+
+# 질문을 직접 작성해보세요
+question = ____
+results = search(question)
+
+print("가장 관련 있는 내용:")
+for r in results:
+    print("-", r)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `sim = ____` 자리에는 `cosine_similarity` 함수에 **질문 임베딩(`query_embedding`)**과 **청크 임베딩(`chunk_emb`)** 두 개를 넣으면 된다냥.
+> - `question = ____` 자리에는 문서 내용과 관련된 질문을 **따옴표로 감싼 문자열**로 넣으면 된다냥. (예: `"동아리는 어떻게 가입하나요?"`)
+
+<Callout type="analogy">
+  **비유로 이해하기 — 도서관 사서에게 질문하기** 👩‍🏫
+
+  오늘 만든 `search` 함수는 **도서관 사서**와 같다냥.
+
+  - 손님(질문)이 와서 "이런 내용 찾고 있어요"라고 말하면,
+  - 사서는 책장에 꽂힌 **모든 챕터(청크)의 위치(임베딩)**를 살펴보고,
+  - 질문과 **가장 가까운 위치**에 있는 챕터를 꺼내 건네준다냥.
+
+  아직 그 내용을 "설명"해주지는 않지만, **정확한 자료를 찾아주는 역할**까지는 완성한 거다냥! 🎉
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="다양한 질문으로 테스트하기 🧪" time="5~7분">
+
+검색기가 잘 동작하는지 **여러 질문**을 직접 넣어보며 확인해보자냥. `question` 값을 바꿔가며 실행하면 된다냥!
+
+```python
+question = "여기에 직접 질문을 바꿔서 넣어보세요"
+results = search(question)
+
+print("가장 관련 있는 내용:")
+for r in results:
+    print("-", r)
+```
+
+> ✅ **확인해보자냥**
+> - 질문과 **관련된 청크**가 잘 검색되냥?
+> - `search(question, top_k=2)`처럼 `top_k`를 늘리면, 관련 있는 청크를 **여러 개** 받아볼 수 있다냥!
+
+✍️ **직접 해보기**
+문서 안 내용에 대해 서로 다른 질문 **3개 이상**을 넣어보고, 어떤 청크가 검색되는지 비교해보자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면? ✨" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `chunk_size`를 **100과 300으로 다르게** 설정해보고, 검색 결과가 어떻게 달라지는지 비교해보기
+- [ ] 일부러 문서에 **없는 내용**을 질문해보고, 어떤 청크가 나오는지 관찰해보기
+- [ ] 짝과 함께 "검색 결과를 더 정확하게 만들려면 어떤 부분을 개선하면 좋을까?" 이야기 나눠보기
+
+<Callout type="important">
+  ⚠️ **임베딩 API 호출에 시간이 걸릴 수 있다냥!**
+
+  청크 개수가 많으면 임베딩 API를 그만큼 여러 번 부르게 되어 느려진다냥. 청크 개수는 **10~20개 이내**로 적당히 유지하는 걸 추천한다냥. (문서가 너무 길면 `chunk_size`를 키워서 청크 수를 줄여보자냥!)
+</Callout>
+
+<Callout type="tip">
+  🐾 검색 결과가 질문과 **약간 어긋나 보일 수도** 있다냥. 괜찮다냥! 오늘은 "자료를 찾아주는" 단계까지만 한 거라냥. **다음 시간**에는 AI가 이 자료를 보고 더 자연스럽게 답을 정리해줄 거다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 긴 문서를 **청크로 쪼개기** ✂️
+  2. 모든 청크를 **임베딩**으로 변환하기 📍
+  3. 질문과 가장 비슷한 청크를 찾아주는 **검색기** 만들기 🔍
+  4. **여러 질문**으로 직접 테스트하기 🧪
+
+  까지 해냈다냥! 책을 챕터별로 정리해두고, 질문에 맞는 챕터를 찾아주는
+  **도서관 검색 카운터**를 완성한 거다냥. 👏
+
+  다만 오늘은 매번 코드를 실행할 때마다 **모든 청크를 다시 임베딩**했지?
+  다음 시간에는 이걸 미리 **창고(벡터DB, Chroma)**에 저장해두고, 필요할 때마다
+  빠르게 꺼내 쓰는 법을 배워볼 거다냥! 다음에 또 만나자냥, 냐옹~ 🐱💻🐾
+</NyangSpeech>

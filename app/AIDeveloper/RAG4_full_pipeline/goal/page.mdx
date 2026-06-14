@@ -1,0 +1,228 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '검색 + 생성 합체! RAG 챗봇 완성하기',
+  description: '도서관에서 자료를 찾는 검색(Retrieval)과 친절하게 설명하는 생성(Generation)을 하나로 합쳐, 진짜 RAG 챗봇을 완성하는 흐름을 배워보자냥!',
+  session: 10,
+}
+
+# 검색 + 생성 합체! RAG 챗봇 완성하기 🐱📚
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 🐾 지난 세 시간 동안 우리는 정말 많은 걸 만들었다냥.
+  문장을 숫자로 바꾸는 **임베딩**, 긴 문서를 잘게 자르는 **청킹**, 그리고
+  자료를 빠르게 찾아주는 **벡터DB(Chroma)**까지! 그런데… 자료를 찾기만 하고
+  끝내면 좀 아쉽지 않냥? 오늘은 드디어 찾은 자료를 제미나이에게 건네서
+  **자연스러운 답변**까지 만들어내는, 진짜 **RAG 챗봇**을 완성할 거다냥! 두근두근! 🐟
+</NyangSpeech>
+
+---
+
+## 🎯 오늘의 학습 목표
+
+<Callout type="goal">
+  - 검색(**Retrieval**)과 생성(**Generation**)을 연결하는 전체 **RAG 흐름**을 이해한다.
+  - 지난 3차시 동안 만든 결과물(**임베딩 · 청킹 · 벡터DB**)을 하나의 앱으로 통합한다.
+  - 검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 걸 안다.
+</Callout>
+
+---
+
+## 1단계 · 지금까지 우리가 만든 것들 되돌아보기 (5분)
+
+<NyangSpeech>
+  오늘 합체를 하려면, 먼저 우리가 어떤 부품들을 만들어왔는지 떠올려봐야 한다냥.
+  하나씩 차근차근 정리해보자냥! 😺
+</NyangSpeech>
+
+<StepCard step="복습" title="RAG로 가는 네 걸음">
+
+| 차시 | 무엇을 했냥? |
+|---|---|
+| 1차시 | **임베딩**으로 문장을 숫자(벡터)로 표현했다냥 |
+| 2차시 | 문서를 **청킹**하고, 유사도로 비슷한 조각을 찾았다냥 |
+| 3차시 | **Chroma 벡터DB**에 저장하고 효율적으로 검색했다냥 |
+| 오늘 (4차시) | 검색한 자료를 제미나이에게 줘서 **답변 생성**까지 완성한다냥! |
+
+</StepCard>
+
+<Callout type="note">
+  지금까지는 "**자료를 찾는 것**"까지만 했다냥. 오늘은 거기에 "**찾은 자료로 친절하게 설명하기**"를 더하는 날이다냥!
+</Callout>
+
+---
+
+## 2단계 · 핵심 비유 — "AI 사서의 완성" (3분)
+
+<NyangSpeech>
+  RAG가 뭔지 한 번에 와닿게 해줄 비유가 있다냥. 도서관을 한번 떠올려보자냥! 📚
+</NyangSpeech>
+
+지금까지 우리는 **도서관(벡터DB)**에서 관련 자료를 빠르게 찾아내는 시스템을 만들었다냥. 그런데 손님이 이렇게 말하면 어떨까냥?
+
+> "이 자료들 중에서 **내 질문에 맞는 답**을 정리해서 설명해주세요!"
+
+자료를 찾는 것과, 그 자료를 **읽고 정리해서 설명하는 것**은 다른 일이다냥. 그래서 오늘은 두 명의 전문가를 한 팀으로 묶는다냥.
+
+<CompareBubble
+  left={{
+    emoji: '🔎',
+    label: '검색 시스템 (사서)',
+    color: 'green',
+    items: [
+      '벡터DB에서 질문과 관련된 자료를 찾아냄',
+      '"이 책들이 관련 있어요!"까지만 담당',
+      '우리가 지난 3차시 동안 만든 부분',
+      'Retrieval (검색)',
+    ],
+  }}
+  right={{
+    emoji: '🗣️',
+    label: '설명 잘하는 직원 (제미나이)',
+    color: 'purple',
+    items: [
+      '찾아온 자료를 읽고 이해함',
+      '"이 자료를 보면 답은 이거예요!"라고 설명',
+      '오늘 새로 연결할 부분',
+      'Generation (생성)',
+    ],
+  }}
+/>
+
+<Callout type="analogy">
+  **AI 사서의 완성** 🐱
+
+  사서(검색 시스템)와 설명을 잘하는 직원(제미나이)을 한 팀으로 묶으면,
+  **"자료를 찾아서, 그 자료를 바탕으로 친절하게 설명까지 해주는 AI 사서"**가 완성된다냥.
+
+  이것이 바로 **RAG(검색 증강 생성, Retrieval-Augmented Generation)**의 완성형이라냥!
+</Callout>
+
+---
+
+## 3단계 · 전체 RAG 파이프라인 흐름 (5~7분)
+
+<NyangSpeech>
+  자, 그럼 손님의 질문이 답변이 되어 나오기까지, 안에서 어떤 일이
+  순서대로 일어나는지 따라가보자냥! 🐾
+</NyangSpeech>
+
+### 🚂 질문이 답변이 되는 네 정거장
+
+<StepCard step="흐름" title="RAG 파이프라인 한눈에 보기">
+
+1. **사용자 질문** — 손님이 궁금한 걸 물어본다냥.
+2. **검색 (Retrieval)** — 벡터DB에서 질문과 **관련된 청크**를 찾아온다냥.
+3. **prompt 구성** — 검색 결과 + 질문을 하나의 **prompt**로 합친다냥.
+4. **생성 (Generation)** — 제미나이가 그 prompt를 읽고 **답변을 생성**한다냥!
+
+</StepCard>
+
+<Callout type="important">
+  여기서 정말 중요한 점이 있다냥! **검색 결과를 prompt에 어떻게 넣느냐**가 답변 품질을 크게 좌우한다냥.
+  지난 시간에 배운 **"좋은 프롬프트 작성법"**이 바로 여기서 빛을 발한다냥. 역할 · 맥락 · 지시 · 형식을 잘 담아야 좋은 답이 나온다냥!
+</Callout>
+
+### 🐣 RAG의 핵심 한 문장
+
+<Callout type="tip">
+  💡 RAG의 핵심은 이거다냥.
+
+  **"AI가 원래 모르는 내용도, 검색해온 자료를 참고하면 답할 수 있다!"**
+
+  제미나이는 우리 학교 자료나 내 개인 문서를 학습한 적이 없지만,
+  그 자료를 찾아서 prompt에 넣어주면 마치 아는 것처럼 답할 수 있게 된다냥. 신기하지 않냥? 😺
+</Callout>
+
+---
+
+## 4단계 · 코드로 미리 보는 RAG 함수 (3분)
+
+<NyangSpeech>
+  실습에서 직접 빈칸을 채워볼 거지만, 먼저 RAG 함수가 어떻게 생겼는지
+  구경만 해보자냥. 위에서 배운 4단계가 코드에 그대로 들어 있다냥! 👀
+</NyangSpeech>
+
+```python
+import chromadb
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+
+# 지난 시간 만든 Chroma DB와 collection을 그대로 사용
+client = chromadb.Client()
+collection = client.get_or_create_collection(name="my_documents")
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+def rag_answer(question):
+    # 1) 벡터DB에서 관련 청크 검색 (Retrieval)
+    results = collection.query(query_texts=[question], n_results=2)
+    retrieved_chunks = results["documents"][0]
+
+    # 2) 검색된 내용을 하나의 문자열로 합치기
+    context = "\n".join(retrieved_chunks)
+
+    # 3) 검색 결과 + 질문을 prompt로 구성
+    prompt = f"""
+    아래 [참고 자료]만을 근거로 질문에 답해줘.
+
+    [참고 자료]
+    {context}
+
+    [질문]
+    {question}
+    """
+
+    # 4) 제미나이가 답변 생성 (Generation)
+    response = model.generate_content(prompt)
+    return response.text
+```
+
+보이냥? `collection.query(...)`가 **검색**, `model.generate_content(prompt)`가 **생성**이라냥. 그 사이에서 검색 결과를 prompt에 끼워넣는 게 RAG의 핵심이라냥! 🐟
+
+<Callout type="note">
+  걱정 말라냥! 실습 페이지에서는 prompt 안의 **역할**과 **테스트 질문**을 직접 채워볼 거다냥. 지금은 "아, 이렇게 생겼구나" 정도만 느끼면 충분하다냥. 😼
+</Callout>
+
+---
+
+## ✅ 오늘 배운 내용 정리
+
+<NyangSpeech>
+  머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥! 🐾
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'RAG의 두 글자, R과 G는 각각 무슨 단계를 뜻하냥?',
+      answer: 'R은 Retrieval(검색) — 벡터DB에서 관련 자료를 찾아오는 단계다냥. G는 Generation(생성) — 찾아온 자료로 제미나이가 답변을 만드는 단계다냥!',
+    },
+    {
+      question: 'AI 사서 비유에서 "사서"와 "설명 잘하는 직원"은 각각 무엇을 맡냥?',
+      answer: '사서는 검색 시스템(벡터DB)으로 관련 자료를 찾아주고, 설명 잘하는 직원은 제미나이로 그 자료를 바탕으로 친절하게 답변을 만들어준다냥. 둘이 한 팀이 되면 RAG가 완성된다냥!',
+    },
+    {
+      question: '제미나이가 학습한 적 없는 우리 문서 내용도 답하게 만들 수 있는 이유는 뭐냥?',
+      answer: '관련 자료를 검색해서 prompt에 넣어주면, 제미나이가 그 자료를 참고해서 답하기 때문이다냥. "AI가 모르는 내용도 검색해온 자료를 참고하면 답할 수 있다"가 RAG의 핵심이라냥!',
+    },
+    {
+      question: '검색 결과를 prompt에 넣을 때 특별히 신경 써야 하는 이유는 뭐냥?',
+      answer: '검색 결과를 어떻게 넣느냐가 답변 품질을 크게 좌우하기 때문이다냥. 역할·맥락·지시·형식을 잘 담은 좋은 프롬프트일수록 더 정확하고 친절한 답이 나온다냥!',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  드디어 검색과 생성을 합쳐서 진짜 **AI 사서**를 완성할 준비가 끝났다냥!
+  이제 실습 페이지로 가서, 직접 RAG 함수를 만들고 Streamlit 챗봇까지
+  완성해보자냥. 발톱 준비됐냥? 가보자냥~ 🐱💻🐾
+</NyangSpeech>

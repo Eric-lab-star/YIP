@@ -13,6 +13,7 @@ import { pythonLangCurriculum } from "@/utils/sideBarTree/tourOfPythonTree";
 import { spaceshipCaptainTree } from "@/utils/sideBarTree/spaceshipCaptainTree";
 import { SideBarTree } from "./SideBarItems";
 import { aIDeveloperTree } from "@/utils/sideBarTree/AIDeveloperTree";
+import Link from "next/link";
 
 export default function AppSideBar() {
   const pathname = usePathname();
@@ -24,7 +25,9 @@ export default function AppSideBar() {
     <Sidebar side="left" variant={"floating"}>
       <SidebarHeader>
         <SidebarMenu>
-          <Title size="h2"> {title} </Title>
+          <Link href={`/${section}`}>
+            <Title size="h2"> {title} </Title>
+          </Link>
         </SidebarMenu>
       </SidebarHeader>
 

@@ -1,0 +1,189 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '영어 대화 앱 완성 실습 — 채팅 화면과 교정 기능',
+  description: 'Streamlit 채팅 UI와 세션 상태로 영어 회화 대화 화면을 만들고, 사용자 문장을 자연스럽게 고쳐주는 표현 교정 기능까지 직접 완성해보자냥!',
+  session: 17,
+}
+
+# 🐾 영어 대화 앱 완성 실습 — 채팅 화면과 교정 기능
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지난 시간에 만든 **페르소나 대화
+  코드**를 Streamlit 채팅 화면으로 옮겨볼 거다냥. 미션 1(채팅 화면)을 먼저 완성하고,
+  여유가 있으면 미션 2(교정 기능)에 도전해보자냥. 천천히, 즐겁게 가보자냥! 🐱
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `streamlit`, `google-generativeai` 패키지 설치 확인
+  - 지난 시간(19차시)에 만든 **페르소나 / 대화 코드**
+  - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="환경 준비 — 페르소나 코드 불러오기" time="5분">
+
+먼저 `streamlit` 패키지가 잘 깔렸는지 확인하고, 지난 시간에 만든 **페르소나 설정 코드**를 떠올려보자냥. 새 파일 `app.py`를 만들고, 페르소나가 적용된 모델을 준비해보자냥.
+
+```python
+import streamlit as st
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+
+st.title("나의 영어 대화 선생님")
+
+# 페르소나 설정 (지난 시간 내용 활용)
+system_instruction = "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 영어로 천천히 대화해줘."
+model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=system_instruction)
+```
+
+터미널에서 아래 명령어로 실행해보자냥.
+
+```bash
+streamlit run app.py
+```
+
+> ✅ **확인해보자냥**
+> - 웹 브라우저가 열리면서 "나의 영어 대화 선생님" 제목이 보이냥?
+> - 에러 없이 화면이 잘 떴냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="채팅 화면 만들기 💬" time="12~15분">
+
+이제 진짜 **카톡 같은 채팅 화면**을 만들어볼 거다냥! `st.chat_input`, `st.chat_message`와 `session_state`를 써서 대화가 사라지지 않게 만들어보자냥.
+
+아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import streamlit as st
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+
+st.title("나의 영어 대화 선생님")
+
+# 페르소나 설정 (지난 시간 내용 활용)
+system_instruction = "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 영어로 천천히 대화해줘."
+model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=system_instruction)
+
+# 세션 상태에 대화 기록 저장소 만들기
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# 지금까지의 대화를 화면에 다시 그리기
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# 사용자 입력 받기
+user_input = st.chat_input("영어로 말해보세요")
+
+if user_input:
+    # 1) 사용자 메시지를 기록에 추가하고 화면에 표시
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.write(user_input)
+
+    # 2) AI 응답 생성 - 직접 작성해보세요
+    response = model.generate_content(user_input)
+    ai_reply = response.text
+
+    # 3) AI 메시지를 기록에 추가하고 화면에 표시
+    st.session_state.messages.append({"role": "assistant", "content": ____})
+    with st.chat_message("assistant"):
+        st.write(ai_reply)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `{"role": "assistant", "content": ____}` 의 빈칸에는 AI의 답변이 담긴 변수가 들어가야 한다냥. 바로 위에서 `ai_reply`라는 변수에 답변을 담아뒀지냥? 🐟
+
+✍️ **직접 해보기**
+영어로 한 마디 입력하고 엔터를 눌러보자냥. 선생님이 대답해주냥? 그리고 **여러 번** 대화를 주고받아도 위쪽 대화가 안 사라지고 쭉 쌓이냥?
+
+<Callout type="tip">
+  🐾 **세션 상태가 진짜 일하는지 직접 확인하기**
+
+  궁금하면 `if "messages" not in st.session_state:` 부분과 `for` 반복문을 잠깐 지워보자냥. 그러면 새 메시지를 보낼 때마다 이전 대화가 **싹 사라지는** 걸 두 눈으로 볼 수 있다냥! 확인했으면 다시 원래대로 돌려놓자냥. 😺
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="표현 교정 기능 추가하기 ✏️" time="8~10분">
+
+이번엔 학생의 영어 문장을 **더 자연스럽게 고쳐주는 교정 기능**을 만들어볼 거다냥! (미션 2를 다 한 친구만 도전해도 좋다냥 😺) 교정 기능도 결국 **프롬프트**라는 걸 잊지 말자냥.
+
+아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+# 사용자 입력을 교정해주는 함수
+def correct_english(text):
+    correction_prompt = f"""
+    다음 영어 문장을 더 자연스러운 영어로 고쳐줘.
+    {____} (고친 이유를 한국어로 짧게 설명하라는 지시 추가)
+
+    문장: {text}
+    """
+    return model.generate_content(correction_prompt).text
+
+# 위 채팅 코드에서 사용자 입력 직후에 호출해 함께 보여주기
+# 예:
+# correction = correct_english(user_input)
+# with st.expander("✏️ 표현 교정 보기"):
+#     st.write(correction)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `{____}` 자리에는 AI에게 주는 **추가 지시 문장**이 들어간다냥. 괄호 안 설명처럼 *"고친 이유를 한국어로 짧게 설명해줘"* 같은 문장을 적어보자냥!
+
+<Callout type="tip">
+  🐾 **교정 결과는 접어두면 더 깔끔하다냥**
+
+  교정 결과를 그냥 화면에 쫙 보여주면 대화 흐름이 끊긴다냥. 그래서 `st.expander("✏️ 표현 교정 보기")`로 **접어두면**, 보고 싶을 때만 펼쳐볼 수 있어서 훨씬 깔끔하다냥! 위 주석(`#`) 예시 코드를 채팅 코드의 사용자 입력 직후에 넣어보자냥.
+</Callout>
+
+✍️ **직접 해보기**
+일부러 살짝 어색한 영어 문장(예: `I goes to school`)을 입력해보자냥. 선생님이 자연스럽게 고쳐주고, 왜 고쳤는지도 알려주냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면? ✨" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 페르소나(`system_instruction`)를 바꿔서 **다른 성격의 선생님**(엄격한 선생님, 유머러스한 친구 등)을 만들어보기
+- [ ] AI 응답을 만들 때 `st.spinner("생각 중...")`을 써서 **기다리는 동안 표시** 띄워보기
+- [ ] 채팅 입력창 안내 문구를 영어/한국어로 바꿔 더 친절하게 꾸며보기
+
+> 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는 Streamlit으로
+
+  1. 페르소나가 적용된 영어 선생님 **모델 준비하기**
+  2. `session_state`로 **대화가 사라지지 않는 채팅 화면** 만들기
+  3. 프롬프트로 **영어 표현 교정 기능** 추가하기
+
+  까지 해냈다냥! 이걸로 블로그 작가, 수학 선생님에 이어 **영어 회화 선생님** 앱까지,
+  세 종류의 AI 앱을 모두 완성한 거다냥. 다들 정말 멋지게 해냈다냥 👏 "세 앱 중 내가
+  가장 발전시키고 싶은 앱은 무엇인지" 한 번 적어보자냥. 다음 시간에 또 만나자냥, 냐옹~ 🐾
+</NyangSpeech>

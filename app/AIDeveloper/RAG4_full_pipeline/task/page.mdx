@@ -1,0 +1,186 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'RAG 실습 — 나만의 AI 사서 챗봇 만들기',
+  description: '벡터DB 검색 결과를 prompt에 담아 제미나이로 답변을 생성하는 RAG 함수를 완성하고, Streamlit으로 진짜 RAG 챗봇까지 만들어보자냥!',
+  session: 10,
+}
+
+# 🐾 RAG 실습 — 나만의 AI 사서 챗봇 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 🐱 지금부터 약 25~30분 동안, 지난 시간에 만든 **벡터DB(Chroma)**와
+  **제미나이**를 하나로 합쳐볼 거다냥. RAG 함수를 먼저 완성하고, 다양한 질문으로
+  테스트한 다음, Streamlit으로 챗봇까지 만들어볼 거다냥. 천천히, 즐겁게 가보자냥! 🐟
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `chromadb`, `google-generativeai`, `streamlit` 패키지 설치 확인
+  - 지난 시간(3차시)에 만든 **Chroma DB 데이터** 또는 청크 데이터 (없으면 다시 `add` 해주기)
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - "자료에 없으면 모른다고 답하기" 비교용 **테스트 질문 목록**
+</Callout>
+
+---
+
+<MissionCard number={1} title="RAG 함수 만들기 🔗" time="8~10분">
+
+검색(벡터DB)과 생성(제미나이)을 한 함수 안에서 합쳐볼 거다냥! 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+특히 prompt 안의 **역할** 빈칸이 중요하다냥. 지난 시간에 배운 "좋은 프롬프트 작성법"을 떠올리며 채워보자냥!
+
+```python
+import chromadb
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+
+# 지난 시간 만든 Chroma DB와 collection을 그대로 사용
+client = chromadb.Client()
+collection = client.get_or_create_collection(name="my_documents")
+
+# (지난 시간 데이터가 없다면 여기서 다시 add 해주세요)
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+def rag_answer(question):
+    # 1) 벡터DB에서 관련 청크 검색
+    results = collection.query(query_texts=[question], n_results=2)
+    retrieved_chunks = results["documents"][0]
+
+    # 2) 검색된 내용을 하나의 문자열로 합치기
+    context = "\n".join(retrieved_chunks)
+
+    # 3) 역할/맥락/지시/형식을 담은 prompt를 직접 작성해보세요
+    prompt = f"""
+    너는 {____} 역할을 맡은 AI 도우미야.
+    아래 [참고 자료]만을 근거로 질문에 답해줘.
+    참고 자료에 없는 내용이면 "자료에서 찾을 수 없습니다"라고 답해줘.
+
+    [참고 자료]
+    {context}
+
+    [질문]
+    {question}
+    """
+
+    response = model.generate_content(prompt)
+    return response.text
+
+# 질문을 직접 작성해 테스트해보세요
+question = ____
+print(rag_answer(question))
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `너는 {____} 역할을` 자리에는 어떤 도우미인지 적으면 된다냥. 예: `"친절한 도서관 사서"`, `"우리 학교 안내 도우미"` 처럼!
+> - `question = ____` 자리에는 문자열 질문을 넣으면 된다냥. 예: `question = "우리 학교 점심시간은 언제야?"`
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="다양한 질문으로 테스트하기 🧪" time="8~10분">
+
+이번 미션이 RAG의 진짜 가치를 느끼는 순간이라냥! 두 종류의 질문을 던져서 결과를 비교해보자냥.
+
+<StepCard step="실험" title="이렇게 테스트해보자냥">
+
+1. **문서에 있는 내용**을 질문하기 → 자료를 바탕으로 친절하게 답하는지 확인하기
+2. **문서에 없는 내용**을 일부러 질문하기 → "자료에서 찾을 수 없습니다"라고 솔직하게 답하는지 확인하기
+
+</StepCard>
+
+> ✅ **확인해보자냥**
+> - 문서에 있는 질문에는 자료 내용을 근거로 답하냥?
+> - 문서에 없는 질문에는 아는 척하지 않고 "찾을 수 없습니다"라고 답하냥?
+
+<Callout type="tip">
+  🐾 **재미있는 비교 실험!**
+
+  prompt에서 `참고 자료에 없는 내용이면 "자료에서 찾을 수 없습니다"라고 답해줘.` 이 한 줄을 **넣었을 때**와 **뺐을 때**의 결과를 비교해보자냥.
+
+  이 줄을 빼면 AI가 자료에 없는 내용도 그럴듯하게 지어내기도 한다냥(이걸 환각이라고 부른다냥!). RAG에서 prompt 한 줄이 얼마나 중요한지 직접 느껴보자냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Streamlit으로 RAG 챗봇 완성하기 💬" time="8~10분">
+
+마지막이다냥! 미션 1에서 만든 `rag_answer` 함수를 Streamlit 화면에 연결해서, 입력창에 질문을 받아 답을 보여주는 **진짜 RAG 챗봇**을 완성해보자냥!
+
+아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import streamlit as st
+
+st.title("나만의 RAG 챗봇")
+st.write("문서 자료를 바탕으로 질문에 답하는 AI입니다.")
+
+user_question = st.text_input("질문을 입력하세요")
+
+if st.button("질문하기"):
+    answer = ____  # rag_answer 함수를 호출해보세요
+    st.write("### 답변")
+    st.write(answer)
+    
+    # (선택) 참고한 자료도 함께 보여주기
+    with st.expander("참고한 자료 보기"):
+        results = collection.query(query_texts=[user_question], n_results=2)
+        for doc in results["documents"][0]:
+            st.write("-", doc)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `answer = ____` 자리에는 미션 1에서 만든 함수를 호출하면 된다냥. 입력창의 값 `user_question`을 넘겨주면 된다냥!
+> - 정답이 떠오르냥? `rag_answer(user_question)` 처럼 쓰면 된다냥. 🐱
+
+✍️ **직접 해보기**
+
+터미널에서 `streamlit run app.py`로 실행하고, 입력창에 여러 질문을 넣어보자냥. "참고한 자료 보기"를 펼쳐서, AI가 어떤 자료를 보고 답했는지도 구경해보자냥!
+
+<Callout type="important">
+  ⚠️ **Streamlit 연결이 어렵다면?**
+
+  괜찮다냥! 꼭 Streamlit까지 안 해도 된다냥. `.ipynb`에서 미션 1의 `rag_answer()` 함수만 다양한 질문으로 반복 실행하는 것만으로도 충분히 의미 있는 실습이라냥. 자기 속도에 맞춰 가자냥! 😸
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면? ✨" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `n_results` 값을 `2`에서 `3`, `4`로 바꿔보고 답변이 어떻게 달라지는지 비교하기
+- [ ] prompt의 **역할**을 바꿔서 답변 말투가 어떻게 변하는지 실험하기 (예: "초등학생에게 설명하는 선생님")
+- [ ] 나만의 문서(관심 주제, 학교 자료 등)를 벡터DB에 새로 넣어서 나만의 챗봇 만들기
+
+> 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는 드디어
+
+  1. 검색 + 생성을 합친 **RAG 함수** 만들기
+  2. 다양한 질문으로 테스트하며 RAG의 가치 **체감하기**
+  3. Streamlit으로 **나만의 RAG 챗봇** 완성하기
+
+  까지 해냈다냥! 처음엔 빈 노트(`.ipynb`)에서 시작했던 우리가, 이제는 **질문하면
+  자료를 찾아 친절하게 설명해주는 나만의 AI 비서**를 완성한 거다냥. 🐟
+
+  오늘 만든 건 작은 시작이지만, 여기에 더 많은 자료와 기능을 더하면 정말 쓸모 있는
+  나만의 앱으로 계속 발전시킬 수 있다냥. 다들 정말 멋지게 해냈다냥 👏 냐옹~ 🐱💻🐾
+</NyangSpeech>

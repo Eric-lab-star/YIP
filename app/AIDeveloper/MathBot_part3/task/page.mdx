@@ -1,0 +1,170 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '수학 풀이 봇 완성 실습 — 사진 핸들러 추가하기',
+  description: '봇 코드와 풀이 코드를 한 파일에 모으고, 사진을 받아 저장하고 풀이를 답장하는 사진 핸들러를 직접 완성해보자냥!',
+  session: 15,
+}
+
+# 🐾 수학 풀이 봇 완성 실습 — 사진 핸들러 추가하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 🐱 지금부터 약 25~30분 동안, 16차시 봇 코드와 17차시 풀이
+  코드를 한 파일에 모으고, **사진 핸들러**를 직접 추가해서 완성형 봇을 만들어볼
+  거다냥. 차근차근 따라오면 누구나 완성할 수 있다냥. 가보자냥! 🐾
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `python-telegram-bot`, `google-generativeai`, `Pillow` 패키지 설치 확인
+  - 16차시 봇 코드 + 17차시 풀이 코드 백업/공유본
+  - **봇 토큰**, **제미나이 API 키** 준비
+  - 테스트용 **수학 문제 사진** 준비
+  - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="코드 합치기 준비하기" time="5분">
+
+먼저 우리가 합칠 두 부품을 한자리에 모아보자냥!
+
+- 16차시에서 만든 **봇 코드**(텔레그램에서 메시지를 받아 답장하는 부분)
+- 17차시에서 만든 **풀이 코드**(사진을 AI에 보내 풀이를 만드는 부분)
+
+이 둘을 **하나의 `.py` 파일**에 모으는 게 첫걸음이다냥. 어떤 부품들이 들어가는지 머릿속으로 그려보자냥.
+
+<StepCard step="조립도" title="완성 봇에 들어갈 부품들">
+
+- **연결 도구 불러오기:** 텔레그램 도구, 제미나이 AI 도구, 이미지 도구(`PIL`)
+- **열쇠 준비:** 봇 토큰, 제미나이 API 키
+- **풀이 프롬프트:** 17차시에서 만든 명령서 그대로 재사용
+- **`/start` 인사 기능:** 봇을 처음 켰을 때 안내 메시지
+- **사진 핸들러:** 오늘 새로 추가할 핵심 부품! 🌟
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="사진 핸들러 추가하기 🖼️" time="12~15분">
+
+이제 오늘의 핵심이다냥! 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.** 사진을 받아 저장하고, 풀이를 만들어 답장하는 핸들러를 완성하는 거다냥!
+
+```python
+from telegram import Update
+from telegram.ext import Application, MessageHandler, CommandHandler, filters, ContextTypes
+import google.generativeai as genai
+import PIL.Image
+
+TELEGRAM_TOKEN = "여기에 봇 토큰 입력"
+genai.configure(api_key="여기에 제미나이 API 키 입력")
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# 17차시에서 만든 풀이 프롬프트 재사용
+solve_prompt = """
+너는 친절한 수학 선생님이야. 이 사진 속 수학 문제를 풀어줘.
+문제를 설명하고, 단계별 풀이 과정을 보여준 뒤, 마지막에 '정답: '으로 정답을 알려줘.
+중학생도 이해할 수 있게 쉽게 설명해줘.
+"""
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("수학 문제 사진을 보내주시면 풀이를 알려드릴게요!")
+
+# 사진을 받았을 때 처리하는 함수
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # 1) 사용자에게 처리 중임을 알리기
+    await update.message.reply_text("문제를 푸는 중이에요. 잠시만 기다려주세요...")
+
+    # 2) 사진 파일 받아서 저장
+    photo_file = await update.message.photo[-1].get_file()
+    await photo_file.download_to_drive("received.jpg")
+
+    # 3) 저장된 사진으로 풀이 생성 - 직접 작성해보세요
+    image = PIL.Image.open("received.jpg")
+    response = model.generate_content([____, image])  # 풀이 프롬프트와 이미지 전달
+
+    # 4) 풀이 결과를 답장으로 보내기
+    await update.message.reply_text(____)
+
+app = Application.builder().token(TELEGRAM_TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+
+print("수학 풀이 봇이 실행 중입니다...")
+app.run_polling()
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - 첫 번째 `____`에는 AI에게 줄 **풀이 명령서**가 들어가야 한다냥. 위에서 만든 변수 이름을 떠올려보자냥! (`s`로 시작한다냥 😺)
+> - 두 번째 `____`에는 AI가 만들어준 **풀이 결과 텍스트**가 들어가야 한다냥. `response`에서 텍스트만 꺼내려면 무엇을 붙여야 할까냥?
+
+<Callout type="tip">
+  🐾 **`photo[-1]`은 무슨 뜻이냥?**
+
+  텔레그램은 사진 한 장을 보낼 때 여러 가지 크기로 함께 보낸다냥. `photo[-1]`은
+  그중에서 **가장 마지막(가장 고화질)** 사진을 골라낸다는 뜻이다냥! 문제를
+  또렷하게 읽으려면 고화질이 좋겠지냥? 🐟
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="실제로 테스트하기 ✅" time="8~10분">
+
+이제 봇을 실행하고, 진짜로 작동하는지 확인해보자냥!
+
+```bash
+python 파일이름.py
+```
+
+실행하면 터미널에 `수학 풀이 봇이 실행 중입니다...` 라는 글자가 나타날 거다냥. 이제 텔레그램을 켜서 봇에게 **수학 문제 사진**을 보내보자냥!
+
+> ✅ **확인해보자냥**
+> - 사진을 보내자마자 "잠시만 기다려주세요..." 메시지가 먼저 왔냥?
+> - 잠시 뒤에 단계별 풀이와 함께 "정답:"이 답장으로 왔냥?
+
+### 🛠️ 자주 나는 오류들
+
+<Callout type="important">
+  ⚠️ **봇이 사진에 반응하지 않거나 오류가 난다면?**
+
+  - **핸들러 등록 누락:** `app.add_handler(MessageHandler(filters.PHOTO, handle_photo))` 줄을 빠뜨리지 않았는지 확인하자냥. 이게 없으면 봇이 사진을 무시한다냥!
+  - **토큰/키 혼동:** 봇 토큰 자리에 제미나이 키를, 제미나이 키 자리에 봇 토큰을 넣지 않았는지 다시 보자냥.
+  - **들여쓰기 오류:** 파이썬은 들여쓰기에 아주 예민하다냥. `async def` 안쪽 줄들이 잘 맞춰져 있는지 확인하자냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="친구와 봇으로 놀아보기 🎉" time="선택">
+
+봇이 잘 작동한다면, 이제 즐길 차례다냥!
+
+- [ ] 친구의 봇에 내 수학 문제 사진을 보내보고, 풀이가 잘 오는지 확인하기
+- [ ] 다양한 종류의 문제(분수, 도형, 방정식 등) 사진을 보내보며 봇의 실력 테스트하기
+- [ ] 이 봇을 더 좋게 만들려면 **어떤 기능**을 추가하고 싶은지 적어보기 (예: 비슷한 문제 추천, 오답 노트 등)
+
+> 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는 16차시 봇과 17차시 풀이 기능을 조립해서,
+  **사진을 보내면 풀이를 답장해주는 완성형 봇**을 만들었다냥! 🤖
+
+  이건 여러분이 직접 부품을 만들고 조립해 **세상에 내놓은 첫 작품**이다냥.
+  친구가 사진을 보내고 풀이를 받는 모습을 보면, "내가 만든 게 진짜로 작동한다!"는
+  뿌듯함을 느낄 수 있을 거다냥. 이 경험을 바탕으로 앞으로 더 다양한 앱에
+  도전해보자냥! 다음 시간에는 **영어 대화 연습 앱**을 만들 거다냥. 또 만나자냥, 냐옹~ 🐱💻
+</NyangSpeech>

@@ -1,0 +1,196 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'LangChain 실습 — 스스로 날씨를 찾는 AI 만들기',
+  description: '날씨 API를 LangChain Tool로 등록하고, 제미나이 Agent가 사용자의 질문에 따라 스스로 도구를 호출해 답하는 앱을 직접 완성해보자냥!',
+  session: 5,
+}
+
+# 🐾 LangChain 실습 — 스스로 날씨를 찾는 AI 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지난 시간에 만든 **날씨 API 함수**를
+  LangChain의 **Tool**로 등록하고, 제미나이 **Agent**가 스스로 그 도구를 호출하도록
+  만들어볼 거다냥. 천천히, 즐겁게 가보자냥! 🐱
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `langchain`, `langchain-google-genai` 패키지 설치
+  - 지난 시간에 만든 **날씨 API 호출 함수** 코드
+  - 본인의 **날씨 API 키**와 **제미나이 API 키**
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+## ★ 핵심 비유 · "재료 손질 담당 + 요리 담당이 한 팀이 되다" 🍳
+
+<Callout type="analogy">
+  - `get_weather` 함수는 날씨 재료를 손질해서 가져오는 **재료 담당**이다냥.
+  - 제미나이(LLM)는 그 재료로 요리를 만드는 **요리 담당**이다냥.
+  - LangChain의 Agent는 이 둘을 연결해주는 **주방장**이다냥.
+
+  주문(질문)을 들으면 주방장이 *"이건 재료 담당한테 먼저 부탁해야겠다"*고 판단하고, 받은 재료로 요리 담당이 최종 요리(답변)를 완성하게 시키는 거다냥! 🐾
+</Callout>
+
+---
+
+<MissionCard number={1} title="패키지 설치 확인하기" time="5분">
+
+먼저 LangChain 관련 패키지가 잘 깔려 있는지 확인해보자냥. 터미널에 아래 명령어를 입력해보자냥.
+
+```bash
+pip install langchain langchain-google-genai requests
+```
+
+> ✅ **확인해보자냥**
+> - 설치가 에러 없이 끝났냥?
+> - `import langchain` 을 실행했을 때 빨간 에러가 안 나냥?
+
+<Callout type="important">
+  ⚠️ **자주 나는 에러 1순위가 바로 "패키지 미설치"다냥!** `ModuleNotFoundError` 가 뜨면, 위 명령어로 패키지를 다시 설치했는지 꼭 확인하자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="날씨 함수를 Tool로 만들기 🔧" time="8~10분">
+
+지난 시간에 만든 **날씨 API 호출 함수**를 다듬고, LangChain의 `Tool`로 감싸볼 거다냥. 아래 템플릿에서 **빈칸(`____`, `___`)을 직접 채워보자냥.**
+
+```python
+from langchain.agents import Tool, initialize_agent, AgentType
+from langchain_google_genai import ChatGoogleGenerativeAI
+import requests
+
+# 1) 지난 시간 만든 날씨 API 함수를 가져와서 함수 형태로 정리
+def get_weather(city: str) -> str:
+    weather_api_key = "여기에 본인의 날씨 API 키 입력"
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={____}&units=metric"
+
+    response = requests.get(url)
+    data = response.json()
+
+    temperature = data["main"]["___"]
+    description = data["weather"][0]["description"]
+
+    return f"{city}의 현재 온도는 {temperature}도이고, 날씨는 {description}입니다."
+
+
+# 2) 함수를 LangChain Tool로 등록
+weather_tool = Tool(
+    name="get_weather",
+    func=get_weather,
+    description="도시 이름을 입력받아 현재 날씨 정보를 알려줍니다."
+)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `{____}` 자리에는 어떤 변수가 들어가야 할까냥? (API 키를 담아둔 변수 이름이다냥!)
+> - `data["main"]["___"]` 에서 온도 값을 가져오는 키는 무엇이냥? (영어로 "온도"라냥 🌡️)
+
+<Callout type="tip">
+  💡 `Tool`의 **`description`** 이 핵심이다냥! Agent는 이 설명을 읽고 도구를 쓸지 판단한다냥. 설명이 모호하면 Agent가 도구를 못 찾으니, **구체적으로** 써주자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Agent 만들고 실행하기 🎯" time="8~10분">
+
+이제 제미나이 **LLM**과 방금 만든 **Tool**을 연결해서 **Agent**를 만들고, 질문을 던져볼 거다냥!
+
+```python
+# 3) 제미나이 LLM 준비
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-flash",
+    google_api_key="여기에 본인의 제미나이 API 키 입력"
+)
+
+# 4) Agent 만들기
+agent = initialize_agent(
+    tools=[weather_tool],
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True
+)
+
+# 5) 질문 던지기 - 직접 다양한 질문을 작성해보세요
+question = ____
+result = agent.run(question)
+print(result)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `question = ____` 자리에 `"오늘 서울 날씨 알려줘"` 같은 문장을 넣어보자냥.
+> - 실행하면 Agent가 스스로 `get_weather` 도구를 호출해서 답하냥?
+
+<Callout type="tip">
+  🐾 **`verbose=True` 가 마법이다냥!** 이걸 켜두면 Agent가 *"생각하는 과정"*이 화면에 주르륵 출력된다냥. "이 질문엔 날씨 도구가 필요하겠군 → 도구 호출 → 결과 받음 → 최종 답 작성" 하는 흐름을 직접 눈으로 읽어보자냥. 이해에 정말 큰 도움이 된다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="다양한 질문으로 테스트하기 🔬" time="5~7분">
+
+이번엔 여러 질문을 던져보면서 **"AI가 스스로 판단한다"**는 걸 직접 체감해보자냥!
+
+- 🌤️ **날씨 관련 질문**: `"부산 날씨 알려줘"` → Agent가 날씨 도구를 **사용**하는지 확인하자냥.
+- 🍱 **날씨와 무관한 질문**: `"오늘 점심 메뉴 추천해줘"` → Agent가 도구를 **쓰지 않고** 바로 답하는지 확인하자냥.
+
+```python
+# 날씨 도구를 쓰는 질문
+print(agent.run("부산 날씨 알려줘"))
+
+# 날씨 도구가 필요 없는 질문
+print(agent.run("오늘 점심 메뉴 추천해줘"))
+```
+
+> ✅ **확인해보자냥**
+> - 두 질문에서 `verbose` 로그가 어떻게 다르냥?
+> - 날씨 질문일 때만 도구를 호출했냥? 그게 바로 **Agent가 스스로 판단한 증거**다냥! 🎉
+
+<Callout type="important">
+  ⚠️ **만약 날씨 질문인데도 도구를 안 쓴다면?** Tool의 `description`이 너무 모호한 경우가 많다냥. "현재 날씨, 온도를 도시별로 알려준다"처럼 더 **구체적으로** 고쳐보자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="새 도구 아이디어 떠올리기 ✨" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 만약 도구(Tool)를 **하나 더** 추가한다면 어떤 기능을 넣고 싶냥? (예: 환율, 뉴스, 시간 등)
+- [ ] 그 도구의 `description`을 직접 한 줄로 적어보자냥.
+- [ ] (여유가 되면) 간단한 함수를 만들어 `Tool`로 등록하고 `tools=[...]`에 추가해보자냥!
+
+> 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 날씨 함수를 LangChain **Tool**로 등록하고
+  2. 제미나이 **LLM**과 묶어 **Agent**를 만들고
+  3. 다양한 질문으로 **"AI가 스스로 도구를 쓰는 순간"**을 직접 확인
+
+  까지 해봤다냥! 이제 우리 AI는 단순히 답만 하는 게 아니라, 필요할 때 직접 정보를
+  찾아오는 **든든한 팀원**이 됐다냥. 다음 시간엔 이 Agent를 Streamlit 화면과 결합해서
+  진짜 완성형 앱으로 발전시켜볼 거다냥. 다들 정말 멋지게 해냈다냥 👏 냐옹~ 🐾
+</NyangSpeech>

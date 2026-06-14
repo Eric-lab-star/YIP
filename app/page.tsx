@@ -10,6 +10,7 @@ import {
   Star,
 } from "lucide-react";
 import Link from "next/link";
+import { CatIcon } from "@/components/mdx/CatIcon";
 
 /* ── Doodle design tokens ─────────────────────────────────────── */
 const ink = "#263D5B"; // secondary — hand-drawn ink line / text
@@ -180,6 +181,7 @@ export default function CodingAcademyLanding() {
         backgroundSize: "24px 24px",
       }}
     >
+      <CatIcon size={100} />
       {/* Hero */}
       <section>
         <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
@@ -217,15 +219,9 @@ export default function CodingAcademyLanding() {
               style={{ ...doodleBox(-1), backgroundColor: ink }}
             >
               <span>프로그램 둘러보기</span>
-              <ArrowUpRight
-                className="w-5 h-5"
-                strokeWidth={2.25}
-              />
+              <ArrowUpRight className="w-5 h-5" strokeWidth={2.25} />
             </Link>
-            <Link
-              href="#why"
-              className="relative text-xl"
-            >
+            <Link href="#why" className="relative text-xl">
               교육 철학 알아보기
               <Squiggle
                 color={sky}

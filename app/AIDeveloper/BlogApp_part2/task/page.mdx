@@ -1,0 +1,159 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '블로그 앱 실습 (2부) — 글과 그림 합치기',
+  description: '주제에 맞는 이미지 묘사를 만들고, 글 생성과 이미지 생성을 하나의 Streamlit 앱으로 통합해 완성형 블로그 작성 앱을 직접 만들어보자냥!',
+  session: 15,
+}
+
+# 🐾 블로그 앱 실습 (2부) — 글과 그림 합치기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 🐱 지금부터 약 25~30분 동안, 지난 시간 만든 **글 생성 기능**에
+  **이미지 생성**을 합쳐서 완성형 블로그 앱을 만들어볼 거다냥. 미션 1로 이미지 묘사를
+  먼저 만들고, 미션 2에서 하나의 Streamlit 앱으로 통합해보자냥. 천천히, 즐겁게 가보자냥! 🐟
+</NyangSpeech>
+
+<Callout type="note">
+  **🎒 준비물 체크리스트**
+
+  - `google-generativeai`, `streamlit` 패키지 설치 확인
+  - 11차시에서 사용한 **이미지 생성 코드/도구** 사용법 복습
+  - 지난 시간(14차시)에 만든 **글 생성 코드** 백업 또는 공유
+  - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="대표 이미지 묘사 만들기 🖼️" time="8~10분">
+
+먼저 주제를 받아서, 그 글에 어울리는 **대표 이미지 묘사문**을 AI에게 만들게 해보자냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+text_model = genai.GenerativeModel("gemini-1.5-flash")
+
+topic = "초보자를 위한 홈카페 만들기"
+
+# 1) 주제에서 이미지 묘사를 뽑아내는 프롬프트를 직접 작성해보세요
+image_desc_prompt = f"""
+'{topic}'이라는 블로그 글의 대표 이미지를 만들려고 해.
+이미지 생성 AI에게 전달할 영어 묘사문을 한 문장으로 만들어줘.
+{____} 분위기를 담아줘.
+"""
+image_description = text_model.generate_content(image_desc_prompt).text
+print("이미지 묘사:", image_description)
+
+# 2) 이미지 생성 (수업에서 사용하는 이미지 생성 도구/API에 맞춰 작성)
+#    11차시에서 사용한 방식 그대로 image_description을 전달하면 됩니다.
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `{____}` 자리에는 글의 **분위기**를 나타내는 단어를 넣으면 된다냥. 예를 들어 "따뜻하고 아늑한", "차분하고 깔끔한" 같은 느낌 단어다냥! ☕
+> - 묘사문이 잘 나오면, 11차시에서 쓰던 이미지 생성 방식 그대로 `image_description`을 전달하면 표지 그림이 나온다냥.
+
+✍️ **직접 해보기**
+`topic`을 `"가을에 떠나기 좋은 국내 여행지"`, `"집에서 하는 간단한 홈트레이닝"` 등으로 바꿔가며 어떤 이미지 묘사가 나오는지 비교해보자냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="Streamlit 앱으로 통합하기 🏭" time="12~15분">
+
+이제 글 생성과 이미지 묘사 생성을 **하나의 Streamlit 화면**에 합쳐보자냥! 주제를 입력하고 말투를 고른 뒤 버튼을 누르면 → 완성된 블로그 글 + 추천 이미지 묘사가 화면에 나타나도록 만드는 거다냥.
+
+아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import streamlit as st
+import google.generativeai as genai
+
+genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+st.title("네이버 블로그 자동 작성 도우미")
+
+topic = st.text_input("블로그 주제를 입력하세요")
+tone = st.selectbox("말투를 골라주세요", ["친근한", "전문적인", "유머러스한"])
+
+if st.button("블로그 글 생성하기"):
+    # 글 생성 프롬프트를 직접 작성해보세요 (14차시 내용 활용)
+    post_prompt = f"""
+    너는 {tone} 말투의 블로거야.
+    '{topic}' 주제로 제목, 소제목 3개와 각 본문, 마무리를 갖춘 블로그 글을 써줘.
+    """
+    post = model.generate_content(post_prompt).text
+
+    st.write("### 생성된 블로그 글")
+    st.write(post)
+
+    # (선택) 이미지 묘사 생성 후 화면에 표시
+    st.write("### 추천 대표 이미지 묘사")
+    image_desc_prompt = ____  # 이미지 묘사 프롬프트 작성
+    image_desc = model.generate_content(image_desc_prompt).text
+    st.write(image_desc)
+```
+
+> ✅ **확인해보자냥 (빈칸 힌트)**
+> - `image_desc_prompt = ____` 자리에는 미션 1에서 만든 **이미지 묘사 프롬프트**를 넣으면 된다냥! `f"""..."""` 문자열 안에 `{topic}`을 활용하는 게 핵심이다냥.
+> - 예를 들면 `image_desc_prompt = f"'{topic}' 글에 어울리는 대표 이미지를 영어 한 문장으로 묘사해줘."` 처럼 작성하면 된다냥. 😺
+
+✍️ **직접 해보기**
+같은 주제로 말투(`친근한`, `전문적인`, `유머러스한`)만 바꿔가며 버튼을 눌러보자냥. 글의 느낌이 어떻게 달라지는지 비교하면 정말 재미있다냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number="팁" title="더 멋진 앱을 위한 꿀팁 ✨" time="선택">
+
+여유가 있는 친구들을 위한 보너스 팁이다냥! 🐾
+
+<Callout type="tip">
+  🐾 **생성에 시간이 걸릴 땐 `st.spinner`를 쓰자냥**
+
+  글과 이미지를 만드는 데 몇 초가 걸릴 수 있다냥. 그동안 화면이 멈춘 것처럼 보이면 사용자가 답답하지냥. 이럴 때 아래처럼 감싸주면 "생성 중..." 안내가 빙글빙글 돈다냥!
+
+  ```python
+  with st.spinner("생성 중..."):
+      post = model.generate_content(post_prompt).text
+  ```
+</Callout>
+
+- [ ] `st.selectbox`로 **이미지 스타일**(수채화, 사진풍, 일러스트)도 고르게 만들어보기
+- [ ] 같은 주제 + 다른 말투로 만든 결과들을 나란히 비교해보기
+- [ ] 이미지 묘사뿐 아니라 실제 **이미지 생성**까지 연결해 화면에 표시해보기 (환경에 따라 묘사문 출력까지만 해도 충분하다냥!)
+
+> 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 🎉 오늘의 실습, 정말 잘했다냥!
+
+<StepCard step="자기 점검" title="오늘의 마무리 질문 ✍️">
+
+내가 만든 블로그 앱에 기능을 **하나 더** 추가한다면, 무엇을 넣고 싶냥? 자유롭게 적어보자냥!
+
+(예: 글을 자동으로 저장하기, 해시태그 추천하기, 여러 이미지 후보 보여주기 등 🐟)
+
+</StepCard>
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 주제에서 **대표 이미지 묘사**를 뽑아내는 프롬프트 만들기
+  2. 글 생성 + 이미지 묘사 생성을 **하나의 Streamlit 앱으로 통합**하기
+
+  까지 해냈다냥! 글도 쓰고 그림도 그려주는 **나만의 1인 출판사 앱**을 완성한 거다냥. 📚
+  주제 하나만 던지면 완성된 블로그 글이 나오는, 정말 쓸모 있는 도구를 만든 거다냥!
+  다음 시간에는 전혀 다른 종류의 앱 — **사진을 보고 수학 문제를 풀어주는 앱** — 에
+  도전해볼 거다냥. 다들 정말 멋지게 해냈다냥 👏 또 만나자냥, 냐옹~ 🐾
+</NyangSpeech>
