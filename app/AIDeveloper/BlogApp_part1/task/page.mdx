@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai` 패키지 설치 및 **제미나이 API 키** 확인
+  - `google-genai` 패키지 설치 및 **제미나이 API 키** 확인
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
   - 써보고 싶은 블로그 주제 1~2개 (음식, 여행, 취미 등)
 </Callout>
@@ -29,19 +29,18 @@ export const metadata = {
 
 <MissionCard number={1} title="환경 준비 — API 키 확인하기" time="5분">
 
-먼저 `google-generativeai` 패키지가 잘 깔렸는지, 제미나이 API 키가 준비됐는지 확인해보자냥. 새 파일을 만들고 아래 코드가 에러 없이 실행되는지 점검해보자냥.
+먼저 `google-genai` 패키지가 잘 깔렸는지, 제미나이 API 키가 준비됐는지 확인해보자냥. 새 파일을 만들고 아래 코드가 에러 없이 실행되는지 점검해보자냥.
 
 ```python
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 print("준비 완료! 블로그를 써볼 준비가 됐다냥 🐾")
 ```
 
 > ✅ **확인해보자냥**
-> - `import` 에서 에러가 나면 → 터미널에서 `pip install google-generativeai` 를 다시 해보자냥.
+> - `import` 에서 에러가 나면 → 터미널에서 `pip install google-genai` 를 다시 해보자냥.
 > - API 키 자리에 본인의 키를 정확히 붙여넣었냥?
 
 </MissionCard>
@@ -53,10 +52,9 @@ print("준비 완료! 블로그를 써볼 준비가 됐다냥 🐾")
 이제 AI에게 **글의 설계도(제목 + 소제목 3개)**를 만들어달라고 해보자냥! 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 topic = "초보자를 위한 홈카페 만들기"
 
@@ -72,7 +70,7 @@ structure_prompt = f"""
 소제목3: 
 """
 
-structure = model.generate_content(structure_prompt).text
+structure = client.models.generate_content(model="gemini-3.5-flash", contents=structure_prompt).text
 print(structure)
 ```
 
@@ -107,7 +105,7 @@ for subtitle in subtitles:
     '{topic}' 블로그 글의 '{subtitle}' 부분 본문을 써줘.
     {____} 분량으로, 친근한 말투로 작성해줘.
     """
-    body = model.generate_content(body_prompt).text
+    body = client.models.generate_content(model="gemini-3.5-flash", contents=body_prompt).text
     full_post += f"## {subtitle}\n{body}\n\n"
 
 print(full_post)

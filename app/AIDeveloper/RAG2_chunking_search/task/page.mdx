@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai`, `numpy` 패키지 설치 확인
+  - `google-genai`, `numpy` 패키지 설치 확인
   - 실습용 **긴 텍스트 문서** 준비 (5~6개 문단 이상 — 학교 소개, 동아리 안내, 특정 주제 설명문 등)
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
   - 문서 내용을 기반으로 한 **테스트 질문** 몇 개 미리 생각해두기
@@ -90,14 +90,14 @@ print("첫 번째 청크:", chunks[0])
 이제 모든 청크를 **임베딩**으로 바꾸고, 질문과 가장 비슷한 청크를 찾아주는 `search` 함수를 완성해보자냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
-import google.generativeai as genai
+from google import genai
 import numpy as np
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 def get_embedding(text):
-    result = genai.embed_content(model="models/text-embedding-004", content=text)
-    return result["embedding"]
+    result = client.models.embed_content(model="gemini-embedding-001", contents=text)
+    return result.embeddings[0].values
 
 def cosine_similarity(vec1, vec2):
     vec1, vec2 = np.array(vec1), np.array(vec2)

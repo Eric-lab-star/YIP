@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai`, `streamlit` 패키지 설치 확인
+  - `google-genai`, `streamlit` 패키지 설치 확인
   - 11차시에서 사용한 **이미지 생성 코드/도구** 사용법 복습
   - 지난 시간(14차시)에 만든 **글 생성 코드** 백업 또는 공유
   - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
@@ -33,10 +33,9 @@ export const metadata = {
 먼저 주제를 받아서, 그 글에 어울리는 **대표 이미지 묘사문**을 AI에게 만들게 해보자냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-text_model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 topic = "초보자를 위한 홈카페 만들기"
 
@@ -46,7 +45,7 @@ image_desc_prompt = f"""
 이미지 생성 AI에게 전달할 영어 묘사문을 한 문장으로 만들어줘.
 {____} 분위기를 담아줘.
 """
-image_description = text_model.generate_content(image_desc_prompt).text
+image_description = client.models.generate_content(model="gemini-3.5-flash", contents=image_desc_prompt).text
 print("이미지 묘사:", image_description)
 
 # 2) 이미지 생성 (수업에서 사용하는 이미지 생성 도구/API에 맞춰 작성)
@@ -72,10 +71,9 @@ print("이미지 묘사:", image_description)
 
 ```python
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 st.title("네이버 블로그 자동 작성 도우미")
 
@@ -88,7 +86,7 @@ if st.button("블로그 글 생성하기"):
     너는 {tone} 말투의 블로거야.
     '{topic}' 주제로 제목, 소제목 3개와 각 본문, 마무리를 갖춘 블로그 글을 써줘.
     """
-    post = model.generate_content(post_prompt).text
+    post = client.models.generate_content(model="gemini-3.5-flash", contents=post_prompt).text
 
     st.write("### 생성된 블로그 글")
     st.write(post)
@@ -96,7 +94,7 @@ if st.button("블로그 글 생성하기"):
     # (선택) 이미지 묘사 생성 후 화면에 표시
     st.write("### 추천 대표 이미지 묘사")
     image_desc_prompt = ____  # 이미지 묘사 프롬프트 작성
-    image_desc = model.generate_content(image_desc_prompt).text
+    image_desc = client.models.generate_content(model="gemini-3.5-flash", contents=image_desc_prompt).text
     st.write(image_desc)
 ```
 
@@ -122,7 +120,7 @@ if st.button("블로그 글 생성하기"):
 
   ```python
   with st.spinner("생성 중..."):
-      post = model.generate_content(post_prompt).text
+      post = client.models.generate_content(model="gemini-3.5-flash", contents=post_prompt).text
   ```
 </Callout>
 

@@ -21,7 +21,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai` 패키지 설치 및 **제미나이 API 키** 확인
+  - `google-genai` 패키지 설치 및 **제미나이 API 키** 확인
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿
   - 대화 예시 시나리오 떠올려보기 (자기소개, 취미, 여행 등)
 </Callout>
@@ -33,11 +33,11 @@ export const metadata = {
 먼저 제미나이를 쓸 준비가 되었는지 확인해보자냥. 패키지가 깔려 있어야 하고, 본인의 **API 키**가 필요하다냥.
 
 ```bash
-pip install google-generativeai
+pip install google-genai
 ```
 
 > ✅ **확인해보자냥**
-> - `google-generativeai` 패키지가 설치되었냥?
+> - `google-genai` 패키지가 설치되었냥?
 > - 본인의 **제미나이 API 키**를 손에 들고 있냥?
 
 <Callout type="important">
@@ -56,21 +56,21 @@ pip install google-generativeai
 먼저 AI에게 **영어 선생님 역할(페르소나)**을 부여하고, 한 번 대화를 나눠볼 거다냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # 페르소나(시스템 지시)를 직접 작성해보세요
 system_instruction = ____
 # 예: "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 단어로 천천히 영어로 말해주고,
 #      학생이 실수하면 자연스럽게 고쳐줘. 답변 끝에 한국어로 짧은 설명을 덧붙여줘."
 
-model = genai.GenerativeModel(
-    "gemini-1.5-flash",
-    system_instruction=system_instruction
+response = client.models.generate_content(
+    model="gemini-3.5-flash",
+    contents="Hello! Can we talk about my weekend?",
+    config=types.GenerateContentConfig(system_instruction=system_instruction)
 )
-
-response = model.generate_content("Hello! Can we talk about my weekend?")
 print(response.text)
 ```
 
@@ -93,7 +93,10 @@ print(response.text)
 
 ```python
 # 제미나이의 chat 기능을 사용하면 대화 히스토리가 자동으로 관리됩니다
-chat = model.start_chat(history=[])
+chat = client.chats.create(
+    model="gemini-3.5-flash",
+    config=types.GenerateContentConfig(system_instruction=system_instruction)
+)
 
 # 여러 번 대화 주고받기
 while True:

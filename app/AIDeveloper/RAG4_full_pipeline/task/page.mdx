@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `chromadb`, `google-generativeai`, `streamlit` 패키지 설치 확인
+  - `chromadb`, `google-genai`, `streamlit` 패키지 설치 확인
   - 지난 시간(3차시)에 만든 **Chroma DB 데이터** 또는 청크 데이터 (없으면 다시 `add` 해주기)
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
   - "자료에 없으면 모른다고 답하기" 비교용 **테스트 질문 목록**
@@ -36,17 +36,15 @@ export const metadata = {
 
 ```python
 import chromadb
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+genai_client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # 지난 시간 만든 Chroma DB와 collection을 그대로 사용
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="my_documents")
 
 # (지난 시간 데이터가 없다면 여기서 다시 add 해주세요)
-
-model = genai.GenerativeModel("gemini-1.5-flash")
 
 def rag_answer(question):
     # 1) 벡터DB에서 관련 청크 검색
@@ -69,7 +67,7 @@ def rag_answer(question):
     {question}
     """
 
-    response = model.generate_content(prompt)
+    response = genai_client.models.generate_content(model="gemini-3.5-flash", contents=prompt)
     return response.text
 
 # 질문을 직접 작성해 테스트해보세요

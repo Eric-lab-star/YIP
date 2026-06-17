@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai`, `numpy` 패키지 설치 확인
+  - `google-genai`, `numpy` 패키지 설치 확인
   - 제미나이 API 키 준비 (지난 시간과 동일한 키다냥)
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
 </Callout>
@@ -32,7 +32,7 @@ export const metadata = {
 먼저 임베딩 API를 쓰기 위한 패키지가 잘 깔려 있는지 확인해보자냥. 터미널에서 아래 명령어를 실행해보자냥.
 
 ```bash
-pip install google-generativeai numpy
+pip install google-genai numpy
 ```
 
 > ✅ **확인해보자냥**
@@ -48,9 +48,9 @@ pip install google-generativeai numpy
 미리 준비된 여러 문장을 **임베딩 API**로 숫자 벡터로 바꿔볼 거다냥. 벡터가 몇 개의 숫자로 이루어졌는지(차원 수)도 확인해보자냥!
 
 ```python
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 sentences = [
     "오늘 날씨가 정말 좋다.",
@@ -60,11 +60,11 @@ sentences = [
 
 embeddings = []
 for sentence in sentences:
-    result = genai.embed_content(
-        model="models/text-embedding-004",
-        content=sentence
+    result = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=sentence
     )
-    embeddings.append(result["embedding"])
+    embeddings.append(result.embeddings[0].values)
 
 print("벡터의 길이(차원 수):", len(embeddings[0]))
 print("첫 번째 문장 벡터 일부:", embeddings[0][:5])
@@ -134,8 +134,8 @@ my_sentences = [
 
 my_embeddings = []
 for sentence in my_sentences:
-    result = genai.embed_content(model="models/text-embedding-004", content=sentence)
-    my_embeddings.append(result["embedding"])
+    result = client.models.embed_content(model="gemini-embedding-001", contents=sentence)
+    my_embeddings.append(result.embeddings[0].values)
 
 print("A-B 유사도:", cosine_similarity(my_embeddings[0], my_embeddings[1]))
 print("A-C 유사도:", cosine_similarity(my_embeddings[0], my_embeddings[2]))

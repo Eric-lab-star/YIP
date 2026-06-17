@@ -103,18 +103,17 @@ if st.button("날씨 확인하기"):
 
 ```python
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 
 st.title("나만의 간단한 AI 챗봇")
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 user_input = st.text_input("질문을 입력하세요")
 
 if st.button("질문하기"):
     prompt = ____  # user_input을 활용한 prompt를 만들어보세요
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(model="gemini-3.5-flash", contents=prompt)
     st.write(response.text)
 ```
 

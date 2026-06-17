@@ -129,35 +129,31 @@ export const metadata = {
 LangChain으로 날씨 Agent를 만드는 큰 흐름은 이렇다냥.
 
 ```python
-from langchain.agents import Tool, initialize_agent, AgentType
+from langchain.agents import create_agent
+from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# 1) 날씨 함수를 Tool로 등록 (도구를 만든다냥)
-weather_tool = Tool(
-    name="get_weather",
-    func=get_weather,
-    description="도시 이름을 입력받아 현재 날씨 정보를 알려줍니다."
-)
+# 1) 날씨 함수를 @tool로 감싸 도구로 등록 (도구를 만든다냥)
+@tool
+def get_weather(city: str) -> str:
+    """도시 이름을 입력받아 현재 날씨 정보를 알려준다."""
+    ...  # 실제 날씨 API 호출
 
 # 2) 제미나이 LLM 준비 (두뇌를 준비한다냥)
 llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash", google_api_key="...")
 
 # 3) Agent 만들기 (두뇌 + 도구를 한 팀으로 묶는다냥)
-agent = initialize_agent(
-    tools=[weather_tool],
-    llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True
-)
+agent = create_agent(llm, [get_weather])
 
 # 4) 질문 던지기 → Agent가 스스로 판단해서 답한다냥
-result = agent.run("부산 날씨 알려줘")
+result = agent.invoke({"messages": [{"role": "user", "content": "부산 날씨 알려줘"}]})
+print(result["messages"][-1].content)
 ```
 
-보면, 우리가 하는 일은 **도구를 등록하고(Tool) → 두뇌를 준비하고(LLM) → 둘을 묶기(Agent)**까지다냥. 그다음 질문을 던지면, 도구를 쓸지 말지는 **Agent가 알아서** 결정한다냥! 🎉
+보면, 우리가 하는 일은 **도구를 등록하고(@tool) → 두뇌를 준비하고(LLM) → 둘을 묶기(Agent)**까지다냥. 그다음 질문을 던지면, 도구를 쓸지 말지는 **Agent가 알아서** 결정한다냥! 🎉
 
 <Callout type="tip">
-  💡 코드에서 `description`이 정말 중요하다냥! Agent는 이 설명을 읽고 "아, 이 도구가 날씨를 알려주는구나"라고 판단한다냥. 그래서 도구 설명은 **구체적으로** 써줘야 Agent가 잘 찾아 쓴다냥!
+  💡 `@tool` 함수의 **설명문(docstring)**이 정말 중요하다냥! Agent는 이 설명을 읽고 "아, 이 도구가 날씨를 알려주는구나"라고 판단한다냥. 그래서 도구 설명은 **구체적으로** 써줘야 Agent가 잘 찾아 쓴다냥!
 </Callout>
 
 ---

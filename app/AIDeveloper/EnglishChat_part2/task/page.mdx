@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `streamlit`, `google-generativeai` 패키지 설치 확인
+  - `streamlit`, `google-genai` 패키지 설치 확인
   - 지난 시간(19차시)에 만든 **페르소나 / 대화 코드**
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 파일)
 </Callout>
@@ -33,15 +33,16 @@ export const metadata = {
 
 ```python
 import streamlit as st
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 st.title("나의 영어 대화 선생님")
 
 # 페르소나 설정 (지난 시간 내용 활용)
 system_instruction = "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 영어로 천천히 대화해줘."
-model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=system_instruction)
+config = types.GenerateContentConfig(system_instruction=system_instruction)
 ```
 
 터미널에서 아래 명령어로 실행해보자냥.
@@ -66,15 +67,16 @@ streamlit run app.py
 
 ```python
 import streamlit as st
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 st.title("나의 영어 대화 선생님")
 
 # 페르소나 설정 (지난 시간 내용 활용)
 system_instruction = "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 영어로 천천히 대화해줘."
-model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=system_instruction)
+config = types.GenerateContentConfig(system_instruction=system_instruction)
 
 # 세션 상태에 대화 기록 저장소 만들기
 if "messages" not in st.session_state:
@@ -95,7 +97,7 @@ if user_input:
         st.write(user_input)
 
     # 2) AI 응답 생성 - 직접 작성해보세요
-    response = model.generate_content(user_input)
+    response = client.models.generate_content(model="gemini-3.5-flash", contents=user_input, config=config)
     ai_reply = response.text
 
     # 3) AI 메시지를 기록에 추가하고 화면에 표시
@@ -135,7 +137,7 @@ def correct_english(text):
 
     문장: {text}
     """
-    return model.generate_content(correction_prompt).text
+    return client.models.generate_content(model="gemini-3.5-flash", contents=correction_prompt, config=config).text
 
 # 위 채팅 코드에서 사용자 입력 직후에 호출해 함께 보여주기
 # 예:

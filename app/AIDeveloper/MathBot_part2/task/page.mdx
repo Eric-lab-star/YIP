@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `google-generativeai`, `Pillow(PIL)` 패키지 설치 확인
+  - `google-genai`, `Pillow(PIL)` 패키지 설치 확인
   - 수학 문제 예시 이미지 여러 개 (간단한 사칙연산 ~ 방정식, 난이도별)
   - 10차시 이미지 인식 코드 복습 자료
   - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
@@ -53,11 +53,10 @@ export const metadata = {
 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
-import google.generativeai as genai
+from google import genai
 import PIL.Image
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # 수학 문제 사진 불러오기
 image = PIL.Image.open("math_problem.jpg")
@@ -65,7 +64,7 @@ image = PIL.Image.open("math_problem.jpg")
 # 이미지와 함께 보낼 지시문을 직접 작성해보세요
 read_prompt = ____  # 예: "이 사진 속에 있는 수학 문제를 글자로 그대로 읽어줘."
 
-response = model.generate_content([read_prompt, image])
+response = client.models.generate_content(model="gemini-3.5-flash", contents=[read_prompt, image])
 print("인식된 문제:", response.text)
 ```
 
@@ -97,7 +96,7 @@ solve_prompt = """
 중학생도 이해할 수 있게 쉽게 설명해줘.
 """
 
-response = model.generate_content([solve_prompt, image])
+response = client.models.generate_content(model="gemini-3.5-flash", contents=[solve_prompt, image])
 print(response.text)
 ```
 

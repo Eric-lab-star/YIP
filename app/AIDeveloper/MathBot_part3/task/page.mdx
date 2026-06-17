@@ -20,7 +20,7 @@ export const metadata = {
 <Callout type="note">
   **🎒 준비물 체크리스트**
 
-  - `python-telegram-bot`, `google-generativeai`, `Pillow` 패키지 설치 확인
+  - `python-telegram-bot`, `google-genai`, `Pillow` 패키지 설치 확인
   - 16차시 봇 코드 + 17차시 풀이 코드 백업/공유본
   - **봇 토큰**, **제미나이 API 키** 준비
   - 테스트용 **수학 문제 사진** 준비
@@ -59,12 +59,11 @@ export const metadata = {
 ```python
 from telegram import Update
 from telegram.ext import Application, MessageHandler, CommandHandler, filters, ContextTypes
-import google.generativeai as genai
+from google import genai
 import PIL.Image
 
 TELEGRAM_TOKEN = "여기에 봇 토큰 입력"
-genai.configure(api_key="여기에 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 제미나이 API 키 입력")
 
 # 17차시에서 만든 풀이 프롬프트 재사용
 solve_prompt = """
@@ -87,7 +86,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # 3) 저장된 사진으로 풀이 생성 - 직접 작성해보세요
     image = PIL.Image.open("received.jpg")
-    response = model.generate_content([____, image])  # 풀이 프롬프트와 이미지 전달
+    response = client.models.generate_content(model="gemini-3.5-flash", contents=[____, image])  # 풀이 프롬프트와 이미지 전달
 
     # 4) 풀이 결과를 답장으로 보내기
     await update.message.reply_text(____)

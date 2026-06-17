@@ -62,15 +62,19 @@ pip install langchain langchain-google-genai requests
 
 <MissionCard number={2} title="날씨 함수를 Tool로 만들기 🔧" time="8~10분">
 
-지난 시간에 만든 **날씨 API 호출 함수**를 다듬고, LangChain의 `Tool`로 감싸볼 거다냥. 아래 템플릿에서 **빈칸(`____`, `___`)을 직접 채워보자냥.**
+지난 시간에 만든 **날씨 API 호출 함수**를 다듬고, LangChain의 `@tool`로 감싸볼 거다냥. 아래 템플릿에서 **빈칸(`____`, `___`)을 직접 채워보자냥.**
 
 ```python
-from langchain.agents import Tool, initialize_agent, AgentType
+from langchain.agents import create_agent
+from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 import requests
 
-# 1) 지난 시간 만든 날씨 API 함수를 가져와서 함수 형태로 정리
+# 지난 시간 만든 날씨 API 함수에 @tool을 붙여 LangChain 도구로 등록
+# 함수 설명문(docstring)이 곧 도구 설명이 된다냥!
+@tool
 def get_weather(city: str) -> str:
+    """도시 이름을 입력받아 현재 날씨 정보를 알려줍니다."""
     weather_api_key = "여기에 본인의 날씨 API 키 입력"
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={____}&units=metric"
 
@@ -81,14 +85,6 @@ def get_weather(city: str) -> str:
     description = data["weather"][0]["description"]
 
     return f"{city}의 현재 온도는 {temperature}도이고, 날씨는 {description}입니다."
-
-
-# 2) 함수를 LangChain Tool로 등록
-weather_tool = Tool(
-    name="get_weather",
-    func=get_weather,
-    description="도시 이름을 입력받아 현재 날씨 정보를 알려줍니다."
-)
 ```
 
 > ✅ **확인해보자냥 (빈칸 힌트)**
@@ -96,7 +92,7 @@ weather_tool = Tool(
 > - `data["main"]["___"]` 에서 온도 값을 가져오는 키는 무엇이냥? (영어로 "온도"라냥 🌡️)
 
 <Callout type="tip">
-  💡 `Tool`의 **`description`** 이 핵심이다냥! Agent는 이 설명을 읽고 도구를 쓸지 판단한다냥. 설명이 모호하면 Agent가 도구를 못 찾으니, **구체적으로** 써주자냥.
+  💡 `@tool` 함수의 **설명문(docstring)**이 핵심이다냥! Agent는 이 설명을 읽고 도구를 쓸지 판단한다냥. 설명이 모호하면 Agent가 도구를 못 찾으니, **구체적으로** 써주자냥.
 </Callout>
 
 </MissionCard>
@@ -114,26 +110,25 @@ llm = ChatGoogleGenerativeAI(
     google_api_key="여기에 본인의 제미나이 API 키 입력"
 )
 
-# 4) Agent 만들기
-agent = initialize_agent(
-    tools=[weather_tool],
-    llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True
-)
+# 4) Agent 만들기 (LLM + 도구를 한 팀으로 묶는다냥)
+agent = create_agent(llm, [get_weather])
 
 # 5) 질문 던지기 - 직접 다양한 질문을 작성해보세요
 question = ____
-result = agent.run(question)
-print(result)
+result = agent.invoke({"messages": [{"role": "user", "content": question}]})
+
+# Agent가 도구를 어떻게 썼는지 전체 과정을 들여다보자냥!
+for message in result["messages"]:
+    message.pretty_print()
 ```
 
 > ✅ **확인해보자냥 (빈칸 힌트)**
 > - `question = ____` 자리에 `"오늘 서울 날씨 알려줘"` 같은 문장을 넣어보자냥.
+> - `{"messages": [{"role": "user", "content": question}]}` 모양으로 질문을 넣는다냥. 답은 `result["messages"][-1].content` 에 담겨 있다냥.
 > - 실행하면 Agent가 스스로 `get_weather` 도구를 호출해서 답하냥?
 
 <Callout type="tip">
-  🐾 **`verbose=True` 가 마법이다냥!** 이걸 켜두면 Agent가 *"생각하는 과정"*이 화면에 주르륵 출력된다냥. "이 질문엔 날씨 도구가 필요하겠군 → 도구 호출 → 결과 받음 → 최종 답 작성" 하는 흐름을 직접 눈으로 읽어보자냥. 이해에 정말 큰 도움이 된다냥!
+  🐾 **`message.pretty_print()` 가 마법이다냥!** 결과의 `messages`를 하나씩 출력하면 Agent가 *"생각하는 과정"*이 화면에 주르륵 나온다냥. "이 질문엔 날씨 도구가 필요하겠군 → 도구 호출 → 결과 받음 → 최종 답 작성" 하는 흐름을 직접 눈으로 읽어보자냥. 이해에 정말 큰 도움이 된다냥!
 </Callout>
 
 </MissionCard>
@@ -149,18 +144,20 @@ print(result)
 
 ```python
 # 날씨 도구를 쓰는 질문
-print(agent.run("부산 날씨 알려줘"))
+result = agent.invoke({"messages": [{"role": "user", "content": "부산 날씨 알려줘"}]})
+print(result["messages"][-1].content)
 
 # 날씨 도구가 필요 없는 질문
-print(agent.run("오늘 점심 메뉴 추천해줘"))
+result = agent.invoke({"messages": [{"role": "user", "content": "오늘 점심 메뉴 추천해줘"}]})
+print(result["messages"][-1].content)
 ```
 
 > ✅ **확인해보자냥**
-> - 두 질문에서 `verbose` 로그가 어떻게 다르냥?
+> - 두 질문에서 `messages`(대화 과정)가 어떻게 다르냥? (`pretty_print()`로 펼쳐보자냥)
 > - 날씨 질문일 때만 도구를 호출했냥? 그게 바로 **Agent가 스스로 판단한 증거**다냥! 🎉
 
 <Callout type="important">
-  ⚠️ **만약 날씨 질문인데도 도구를 안 쓴다면?** Tool의 `description`이 너무 모호한 경우가 많다냥. "현재 날씨, 온도를 도시별로 알려준다"처럼 더 **구체적으로** 고쳐보자냥.
+  ⚠️ **만약 날씨 질문인데도 도구를 안 쓴다면?** `@tool` 함수의 설명문(docstring)이 너무 모호한 경우가 많다냥. "현재 날씨, 온도를 도시별로 알려준다"처럼 더 **구체적으로** 고쳐보자냥.
 </Callout>
 
 </MissionCard>
@@ -172,8 +169,8 @@ print(agent.run("오늘 점심 메뉴 추천해줘"))
 빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
 
 - [ ] 만약 도구(Tool)를 **하나 더** 추가한다면 어떤 기능을 넣고 싶냥? (예: 환율, 뉴스, 시간 등)
-- [ ] 그 도구의 `description`을 직접 한 줄로 적어보자냥.
-- [ ] (여유가 되면) 간단한 함수를 만들어 `Tool`로 등록하고 `tools=[...]`에 추가해보자냥!
+- [ ] 그 도구의 **설명문(docstring)**을 직접 한 줄로 적어보자냥.
+- [ ] (여유가 되면) 간단한 함수를 `@tool`로 등록하고 `create_agent(llm, [...])`의 도구 목록에 추가해보자냥!
 
 > 🐾 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
 

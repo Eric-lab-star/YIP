@@ -126,24 +126,23 @@ export const metadata = {
 ### 🐣 사진을 AI에게 보여주는 기본 구조
 
 ```python
-import google.generativeai as genai
+from google import genai
 import PIL.Image
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # 수학 문제 사진 불러오기
 image = PIL.Image.open("math_problem.jpg")
 
 # 이미지와 지시문을 '함께' 리스트로 묶어서 전달!
-response = model.generate_content(["이 사진 속 수학 문제를 글자로 읽어줘.", image])
+response = client.models.generate_content(model="gemini-3.5-flash", contents=["이 사진 속 수학 문제를 글자로 읽어줘.", image])
 print(response.text)
 ```
 
 <Callout type="note">
   📝 **핵심은 이 한 줄이다냥**
 
-  `model.generate_content([지시문, image])` 처럼 **글자(지시문)와 사진(image)을 리스트로 함께** 넣어주는 게 멀티모달의 핵심이다냥. 사진만 보내는 게 아니라, "이 사진으로 뭘 해줘"라는 부탁도 같이 보내는 거다냥!
+  `client.models.generate_content(contents=[지시문, image])` 처럼 **글자(지시문)와 사진(image)을 리스트로 함께** 넣어주는 게 멀티모달의 핵심이다냥. 사진만 보내는 게 아니라, "이 사진으로 뭘 해줘"라는 부탁도 같이 보내는 거다냥!
 </Callout>
 
 ---

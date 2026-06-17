@@ -149,15 +149,13 @@ export const metadata = {
 
 ```python
 import chromadb
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key="여기에 본인의 제미나이 API 키 입력")
+genai_client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # 지난 시간 만든 Chroma DB와 collection을 그대로 사용
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="my_documents")
-
-model = genai.GenerativeModel("gemini-1.5-flash")
 
 def rag_answer(question):
     # 1) 벡터DB에서 관련 청크 검색 (Retrieval)
@@ -179,11 +177,11 @@ def rag_answer(question):
     """
 
     # 4) 제미나이가 답변 생성 (Generation)
-    response = model.generate_content(prompt)
+    response = genai_client.models.generate_content(model="gemini-3.5-flash", contents=prompt)
     return response.text
 ```
 
-보이냥? `collection.query(...)`가 **검색**, `model.generate_content(prompt)`가 **생성**이라냥. 그 사이에서 검색 결과를 prompt에 끼워넣는 게 RAG의 핵심이라냥! 🐟
+보이냥? `collection.query(...)`가 **검색**, `genai_client.models.generate_content(...)`가 **생성**이라냥. 그 사이에서 검색 결과를 prompt에 끼워넣는 게 RAG의 핵심이라냥! 🐟
 
 <Callout type="note">
   걱정 말라냥! 실습 페이지에서는 prompt 안의 **역할**과 **테스트 질문**을 직접 채워볼 거다냥. 지금은 "아, 이렇게 생겼구나" 정도만 느끼면 충분하다냥. 😼
