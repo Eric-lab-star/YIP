@@ -13,11 +13,24 @@ import { pythonLangCurriculum } from "@/utils/sideBarTree/tourOfPythonTree";
 import { spaceshipCaptainTree } from "@/utils/sideBarTree/spaceshipCaptainTree";
 import { SideBarTree } from "./SideBarItems";
 import { aIDeveloperTree } from "@/utils/sideBarTree/AIDeveloperTree";
+import ChatRoomList from "./ChatRoomList";
 import Link from "next/link";
 
 export default function AppSideBar() {
   const pathname = usePathname();
   const section = pathname.split("/")[1];
+
+  if (section === "chat") {
+    return (
+      <Sidebar side="left" variant={"floating"}>
+        <SidebarContent className="pb-50">
+          <ChatRoomList />
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+    );
+  }
+
   const title = getTitle(section);
   const sidebarItems = getSidebarItems(section);
 

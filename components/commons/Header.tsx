@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import Title from "./Title";
-import { LogInIcon, LogOut, NotebookPen, UserRoundCog } from "lucide-react";
+import {
+  LogInIcon,
+  LogOut,
+  MessageCircleIcon,
+  NotebookPen,
+  UserRoundCog,
+} from "lucide-react";
 import useUser from "../SWR/auth/user";
 import { Skeleton } from "../ui/skeleton";
 import { logoutAction } from "@/app/actions/authAction";
@@ -88,6 +94,13 @@ function UserProfile() {
                 />
               </Link>
             )}
+            <Link href={`/chat`}>
+              <MessageCircleIcon
+                className="size-5 sm:size-6"
+                strokeWidth={"1.5px"}
+              />
+            </Link>
+
             <Link href={`/students/${user.id}`}>
               <NotebookPen className="size-5 sm:size-6" strokeWidth={"1.5px"} />
             </Link>

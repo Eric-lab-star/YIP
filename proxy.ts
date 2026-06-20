@@ -24,6 +24,7 @@ export const config = {
     "/spaceshipCaptain/:path*",
     "/AIDeveloper/:path*",
     "/login",
+    "/chat/:path*",
     "/editor/:path*",
     "/students/:path*",
     "/dashBoard",
