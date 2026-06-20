@@ -1,0 +1,35 @@
+"use client";
+
+import SlideShell, { CodeBlock, type Slide } from "@/components/slide/SlideShell";
+
+const slides: Slide[] = [
+  { title: "", bg: "from-amber-50 to-orange-50", script: "안녕하세요, 여러분. 오늘은 주제 하나만 입력하면 AI가 블로그 글을 통째로 써주는 앱을 만들어보겠습니다. '초보자를 위한 홈카페 만들기' 같은 주제만 입력하면 제목부터 본문까지 짜임새 있는 글이 자동으로 생성됩니다. 그 비밀은 바로 '프롬프트 설계'에 있습니다. 함께 알아보겠습니다.", content: (<div className="flex flex-col items-center justify-center h-full gap-6 text-center"><span className="text-8xl">📝</span><h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">블로그 글쓰기 앱 (1부)</h1><p className="text-2xl text-gray-500 mt-2">설계도부터 그리는 블로그 글쓰기</p></div>) },
+  { title: "오늘의 학습 목표", bg: "from-yellow-50 to-amber-50", script: "오늘의 학습 목표입니다. 첫째, 긴 글을 AI에게 잘 쓰게 하려면 어떤 프롬프트 설계가 필요한지 이해합니다. 둘째, 주제만 입력하면 제목, 도입, 본문, 마무리 구조를 갖춘 블로그 초안을 만드는 앱의 1단계를 완성합니다.", content: (<div className="flex flex-col gap-6">{[{ num: "1", text: "긴 글을 AI에게 잘 쓰게 하는 프롬프트 설계를 이해한다" }, { num: "2", text: "주제 → 제목 → 소제목 → 본문 구조의 블로그 초안 앱을 만든다" }].map((item) => (<div key={item.num} className="bg-white/70 rounded-xl p-5 flex items-start gap-4"><span className="bg-orange-400 text-white rounded-full w-9 h-9 flex items-center justify-center shrink-0 font-bold">{item.num}</span><p className="text-xl text-gray-700">{item.text}</p></div>))}</div>) },
+  { title: "블로그 글, 뭐부터 정해야 하나", bg: "from-blue-50 to-indigo-50", script: "좋은 블로그 글 한 편에는 정해야 할 것들이 꽤 많습니다. 제목으로 눈길을 끌고, 소제목으로 이야기를 나누고, 말투로 분위기를 잡고, 길이로 분량을 맞춥니다. 사람도 이걸 다 정하고 쓰는데, AI에게 '블로그 글 써줘'라고만 하면 어떻게 될까요? 두서없고 산만한 글이 나오기 쉽습니다. AI는 우리가 무엇을 원하는지 구체적으로 알려줄 때 가장 좋은 결과를 낸다는 점을 기억해주시기 바랍니다.", content: (<div className="flex flex-col gap-6"><p className="text-xl text-gray-700">좋은 블로그 글에 필요한 요소들</p><div className="grid grid-cols-2 gap-4">{[{ icon: "🏷️", text: "제목" }, { icon: "📑", text: "소제목" }, { icon: "🗣️", text: "말투" }, { icon: "📏", text: "길이" }].map((item, i) => (<div key={i} className="bg-white/70 rounded-xl p-4 text-center"><span className="text-3xl">{item.icon}</span><p className="text-lg text-gray-700 mt-2">{item.text}</p></div>))}</div><div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400"><p className="text-lg text-gray-700">AI에게 &ldquo;알아서 잘 써줘&rdquo;만 하면 → 두서없는 글이 나오기 쉽습니다.</p></div></div>) },
+  { title: "핵심 비법: 구조 먼저, 본문 나중", bg: "from-green-50 to-emerald-50", script: "긴 글을 잘 쓰게 하는 핵심 비법은 '한 번에 다 시키지 않는 것'입니다. 먼저 구조(뼈대)를 잡고, 그다음 살(본문)을 붙이는 방식으로 나눠서 시킵니다. 이것은 건물을 지을 때 설계도부터 그리는 것과 같습니다. 설계도 없이 벽돌부터 막 쌓으면 건물이 제대로 될 리 없겠죠? 먼저 설계도(제목과 소제목)를 그리게 하고, 그 설계도에 맞춰 각 방(본문 단락)을 하나씩 채우면 훨씬 짜임새 있는 글이 완성됩니다.", content: (<div className="flex flex-col gap-6"><div className="grid grid-cols-1 sm:grid-cols-2 gap-5"><div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400"><p className="text-lg font-bold text-red-700 mb-2">💥 한 번에 통째로</p><ul className="text-base text-gray-600 space-y-1"><li>&ldquo;블로그 글 써줘&rdquo;</li><li>구조가 들쭉날쭉</li><li>설계도 없이 벽돌부터 쌓기</li></ul></div><div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400"><p className="text-lg font-bold text-green-700 mb-2">🏗️ 구조 먼저, 본문 나중</p><ul className="text-base text-gray-600 space-y-1"><li>제목·소제목(설계도) 먼저</li><li>각 소제목마다 본문 채우기</li><li>짜임새 있고 읽기 좋은 글 완성</li></ul></div></div></div>) },
+  { title: "프롬프트 네 가지 재료", bg: "from-purple-50 to-pink-50", script: "프롬프트 엔지니어링 시간에 배운 네 가지 재료를 블로그 글쓰기에 적용합니다. 역할 — '너는 친근한 말투의 블로거야.' 맥락 — '홈카페 만들기라는 주제로 글을 쓰려고 해.' 지시 — '글의 구조를 먼저 만들어줘.' 형식 — '제목, 도입, 소제목 3개와 본문, 마무리 구조로.' 특히 오늘은 '형식' 지정이 가장 중요합니다. 출력 형식을 명확히 지정해야 AI가 원하는 모양대로 구조를 만들어줍니다.", content: (<div className="flex flex-col gap-5"><div className="overflow-x-auto"><table className="w-full text-lg border-separate border-spacing-0 rounded-2xl overflow-hidden shadow-sm"><thead><tr className="bg-gray-800 text-white"><th className="p-4 text-left">재료</th><th className="p-4 text-left">블로그 적용 예시</th></tr></thead><tbody className="text-gray-700">{[["역할", "너는 친근한 말투의 블로거야"], ["맥락", "'홈카페 만들기' 주제로 글을 쓰려고 해"], ["지시", "글의 구조를 먼저 만들어줘"], ["형식", "제목 → 소제목 3개 → 본문 → 마무리"]].map(([k, v], i) => (<tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}><td className="p-4 font-semibold">{k}</td><td className="p-4">{v}</td></tr>))}</tbody></table></div><div className="bg-purple-50 rounded-xl p-4"><p className="text-lg text-gray-700">오늘의 주인공: <strong>형식(Format)</strong> — 출력 구조를 명확히 지정하는 것이 핵심</p></div></div>) },
+  { title: "코드 미리보기: 구조 생성", bg: "from-cyan-50 to-blue-50", script: "실습에서 직접 빈칸을 채우겠지만, 먼저 코드 구조를 눈으로 확인하겠습니다. AI에게 글의 구조만 먼저 만들어달라고 부탁하는 코드입니다. topic 변수에 주제를 넣고, structure_prompt에서 역할, 형식을 지정합니다. 이렇게 형식을 명확히 알려주면 AI는 원하는 모양대로 깔끔하게 구조를 만들어줍니다. 말투를 '친근한' 대신 '전문적인', '유머러스한'으로 바꾸면 완전히 다른 느낌의 글이 나옵니다.", content: (<div className="flex flex-col gap-5"><CodeBlock>{`topic = "초보자를 위한 홈카페 만들기"
+
+structure_prompt = f"""
+너는 친근한 말투의 블로거야.
+'{'{topic}'}'이라는 주제로 블로그 글을 쓰려고 해.
+다음 형식으로 글의 구조만 먼저 만들어줘:
+
+제목: (눈길을 끄는 제목 1개)
+소제목1:
+소제목2:
+소제목3:
+"""
+
+structure = client.models.generate_content(
+    model="gemini-3.5-flash",
+    contents=structure_prompt
+).text`}</CodeBlock><div className="bg-blue-50 rounded-xl p-4"><p className="text-lg text-gray-600">💡 말투를 바꾸면 글의 느낌이 확 달라집니다!</p></div></div>) },
+  { title: "다음 시간 예고", bg: "from-rose-50 to-orange-50", script: "오늘의 핵심을 한 문장으로 정리하겠습니다. 좋은 블로그 글의 핵심은 '구조'입니다. 프롬프트에 출력 형식을 명확히 지정하는 것이 정말 중요합니다. 오늘은 글 생성까지만 다루고, 다음 시간에는 이 글에 어울리는 이미지를 AI로 생성하여 완성형 블로그 작성 앱으로 업그레이드하겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-5 text-center"><p className="text-2xl text-gray-800 font-semibold">좋은 블로그 글의 핵심 = &ldquo;구조&rdquo;</p><p className="text-xl text-gray-600 mt-2">프롬프트에 출력 형식을 명확히 지정!</p></div><div className="bg-purple-50 rounded-xl p-5"><p className="text-lg text-gray-600">📌 <strong>다음 시간 예고:</strong> 글에 어울리는 AI 이미지 생성 + 완성형 앱</p></div></div>) },
+  { title: "오늘 배운 내용 정리", bg: "from-orange-50 to-red-50", script: "오늘 배운 내용을 정리하겠습니다. 긴 글을 한 번에 시키면 두서없는 결과가 나옵니다. 구조를 먼저 잡고 본문을 나중에 채우는 것이 핵심 비법입니다. 프롬프트의 네 가지 재료 중 '형식'이 블로그 글에서 특히 중요합니다. 설계도 없이 벽돌부터 쌓지 않는 것처럼, AI에게도 설계도부터 그리게 해야 합니다.", content: (<div className="flex flex-col gap-4"><div className="bg-red-50 rounded-xl p-4"><p className="text-lg text-gray-700">✅ 한 번에 시키면 두서없는 글 → 구조 먼저, 본문 나중</p></div><div className="bg-blue-50 rounded-xl p-4"><p className="text-lg text-gray-700">✅ 프롬프트 네 재료 중 &ldquo;형식&rdquo;이 핵심</p></div><div className="bg-green-50 rounded-xl p-4"><p className="text-lg text-gray-700">✅ 설계도(제목+소제목) → 본문 채우기 순서로</p></div><div className="bg-purple-50 rounded-xl p-4"><p className="text-lg text-gray-700">✅ 말투 변경으로 다양한 스타일의 글 생성 가능</p></div></div>) },
+  { title: "", bg: "from-amber-50 to-orange-50", script: "오늘 강의를 마치겠습니다. AI에게 글의 설계도부터 그리게 하는 방법을 배웠습니다. 이제 실습에서 직접 빈칸을 채우며 블로그 글 생성 앱을 만들어보겠습니다. 수고하셨습니다.", content: (<div className="flex flex-col items-center justify-center h-full gap-6 text-center"><span className="text-8xl">📘</span><h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1><p className="text-xl text-gray-600 mt-4">다음: 블로그 글 생성 앱 실습</p><p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p></div>) },
+];
+
+export default function BlogAppPart1GoalSlidePage() {
+  return <SlideShell slides={slides} />;
+}
