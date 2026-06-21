@@ -118,6 +118,29 @@ export async function setAiEnabled(userId: string, enabled: boolean) {
   );
 }
 
+/** Admin: enable or disable AI chat for many users at once (bulk upsert). */
+export async function setAiEnabledForUsers(
+  userIds: string[],
+  enabled: boolean
+) {
+  if (userIds.length === 0) return;
+  const c = await col();
+  const now = new Date();
+  const day = todayKey();
+  await c.bulkWrite(
+    userIds.map((userId) => ({
+      updateOne: {
+        filter: { userId },
+        update: {
+          $set: { enabled, updatedAt: now },
+          $setOnInsert: { userId, used: 0, day, createdAt: now },
+        },
+        upsert: true,
+      },
+    }))
+  );
+}
+
 /** Admin: reset a user's usage count for the current day back to zero. */
 export async function resetAiUsage(userId: string) {
   const c = await col();

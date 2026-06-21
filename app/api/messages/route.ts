@@ -4,7 +4,6 @@ import { createChatMessage } from "@/app/lib/mongo/chatMessages";
 import { getMessagesByRoom } from "@/app/lib/mongo/chatMessages";
 import { findChatRoomById } from "@/app/lib/mongo/chatRooms";
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "crypto";
 
 // Authorize a user against a room: public rooms are open to any signed-in user;
 // AI/private rooms require membership (or ownership). Returns the room when
@@ -45,10 +44,10 @@ export async function POST(req: NextRequest) {
     message,
     createdAt: new Date(),
   };
-  await createChatMessage(chatMsg);
+  const inserted = await createChatMessage(chatMsg);
 
   await pusherServer.trigger(`chat-${roomId}`, "new-message", {
-    id: randomUUID(),
+    id: inserted.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,
     message,

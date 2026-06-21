@@ -1,3 +1,4 @@
+import { validateToken } from "@/app/lib/auth/login";
 import { compressImage } from "@/app/lib/r2/sharp/bluarData";
 import { IMAGE_BASE_URL, r2PostURL } from "@/app/lib/r2/utils";
 import { NextRequest, NextResponse } from "next/server"
@@ -10,10 +11,19 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
 	try {
+		const auth = await validateToken()
+		if (!auth.success) {
+			return NextResponse.json(
+				{ success: 0, error: "Unauthorized" },
+				{ status: 401 }
+			);
+		}
+		// Namespace the object by the authenticated user — never trust a
+		// client-supplied userId, which would allow writing into any namespace.
+		const userId = auth.id
+
 		const formData = await req.formData()
 		const file = formData.get("image")
-		const userId = formData.get("userId")
-
 
 		if (!(file instanceof File)) {
 			return NextResponse.json(

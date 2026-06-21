@@ -13,25 +13,25 @@ import {
 } from "@/app/lib/mongo/aiCache";
 import { consumeAiQuota } from "@/app/lib/mongo/aiUsage";
 import { pusherServer } from "@/app/lib/pusher/pusher_server";
-import { randomUUID } from "crypto";
 
 // Persist the AI reply and broadcast it over Pusher. Skips empty replies,
 // which would otherwise poison the history for the next request.
 async function persistAiReply(roomId: string, text: string) {
   if (!text.trim()) return;
-  await createChatMessage({
+  const createdAt = new Date();
+  const inserted = await createChatMessage({
     roomId,
     userId: "ai",
     userName: "AI 도우미",
     message: text,
-    createdAt: new Date(),
+    createdAt,
   });
   await pusherServer.trigger(`chat-${roomId}`, "new-message", {
-    id: randomUUID(),
+    id: inserted.insertedId.toString(),
     userId: "ai",
     userName: "AI 도우미",
     message: text,
-    createdAt: new Date().toISOString(),
+    createdAt: createdAt.toISOString(),
   });
 }
 
@@ -92,20 +92,21 @@ export async function POST(req: Request) {
     }
   }
 
-  await createChatMessage({
+  const userCreatedAt = new Date();
+  const insertedUser = await createChatMessage({
     roomId,
     userId: auth.id,
     userName: auth.name,
     message,
-    createdAt: new Date(),
+    createdAt: userCreatedAt,
   });
 
   await pusherServer.trigger(`chat-${roomId}`, "new-message", {
-    id: randomUUID(),
+    id: insertedUser.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,
     message,
-    createdAt: new Date().toISOString(),
+    createdAt: userCreatedAt.toISOString(),
   });
 
   // 1) Exact-match cache: a normalized-identical question that was answered
@@ -114,7 +115,10 @@ export async function POST(req: Request) {
   if (cached) {
     await persistAiReply(roomId, cached);
     return new Response(textToStream(cached), {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-AI-Cache": "exact",
+      },
     });
   }
 
@@ -128,7 +132,10 @@ export async function POST(req: Request) {
     if (similar) {
       await persistAiReply(roomId, similar);
       return new Response(textToStream(similar), {
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "X-AI-Cache": "semantic",
+        },
       });
     }
   }
@@ -193,6 +200,9 @@ export async function POST(req: Request) {
   });
 
   return new Response(stream, {
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-AI-Cache": "miss",
+    },
   });
 }

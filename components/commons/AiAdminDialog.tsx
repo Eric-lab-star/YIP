@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   getAiUsersAction,
   setUserAiEnabledAction,
+  setAllUsersAiEnabledAction,
   resetUserAiUsageAction,
 } from "@/app/actions/chatAction";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ToggleLeft, ToggleRight } from "lucide-react";
 import { toast } from "sonner";
 
 type AiUser = {
@@ -32,6 +33,12 @@ export default function AiAdminDialog() {
   const [limit, setLimit] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState<string | null>(null);
+  const [bulkPending, setBulkPending] = useState(false);
+
+  // Bulk toggle targets non-admin users (admins are unlimited regardless).
+  const togglable = users.filter((u) => !u.unlimited);
+  const allEnabled =
+    togglable.length > 0 && togglable.every((u) => u.enabled);
 
   const load = async () => {
     setLoading(true);
@@ -58,6 +65,25 @@ export default function AiAdminDialog() {
       );
       toast.success(
         next ? "AI 채팅을 활성화했습니다." : "AI 채팅을 비활성화했습니다."
+      );
+    } else {
+      toast.error(res.error ?? "변경에 실패했습니다.");
+    }
+  };
+
+  const toggleAll = async () => {
+    const next = !allEnabled;
+    setBulkPending(true);
+    const res = await setAllUsersAiEnabledAction(next);
+    setBulkPending(false);
+    if (res.success) {
+      setUsers((prev) =>
+        prev.map((u) => (u.unlimited ? u : { ...u, enabled: next }))
+      );
+      toast.success(
+        next
+          ? "모든 사용자의 AI 채팅을 활성화했습니다."
+          : "모든 사용자의 AI 채팅을 비활성화했습니다."
       );
     } else {
       toast.error(res.error ?? "변경에 실패했습니다.");
@@ -98,6 +124,25 @@ export default function AiAdminDialog() {
         {loading ? (
           <p className="text-sm text-muted-foreground py-4">불러오는 중...</p>
         ) : (
+          <>
+          {togglable.length > 0 && (
+            <div className="flex items-center justify-between border-b pb-3">
+              <span className="text-sm font-medium">전체 AI 채팅</span>
+              <Button
+                variant={allEnabled ? "outline" : "default"}
+                size="sm"
+                disabled={bulkPending}
+                onClick={toggleAll}
+              >
+                {allEnabled ? (
+                  <ToggleRight className="size-4" />
+                ) : (
+                  <ToggleLeft className="size-4" />
+                )}
+                {allEnabled ? "모두 비활성화" : "모두 활성화"}
+              </Button>
+            </div>
+          )}
           <div className="max-h-96 overflow-y-auto divide-y">
             {users.map((u) => (
               <div
@@ -146,6 +191,7 @@ export default function AiAdminDialog() {
               </p>
             )}
           </div>
+          </>
         )}
       </DialogContent>
     </Dialog>

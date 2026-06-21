@@ -10,7 +10,11 @@ const options: MongoClientOptions = {
 	maxPoolSize: 10,
 	serverApi: {
 		version: ServerApiVersion.v1,
-		strict: true,
+		// strict must stay false: Atlas Search/Vector Search management commands
+		// (createSearchIndex, listSearchIndexes) and the $vectorSearch aggregation
+		// stage are NOT part of Stable API v1 and are rejected under apiStrict.
+		// The AI semantic cache (app/lib/mongo/aiCache.ts) depends on them.
+		strict: false,
 		deprecationErrors: true,
 	}
 };

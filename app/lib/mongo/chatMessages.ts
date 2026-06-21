@@ -33,3 +33,21 @@ export async function deleteMessagesByRoom(roomId: string) {
   const c = await col();
   return c.deleteMany({ roomId });
 }
+
+export async function deleteMessagesByRoomAndUser(
+  roomId: string,
+  userId: string
+) {
+  const c = await col();
+  return c.deleteMany({ roomId, userId });
+}
+
+export async function findMessageById(id: string) {
+  const c = await col();
+  return c.findOne({ _id: new ObjectId(id) });
+}
+
+export async function deleteMessageById(id: string) {
+  const c = await col();
+  return c.deleteOne({ _id: new ObjectId(id) });
+}

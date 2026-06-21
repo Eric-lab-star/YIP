@@ -1,5 +1,11 @@
 import { ObjectId } from "mongodb";
 import { getDB } from "./db";
+import { ValidationSuccess } from "../auth/login";
+
+/** Authorization rule for mutating a post: the author, or an admin. */
+export function canModifyPost(post: post, auth: ValidationSuccess): boolean {
+	return auth.role === "admin" || post.userId === auth.id;
+}
 
 
 export async function createPost({ userId, title, content }: { userId: string; title: string; content: JSON }) {
