@@ -8,7 +8,7 @@ import { useChatStore } from "@/app/lib/store/chatStore";
 import { RoomIcon } from "@/components/commons/ChatRoomList";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,11 +46,48 @@ export default function ChatPage() {
     id: string;
   } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  // Long-press timer for opening the delete menu on touch devices, which have
+  // no right-click. Cleared if the finger moves or lifts before the threshold.
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Set when the menu is opened by long-press, so the trailing synthetic click
+  // is ignored by the dismiss handler.
+  const skipNextClick = useRef(false);
 
-  // Dismiss the context menu on any outside click or Escape.
+  // Open the delete menu, clamping the position so it never overflows the
+  // viewport edges (the menu is anchored bottom-right via translate).
+  const openCtxMenu = (x: number, y: number, id: string) => {
+    const clampedX = Math.min(x, window.innerWidth - 8);
+    const clampedY = Math.min(y, window.innerHeight - 60);
+    setCtxMenu({ x: clampedX, y: clampedY, id });
+  };
+
+  const cancelLongPress = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const startLongPress = (x: number, y: number, id: string) => {
+    cancelLongPress();
+    longPressTimer.current = setTimeout(() => {
+      skipNextClick.current = true;
+      openCtxMenu(x, y, id);
+    }, 500);
+  };
+
+  // Dismiss the context menu on any outside click or Escape. A long-press on
+  // touch fires a synthetic click on release; skip that one so the menu we
+  // just opened isn't closed immediately (desktop right-click closes normally).
   useEffect(() => {
     if (!ctxMenu) return;
-    const close = () => setCtxMenu(null);
+    const close = () => {
+      if (skipNextClick.current) {
+        skipNextClick.current = false;
+        return;
+      }
+      setCtxMenu(null);
+    };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setCtxMenu(null);
     window.addEventListener("click", close);
     window.addEventListener("keydown", onKey);
@@ -89,9 +126,9 @@ export default function ChatPage() {
           setMessages((prev) =>
             data.scope === "all"
               ? []
-              : prev.filter((m) => m.userId !== data.userId)
+              : prev.filter((m) => m.userId !== data.userId),
           );
-        }
+        },
       );
       channel.bind("message-deleted", (data: { id: string }) => {
         setMessages((prev) => prev.filter((m) => m.id !== data.id));
@@ -223,7 +260,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] max-w-6xl mx-auto">
+    <div className="flex h-[calc(100dvh-4rem)] max-w-6xl mx-auto">
       {/* Chat area */}
       <div className="flex-1 flex flex-col">
         {selectedRoom ? (
@@ -249,7 +286,11 @@ export default function ChatPage() {
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-xs" title="채팅 기록 관리">
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      title="채팅 기록 관리"
+                    >
                       <Trash2 className="size-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -283,15 +324,22 @@ export default function ChatPage() {
                         isMe
                           ? (e) => {
                               e.preventDefault();
-                              setCtxMenu({
-                                x: e.clientX,
-                                y: e.clientY,
-                                id: msg.id,
-                              });
+                              openCtxMenu(e.clientX, e.clientY, msg.id);
                             }
                           : undefined
                       }
-                      className={`max-w-md px-4 py-2 rounded-2xl ${
+                      onTouchStart={
+                        isMe
+                          ? (e) => {
+                              const t = e.touches[0];
+                              startLongPress(t.clientX, t.clientY, msg.id);
+                            }
+                          : undefined
+                      }
+                      onTouchMove={isMe ? cancelLongPress : undefined}
+                      onTouchEnd={isMe ? cancelLongPress : undefined}
+                      onTouchCancel={isMe ? cancelLongPress : undefined}
+                      className={`max-w-md px-4 py-2 rounded-2xl select-none ${
                         msg.userId === "ai"
                           ? "bg-emerald-50 border border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800"
                           : isMe
@@ -333,20 +381,39 @@ export default function ChatPage() {
               <div ref={bottomRef} />
             </div>
 
-            <div className="p-4 border-t flex gap-2">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.nativeEvent.isComposing) return;
-                  if (e.key === "Enter") sendMessage();
-                }}
-                placeholder="메시지를 입력하세요..."
-                disabled={sending}
-              />
-              <Button onClick={sendMessage} disabled={sending || !input.trim()}>
-                <Send className="size-4" />
-              </Button>
+            <div className="p-4 border-t flex flex-col gap-2">
+              {input.trim() && (
+                <div className="max-h-40 overflow-y-auto rounded-md border bg-muted/40 px-3 py-2">
+                  <div className="text-xs opacity-70 mb-1 font-medium">
+                    미리보기
+                  </div>
+                  <ChatMarkdown content={input} />
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.nativeEvent.isComposing) return;
+                    // Enter 는 줄바꿈, Cmd/Ctrl+Enter 로 전송
+                    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      sendMessage();
+                    }
+                  }}
+                  rows={1}
+                  placeholder="메시지를 입력하세요... (Cmd/Ctrl+Enter 로 전송)"
+                  disabled={sending}
+                  className="max-h-40 min-h-10 resize-none"
+                />
+                <Button
+                  onClick={sendMessage}
+                  disabled={sending || !input.trim()}
+                >
+                  <Send className="size-4" />
+                </Button>
+              </div>
             </div>
 
             {ctxMenu && (

@@ -19,26 +19,26 @@ export default function ColorDropDown({className, editor}:{className: string; ed
 	return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-				<button className={className}><Highlighter strokeWidth={"2"} size={"16"}/> </button>
+				<button type="button" aria-label="형광펜" className={className}><Highlighter strokeWidth={"2"} size={"18"}/> </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-30 bg-zinc-400" align="start">
-          <DropdownMenuLabel className="text-zinc-200">형광팬</DropdownMenuLabel>
-					<div className="grid grid-cols-4 items-center">
-						<div onClick={() => handleColor("oklch(80.8% 0.114 19.571)")} className={colorPallet()}>
-							<div className={colorIcon({color: "red"})}/> 
-						</div>
-						<div onClick={() => handleColor("oklch(80.9% 0.105 251.813)")} className={colorPallet()}>
-							<div className={colorIcon({color: "blue"})}/> 
-						</div>
-						<div onClick={() => handleColor("oklch(87.1% 0.15 154.449)")} className={colorPallet()}>
-							<div className={colorIcon({color: "green"})}/> 
-						</div>
-						<div onClick={() => handleColor("oklch(90.5% 0.182 98.111)")} className={colorPallet()}>
-							<div className={colorIcon({color: "yellow"})}/> 
-						</div>
-						<div onClick={() => unsetColor()} className={colorPallet({ban: true})}>
-							<Ban className={"text-white"}  strokeWidth="2.5px" /> 
-						</div>
+      <DropdownMenuContent className="w-auto" align="start">
+          <DropdownMenuLabel>형광펜</DropdownMenuLabel>
+					<div className="grid grid-cols-5 items-center gap-1 p-1">
+						<button type="button" onClick={() => handleColor("oklch(80.8% 0.114 19.571)")} className={colorPallet()}>
+							<div className={colorIcon({color: "red"})}/>
+						</button>
+						<button type="button" onClick={() => handleColor("oklch(80.9% 0.105 251.813)")} className={colorPallet()}>
+							<div className={colorIcon({color: "blue"})}/>
+						</button>
+						<button type="button" onClick={() => handleColor("oklch(87.1% 0.15 154.449)")} className={colorPallet()}>
+							<div className={colorIcon({color: "green"})}/>
+						</button>
+						<button type="button" onClick={() => handleColor("oklch(90.5% 0.182 98.111)")} className={colorPallet()}>
+							<div className={colorIcon({color: "yellow"})}/>
+						</button>
+						<button type="button" onClick={() => unsetColor()} className={colorPallet({ban: true})}>
+							<Ban className={"text-zinc-500"} strokeWidth="2.5px" />
+						</button>
 					</div>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -47,12 +47,12 @@ export default function ColorDropDown({className, editor}:{className: string; ed
 
 
 const colorPallet = tv({
-	base: "p-1 hover:bg-zinc-100 rounded-lg flex justify-center items-center",
+	base: "p-1 h-8 w-8 rounded-md flex justify-center items-center hover:bg-zinc-100 transition-colors",
 	variants: {
 		ban:{
-			true: "hover:bg-zinc-500",
+			true: "",
 			false: "",
-		} 
+		}
 	},
 
 	defaultVariants: {
@@ -61,7 +61,7 @@ const colorPallet = tv({
 })
 
 const colorIcon = tv({
-	base: "h-5 w-5 bg-white rounded-full",
+	base: "h-5 w-5 bg-white rounded-full border border-zinc-200",
 	variants: {
 		color: {
 			red: "bg-red-300",

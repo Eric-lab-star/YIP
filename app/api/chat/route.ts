@@ -87,7 +87,7 @@ export async function POST(req: Request) {
           : `오늘 AI 채팅 사용 한도(${quota.limit}회)에 도달했습니다. 내일 다시 시도해주세요.`;
       return NextResponse.json(
         { error, reason: quota.reason, used: quota.used, limit: quota.limit },
-        { status: 403 }
+        { status: 403 },
       );
     }
   }
@@ -149,7 +149,7 @@ export async function POST(req: Request) {
       (m): ModelMessage =>
         m.userId === "ai"
           ? { role: "assistant", content: m.message }
-          : { role: "user", content: `${m.userName}: ${m.message}` }
+          : { role: "user", content: `${m.userName}: ${m.message}` },
     );
 
   // 2) Anthropic prompt caching: mark the conversation prefix (everything up
@@ -164,8 +164,13 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: anthropic("claude-sonnet-4-6"),
-    system:
-      "당신은 YIP 코딩 교육 플랫폼의 AI 도우미입니다. 한국어로 대답하세요. 프로그래밍 질문에 친절하게 답변해주세요.",
+    system: `
+			중학생에게 설명을 한다고 가정하고 답변을 작성해주세요.
+			한국어로 대답하세요.
+			어떤 분야의 질문이든 친절하게 답변해주세요.
+			답변은 짧고 간결하고 정확하게 작성해주세요.
+			답변에는 이모티콘을 사용하지 마세요.
+			`,
     messages,
   });
 
@@ -183,7 +188,9 @@ export async function POST(req: Request) {
         console.error("AI stream error:", err);
         if (!fullResponse) {
           controller.enqueue(
-            new TextEncoder().encode("AI 응답을 가져오지 못했습니다. 다시 시도해주세요.")
+            new TextEncoder().encode(
+              "AI 응답을 가져오지 못했습니다. 다시 시도해주세요.",
+            ),
           );
         }
       }

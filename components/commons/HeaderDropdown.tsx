@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Editor } from "@tiptap/core";
-import { Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Highlighter } from "lucide-react"
+import { Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6 } from "lucide-react"
 import { tv } from "tailwind-variants";
 
 export default function HeaderDropdown({className, editor}:{className: string; editor: Editor}) {
@@ -16,34 +16,31 @@ export default function HeaderDropdown({className, editor}:{className: string; e
 	return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-				<button className={className}>
-					<Heading strokeWidth={"2"} size={"16"}/>
+				<button type="button" aria-label="제목 크기" className={className}>
+					<Heading strokeWidth={"2"} size={"18"}/>
 				</button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-35 bg-zinc-400" align="start">
-          <DropdownMenuLabel className="text-zinc-200">제목 크기</DropdownMenuLabel>
-					<div className="grid gap-2 grid-cols-4 items-center">
-						<div onClick={() => handleHeaderSize(1)} className={colorPallet()}>
-							<Heading1 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(2)} className={colorPallet()}>
-							<Heading2 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(3)} className={colorPallet()}>
-							<Heading3 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(4)} className={colorPallet()}>
-							<Heading4 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(4)} className={colorPallet()}>
-							<Heading4 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(5)} className={colorPallet()}>
-							<Heading5 className={headings()}/> 
-						</div>
-						<div onClick={() => handleHeaderSize(6)} className={colorPallet()}>
-							<Heading6 className={headings()}/> 
-						</div>
+      <DropdownMenuContent className="w-40" align="start">
+          <DropdownMenuLabel>제목 크기</DropdownMenuLabel>
+					<div className="grid gap-1 grid-cols-3 items-center p-1">
+						<button type="button" onClick={() => handleHeaderSize(1)} className={colorPallet()}>
+							<Heading1 className={headings()}/>
+						</button>
+						<button type="button" onClick={() => handleHeaderSize(2)} className={colorPallet()}>
+							<Heading2 className={headings()}/>
+						</button>
+						<button type="button" onClick={() => handleHeaderSize(3)} className={colorPallet()}>
+							<Heading3 className={headings()}/>
+						</button>
+						<button type="button" onClick={() => handleHeaderSize(4)} className={colorPallet()}>
+							<Heading4 className={headings()}/>
+						</button>
+						<button type="button" onClick={() => handleHeaderSize(5)} className={colorPallet()}>
+							<Heading5 className={headings()}/>
+						</button>
+						<button type="button" onClick={() => handleHeaderSize(6)} className={colorPallet()}>
+							<Heading6 className={headings()}/>
+						</button>
 					</div>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -52,7 +49,7 @@ export default function HeaderDropdown({className, editor}:{className: string; e
 
 
 const colorPallet = tv({
-	base: "p-1 hover:bg-white bg-zinc-300 h-6 w-6 rounded-lg flex justify-center items-center"
+	base: "p-1 h-9 w-full rounded-md flex justify-center items-center text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors"
 })
 
 const headings = tv({
