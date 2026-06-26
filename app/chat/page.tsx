@@ -351,19 +351,17 @@ export default function ChatPage() {
                         {msg.userName}
                       </div>
                       <ChatMarkdown content={msg.message} />
-                      {msg.userId === "ai" && (
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(msg.message);
-                            toast.success("복사되었습니다.");
-                          }}
-                          className="mt-1.5 flex items-center gap-1 text-xs opacity-60 hover:opacity-100"
-                          title="복사"
-                        >
-                          <Copy className="size-3.5" />
-                          복사
-                        </button>
-                      )}
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(msg.message);
+                          toast.success("복사되었습니다.");
+                        }}
+                        className="mt-1.5 flex items-center gap-1 text-xs opacity-60 hover:opacity-100"
+                        title="복사"
+                      >
+                        <Copy className="size-3.5" />
+                        복사
+                      </button>
                     </div>
                   </div>
                 );
