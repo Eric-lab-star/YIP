@@ -218,9 +218,86 @@ good = """
     ),
   },
   {
+    title: "제미나이 API로 프롬프트 보내기",
+    bg: "from-sky-50 to-cyan-50",
+    script: "이제 코드로 실습해볼 차례입니다. 우리는 구글의 제미나이(Gemini) API를 사용하겠습니다. OpenAI를 쓰는 자료도 많지만, 프롬프트의 원리는 완전히 동일합니다. 별도의 라이브러리를 새로 배울 필요 없이, 지난 시간 LangChain Agent에서 쓰던 ChatGoogleGenerativeAI를 그대로 재활용합니다. llm 객체를 만든 다음, invoke 함수에 프롬프트를 넣고 content를 꺼내면 답변이 돌아옵니다. 이것을 ask라는 헬퍼 함수로 감싸두겠습니다. 앞으로 나오는 모든 예시는 이 ask 함수에 프롬프트만 바꿔 넣으면 그대로 동작합니다.",
+    content: (
+      <div className="flex flex-col gap-5">
+        <div className="bg-white/60 rounded-xl p-4">
+          <p className="text-lg text-gray-600">
+            지난 시간 쓰던 <code className="text-sky-600">ChatGoogleGenerativeAI</code>를 그대로 재활용해, 프롬프트만 바꿔 넣는 <code className="text-sky-600">ask()</code> 헬퍼를 만들어 둡니다.
+          </p>
+        </div>
+        <CodeBlock>
+          {`# pip install langchain langchain-google-genai  (지난 시간과 동일)
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-3.5-flash",
+    google_api_key="제미나이 API 키",
+)
+
+def ask(prompt: str) -> str:
+    return llm.invoke(prompt).content
+
+print(ask(good_prompt))`}
+        </CodeBlock>
+      </div>
+    ),
+  },
+  {
+    title: "프롬프트로 할 수 있는 여섯 가지",
+    bg: "from-lime-50 to-green-50",
+    script: "좋은 프롬프트 작성법을 배웠으니, 이제 그것으로 무엇을 할 수 있는지 살펴보겠습니다. 프롬프트 하나만 바꿔도 AI는 여섯 가지 일을 해냅니다. 첫째, 요약. 긴 글을 한 문장으로 줄입니다. 둘째, 질문 답변. 주어진 맥락 안에서만 답하게 하여 환각을 줄입니다. 셋째, 분류. 글을 정해진 범주 중 하나로 골라냅니다. 넷째, 역할 놀이. AI에게 캐릭터와 말투를 부여합니다. 다섯째, 코드 생성. 자연어 설명으로 코드를 만듭니다. 여섯째, 추론. 계산이나 논리 문제를 단계별로 풀게 합니다. 지시 문장만 조금 바꾸면 이 모든 것이 가능합니다.",
+    content: (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {[
+          { icon: "📝", name: "요약", desc: "긴 글 → 한 문장" },
+          { icon: "❓", name: "질문 답변", desc: "맥락 안에서만 답 (환각 ↓)" },
+          { icon: "🏷️", name: "분류", desc: "정해진 범주로 골라내기" },
+          { icon: "🎭", name: "역할 놀이", desc: "캐릭터와 말투 부여" },
+          { icon: "💻", name: "코드 생성", desc: "자연어 → 코드" },
+          { icon: "🧮", name: "추론", desc: "단계별로 문제 풀기" },
+        ].map((item, i) => (
+          <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
+            <span className="text-3xl">{item.icon}</span>
+            <div>
+              <p className="text-xl font-bold text-gray-800">{item.name}</p>
+              <p className="text-base text-gray-600">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    title: "한 단계 더! 고급 프롬프트 기술",
+    bg: "from-indigo-50 to-violet-50",
+    script: "여기서 조금 더 나아가면, AI를 훨씬 똑똑하게 만드는 세 가지 기술이 있습니다. 첫째, 예시 주기, 영어로 Few-shot입니다. 지시만 하지 말고 정답 예시를 몇 개 먼저 보여준 뒤 새 문제를 시키면, AI가 예시의 패턴을 흉내 냅니다. 둘째, 생각의 사슬, Chain-of-Thought입니다. 예시에 정답만 주지 말고 푸는 과정까지 보여주면, AI도 과정을 따라 하며 실수를 줄입니다. 셋째, 제로샷 CoT입니다. 예시를 하나도 주지 않아도, 문제 끝에 '차근차근 생각해보자'라는 한 문장만 붙이면 AI가 단계를 밟아 정답을 찾습니다. 세 기술의 공통점은 AI에게 생각할 시간과 본보기를 준다는 것입니다.",
+    content: (
+      <div className="flex flex-col gap-4">
+        <div className="bg-white/70 rounded-xl p-5 border-l-4 border-indigo-400">
+          <p className="text-xl font-bold text-indigo-700 mb-1">1. 예시 주기 (Few-shot)</p>
+          <p className="text-base text-gray-600">정답 예시를 몇 개 먼저 보여주고 새 문제를 시킴</p>
+        </div>
+        <div className="bg-white/70 rounded-xl p-5 border-l-4 border-violet-400">
+          <p className="text-xl font-bold text-violet-700 mb-1">2. 생각의 사슬 (CoT)</p>
+          <p className="text-base text-gray-600">예시에 &ldquo;푸는 과정&rdquo;까지 보여주어 실수 줄이기</p>
+        </div>
+        <div className="bg-white/70 rounded-xl p-5 border-l-4 border-purple-400">
+          <p className="text-xl font-bold text-purple-700 mb-1">3. 제로샷 CoT</p>
+          <p className="text-base text-gray-600">문제 끝에 &ldquo;차근차근 생각해보자&rdquo; 한 문장만 붙이기 ✨</p>
+        </div>
+        <div className="bg-amber-50 rounded-xl p-4 text-center">
+          <p className="text-lg text-gray-700">공통점: <strong>AI에게 생각할 시간과 본보기를 준다</strong></p>
+        </div>
+      </div>
+    ),
+  },
+  {
     title: "오늘 배운 내용 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 강의 내용을 정리하겠습니다. 첫째, 프롬프트는 AI에게 명령하는 코드와 같으며, 모호하면 엉뚱한 결과가, 구체적이면 정확한 결과가 나옵니다. 둘째, 좋은 프롬프트의 네 가지 핵심 요소는 역할(Role), 맥락(Context), 지시(Instruction), 형식(Format)입니다. 셋째, 지난 시간 Agent가 도구를 못 찾은 것은 Tool의 설명문이 모호했기 때문이며, 좋은 프롬프트 원리를 적용하면 해결됩니다. 다음 시간에는 직접 나쁜 프롬프트와 좋은 프롬프트를 비교 실험하고, 나만의 프롬프트 템플릿을 만들어보겠습니다.",
+    script: "오늘 강의 내용을 정리하겠습니다. 첫째, 프롬프트는 AI에게 명령하는 코드와 같으며, 모호하면 엉뚱한 결과가, 구체적이면 정확한 결과가 나옵니다. 둘째, 좋은 프롬프트의 네 가지 핵심 요소는 역할(Role), 맥락(Context), 지시(Instruction), 형식(Format)입니다. 셋째, 프롬프트 하나로 요약, 질문 답변, 분류, 역할 놀이, 코드 생성, 추론 등 여섯 가지 일을 할 수 있습니다. 넷째, 예시 주기, 생각의 사슬, 제로샷 CoT 같은 고급 기술로 AI를 더 똑똑하게 만들 수 있습니다. 다섯째, 지난 시간 Agent가 도구를 못 찾은 것은 Tool의 설명문이 모호했기 때문이며, 좋은 프롬프트 원리를 적용하면 해결됩니다. 다음 시간에는 직접 나쁜 프롬프트와 좋은 프롬프트를 비교 실험하고, 나만의 프롬프트 템플릿을 만들어보겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
@@ -232,6 +309,16 @@ good = """
           <div className="bg-blue-50 rounded-xl p-5">
             <p className="text-xl text-gray-700">
               네 가지 핵심: <strong>역할 · 맥락 · 지시 · 형식</strong>
+            </p>
+          </div>
+          <div className="bg-green-50 rounded-xl p-5">
+            <p className="text-xl text-gray-700">
+              활용 6가지: <strong>요약 · 질문 답변 · 분류 · 역할 놀이 · 코드 · 추론</strong>
+            </p>
+          </div>
+          <div className="bg-violet-50 rounded-xl p-5">
+            <p className="text-xl text-gray-700">
+              고급 기술: <strong>Few-shot · CoT · 제로샷 CoT</strong>
             </p>
           </div>
         </div>

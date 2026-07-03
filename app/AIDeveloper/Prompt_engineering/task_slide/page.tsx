@@ -109,9 +109,58 @@ print(llm.invoke(good_prompt).content)`}
     ),
   },
   {
-    title: "미션 2: 나만의 프롬프트 템플릿 (8~10분)",
+    title: "미션 2: 여섯 가지 활용 + 제로샷 CoT (6~8분)",
+    bg: "from-lime-50 to-green-50",
+    script: "두 번째 미션입니다. 프롬프트만 바꿔서 AI에게 여러 가지 일을 시켜보겠습니다. 요약, 질문 답변, 분류 중에서 두세 개를 골라 llm.invoke로 돌려봅니다. 특히 질문 답변에서는 맥락 안에서만 답하게 하고, 맥락에 없는 것을 물으면 '잘 모르겠어'라고 답하는지 확인해봅니다. 그다음 제로샷 CoT의 마법을 확인합니다. 같은 계산 문제를 두 번 물어보되, 한 번은 그냥, 한 번은 '차근차근 생각해보자'를 붙여서 결과를 비교합니다. 이 한 문장만으로 계산이 더 정확해지는 것을 눈으로 확인해보시기 바랍니다. 6분에서 8분 드리겠습니다.",
+    content: (
+      <div className="flex flex-col gap-5">
+        <div className="bg-white/60 rounded-xl p-4">
+          <p className="text-lg text-gray-600"><strong>목표:</strong> 프롬프트만 바꿔 여러 일을 시키고, 제로샷 CoT를 체험합니다.</p>
+        </div>
+        <CodeBlock>
+          {`# 요약 / 질문답변 / 분류 중 골라서 돌려보기
+qa = """아래 맥락만 보고 답해줘. 확신이 없으면
+"잘 모르겠어"라고만 답해.
+맥락: OKT3는 처음에 생쥐에서 유래한 항체야.
+질문: OKT3는 처음에 무엇에서 유래했어?"""
+print(llm.invoke(qa).content)
+
+# 제로샷 CoT — "차근차근 생각해보자"의 마법
+problem = "사과 10개를 사서 2개, 2개를 주고 5개를 더 사서 1개를 먹었어. 남은 건?"
+print(llm.invoke(problem).content)
+print(llm.invoke(problem + "\\n차근차근 생각해보자.").content)`}
+        </CodeBlock>
+        <div className="bg-white/70 rounded-xl p-4">
+          <p className="text-base text-gray-600">
+            💡 &ldquo;차근차근 생각해보자&rdquo; 한 문장 → 계산이 더 정확해집니다.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "미션 2 해설",
+    bg: "from-lime-50 to-emerald-50",
+    script: "미션 2의 핵심 포인트입니다. 첫째, 프롬프트 하나만 바꾸면 요약, 질문 답변, 분류 같은 서로 다른 일을 모두 시킬 수 있습니다. 둘째, 질문 답변에서 '맥락 안에서만 답하고 모르면 잘 모르겠다고 답하라'는 조건을 넣으면, AI가 아무 말이나 지어내는 환각을 줄일 수 있습니다. 셋째, 어려운 계산이나 논리 문제는 '차근차근 생각해보자'라는 한 문장, 즉 제로샷 CoT만 붙여도 정확도가 올라갑니다. 예시를 몇 개 보여주는 Few-shot이나 푸는 과정까지 보여주는 CoT도 같은 원리로, AI에게 생각할 시간과 본보기를 주는 것입니다.",
+    content: (
+      <div className="flex flex-col gap-5">
+        <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
+        <div className="bg-white/70 rounded-xl p-4">
+          <p className="text-lg text-gray-700">프롬프트만 바꾸면 <strong>요약·질문답변·분류</strong>를 모두 처리</p>
+        </div>
+        <div className="bg-green-50 rounded-xl p-4">
+          <p className="text-lg text-gray-700">&ldquo;맥락 안에서만 답해&rdquo; → <strong>환각(hallucination) 감소</strong></p>
+        </div>
+        <div className="bg-lime-50 rounded-xl p-4">
+          <p className="text-lg text-gray-700">&ldquo;차근차근 생각해보자&rdquo; = <strong>제로샷 CoT</strong> → 추론 정확도 ↑</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "미션 3: 나만의 프롬프트 템플릿 (8~10분)",
     bg: "from-violet-50 to-purple-50",
-    script: "두 번째 미션입니다. 미션 1의 빈칸을 나만의 답으로 바꿔서, 세상에 하나뿐인 프롬프트를 만들어보겠습니다. 역할에는 어떤 전문가인지, 맥락에는 어떤 사람을 위한 것인지, 지시에는 어떤 조건인지, 형식에는 어떤 모양으로 받고 싶은지를 적습니다. 네 가지 요소가 모두 들어가 있는지 확인하시기 바랍니다. 여행 외에 음식, 운동, 공부 등 다른 주제로 바꿔도 좋습니다. 옆 친구와 서로의 템플릿을 비교해보는 것도 추천합니다. 같은 틀인데도 답이 다양하게 나오는 것을 확인할 수 있습니다. 8분에서 10분 드리겠습니다.",
+    script: "세 번째 미션입니다. 미션 1의 빈칸을 나만의 답으로 바꿔서, 세상에 하나뿐인 프롬프트를 만들어보겠습니다. 역할에는 어떤 전문가인지, 맥락에는 어떤 사람을 위한 것인지, 지시에는 어떤 조건인지, 형식에는 어떤 모양으로 받고 싶은지를 적습니다. 네 가지 요소가 모두 들어가 있는지 확인하시기 바랍니다. 여행 외에 음식, 운동, 공부 등 다른 주제로 바꿔도 좋습니다. 옆 친구와 서로의 템플릿을 비교해보는 것도 추천합니다. 같은 틀인데도 답이 다양하게 나오는 것을 확인할 수 있습니다. 8분에서 10분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
@@ -147,9 +196,9 @@ print(llm.invoke(good_prompt).content)`}
     ),
   },
   {
-    title: "미션 2 해설",
+    title: "미션 3 해설",
     bg: "from-violet-50 to-indigo-50",
-    script: "미션 2의 핵심 포인트입니다. 프롬프트 템플릿의 힘은, 같은 구조에 다른 내용을 넣으면 완전히 다른 결과를 얻을 수 있다는 것입니다. 이것이 프롬프트 엔지니어링의 본질입니다. AI의 성능은 고정되어 있지만, 프롬프트를 어떻게 쓰느냐에 따라 결과의 품질을 크게 향상시킬 수 있습니다. 실무에서도 프롬프트 템플릿을 만들어두고, 상황에 맞게 변수만 바꿔서 사용하는 경우가 많습니다.",
+    script: "미션 3의 핵심 포인트입니다. 프롬프트 템플릿의 힘은, 같은 구조에 다른 내용을 넣으면 완전히 다른 결과를 얻을 수 있다는 것입니다. 이것이 프롬프트 엔지니어링의 본질입니다. AI의 성능은 고정되어 있지만, 프롬프트를 어떻게 쓰느냐에 따라 결과의 품질을 크게 향상시킬 수 있습니다. 실무에서도 프롬프트 템플릿을 만들어두고, 상황에 맞게 변수만 바꿔서 사용하는 경우가 많습니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
@@ -172,9 +221,9 @@ print(llm.invoke(good_prompt).content)`}
     ),
   },
   {
-    title: "미션 3: Agent에 적용하기 (8~10분)",
+    title: "미션 4: Agent에 적용하기 (8~10분)",
     bg: "from-teal-50 to-cyan-50",
-    script: "세 번째 미션입니다. 지난 시간에 만든 Agent에 오늘 배운 프롬프트 원리를 적용해보겠습니다. 두 가지를 수정합니다. 첫째, @tool 함수의 docstring을 더 구체적으로 수정합니다. 어떤 입력을 받고, 어떤 정보를 돌려주는지 명확하게 작성합니다. 둘째, Agent에게 던지는 질문에 역할, 맥락, 형식을 담습니다. 예를 들어 '너는 친절한 날씨 안내원이야. 서울의 오늘 날씨를 한 문장으로 알려줘'와 같이 작성합니다. 수정 전후의 결과를 pretty_print로 비교해보시기 바랍니다. 8분에서 10분 드리겠습니다.",
+    script: "네 번째 미션입니다. 지난 시간에 만든 Agent에 오늘 배운 프롬프트 원리를 적용해보겠습니다. 두 가지를 수정합니다. 첫째, @tool 함수의 docstring을 더 구체적으로 수정합니다. 어떤 입력을 받고, 어떤 정보를 돌려주는지 명확하게 작성합니다. 둘째, Agent에게 던지는 질문에 역할, 맥락, 형식을 담습니다. 예를 들어 '너는 친절한 날씨 안내원이야. 서울의 오늘 날씨를 한 문장으로 알려줘'와 같이 작성합니다. 수정 전후의 결과를 pretty_print로 비교해보시기 바랍니다. 8분에서 10분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
@@ -206,9 +255,9 @@ print(result["messages"][-1].content)`}
     ),
   },
   {
-    title: "미션 3 해설",
+    title: "미션 4 해설",
     bg: "from-teal-50 to-emerald-50",
-    script: "미션 3의 핵심 포인트입니다. docstring을 구체적으로 수정한 후, Agent가 도구를 더 정확하게 선택하는 것을 확인하셨을 것입니다. 도구의 설명문은 결국 Agent에게 보내는 프롬프트와 같습니다. 좋은 프롬프트의 원리, 즉 구체적이고 명확하게 쓰는 것이 도구 설명에도 그대로 적용됩니다. 또한 사용자 질문에도 역할과 형식을 추가하면, 최종 답변의 품질이 크게 향상됩니다. 프롬프트 엔지니어링의 원리는 AI와 소통하는 모든 곳에 적용됩니다.",
+    script: "미션 4의 핵심 포인트입니다. docstring을 구체적으로 수정한 후, Agent가 도구를 더 정확하게 선택하는 것을 확인하셨을 것입니다. 도구의 설명문은 결국 Agent에게 보내는 프롬프트와 같습니다. 좋은 프롬프트의 원리, 즉 구체적이고 명확하게 쓰는 것이 도구 설명에도 그대로 적용됩니다. 또한 사용자 질문에도 역할과 형식을 추가하면, 최종 답변의 품질이 크게 향상됩니다. 프롬프트 엔지니어링의 원리는 AI와 소통하는 모든 곳에 적용됩니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
@@ -231,14 +280,15 @@ print(result["messages"][-1].content)`}
   {
     title: "오늘의 실습 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 실습을 정리하겠습니다. 미션 1에서는 나쁜 프롬프트와 좋은 프롬프트의 결과를 직접 비교했습니다. 미션 2에서는 역할, 맥락, 지시, 형식을 활용한 나만의 프롬프트 템플릿을 만들었습니다. 미션 3에서는 그 원리를 LangChain Agent에 적용하여 도구 설명문과 질문을 개선했습니다. 같은 AI, 같은 도구인데도 프롬프트 하나만 바꿔도 결과가 확 달라진다는 것을 직접 확인하셨습니다. 이것이 바로 프롬프트 엔지니어링입니다.",
+    script: "오늘 실습을 정리하겠습니다. 미션 1에서는 나쁜 프롬프트와 좋은 프롬프트의 결과를 직접 비교했습니다. 미션 2에서는 프롬프트만 바꿔 요약, 질문 답변, 분류를 시키고, 제로샷 CoT의 마법까지 확인했습니다. 미션 3에서는 역할, 맥락, 지시, 형식을 활용한 나만의 프롬프트 템플릿을 만들었습니다. 미션 4에서는 그 원리를 LangChain Agent에 적용하여 도구 설명문과 질문을 개선했습니다. 같은 AI, 같은 도구인데도 프롬프트 하나만 바꿔도 결과가 확 달라진다는 것을 직접 확인하셨습니다. 이것이 바로 프롬프트 엔지니어링입니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
           {[
             { num: "1", text: "나쁜 vs 좋은 프롬프트 결과 비교", color: "bg-rose-100" },
-            { num: "2", text: "역할·맥락·지시·형식 프롬프트 템플릿 제작", color: "bg-violet-100" },
-            { num: "3", text: "LangChain Agent에 프롬프트 원리 적용", color: "bg-teal-100" },
+            { num: "2", text: "여섯 가지 활용 + 제로샷 CoT 체험", color: "bg-lime-100" },
+            { num: "3", text: "역할·맥락·지시·형식 프롬프트 템플릿 제작", color: "bg-violet-100" },
+            { num: "4", text: "LangChain Agent에 프롬프트 원리 적용", color: "bg-teal-100" },
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
