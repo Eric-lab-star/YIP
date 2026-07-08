@@ -11,13 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: string;
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
     priority: number;
-  }[] = [
-    { path: "/", changeFrequency: "weekly", priority: 1 },
-    { path: "/tourOfPython", changeFrequency: "monthly", priority: 0.8 },
-    { path: "/AIDeveloper", changeFrequency: "monthly", priority: 0.8 },
-    { path: "/simpleWebDev", changeFrequency: "monthly", priority: 0.8 },
-    { path: "/spaceshipCaptain", changeFrequency: "monthly", priority: 0.8 },
-  ];
+  }[] = [{ path: "/", changeFrequency: "weekly", priority: 1 }];
 
   return routes.map(({ path, changeFrequency, priority }) => ({
     url: `${SITE_URL}${path}`,
