@@ -6,13 +6,39 @@ import Text from "@/components/commons/Text";
 import Title from "@/components/commons/Title";
 
 import { imageMetadata } from "@/app/lib/r2/sharp/bluarData";
-import { IMAGE_BASE_URL, r2GetSignedURL } from "@/app/lib/r2/utils";
+import { IMAGE_BASE_URL } from "@/app/lib/r2/utils";
 
-async function getImageMetas() {
+// Neutral 1x1 placeholder used when R2 is unreachable, so `placeholder="blur"`
+// always has a valid value and the page can still be built/rendered.
+const FALLBACK_BLUR =
+	"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
 
-	const promises = Array.from({length: 10}, (_, i) => imageMetadata(`sandbox_${i + 1}.png`))
+type ImageMeta = {
+	key: string;
+	blurDataURL: string;
+	width: number;
+	height: number;
+};
 
-	return Promise.all(promises)
+async function getImageMetas(): Promise<ImageMeta[]> {
+	// Resolve each image independently and degrade gracefully on failure — a
+	// transient R2 error must not fail the whole (static) page build.
+	return Promise.all(
+		Array.from({ length: 10 }, async (_, i): Promise<ImageMeta> => {
+			const key = `sandbox_${i + 1}.png`;
+			try {
+				const meta = await imageMetadata(key);
+				return {
+					key,
+					blurDataURL: meta.blurDataURL,
+					width: meta.width ?? 1000,
+					height: meta.height ?? 600,
+				};
+			} catch {
+				return { key, blurDataURL: FALLBACK_BLUR, width: 1000, height: 600 };
+			}
+		})
+	);
 }
 
 async function getImage(){

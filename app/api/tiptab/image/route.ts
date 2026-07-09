@@ -3,6 +3,9 @@ import { compressImage } from "@/app/lib/r2/sharp/bluarData";
 import { IMAGE_BASE_URL, r2PostURL } from "@/app/lib/r2/utils";
 import { NextRequest, NextResponse } from "next/server"
 
+// Reject oversized uploads before buffering them into memory.
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
+
 export async function GET() {
 	return Response.json({
 		image: "image"
@@ -39,14 +42,23 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
+		if (file.size > MAX_UPLOAD_BYTES) {
+			return NextResponse.json(
+				{ success: 0, error: "Image too large (max 10MB)" },
+				{ status: 413 }
+			);
+		}
+
 		const bytes = Buffer.from(await file.arrayBuffer());
 
+		// compressImage always re-encodes to WebP, so the key extension and stored
+		// ContentType are derived from the output — never from the client filename
+		// or client-supplied MIME type.
 		const image = await compressImage(bytes)
 
-		const ext = (file.name.split(".").pop() || "png").toLocaleLowerCase()
-		const key = `tiptab/${userId}/${crypto.randomUUID()}.${ext}`
+		const key = `tiptab/${userId}/${crypto.randomUUID()}.webp`
 
-		await r2PostURL({ Key: key, Body: image, ContentType: file.type })
+		await r2PostURL({ Key: key, Body: image, ContentType: "image/webp" })
 
 		const url = `${IMAGE_BASE_URL}/${key}`
 
