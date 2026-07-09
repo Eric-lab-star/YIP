@@ -13,6 +13,7 @@ import {
 	useEditorState,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { Placeholder } from "@tiptap/extensions";
 import Highlight from "@tiptap/extension-highlight";
 import {
 	AArrowDown,
@@ -51,7 +52,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "../ui/tooltip";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 const lowlight = createLowlight(all);
 const ICON_SIZE = 18;
 
@@ -68,6 +69,7 @@ export default function TipTab({
 	content,
 	editable,
 }: TibTabInterface) {
+	const [postTitle, setPostTitle] = useState(title ?? "");
 	const editor = useEditor({
 		editable,
 		content,
@@ -106,7 +108,9 @@ export default function TipTab({
 					protocols: ["https"],
 				},
 			}),
-			// Placeholder.configure({}),
+			Placeholder.configure({
+				placeholder: "내용을 입력하세요…",
+			}),
 			CodeBlockLowlight.configure({
 				lowlight,
 				enableTabIndentation: true,
@@ -153,8 +157,21 @@ export default function TipTab({
 
 	return (
 		<div className="mx-auto w-full max-w-4xl px-3 pb-24 sm:px-5">
-			<MenuBar id={id} editor={editor} title={title} />
+			<MenuBar
+				id={id}
+				editor={editor}
+				title={postTitle}
+				setTitle={setPostTitle}
+			/>
 			<div className="mt-4 rounded-2xl border border-zinc-200 bg-white shadow-sm">
+				<input
+					type="text"
+					value={postTitle}
+					onChange={(e) => setPostTitle(e.target.value)}
+					placeholder="제목을 입력하세요"
+					aria-label="제목"
+					className="w-full rounded-t-2xl border-b border-zinc-100 bg-transparent px-5 pt-5 pb-3 text-2xl font-bold text-zinc-800 placeholder:text-zinc-300 focus:outline-none sm:px-6"
+				/>
 				<div className="flex items-center gap-1.5 px-5 pt-4 text-xs text-zinc-400">
 					<Sparkles size={13} className="text-purple-500" />
 					<span>
@@ -178,11 +195,13 @@ export default function TipTab({
 function MenuBar({
 	id,
 	title,
+	setTitle,
 	editor,
 }: {
 	id?: string;
 	editor: Editor;
-	title?: string;
+	title: string;
+	setTitle: (v: string) => void;
 }) {
 	const uploadedImageKeys = useRef<string[]>([]);
 
@@ -429,7 +448,8 @@ function MenuBar({
 				{/* 저장: 오른쪽 끝으로 밀착 */}
 				<div className="ml-auto">
 					<SaveDialog
-						posterTitle={title}
+						title={title}
+						setTitle={setTitle}
 						postId={id}
 						editor={editor}
 						uploadedImageKeys={uploadedImageKeys}

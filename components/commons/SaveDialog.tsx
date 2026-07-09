@@ -24,13 +24,13 @@ interface SaveDialogInterface {
 	className?: string;
 	editor: Editor;
 	postId?: string;
-	posterTitle?: string
+	title: string;
+	setTitle: (v: string) => void;
 }
 
-export default function SaveDialog({ posterTitle = "", postId, uploadedImageKeys, editor }: SaveDialogInterface) {
+export default function SaveDialog({ title, setTitle, postId, uploadedImageKeys, editor }: SaveDialogInterface) {
 	const { user } = useUser()
 	const userId = user?.success ? user.id : null
-	const [title, setTitle] = useState<string>(posterTitle)
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTitle(e.currentTarget.value)
 	}
@@ -40,9 +40,14 @@ export default function SaveDialog({ posterTitle = "", postId, uploadedImageKeys
 	const [open, setOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-		setLoading(true)
 		e.preventDefault()
-		if (!title && !postId) return;
+		// 제목이 비어 있으면 저장하지 않는다. (이전엔 loading을 true로 둔 채
+		// return해 저장 버튼이 "저장중..."에서 영구히 멈추는 버그가 있었다.)
+		if (!title.trim()) {
+			toast.error("제목을 입력하세요.", { position: "top-center" })
+			return
+		}
+		setLoading(true)
 
 		const formdata = new FormData()
 		const contentJSON = editor.getJSON()
