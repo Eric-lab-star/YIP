@@ -43,3 +43,6 @@ next-env.d.ts
 .vercel
 .env*.local
 /.claude
+
+# local connectivity/debug script (contained credentials — do not commit)
+test-mongo.mjs

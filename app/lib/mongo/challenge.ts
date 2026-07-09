@@ -4,6 +4,14 @@ import { getDB } from "./db";
 
 export type challenges = "sayHello" | "basicCal" | "ifChallenge"
 
+/** Runtime whitelist of allowed challenge collections. */
+export const CHALLENGE_NAMES: readonly challenges[] = ["sayHello", "basicCal", "ifChallenge"] as const
+
+/** Type guard used to reject arbitrary collection names at the trust boundary. */
+export function isChallengeName(name: unknown): name is challenges {
+	return typeof name === "string" && (CHALLENGE_NAMES as readonly string[]).includes(name)
+}
+
 export async function createChallege(
 	data: z.infer<typeof challengeSchema>,
 	name: challenges

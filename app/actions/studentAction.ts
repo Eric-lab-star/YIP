@@ -48,7 +48,13 @@ export async function updateStudentAction(formdata: { _id: string } & StudentDat
 	if (!zodResult.success) {
 		return { success: false, errors: zodResult.error }
 	} else {
-		await updateStudent(formdata)
+		// Persist only the validated fields (drops unknown keys) and normalize the
+		// phone number the same way create does, so login lookups stay consistent.
+		await updateStudent({
+			...zodResult.data,
+			studentPhoneNumber: zodResult.data.studentPhoneNumber.replace(/-/g, ""),
+			_id: formdata._id,
+		})
 		return { success: true }
 	}
 

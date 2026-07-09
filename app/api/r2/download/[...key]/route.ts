@@ -16,11 +16,11 @@ export async function GET(
 	const { key }= await params
 	const joinedKey = key.join("/")
 
-	// Per-user objects live under `tiptab/<userId>/` — a non-admin may only sign
-	// URLs for their own. Prevents arbitrary cross-user reads of the bucket.
+	// Per-user objects live under `tiptab/<userId>/`. A non-admin may sign URLs
+	// only for their own prefix — every other key (including non-`tiptab/`
+	// objects) is denied, preventing arbitrary cross-user reads of the bucket.
 	if (
 		auth.role !== "admin" &&
-		joinedKey.startsWith("tiptab/") &&
 		!joinedKey.startsWith(`tiptab/${auth.id}/`)
 	) {
 		return NextResponse.json({ error: "Forbidden", ok: false }, { status: 403 })
