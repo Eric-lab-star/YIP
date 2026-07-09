@@ -2,7 +2,39 @@ import og from "open-graph-scraper";
 import { NextRequest, NextResponse } from "next/server";
 import { validateToken } from "@/app/lib/auth/login";
 import { lookup } from "node:dns/promises";
+import { lookup as dnsLookupCb } from "node:dns";
 import net from "node:net";
+import { Agent } from "undici";
+
+// A dispatcher whose socket `connect` resolves DNS itself and refuses to open a
+// connection to any private/loopback/link-local address. Because this runs at
+// connect time for the initial request AND every redirect hop, it closes both
+// the "redirect to an internal host" bypass and the DNS-rebinding (TOCTOU) gap
+// that a one-shot pre-flight lookup can't cover.
+const ssrfSafeDispatcher = new Agent({
+	connect: {
+		lookup(hostname, options, callback) {
+			dnsLookupCb(hostname, { ...options, all: true }, (err, addresses) => {
+				if (err) {
+					callback(err, "", 0);
+					return;
+				}
+				const list = Array.isArray(addresses) ? addresses : [addresses];
+				const blocked = list.find((a) => isPrivateIp(a.address));
+				if (blocked) {
+					callback(
+						new Error(`Blocked private address: ${blocked.address}`),
+						"",
+						0
+					);
+					return;
+				}
+				const first = list[0];
+				callback(null, first.address, first.family);
+			});
+		},
+	},
+});
 
 export async function GET(req: NextRequest) {
 	const auth = await validateToken()
@@ -26,7 +58,12 @@ export async function GET(req: NextRequest) {
 		)
 	}
 
-	const { error, result } = await og({ url: link })
+	const { error, result } = await og({
+		url: link,
+		// Enforce the SSRF guard on every network hop, and bound wait time.
+		fetchOptions: { dispatcher: ssrfSafeDispatcher },
+		timeout: 10,
+	})
 
 	if (error) {
 		return Response.json({

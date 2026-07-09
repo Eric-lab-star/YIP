@@ -14,6 +14,10 @@ import {
 import { consumeAiQuota } from "@/app/lib/mongo/aiUsage";
 import { pusherServer } from "@/app/lib/pusher/pusher_server";
 
+// Cap on a single chat message: persisted to Mongo and forwarded to Anthropic,
+// so an unbounded body would inflate storage and token cost.
+const MAX_MESSAGE_LENGTH = 4000;
+
 // Persist the AI reply and broadcast it over Pusher. Skips empty replies,
 // which would otherwise poison the history for the next request.
 async function persistAiReply(roomId: string, text: string) {
@@ -59,6 +63,9 @@ export async function POST(req: Request) {
   const { message, roomId } = await req.json();
   if (!message?.trim() || !roomId) {
     return new Response("Missing fields", { status: 400 });
+  }
+  if (typeof message !== "string" || message.length > MAX_MESSAGE_LENGTH) {
+    return new Response("Message too long", { status: 413 });
   }
 
   // Authorize: public rooms are open to any signed-in user; AI/private rooms
