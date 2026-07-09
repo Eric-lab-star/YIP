@@ -176,6 +176,68 @@
 		display: block;
 		clear: both;
 	}
+
+	/* 표 — 편집/읽기 뷰 공통 */
+	.tiptap .tableWrapper {
+		margin: 1rem 0;
+		overflow-x: auto;
+	}
+
+	.tiptap table {
+		width: 100%;
+		margin: 0;
+		border-collapse: collapse;
+		table-layout: fixed;
+		overflow: hidden;
+	}
+
+	.tiptap table td,
+	.tiptap table th {
+		position: relative;
+		min-width: 4rem;
+		border: 1px solid var(--color-zinc-300);
+		padding: 0.5rem 0.75rem;
+		vertical-align: top;
+		text-align: left;
+		box-sizing: border-box;
+	}
+
+	.tiptap table th {
+		background: var(--color-zinc-100);
+		font-weight: 600;
+	}
+
+	/* 셀 안 문단 여백 제거 */
+	.tiptap table td > *,
+	.tiptap table th > * {
+		margin: 0;
+	}
+
+	/* 편집 중 선택된 셀 */
+	.tiptap table .selectedCell::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: var(--color-purple-200);
+		opacity: 0.4;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	/* 열 너비 조절 핸들 */
+	.tiptap table .column-resize-handle {
+		position: absolute;
+		top: 0;
+		right: -1px;
+		bottom: -1px;
+		width: 4px;
+		background: var(--color-purple-500);
+		pointer-events: none;
+	}
+
+	.tiptap.resize-cursor {
+		cursor: col-resize;
+	}
 }
 
 /*

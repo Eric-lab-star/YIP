@@ -4,6 +4,7 @@ import { InlineSuggestion } from "@/lib/InlineSuggestion";
 import TextAlign from "@tiptap/extension-text-align";
 import { ResizableImage } from "@/lib/ImageResize";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { TableKit } from "@tiptap/extension-table";
 import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import Youtube from "@tiptap/extension-youtube";
 import {
@@ -44,8 +45,11 @@ import ColorDropDown from "../commons/ColorDropdown";
 import HeaderDropdown from "../commons/HeaderDropdown";
 import ImageUploadDialog from "../commons/ImageDialog";
 import SaveDialog from "../commons/SaveDialog";
+import TableDropdown from "../commons/TableDropdown";
+import EditorChatPanel from "./EditorChatPanel";
 import { Skeleton } from "../ui/skeleton";
 import { Separator } from "../ui/separator";
+import { cn } from "@/lib/utils";
 import {
 	Tooltip,
 	TooltipContent,
@@ -70,6 +74,8 @@ export default function TipTab({
 	editable,
 }: TibTabInterface) {
 	const [postTitle, setPostTitle] = useState(title ?? "");
+	// 왼쪽 AI 글쓰기 도우미 패널 열림 상태 (데스크톱 기본 열림)
+	const [chatOpen, setChatOpen] = useState(true);
 	const editor = useEditor({
 		editable,
 		content,
@@ -107,6 +113,10 @@ export default function TipTab({
 			CodeBlockLowlight.configure({
 				lowlight,
 				enableTabIndentation: true,
+			}),
+			// 표: 크기 조절 가능한 헤더 있는 표. HTML <table>도 그대로 파싱된다.
+			TableKit.configure({
+				table: { resizable: true },
 			}),
 			// 편집 가능할 때만 Copilot 스타일 AI 자동완성을 활성화한다.
 			...(editable
@@ -157,23 +167,44 @@ export default function TipTab({
 	}
 
 	return (
-		<div className="mx-auto w-full max-w-4xl px-3 pb-24 sm:px-5">
-			<MenuBar
-				id={id}
-				editor={editor}
-				title={postTitle}
-				setTitle={setPostTitle}
-			/>
-			<div className="mt-4 rounded-2xl border border-zinc-200 bg-white shadow-sm">
+		<div className="flex min-h-[calc(100dvh-3.75rem)] w-full flex-col bg-zinc-50 px-4 pt-4 pb-4 sm:px-6 lg:h-[calc(100dvh-3.75rem)] lg:overflow-hidden">
+			{/* 메뉴바: 작업 공간 상단에 고정 */}
+			<div className="shrink-0">
+				<MenuBar
+					id={id}
+					editor={editor}
+					title={postTitle}
+					setTitle={setPostTitle}
+					chatOpen={chatOpen}
+					onToggleChat={() => setChatOpen((v) => !v)}
+				/>
+			</div>
+
+			{/* 본문 + AI 채팅: 남은 높이를 채우고 각 칼럼이 내부에서만 스크롤된다. */}
+			<div className="mt-3 flex min-h-0 flex-1 flex-col gap-5 lg:flex-row">
+				{chatOpen && (
+					<EditorChatPanel
+						editor={editor}
+						onClose={() => setChatOpen(false)}
+						className="hidden lg:flex"
+					/>
+				)}
+				<div
+					className={cn(
+						"flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm",
+						// 패널이 닫히면 본문을 읽기 좋은 폭으로 가운데 정렬한다.
+						!chatOpen && "lg:mx-auto lg:w-full lg:max-w-3xl",
+					)}
+				>
 				<input
 					type="text"
 					value={postTitle}
 					onChange={(e) => setPostTitle(e.target.value)}
 					placeholder="제목을 입력하세요"
 					aria-label="제목"
-					className="w-full rounded-t-2xl border-b border-zinc-100 bg-transparent px-5 pt-5 pb-3 text-2xl font-bold text-zinc-800 placeholder:text-zinc-300 focus:outline-none sm:px-6"
+					className="w-full border-b border-zinc-100 bg-transparent px-6 pt-6 pb-3 text-2xl font-bold text-zinc-800 placeholder:text-zinc-300 focus:outline-none"
 				/>
-				<div className="flex items-center gap-1.5 px-5 pt-4 text-xs text-zinc-400">
+				<div className="flex items-center gap-1.5 border-b border-zinc-100 bg-zinc-50/60 px-6 py-2.5 text-[11px] text-zinc-400">
 					<Sparkles size={13} className="text-purple-500" />
 					<span>
 						AI 자동완성 — 입력을 멈추면 회색 추천이 나타납니다 ·{" "}
@@ -187,7 +218,14 @@ export default function TipTab({
 						취소
 					</span>
 				</div>
-				<EditorContent className="px-2 pb-6 sm:px-4" editor={editor} />
+					{/* 본문: 이 영역만 내부 스크롤된다. */}
+					<div className="min-h-0 flex-1 overflow-y-auto">
+						<EditorContent
+							className="min-h-full px-6 pt-5 pb-14"
+							editor={editor}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
@@ -198,11 +236,15 @@ function MenuBar({
 	title,
 	setTitle,
 	editor,
+	chatOpen,
+	onToggleChat,
 }: {
 	id?: string;
 	editor: Editor;
 	title: string;
 	setTitle: (v: string) => void;
+	chatOpen?: boolean;
+	onToggleChat?: () => void;
 }) {
 	const uploadedImageKeys = useRef<string[]>([]);
 	// 사용자가 편집을 한 뒤 저장하지 않았는지 추적한다.
@@ -257,6 +299,7 @@ function MenuBar({
 				isLink: editor.isActive("link"),
 				isCode: editor.isActive("code"),
 				isHighlight: editor.isActive("highlight"),
+				isTable: editor.isActive("table"),
 				canUndo: editor.can().chain().focus().undo().run(),
 				canRedo: editor.can().chain().focus().redo().run(),
 			};
@@ -300,6 +343,20 @@ function MenuBar({
 	return (
 		<TooltipProvider delayDuration={300}>
 			<div className="sticky top-15 z-20 flex flex-nowrap items-center gap-1 overflow-x-auto rounded-2xl border border-zinc-200 bg-white/90 p-1.5 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/70 sm:flex-wrap sm:overflow-x-visible">
+				{/* AI 글쓰기 도우미 패널 토글 (데스크톱 전용) */}
+				{onToggleChat && (
+					<div className="hidden shrink-0 items-center gap-0.5 lg:flex">
+						<ToolButton
+							label={chatOpen ? "AI 도우미 닫기" : "AI 도우미 열기"}
+							onClick={onToggleChat}
+							active={chatOpen}
+						>
+							<Sparkles size={ICON_SIZE} />
+						</ToolButton>
+						<ToolDivider />
+					</div>
+				)}
+
 				{/* 실행 취소 / 다시 실행 */}
 				<ToolGroup>
 					<ToolButton
@@ -451,6 +508,10 @@ function MenuBar({
 						uploadedImageKeys={uploadedImageKeys}
 						editor={editor}
 						className={editorButton()}
+					/>
+					<TableDropdown
+						editor={editor}
+						className={editorButton({ isActive: editorState?.isTable })}
 					/>
 				</ToolGroup>
 

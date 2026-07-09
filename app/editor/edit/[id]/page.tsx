@@ -15,7 +15,7 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
 		return notFound()
 	}
 	return (
-		<div className="min-h-screen w-full bg-zinc-50 py-6">
+		<div className="w-full bg-zinc-50">
 			<TipTab id={id} title={post.db.title} editable={true} content={post.db.content!}/>
 		</div>
 	)
