@@ -26,7 +26,7 @@ async function persistAiReply(roomId: string, text: string) {
     message: text,
     createdAt,
   });
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: inserted.insertedId.toString(),
     userId: "ai",
     userName: "AI 도우미",
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     createdAt: userCreatedAt,
   });
 
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: insertedUser.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,

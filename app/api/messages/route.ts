@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   };
   const inserted = await createChatMessage(chatMsg);
 
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: inserted.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,
