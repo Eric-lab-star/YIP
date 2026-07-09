@@ -1,8 +1,13 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
 import { toast } from "sonner";
+
+// Serve Monaco from our own origin (public/monaco/vs) instead of the default
+// jsDelivr CDN, so the editor works offline / behind a strict CSP. The assets
+// are copied from the monaco-editor package by scripts/copy-monaco.mjs.
+loader.config({ paths: { vs: "/monaco/vs" } });
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
