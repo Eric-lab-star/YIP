@@ -46,3 +46,6 @@ next-env.d.ts
 
 # local connectivity/debug script (contained credentials — do not commit)
 test-mongo.mjs
+
+# Judge0 local config (contains secrets)
+judge0/judge0.conf
