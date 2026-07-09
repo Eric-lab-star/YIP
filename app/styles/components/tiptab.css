@@ -165,3 +165,21 @@
 		color: inherit;
 	}
 }
+
+/*
+ * ProseMirror는 위젯/문단 끝 위치에 0크기의 내부용 이미지
+ * (<img class="ProseMirror-separator" alt="">)를 삽입한다. 원래 보이지 않아야
+ * 하지만, 위 @layer의 에디터 img 규칙(min-width/height: 50px)이 이 이미지에도
+ * 적용되면 src 없는 50x50 "빈 네모 상자"로 렌더된다. 특히 AI 자동완성 고스트
+ * 텍스트 뒤에서 나타났다. 여기서 원래 의도대로 보이지 않게 강제한다.
+ * (@layer 밖에 두어 레이어드 규칙보다 우선 적용)
+ */
+.tiptap.ProseMirror img.ProseMirror-separator {
+	display: inline !important;
+	width: 1px !important;
+	height: 1px !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+}
