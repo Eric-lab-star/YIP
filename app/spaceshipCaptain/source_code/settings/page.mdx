@@ -1,0 +1,21 @@
+export const metadata = {
+  title: "settings.py",
+  description: "완성된 슈팅 게임의 settings.py 전체 소스 코드예요.",
+};
+
+# settings.py
+
+```python
+#settings.py
+import pygame
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+pygame.init()
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+
+all_sprite_group = pygame.sprite.Group()
+meteor_sprite_group = pygame.sprite.Group()
+missile_sprite_group = pygame.sprite.Group()
+```

@@ -1,0 +1,185 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "and or not",
+  description:
+    "여러 조건을 한 번에 다루는 and · or · not 을 VIP 손님 판별과 RGB 색 계산기 예제로 배워봐요.",
+};
+
+<span id="title" />
+
+# and or not
+
+이번에는 and와 or에 대해서 배워봐요. and와 or는 더 복잡한 조건을 만들 때 사용할 수 있어요. 예를 들어서 호텔에 방문한 손님이 일반 손님인지 VIP 손님인지 확인해주는 프로그램을 만들어야 하는 상황이라고 생각해봐요. VIP 손님이 되기 위해서는 3가지를 모두 만족해야 해요.
+
+1. 만 19세 이상
+2. 1년에 12번 이상 방문한 손님
+3. 호텔 회원권 등록 후 2년 이상인 손님
+
+위의 3가지 조건을 모두 만족하는지 확인하기 위해서 `if..else`를 반복적으로 사용해도 확인할 수 있어요. 하지만 `if..else` 안에 또 다른 `if..else`가 있으면 코드를 이해하는 데 시간이 오래 걸리고, 복잡해질 거예요. 클린 코드를 작성하고 싶다면 중첩된 `if..else`는 사용하지 않는 게 좋아요.
+
+<span id="and" />
+
+## and
+
+```python
+age = 20             # 만 나이
+visited_number = 20  # 1년 동안 방문한 횟수
+duration = 1         # 회원 기간
+
+if age >= 19 and visited_number >= 12 and duration >= 2:
+    print("you are VIP")
+else:
+    print("welcome!")
+```
+
+이 코드를 보면 `and`가 사용된 것을 볼 수 있어요. `and`를 사용했기 때문에 3가지 조건 중 1개라도 거짓이 되면 `print("you are VIP")`이 실행되지 않고 `print("welcome!")`이 실행돼요.
+
+### 연습문제
+
+아래 보이는 코드를 수정해서, "you are VIP"가 나오게 만드세요.
+
+```python
+age = 20             # 만 나이
+visited_number = 20  # 1년 동안 방문한 횟수
+duration = 1         # 회원 기간
+
+if age >= 19 and visited_number >= 12 and duration >= 2:
+    print("you are VIP")
+else:
+    print("welcome!")
+```
+
+---
+
+## RGB 색 계산기
+
+<img
+  src="https://r2.kimkyungsub.com/rgb.svg"
+  alt="빛의 3원색 벤 다이어그램"
+  className="mx-auto my-6 w-2/3"
+/>
+
+위의 사진은 빛의 3원색의 조합을 알려주는 벤 다이어그램이에요. 이 사진 속 정보를 파이썬 코드로 표현하려면 어떻게 해야 할까요? 모든 색을 표현하려면 코드가 길어지니까 4개의 색상만 코드로 표현해 볼게요.
+
+```python
+def rgb(r, g, b):
+    if r == 1 and g == 1 and b == 1:
+        print("white")
+    elif r == 1 and g == 0 and b == 0:
+        print("red")
+    elif r == 0 and g == 1 and b == 0:
+        print("green")
+    elif r == 0 and g == 0 and b == 1:
+        print("blue")
+    else:
+        print("mixed color")
+```
+
+이 코드는 빨간불이 켜지면 r이 1이 되고, 초록불이 켜지면 g가 1이 되고, 파란불이 켜지면 b가 1이 되는 함수에요. r이 1이고 g가 0, b가 0이라면 빨간불만 켜져 있는 상태를 의미해요.
+
+여기서 빨간불을 표현하기 위해서 r이 1인 조건만 판단해서는 안 돼요. 흰색불인 경우도 빨간불이 켜진 상태이고, 노란색과 마젠타색 또한 빨간불이 켜진 상태이기 때문이에요. 따라서 빨간불만 켜진 상태를 표현하기 위해서는 `and`를 사용해서 `r == 1 and g == 0 and b == 0`인 조건을 검사해야 해요.
+
+### 연습문제
+
+아래의 함수를 실행시켜서 "green"이 출력되게 만드세요.
+
+```python
+def rgb(r, g, b):
+    if r == 1 and g == 1 and b == 1:
+        print("white")
+    elif r == 1 and g == 0 and b == 0:
+        print("red")
+    elif r == 0 and g == 1 and b == 0:
+        print("green")
+    elif r == 0 and g == 0 and b == 1:
+        print("blue")
+    else:
+        print("mixed color")
+```
+
+---
+
+<span id="or" />
+
+## or
+
+A and B는 A와 B 모두가 참일 때 참이 되었다면, or는 둘 중에서 하나라도 참이면 참이 돼요. 예를 들어서 비가 내리거나 눈이 오면 "날씨가 좋지 않습니다."라고 출력하고 싶으면 이렇게 작성할 수 있어요.
+
+```python
+def rain_or_snow(rain, snow):
+    if rain or snow:
+        print("날씨가 좋지 않습니다.")
+    else:
+        print("날씨가 좋습니다.")
+```
+
+이 코드는 rain 또는 snow에서 boolean 값을 받아요. `or`가 있기 때문에 rain 또는 snow 둘 중에 하나라도 `True`라면 `print("날씨가 좋지 않습니다")`가 실행돼요.
+
+<span id="not" />
+
+## not
+
+`not`은 값을 반전시키는 코드에요. 참인 조건은 거짓으로, 거짓인 조건은 참으로 만들어 주는 기능을 합니다. 간단한 코드이지만 자주 사용되는 코드에요.
+
+```python
+def not_loggedIn(loggedIn):
+    if not loggedIn:
+        print("please login")
+
+not_loggedIn(True)
+```
+
+이 코드는 사용자가 로그인 했는지 판단하는 코드에요. `loggedIn` 매개변수를 이용해서 `True` 또는 `False` 값을 받아서 로그인 상태를 알 수 있어요.
+
+---
+
+## 연습문제
+
+배운 걸 바로 확인해 봐요! `and`는 **모두 참**일 때, `or`는 **하나라도 참**일 때 참이 돼요.
+
+<QuizzWithOptions answer={2} question="1. and 는 언제 참(True)이 되나요?">
+  <Option value={1}>둘 중 하나만 참이어도 참</Option>
+  <Option value={2}>양쪽이 모두 참일 때만 참</Option>
+  <Option value={3}>둘 다 거짓일 때 참</Option>
+  <Option value={4}>항상 참</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`age = 20
+member = True
+if age >= 19 and member:
+    print("입장 가능")
+else:
+    print("입장 불가")`} />
+  <Option value={1}>입장 가능</Option>
+  <Option value={2}>입장 불가</Option>
+  <Option value={3}>아무것도 출력 안 됨</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`rain = False
+snow = True
+if rain or snow:
+    print("우산 챙기기")
+else:
+    print("맑음")`} />
+  <Option value={1}>맑음</Option>
+  <Option value={2}>우산 챙기기</Option>
+  <Option value={3}>아무것도 출력 안 됨</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="4. not True 의 값은 무엇인가요?">
+  <Option value={1}>True</Option>
+  <Option value={2}>None</Option>
+  <Option value={3}>False</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+### 직접 만들어보기
+
+`나이가 14세 이상 이고(and) 키가 140 이상`이면 "놀이기구 탑승 가능", 아니면 "탑승 불가"를 출력하는 코드를 만들어보세요.

@@ -1,55 +1,37 @@
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { Skeleton } from "@/components/ui/skeleton"
+export default function Loading() {
+  return (
+    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+      {/* Hero */}
+      <div className="mb-14">
+        <Skeleton className="mb-6 h-8 w-32 rounded-full" />
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-18 w-18 rounded-full" />
+          <Skeleton className="h-12 w-72" />
+        </div>
+      </div>
 
-export default function Loading(){
-	return (
-		<div className=""> 
-		{[0,0].map((_, i) => <div key={i}>
-			<Title/>
-			<Paragraph />
-			<List />
-			<List />
-			<List />
-		 </div>)
-		}
-		</div>
-	) 
-}
+      {/* 교재 */}
+      <div className="mb-16">
+        <Skeleton className="mb-8 h-9 w-40" />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[0, 0, 0, 0].map((_, i) => (
+            <Skeleton key={i} className="h-80 w-full rounded-2xl" />
+          ))}
+        </div>
+      </div>
 
-
-
-function Title(){
-	return <Skeleton className="my-3 w-45 h-10"/>
-}
-
-function Text() {
-	return <Skeleton className="my-1 w-full h-6"/>
-}
-
-function Paragraph(){
-	return <div className="my-7">
-	{[0,0].map((_,i)=> <div key={i} className="mb-7 space-y-1">
-			<div className="pl-10">
-				<Skeleton className="  w-full h-6"/>
-			</div>
-			<Skeleton className=" w-11/12 h-6"/>
-			<Skeleton className=" w-full h-6"/>
-			<Skeleton className=" w-7/12 h-6"/>
-		</div>)}
-	</div>
-}
-
-function List() {
-	return <div className="space-y-1 my-8">
-		<Skeleton className="w-30 h-8 mb-3"/>
-		<Skeleton className="w-50 h-6"/>
-		<Skeleton className="w-40 h-6"/>
-		<Skeleton className="w-40 h-6"/>
-	</div>
-}
-
-function Image(){
-	return <div className="flex justify-center items-center">
-		<Skeleton className="h-200 w-120"/>
-	</div>
+      {/* TIL */}
+      <div>
+        <Skeleton className="mb-8 h-9 w-64" />
+        <Skeleton className="mb-6 h-24 w-full rounded-2xl" />
+        <div className="space-y-2">
+          {[0, 0, 0, 0, 0].map((_, i) => (
+            <Skeleton key={i} className="h-10 w-full" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }

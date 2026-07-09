@@ -1,0 +1,126 @@
+export const metadata = {
+  title: "surface 이해하기",
+  description:
+    "창을 관리하는 pygame.display 모듈과 set_caption·flip·fill, 그리고 그림을 그리는 Surface를 배워봐요.",
+};
+
+<span id="display" />
+
+## pygame.display
+
+`pygame.display`는 화면 창과 관련된 모든 것을 담당하는 모듈이에요. **TV 본체**라고 생각하면 돼요. TV처럼 창을 켜고, 제목을 붙이고, 화면을 새로 그려줘요.
+
+자주 쓰는 함수는 세 가지예요.
+
+- `set_mode()` — 창을 만들어요.
+- `set_caption()` — 창 제목을 붙여요.
+- `flip()` — 화면을 새로 그려요. 그림을 다 그린 뒤 도화지를 뒤집어 보여주는 것과 같아서, 이걸 안 부르면 화면에 아무것도 안 나와요.
+
+<span id="caption" />
+
+```python
+#main.py
+....# 기존코드
+pygame.init()
+WINDOW_WIDTH,  WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("pygame shooter") # <-- 창의 이름을 설정
+def main():
+    ....# main 함수
+```
+
+### display.set_caption()
+
+`pygame.display.set_caption("space shooter")`는 게임 창 상단 제목 표시줄에 이름을 붙여주는 함수로, 마치 가게 간판처럼 창을 열었을 때 맨 위에 어떤 이름을 보여줄지 정하는 역할을 해요. 큰따옴표 안에 원하는 문자열을 넣으면 그게 그대로 창 제목이 돼요. 보통 창을 생성하는 `pygame.display.set_mode()` 바로 다음에 한 번만 호출하면 게임이 실행되는 내내 그 제목이 유지돼요.
+
+<span id="flip" />
+
+```python
+#main.py
+... #기존코드
+    running = False
+pygame.display.flip() # <-- 화면을 새로고침
+pygame.quit()
+```
+
+### pygame.display.flip()
+
+`pygame.display.flip()`은 게임 화면을 실제로 눈에 보이게 출력해 주는 함수로, 마치 화가가 캔버스에 그림을 다 그린 후 관객에게 보여주기 위해 캔버스를 뒤집어 공개하는 것과 같은 원리예요. 파이게임은 실제로 보이는 화면과 뒤에서 그림을 그리는 화면 두 개를 동시에 운영하는 더블 버퍼링 방식을 사용해서, 뒤에서 완성된 그림을 `flip()`으로 앞으로 내보내는 구조예요. `flip()`을 게임 루프 안에서 호출하지 않으면 뒤에서 아무리 열심히 그려도 화면에는 아무것도 나타나지 않기 때문에, 반드시 매 프레임마다 한 번씩 호출해 줘야 해요.
+
+<span id="fill" />
+
+```python
+#main.py
+...#기존 코드
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    display_surface.fill((250,250,0)) # <-- 화면 색상을 설정하는 코드
+    pygame.display.flip()
+```
+
+### display_surface.fill()
+
+`display_surface.fill()`은 게임 화면 전체를 하나의 색으로 채워주는 함수로, 마치 새 그림을 그리기 전에 도화지를 원하는 색으로 깔끔하게 덧칠하는 것과 같은 역할을 해요. 괄호 안에는 `(R, G, B)` 형태의 튜플로 색을 지정하며, 각각 빨강·초록·파랑의 값을 0부터 255 사이로 넣으면 돼요. 이 함수를 게임 루프 안에서 매 프레임마다 호출하는 이유는, 이전 프레임에 그려진 그림이 그대로 남아 있으면 캐릭터가 움직일 때 잔상이 남기 때문이에요. 새 프레임을 그리기 전에 항상 화면을 깨끗하게 지우는 용도로 사용해요.
+
+<span id="surface" />
+
+```python
+#main.py
+....#기존 코드
+def main():
+    running = True
+    surf = pygame.Surface((100, 150)) #<--- 생성
+    surf.fill("orange") #<-- 색상 설정
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.fill((0,0,0))
+        display_surface.blit(surf, (100,100)) # <-- 화면에 붙이기
+        pygame.display.flip()
+    pygame.quit()
+```
+
+### pygame.Surface()
+
+`pygame.Surface()`는 그림을 그릴 수 있는 **작은 도화지**를 새로 만들어줘요. `display_surface`가 무대 전체라면, `Surface`는 그 위에 올려놓는 작은 그림판 조각이에요.
+
+캐릭터·배경·버튼을 각각 `Surface`에 그린 다음, `blit()`으로 메인 화면의 원하는 위치에 붙여넣어요. 괄호 안에는 `(가로, 세로)`로 크기를 정해요.
+
+<span id="result" />
+
+## 결과 확인하기
+
+```python
+#main.py
+import pygame
+
+pygame.init()
+WINDOW_WIDTH,  WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("pygame shooter")
+
+def main():
+    running = True
+    surf = pygame.Surface((100, 150))
+    surf.fill("orange")
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.fill((0,0,0))
+        display_surface.blit(surf, (100,100))
+        pygame.display.flip()
+    pygame.quit()
+```
+
+## 관련 자료
+
+1. [set_caption](https://pyga.me/docs/ref/display.html#pygame.display.set_caption)
+2. [Surface.blit](https://pyga.me/docs/ref/surface.html#pygame.Surface.blit)
+3. [Surface.fill](https://pyga.me/docs/ref/surface.html#pygame.Surface.fill)

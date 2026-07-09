@@ -55,6 +55,7 @@ There is no `middleware.ts`. Auth is handled per-route: `validateToken()` is cal
 - **Styling**: Tailwind v4 with `tailwind-variants` (`tv`) for variant-based component styles. Combine classes with `cn()` (`clsx` + `tailwind-merge`). Style definitions live in `app/lib/tv/`.
 - **In-browser Python**: `react-py` powers the sandbox pages under `app/tourOfPython/`.
 - **Rich text editor**: TipTap v3. Editor API routes are under `app/api/tiptab/` (image upload, link preview, post CRUD).
+- **AI chat**: `app/api/chat/route.ts` streams via the Vercel AI SDK (`ai`'s `streamText` + `@ai-sdk/anthropic`), not the raw Anthropic SDK. It checks a two-tier cache before calling the model — exact-match then semantic (`aiCache.ts`, Voyage embeddings + Mongo `$vectorSearch`) — enforces a per-user quota (`aiUsage.ts`), and persists/broadcasts replies over Pusher. Cache hits are re-chunked into a stream so they render with the same incremental UX as a live response.
 - **Image storage**: Cloudflare R2 via the AWS S3 SDK. Signed GET URLs expire in 4 hours. Blur placeholders generated with `sharp`.
 - **State management**: Zustand for global client state. Sidebar open/close state is managed via React Context (`LayoutContextWrapper`).
 - **UI primitives**: shadcn/ui components (new-york style, neutral base color, Lucide icons) in `components/ui/`.
@@ -80,3 +81,4 @@ MDX is enabled as a page extension (`pageExtensions` includes `md`, `mdx`), so `
 
 - `reactStrictMode` is **off** — intentional, not a mistake.
 - `dns.setDefaultResultOrder('ipv4first')` is set in `next.config.ts` to avoid IPv6 connection issues with MongoDB Atlas.
+- MongoDB (`app/lib/mongo/db.ts`) connects to the `yipDB` database with a shared client pool (`attachDatabasePool` from `@vercel/functions`, cached on `global` in dev). Stable API `strict` stays **false** on purpose — Atlas Search/Vector Search commands (`createSearchIndex`, `$vectorSearch`) aren't part of Stable API v1 and the semantic cache depends on them.

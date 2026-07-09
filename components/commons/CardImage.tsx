@@ -26,20 +26,17 @@ export function CardImage({
   link,
 }: CardImageProps) {
   return (
-    <Link href={link} className="w-fit">
-      <Card className="relative mx-auto h-100 overflow-clip  w-8/12 sm:w-auto sm:max-w-2xs pt-0">
-        <div className="group absolute inset-0 flex justify-center items-center hover:bg-white/20 hover:backdrop-blur-xs w-full h-full z-30 cursor-pointer">
-          <div className="opacity-0 group-hover:opacity-100">
-            <GraduationCap
-              strokeWidth={2}
-              size={30}
-              color="purple"
-              className="mx-auto"
-            />
-            <div className="text-2xl font-bold">학습하기</div>
+    <Link href={link} className="group block">
+      <Card className="relative h-full overflow-hidden pt-0 transition-transform duration-200 group-hover:-translate-y-1">
+        {/* Hover overlay — "학습하기" call to action */}
+        <div className="absolute inset-0 z-30 flex cursor-pointer items-center justify-center bg-white/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-200 group-hover:opacity-100">
+          <div className="flex flex-col items-center gap-1 text-foreground">
+            <GraduationCap strokeWidth={2} size={30} className="text-primary" />
+            <div className="text-xl font-bold">학습하기</div>
           </div>
         </div>
-        <div className="relative mx-auto h-40 w-full">
+
+        <div className="relative h-40 w-full">
           <Image
             src={`${process.env.R2_CUSTOM}/${imagekey}`}
             alt="book image"
@@ -49,14 +46,14 @@ export function CardImage({
           />
         </div>
 
-        <CardHeader className="h-15  ">
+        <CardHeader>
           <CardAction>
-            <Badge className="bg-amber-300 ">{state}</Badge>
+            <Badge className="bg-amber-300 text-foreground">{state}</Badge>
           </CardAction>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="text-lg leading-snug">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="h-30 ">
-          <CardDescription className=" break-all">
+        <CardContent>
+          <CardDescription className="line-clamp-4 break-words">
             {description}
           </CardDescription>
         </CardContent>

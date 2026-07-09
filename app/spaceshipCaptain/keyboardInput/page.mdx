@@ -1,0 +1,209 @@
+export const metadata = {
+  title: "방향키 설정하기",
+  description:
+    "pygame.key.get_pressed()로 WASD 키 입력을 받아 우주선을 움직이고, 화면 밖으로 못 나가게 막고, 대각선 이동 속도를 벡터 정규화로 맞춰봐요.",
+};
+
+<span id="keyboardInput" />
+
+## 키보드 입력받기
+
+`pygame.key.get_pressed()`는 **키보드 전체를 한 장에 찍은 사진**과 같아요. 지금 어떤 키가 눌려 있는지 아닌지를 True/False 목록으로 한 번에 알려줘요.
+
+결과를 `keys`에 담으면, `keys[pygame.K_LEFT]`처럼 특정 키가 눌려 있는지 확인할 수 있어요. 키를 꾹 누르고 있는 동안 매 프레임 계속 반응하기 때문에, 캐릭터를 부드럽게 움직일 때 딱 좋아요.
+
+```python
+#main.py
+....# 기존코드
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        keys = pygame.key.get_pressed() # <-- 새롭게 추가된 코드
+        print(keys[pygame.K_w]) # <-- 새롭게 추가된 코드
+
+        player_rect.center += direction * speed * dt
+    ....
+```
+
+### pygame.key.get_pressed(): 연습
+
+`keys = pygame.key.get_pressed()`로 현재 키보드의 모든 키 상태를 찍은 다음, 바로 아래 `print(keys[pygame.K_w])`는 마치 "지금 이 순간 W키가 눌려 있나요?"라고 물어보는 것처럼 W키의 상태를 콘솔에 출력해 주는데, W키를 누르고 있으면 `True`, 누르지 않고 있으면 `False`가 출력됩니다.
+
+```python
+#main.py
+....# 기존코드
+        keys = pygame.key.get_pressed()  # <-- 눌려져 있는 키 검사
+        direction = pygame.Vector2(0, 0)  # <-- 정지 상태
+        if keys[pygame.K_w]:  # <-- 위아래 이동
+            direction.y = -1
+        elif keys[pygame.K_s]:
+            direction.y = 1
+
+        if keys[pygame.K_d]:  # <-- 좌우 이동
+            direction.x = 1
+        elif keys[pygame.K_a]:
+            direction.x = -1
+        player_rect.center += direction * speed * dt  # <-- 위치 변경
+    ....
+```
+
+### pygame.key.get_pressed(): 움직이기
+
+이 코드의 핵심은 매 프레임마다 `direction = pygame.Vector2(0, 0)`으로 방향을 먼저 정지 상태로 초기화한 뒤 키 입력을 확인하는 구조인데, 마치 매 순간 "나는 지금 어디로 가야 하지?"를 새로 결정하는 것처럼 이전 프레임의 방향 값이 남아있지 않아서 키에서 손을 떼는 순간 바로 멈추게 됩니다. W와 S는 `elif`로 묶여 있고 D와 A도 별도의 `if/elif`로 분리되어 있기 때문에, W와 D를 동시에 누르면 `direction.y = -1`과 `direction.x = 1`이 함께 적용되어 대각선 이동이 가능하고, 마지막 줄 `player_rect.center += direction * speed * dt`에서 방향에 속도와 델타타임을 곱해 실제 위치를 업데이트합니다.
+
+```python
+#main.py
+....# 기존코드
+def main():
+    running = True
+    speed = 200
+    direction = pygame.Vector2(0, 0)  # <-- 루프 밖에서 정의됨
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        keys = pygame.key.get_pressed()
+        direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])  # <-- 수정된 코드
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])  # <-- 수정된 코드
+        player_rect.center += direction * speed * dt
+        player_rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)) # <-- 화면 밖으로 나가지 않게 추가
+    ....
+```
+
+### pygame.key.get_pressed(): 정돈된 코드
+
+이 코드는 이전처럼 `if/elif`를 여러 줄 쓰는 대신 수학 계산 한 줄로 방향을 결정하는 방식인데, `int(keys[pygame.K_d])`는 눌리면 `1`, 안 눌리면 `0`을 반환하는 성질을 이용해서 마치 오른쪽 힘과 왼쪽 힘을 줄다리기 시키듯 `int(keys[pygame.K_d]) - int(keys[pygame.K_a])`를 계산하면 D만 누를 때는 `1-0=1`, A만 누를 때는 `0-1=-1`, 둘 다 누를 때는 `1-1=0`이 되어 자동으로 방향이 결정되고, y축도 같은 원리로 S와 W를 빼서 위아래 방향을 한 줄로 처리할 수 있어서 코드가 훨씬 간결해집니다. 마지막으로 `player_rect.clamp_ip()`는 플레이어가 화면 밖으로 나가지 않도록 하는 코드로, 화면 경계에 딱 붙어서 더 이상 나가지 못하게 만들어 줍니다.
+
+<span id="check" />
+
+## 코드 확인하기
+
+```python
+#main.py
+import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+pos = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+player_rect = player_surf.get_frect(center=(pos))
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    speed = 200
+    direction = pygame.Vector2(0, 0)  # <-- 루프 밖에서 정의됨
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        keys = pygame.key.get_pressed()
+        direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])  # <-- 수정된 코드
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])  # <-- 수정된 코드
+        player_rect.center += direction * speed * dt
+        player_rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)) # <-- 화면 밖으로 나가지 않게 추가
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+<span id="normalization" />
+
+## 벡터 정규화
+
+정규화(normalize)는 벡터의 **방향은 그대로 두고 길이만 1로 맞추는** 거예요. 왜 필요할까요?
+
+D와 S를 동시에 누르면 대각선으로 움직이는데, 이때 속도가 상하좌우보다 약 1.4배 빨라져요. (같은 보폭이라도 대각선이 더 멀리 가는 것과 같아요.) `direction.normalize()`로 길이를 1로 맞추면 어느 방향이든 속도가 똑같아져요.
+
+단, 아무 키도 안 누른 상태(길이 0)에서 정규화하면 오류가 나요. 그래서 `if direction.length() > 0:`으로 먼저 확인해요.
+
+```python
+...#기존 코드
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+        if direction.length() > 0: # <--- 길이가 0보다 클 때만 정규화
+            direction.normalize_ip() # <-- 정규화 시킴
+        player_rect.center += direction * speed * dt
+...#기존 코드
+```
+
+### direction.normalize_ip(): 정규화
+
+매 프레임마다 W, S, A, D 키 입력을 계산해 `direction`에 저장한 뒤, `direction.length() > 0`으로 플레이어가 실제로 움직이려는 상태인지 확인하고 맞다면 `normalize_ip()`로 벡터 길이를 1로 통일시켜서 대각선 이동 시 속도가 빨라지는 문제를 방지하고, 최종적으로 `direction * speed * dt`를 현재 위치에 더해 플레이어를 이동시킵니다.
+
+<span id="check2" />
+
+## 코드 확인하기
+
+```python
+#main.py
+import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+pos = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+player_rect = player_surf.get_frect(center=(pos))
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    speed = 200
+    direction = pygame.Vector2(0, 0)  # <-- 루프 밖에서 정의됨
+    while running:
+        dt = clock.tick(30) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        keys = pygame.key.get_pressed()
+        direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])  # <-- 수정된 코드
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])  # <-- 수정된 코드
+        if direction.length() > 0:
+            direction.normalize_ip()
+        player_rect.center += direction * speed * dt
+        player_rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)) # <-- 화면 밖으로 나가지 않게 추가
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```

@@ -1,0 +1,129 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "튜플 tuple",
+  description:
+    "괄호 하나로 여러 값을 묶고 수정할 수 없는 튜플을, 인덱싱·더하기·곱하기·길이 구하기로 배워봐요.",
+};
+
+<span id="title" />
+
+# 튜플 tuple
+
+튜플은 리스트와 아주 비슷해요. 여러 값을 묶어서 담을 수 있거든요. 단, 소괄호 `()`를 써요.
+
+가장 큰 차이는 **한 번 만들면 값을 바꿀 수 없다**는 거예요. 마치 테이프로 봉인한 택배 상자 같아요. 그래서 "변하면 안 되는 값"을 담을 때 좋아요.
+
+```python
+# 튜플 만들기 - 소괄호 사용
+student = ("Alice", 15, 95.5)
+print(student[0])  # Alice
+print(student[1])  # 15
+
+# 값을 바꾸려고 하면 오류!
+# student[0] = "Bob"  # 에러 발생
+
+# 여러 변수에 한 번에 나눠 담기 (언패킹)
+name, age, score = student
+print(name)   # Alice
+print(age)    # 15
+```
+
+## 튜플의 특징
+
+<span id="indexing" />
+
+### 1. 값을 읽는 방법
+
+```python
+movie = ("인터스텔라", 2014, "SF")
+
+print(movie[0])   # 인터스텔라   ← 0번부터 시작
+print(movie[-1])  # SF          ← 뒤에서 첫 번째
+print(movie[0:2]) # ('인터스텔라', 2014)  ← 잘라 읽기
+```
+
+리스트처럼 번호(인덱스)로 값을 읽어요. **0번부터** 시작하고, `-1`은 맨 뒤예요. `[0:2]`처럼 잘라 읽기도 돼요.
+
+<span id="plus" />
+
+### 2. 더하기
+
+```python
+tuple1 = ("사과", "바나나")
+tuple2 = ("딸기", "포도")
+print(tuple1 + tuple2)  # ('사과', '바나나', '딸기', '포도')
+```
+
+`+`를 쓰면 두 튜플이 이어져서 **새 튜플**이 만들어져요. 원래 튜플은 그대로 남아요.
+
+<span id="repeat" />
+
+### 3. 곱하기
+
+```python
+stamp = ("안녕", "반가워")
+print(stamp * 3)  # ('안녕', '반가워', '안녕', '반가워', '안녕', '반가워')
+```
+
+`*`를 쓰면 내용이 그 숫자만큼 반복돼요. 도장을 여러 번 찍는 것과 같아요.
+
+<span id="len" />
+
+### 4. 길이 구하기
+
+```python
+drawer = ("양말", "속옷", "티셔츠", "바지")
+print(len(drawer))  # 4
+```
+
+`len()`은 튜플 안에 값이 몇 개인지 세어줘요. 리스트, 문자열에도 똑같이 쓸 수 있어요.
+
+---
+
+## 연습문제
+
+배운 걸 바로 확인해 봐요!
+
+<QuizzWithOptions answer={2} question="1. 튜플을 올바르게 만드는 방법은?">
+  <Option value={1}>a = [1, 2, 3]</Option>
+  <Option value={2}>a = (1, 2, 3)</Option>
+  <Option value={3}>{'a = {1, 2, 3}'}</Option>
+  <Option value={4}>a = "1, 2, 3"</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="2. 다음 코드의 결과는?">
+  <CodeBlock code={`t = (10, 20, 30)
+t[0] = 99
+print(t)`} />
+  <Option value={1}>(99, 20, 30)</Option>
+  <Option value={2}>(10, 20, 30)</Option>
+  <Option value={3}>(99,)</Option>
+  <Option value={4}>에러 발생 (튜플은 수정 불가)</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = ("월", "화", "수", "목")
+print(t[-1])`} />
+  <Option value={1}>월</Option>
+  <Option value={2}>목</Option>
+  <Option value={3}>수</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a = (1, 2)
+b = (3, 4)
+print(a + b)`} />
+  <Option value={1}>(1, 2, 3, 4)</Option>
+  <Option value={2}>(4, 6)</Option>
+  <Option value={3}>((1, 2), (3, 4))</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+### 직접 만들어보기
+
+1. 좋아하는 과일 3개를 튜플로 만들고, `len()`으로 개수를 출력하세요.
+2. `info = ("김철수", 15, "대전")` 을 `name, age, city` 세 변수에 언패킹해서 각각 출력하세요.

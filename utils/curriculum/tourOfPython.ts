@@ -1,4 +1,5 @@
 import { SideBarTreeItem } from "@/components/commons/SideBarItems";
+import { buildLessonPages } from "./pageSequence";
 
 export const tourOfPythonCurriculum: SideBarTreeItem[] = [
   {
@@ -420,3 +421,9 @@ export const tourOfPythonCurriculum: SideBarTreeItem[] = [
     ],
   },
 ];
+
+/** Flat prev/next sequence for the Tour of Python lessons (see buildLessonPages). */
+export const tourOfPythonPages = buildLessonPages(tourOfPythonCurriculum, {
+  url: "/tourOfPython",
+  label: "소개",
+});

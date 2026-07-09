@@ -1,0 +1,92 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "리스트 연습하기 Level 1",
+  description: "빈 리스트 만들기, 인덱싱, 슬라이싱, append, sort, 참조 등 리스트 개념 확인 문제를 풀어봐요.",
+};
+
+# 리스트 연습하기 Level 1
+
+<QuizzWithOptions answer={1} question="1. 다음 중 빈 리스트를 만드는 올바른 방법은?">
+  <Option value={1}>a = []</Option>
+  <Option value={2}>a = ()</Option>
+  <Option value={3}>{'a = {}'}</Option>
+  <Option value={4}>a = list(0)</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`foods = ["사과", "바나나", "딸기"]
+print(foods[1])`} />
+  <Option value={1}>"사과"</Option>
+  <Option value={2}>"바나나"</Option>
+  <Option value={3}>"딸기"</Option>
+  <Option value={4}>"에러 발생"</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`nums = [10, 20, 30, 40, 50]
+print(nums[-2])`} />
+  <Option value={1}>20</Option>
+  <Option value={2}>30</Option>
+  <Option value={3}>40</Option>
+  <Option value={4}>50</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a = [1, 2, 3]
+a.append([4, 5])
+print(len(a))`} />
+  <Option value={1}>3</Option>
+  <Option value={2}>4</Option>
+  <Option value={3}>5</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="5. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`colors = ["빨강", "초록", "파랑", "노랑", "보라"]
+print(colors[1:4])`} />
+  <Option value={1}>["빨강", "초록", "파랑"]</Option>
+  <Option value={2}>["초록", "파랑", "노랑"]</Option>
+  <Option value={3}>["초록", "파랑", "노랑", "보라"]</Option>
+  <Option value={4}>["빨강", "초록", "파랑", "노랑"]</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="6. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a = [3, 1, 4, 1, 5]
+a.sort()
+print(a)`} />
+  <Option value={1}>[5, 4, 3, 1, 1]</Option>
+  <Option value={2}>[1, 1, 3, 4, 5]</Option>
+  <Option value={3}>[3, 1, 4, 1, 5]</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="7. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a = [1, 2, 3]
+b = a
+b.append(4)
+print(a)`} />
+  <Option value={1}>[1, 2, 3]</Option>
+  <Option value={2}>[1, 2, 3, 4]</Option>
+  <Option value={3}>[4]</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="8. 다음 중 리스트에서 요소를 제거하는 방법이 아닌 것은?">
+  <Option value={1}>del a[0]</Option>
+  <Option value={2}>a.remove(값)</Option>
+  <Option value={3}>a.pop()</Option>
+  <Option value={4}>a.delete(0)</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="9. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a = [1, 2, 3]
+b = [4, 5]
+print(a + b)`} />
+  <Option value={1}>[1, 2, 3, 4, 5]</Option>
+  <Option value={2}>[5, 7]</Option>
+  <Option value={3}>[[1, 2, 3], [4, 5]]</Option>
+  <Option value={4}>에러발생</Option>
+</QuizzWithOptions>

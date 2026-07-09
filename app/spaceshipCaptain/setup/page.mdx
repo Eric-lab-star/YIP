@@ -1,0 +1,179 @@
+import { Callout } from "@/components/mdx/Callout";
+
+export const metadata = {
+  title: "프로젝트 설정하기",
+  description:
+    "uv 패키지 매니저로 파이썬 프로젝트를 만들고 pygame-ce를 설치한 뒤, main.py에 파이게임을 초기화하고 게임 루프를 만들어봐요.",
+};
+
+<span id="uv_setup" />
+
+## uv 설치하기
+
+<Callout type="important">
+  이 페이지가 이 과정에서 **가장 어려운 부분**이에요. 터미널에 명령어를 입력해 프로그램을 설치하거든요. 잘 안 돼도 실력이 부족한 게 아니니, **막히면 도와줄 사람과 함께** 천천히 진행해요. 여기만 넘기면 그 다음부터는 훨씬 수월해요! 💪
+</Callout>
+
+`uv`는 파이썬 패키지(라이브러리)를 설치하고 관리하는 도구예요. 게임을 만들려면 `pygame` 같은 도구를 설치해야 하는데, `uv`가 그 설치와 실행을 도와줘요.
+
+`uv`는 세 가지를 기억하면 돼요.
+
+- `uv init` : 새 프로젝트를 만들어요.
+- `uv add 이름` : 필요한 도구를 설치해요.
+- `uv run 파일` : 프로그램을 실행해요.
+
+```bash
+# uv 설치 (터미널에서 실행)
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# 새 프로젝트 시작
+uv init my_project
+cd my_project
+
+# 가상환경 자동 생성 후 스크립트 실행
+uv run main.py
+
+# 기존 pip 사용자라면 이렇게도 사용 가능
+uv pip install requests
+```
+
+## 프로젝트 만들기
+
+<span id="uv_init" />
+
+```bash
+uv init my_project
+
+# 생성되는 폴더 구조
+# my_project/
+# ├── main.py            ← 시작점 파이썬 파일
+# ├── pyproject.toml     ← 프로젝트 설정 및 패키지 정보
+# ├── .python-version    ← 파이썬 버전 명시
+# └── .gitignore         ← git 제외 파일 목록
+
+# 현재 폴더에 바로 초기화하고 싶다면
+uv init .
+
+# 생성된 프로젝트로 이동 후 실행
+cd my_project
+uv run main.py
+```
+
+### 1. uv init space_shooter
+
+`uv init`은 새 프로젝트에 필요한 파일들을 한 번에 만들어줘요. 마치 이사 갈 새 집의 방 구조를 미리 설계해주는 것과 같아요. `pyproject.toml`(프로젝트 정보), `main.py`(시작 파일) 같은 파일이 자동으로 생겨요.
+
+<span id="pygame-ce" />
+
+```bash
+# pygame-ce 패키지 추가
+uv add pygame-ce
+
+# 설치 후 pyproject.toml 에 자동으로 기록됨
+# [project]
+# dependencies = [
+#     "pygame-ce>=2.5.3",   ← 이렇게 자동으로 추가됨
+# ]
+
+# 다른 컴퓨터에서 같은 환경 재현할 때
+uv sync
+```
+
+### 2. uv add pygame-ce
+
+`uv add pygame-ce`는 게임을 만드는 도구인 `pygame-ce`를 프로젝트에 설치해요. 마치 새 집에 게임방 가구를 배달 주문하는 것과 같아요. 참고로 `pygame-ce`는 원래 `pygame`을 더 잘 관리하는 버전(ce = Community Edition)이에요.
+
+## pygame 프로젝트 준비하기
+
+main.py 파일에 아래의 코드를 작성해 주세요.
+
+<span id="pygame-init" />
+
+```python
+import pygame
+```
+
+`pygame`이라는 도구함을 현재 파일로 가져오는 코드예요.
+
+```python
+pygame.init()
+```
+
+pygame의 모든 모듈을 준비 상태로 만드는 명령어예요. 빵을 굽기 전에 오븐을 예열하는 것처럼, 게임을 만들기 위한 준비 상태로 만들어 줘요.
+
+<span id="display_surface" />
+
+```python
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+### pygame.display.set_mode
+
+게임을 만들 때 가장 먼저 할 일은 게임이 펼쳐질 화면 창을 만드는 거예요. 그림을 그리기 전에 도화지 크기를 정하는 것과 같아요.
+
+`WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720`은 창의 가로를 1280, 세로를 720으로 정해요. `set_mode((가로, 세로))`가 그 크기의 창을 띄워주고, 그 결과를 `display_surface`에 저장해요. 이 `display_surface`가 앞으로 모든 것을 그릴 **도화지**예요.
+
+<span id="while-setup" />
+
+```python
+def main():
+    running = True
+    while running:
+        pass
+    pygame.quit()
+```
+
+### while 루프 만들기
+
+파이게임으로 만든 게임은 마치 TV처럼 꺼지기 전까지 계속 화면을 보여줘야 하기 때문에, 게임의 핵심 동작을 하나의 함수로 묶어서 관리해요. `def main():`이 게임 전체를 책임지는 중심 함수예요. 그 안의 `running = True`는 "게임을 계속 실행할 것인가"를 나타내는 스위치로, 이 스위치가 켜져 있는 동안 `while running:` 반복문이 계속 돌아가면서 게임을 살아있게 유지해요. 지금은 반복문 안에 `pass`만 있는데, 나중에 이 자리에 키보드 입력 처리, 화면 그리기 같은 코드가 채워질 예정이에요. `running`이 `False`가 되어 반복문을 빠져나오면 `pygame.quit()`이 실행되면서 파이게임이 사용하던 모든 자원을 깔끔하게 반납하고 종료해요.
+
+<span id="event" />
+
+```python
+def main():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    pygame.quit()
+```
+
+### pygame.event.get()
+
+`pygame.event.get()`은 마치 회사 민원 접수함처럼 사용자가 키보드를 누르거나 마우스를 클릭하거나 창을 닫으려 할 때 발생하는 모든 사건(이벤트)들을 리스트로 모아서 한꺼번에 꺼내주는 함수인데, `for event in pygame.event.get():`은 그 접수함 안에 쌓인 사건들을 하나씩 꺼내서 확인하는 반복문이에요. 꺼낸 사건이 `event.type == pygame.QUIT`, 즉 사용자가 창의 X 버튼을 눌러 종료를 요청한 사건인지 확인하고, 맞다면 `running = False`로 게임 루프 스위치를 꺼서 프로그램이 종료되도록 신호를 보내요.
+
+<span id="result" />
+
+## 결과확인
+
+```python
+import pygame
+
+pygame.init()
+WINDOW_WIDTH,  WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+def main():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+## 관련 자료
+
+1. [pygame-ce 공식 홈페이지](https://pyga.me/)
+2. [pygame.display](https://pyga.me/docs/ref/display.html)
+3. [pygame.display.set_mode()](https://pyga.me/docs/ref/display.html#pygame.display.set_mode)
+4. [pygame.event.get()](https://pyga.me/docs/ref/event.html#pygame.event.get)

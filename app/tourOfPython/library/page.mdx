@@ -1,0 +1,146 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "내장함수 - built-in",
+  description:
+    "파이썬에 미리 만들어져 있는 input · int · float · len · range · min · max 내장함수와 표준 라이브러리 가져오는 법을 배워봐요.",
+};
+
+# 내장함수 — built-in
+
+내장함수는 파이썬을 처음 설치할 때 같이 설치되는 미리 만들어진 함수들이에요. 비유하자면 잘 만들어진 바퀴, 연필, 샤프 심 같은 것들이에요. 만약 그림을 그리려고 하는데 매번 연필부터 만들어야 한다면 상상만 해도 정말 끔찍할 것 같아요. 연필은 미리 만들어진 것을 가져다 사용하고 내가 상상하는 것들은 내가 스스로 그리는 게 더 현명한 방법이겠어요. 정리하면 내장함수는 미리 만들어진 함수라고 이해하는 게 좋겠네요.
+
+[더 많은 내장 함수 구경하기 🔗](https://docs.python.org/3/library/functions.html)
+
+<span id="input" />
+
+## input
+
+지금까지 계속 사용했던 `input`이 대표적인 내장함수에요. 이 함수는 키보드로 글자를 입력받는 함수에요. 공식문서를 읽어보면 `input(prompt, /)` 이렇게 나와 있어요. 여기에서 prompt는 입력 안내 문구가 들어가는 공간이에요.
+
+```python
+name = input("what is your name ")
+```
+
+"what is your name "이라는 문구를 출력해서 키보드에 무엇을 입력해야 하는지 알려주고 있어요. 키보드로 입력했다면 name이라는 변수에 저장이 돼요. 사용자는 엔터를 입력하지만 name이라는 변수에는 엔터는 저장이 되지 않아요. 엔터키를 누르면 줄바꿈 기호가 입력되는데, 이 기호를 떼고 변수에 저장을 해요. 마지막으로 변수에 저장되는 값은 항상 문자열이에요.
+
+<span id="int_float" />
+
+## int, float
+
+```python
+age = int("12")
+pi = float("3.14")
+```
+
+`int`와 `float`은 문자열 12를 int형 12로 바꾸어주고 문자열 3.14를 float형 3.14로 바꾸어 주고 있어요. 이런 식으로 형태를 변환하지 않으면 올바른 계산을 할 수가 없어요.
+
+<span id="len" />
+
+## len
+
+```python
+len("hello")
+```
+
+`len` 함수를 사용하면 문자열의 길이를 알 수 있어요.
+
+<span id="range" />
+
+## range
+
+```python
+for i in range(5):
+    print(i)
+```
+
+`range`는 for 루프를 사용할 때 범위를 만들어 주는 역할을 해요. `range(5)` 이렇게 5가 들어가면 0, 1, 2, 3, 4까지의 수의 범위를 의미하고 5는 포함하지 않아요.
+
+<span id="min_max" />
+
+## max, min
+
+```python
+big = max(3, 10, 7)
+small = min(5, 2, 9)
+print(big)
+print(small)
+```
+
+`min`은 가장 작은 수를 찾을 때 사용하고, `max`는 가장 큰 수를 찾을 때 사용해요.
+
+<span id="standard_library" />
+
+## 표준 라이브러리 사용하기
+
+표준 라이브러리는 내장함수처럼 파이썬을 설치할 때 함께 설치되는 미리 만들어진 함수들이에요. 하지만 몇 가지 차이점이 있어요. 표준 라이브러리의 종류와 크기는 내장함수와 비교해서 더 크기 때문에 사용하고 싶은 것만 골라서 사용하도록 되어 있어요. 마치 도서관에서 원하는 책만 가져와서 읽어보는 것이라고 생각해볼 수 있어요.
+
+[더 많은 표준 라이브러리 구경하기 🔗](https://docs.python.org/3/library/index.html)
+
+종류가 너무 많고 다양하기 때문에 여기 있는 모든 함수와 사용방법을 외우지 않아요. 하지만 어떻게 가져오는지 알아둘 필요는 있어요.
+
+```python
+import random
+
+def get_rnd():
+    return random.randint(0, 10)
+
+def main():
+    a = get_rnd()
+    b = get_rnd()
+    c = get_rnd()
+    d = get_rnd()
+
+    print(a, b, c, d)
+```
+
+먼저 가장 위에 있는 `import`라는 생소한 코드가 있어요. 이 코드를 입력해야 라이브러리로부터 함수를 가져올 수 있어요. 지금은 `import random`이라고 입력을 했기 때문에 `random`을 가져오게 돼요.
+
+```python
+def get_rnd():
+    return random.randint(0, 10)
+```
+
+이제 가져온 라이브러리에서 특정한 함수를 사용하고 싶으면, 라이브러리 이름 뒤에 점을 붙여서 가져올 수 있어요. `random.randint(0, 10)` 이렇게 함수를 사용할 수 있어요. 이제 모든 코드를 작성하고 프로그램을 실행시켜보면 프로그램이 실행될 때마다 출력되는 숫자가 달라지는 것을 볼 수 있어요.
+
+---
+
+## 연습문제
+
+배운 걸 바로 확인해 봐요!
+
+<QuizzWithOptions answer={3} question="1. 문자열의 길이를 알려주는 내장함수는?">
+  <Option value={1}>int()</Option>
+  <Option value={2}>range()</Option>
+  <Option value={3}>len()</Option>
+  <Option value={4}>input()</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`print(max(3, 10, 7))`} />
+  <Option value={1}>3</Option>
+  <Option value={2}>10</Option>
+  <Option value={3}>7</Option>
+  <Option value={4}>20</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="3. range(5) 가 만드는 숫자의 범위는?">
+  <Option value={1}>1, 2, 3, 4, 5</Option>
+  <Option value={2}>0, 1, 2, 3, 4, 5</Option>
+  <Option value={3}>1, 2, 3, 4</Option>
+  <Option value={4}>0, 1, 2, 3, 4</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="4. 표준 라이브러리를 가져올 때 쓰는 키워드는?">
+  <Option value={1}>import</Option>
+  <Option value={2}>def</Option>
+  <Option value={3}>return</Option>
+  <Option value={4}>print</Option>
+</QuizzWithOptions>
+
+### 직접 만들어보기
+
+1. `min()` 과 `max()` 를 써서 `4, 8, 2, 9, 5` 중 가장 작은 값과 가장 큰 값을 출력하세요.
+2. `import random` 을 사용해 1부터 6까지 나오는 주사위를 흉내 내는 코드를 만들어보세요. (힌트: `random.randint(1, 6)`)

@@ -1,0 +1,104 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "딕셔너리 연습하기 Level 1",
+  description: "딕셔너리 만들기, 값 접근·수정, get(), keys()/values(), del, in, 반복문 등 개념 확인 문제를 풀어봐요.",
+};
+
+# 딕셔너리 연습하기 Level 1
+
+<QuizzWithOptions answer={2} question="1. 다음 중 딕셔너리를 올바르게 만드는 방법은?">
+  <Option value={1}>d = [1: "a", 2: "b"]</Option>
+  <Option value={2}>{'d = {1: "a", 2: "b"}'}</Option>
+  <Option value={3}>d = (1: "a", 2: "b")</Option>
+  <Option value={4}>d = &lt;1: "a", 2: "b"&gt;</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"name": "철수", "age": 13}
+print(d["name"])`} />
+  <Option value={1}>철수</Option>
+  <Option value={2}>13</Option>
+  <Option value={3}>name</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"x": 10, "y": 20}
+d["x"] = 99
+print(d["x"])`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>99</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+print(d["c"])`} />
+  <Option value={1}>None</Option>
+  <Option value={2}>0</Option>
+  <Option value={3}>c</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="5. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+print(d.get("c", 0))`} />
+  <Option value={1}>에러 발생</Option>
+  <Option value={2}>0</Option>
+  <Option value={3}>None</Option>
+  <Option value={4}>c</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="6. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"name": "영희", "score": 100}
+print(list(d.keys()))`} />
+  <Option value={1}>['name', 'score']</Option>
+  <Option value={2}>['영희', 100]</Option>
+  <Option value={3}>[('name', '영희'), ('score', 100)]</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="7. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2, "c": 3}
+del d["b"]
+print(len(d))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="8. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"apple": 3, "banana": 5}
+print("banana" in d)`} />
+  <Option value={1}>False</Option>
+  <Option value={2}>True</Option>
+  <Option value={3}>5</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="9. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+d["c"] = 3
+print(len(d))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="10. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"x": 10, "y": 20, "z": 30}
+total = 0
+for v in d.values():
+    total += v
+print(total)`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>30</Option>
+  <Option value={4}>60</Option>
+</QuizzWithOptions>

@@ -1,0 +1,96 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "튜플 연습하기 Level 1",
+  description: "튜플 만들기, 요소가 하나인 튜플, 인덱싱·슬라이싱·언패킹·count, 수정 불가 특성 등 개념 확인 문제를 풀어봐요.",
+};
+
+# 튜플 연습하기 Level 1
+
+<QuizzWithOptions answer={2} question="1. 다음 중 튜플을 올바르게 만드는 방법은?">
+  <Option value={1}>a = [1, 2, 3]</Option>
+  <Option value={2}>a = (1, 2, 3)</Option>
+  <Option value={3}>a = {1, 2, 3}</Option>
+  <Option value={4}>a = &lt;1, 2, 3&gt;</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="2. 다음 중 요소가 하나인 튜플을 올바르게 만드는 방법은?">
+  <Option value={1}>a = (1)</Option>
+  <Option value={2}>a = tuple[1]</Option>
+  <Option value={3}>a = (1,)</Option>
+  <Option value={4}>a = (,1)</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (10, 20, 30, 40, 50)
+print(t[2])`} />
+  <Option value={1}>20</Option>
+  <Option value={2}>30</Option>
+  <Option value={3}>40</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (10, 20, 30)
+t[0] = 99
+print(t)`} />
+  <Option value={1}>(99, 20, 30)</Option>
+  <Option value={2}>(10, 20, 30)</Option>
+  <Option value={3}>(99, 10, 20, 30)</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="5. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = ("a", "b", "c", "d", "e")
+print(t[1:4])`} />
+  <Option value={1}>("a", "b", "c")</Option>
+  <Option value={2}>("b", "c", "d")</Option>
+  <Option value={3}>("b", "c", "d", "e")</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="6. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a, b, c = (10, 20, 30)
+print(b)`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>30</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="7. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (1, 2, 3, 2, 4, 2)
+print(t.count(2))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="8. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (5, 10, 15, 20)
+print(type(t))`} />
+  <Option value={1}>&lt;class 'list'&gt;</Option>
+  <Option value={2}>&lt;class 'set'&gt;</Option>
+  <Option value={3}>&lt;class 'tuple'&gt;</Option>
+  <Option value={4}>&lt;class 'dict'&gt;</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="9. 튜플과 리스트의 가장 큰 차이점은?">
+  <Option value={1}>튜플은 수정이 불가능하다</Option>
+  <Option value={2}>튜플은 인덱싱이 안 된다</Option>
+  <Option value={3}>튜플은 반복문에 사용할 수 없다</Option>
+  <Option value={4}>튜플은 숫자만 저장할 수 있다</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="10. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t1 = (1, 2)
+t2 = (3, 4)
+print(t1 + t2)`} />
+  <Option value={1}>(1, 2, 3, 4)</Option>
+  <Option value={2}>(4, 6)</Option>
+  <Option value={3}>((1, 2), (3, 4))</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>

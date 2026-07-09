@@ -1,8 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import CopyCodeBlock from "@/components/mdx/CopyCodeBlock";
 
 /* ── Doodle tokens (mirror app/styles/theme.css) ─────────────────── */
 const ink = "#263D5B"; // secondary — hand-drawn ink line / text
@@ -151,29 +150,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 		// Fenced code (```python) carries a `language-*` class and its children is
 		// the raw code string — syntax-highlight it in a hand-drawn cell. Inline
-		// code (no language class) becomes a sky sticker chip.
+		// code (no language class) becomes a sky sticker chip. Code stays
+		// selectable so learners can copy reference/source snippets.
 		code: ({ children, className }: ComponentPropsWithoutRef<"code">) => {
 			const match = /language-(\w+)/.exec(className ?? "");
 			if (match) {
 				return (
-					<SyntaxHighlighter
+					<CopyCodeBlock
 						language={match[1]}
-						style={oneDark}
-						customStyle={{
-							...doodleBox,
-							margin: "1.75rem 0",
-							padding: "1.25rem",
-							fontSize: "1rem",
-						}}
-						className="select-none"
-						codeTagProps={{
-							style: {
-								fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-							},
-						}}
-					>
-						{String(children).replace(/\n$/, "")}
-					</SyntaxHighlighter>
+						code={String(children).replace(/\n$/, "")}
+					/>
 				);
 			}
 			return (

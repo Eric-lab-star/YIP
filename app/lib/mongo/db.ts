@@ -1,5 +1,6 @@
 import { Db, MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
 import { attachDatabasePool } from "@vercel/functions";
+import { resolveMongoUri } from "./ensureDns";
 
 if (!process.env.YIPDB_MONGODB_URI) {
 	throw new Error("YIPDB_MONGODB_URI is not defined")
@@ -20,21 +21,26 @@ const options: MongoClientOptions = {
 };
 
 
-let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
+// On Windows the driver's c-ares SRV lookup is broken, so expand mongodb+srv://
+// to a plain seed-list URI ourselves before connecting. No-op elsewhere.
+// See ensureDns.ts for the full rationale.
+function connect(): Promise<MongoClient> {
+	return resolveMongoUri(uri).then((resolvedUri) => {
+		const client = new MongoClient(resolvedUri, options);
+		attachDatabasePool(client);
+		return client.connect();
+	});
+}
 
 if (process.env.NODE_ENV === "development") {
 	if (!global._mongoClientPromise) {
-		client = new MongoClient(uri, options);
-		attachDatabasePool(client);
-		global._mongoClientPromise = client.connect();
+		global._mongoClientPromise = connect();
 	}
 	clientPromise = global._mongoClientPromise;
 } else {
-	client = new MongoClient(uri, options);
-	attachDatabasePool(client);
-	clientPromise = client.connect();
+	clientPromise = connect();
 }
 
 

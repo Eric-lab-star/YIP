@@ -1,0 +1,43 @@
+import ToggleCodeBlock from "@/components/commons/table/ToggleBlock";
+
+export const metadata = {
+  title: "배경 클래스 만들기",
+  description: "player 클래스와 비슷하게, 화면에 고정된 배경을 담당하는 Background 스프라이트 클래스를 직접 만들어봐요.",
+};
+
+<span id="bgClass" />
+
+# 배경 클래스 만들기
+
+앞에서 배웠던 player 클래스와 비슷하게 배경을 담당하는 Background 클래스를 만들어볼까요? 배경은 게임 화면 전체를 덮는 이미지이기 때문에, player처럼 움직이는 것이 아니라 화면에 고정되어 있기만 하면 됩니다.
+
+<span id="hint" />
+
+## 문제 해결을 위한 힌트
+
+1. entity 패키지 안에 bg.py 모듈을 만드세요.
+2. update 메소드에서 dt 매개변수를 만들어야 합니다.
+3. player 클래스와 거의 비슷하게 만들면 됩니다.
+
+<ToggleCodeBlock
+  header="bg.py 파일 확인하기"
+  code={`#entity/bg.py
+import pygame
+from os.path import join
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+
+class Background(pygame.sprite.Sprite):
+    path: str = join("images", "background.png")
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.transform.scale(
+            pygame.image.load(Background.path).convert_alpha(),
+            (WINDOW_WIDTH, WINDOW_HEIGHT),
+        )
+        self.rect = self.image.get_frect()
+
+    def update(self, dt: float):
+        pass
+`}
+/>

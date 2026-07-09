@@ -1,4 +1,5 @@
 import { SideBarTreeItem } from "@/components/commons/SideBarItems";
+import { buildLessonPages } from "./pageSequence";
 
 export const spaceshipCaptainCurriculum: SideBarTreeItem[] = [
   {
@@ -504,8 +505,19 @@ export const spaceshipCaptainCurriculum: SideBarTreeItem[] = [
             name: "meteor.py",
             url: "/spaceshipCaptain/source_code/entity/meteor",
           },
+          {
+            kind: "file",
+            name: "missile.py",
+            url: "/spaceshipCaptain/source_code/entity/missile",
+          },
         ],
       },
     ],
   },
 ];
+
+/** Flat prev/next sequence for the Space Ship Captain lessons (see buildLessonPages). */
+export const spaceshipCaptainPages = buildLessonPages(
+  spaceshipCaptainCurriculum,
+  { url: "/spaceshipCaptain", label: "소개" }
+);

@@ -1,0 +1,242 @@
+import DownloadBtn from "@/components/commons/DownloadBtn";
+
+export const metadata = {
+  title: "우주선 이미지",
+  description:
+    "이미지를 프로젝트에 저장하고 pygame으로 불러와 화면에 그리는 법, FRect로 위치를 다루는 법, 우주선을 이동시키는 법을 배워봐요.",
+};
+
+<span id="download" />
+
+## 우주선 이미지 다운로드 받기
+
+아래의 버튼을 클릭해서 이미지를 다운로드 받으세요.
+
+<DownloadBtn eager label="우주선 사진 받기" fileKey="spaceShooter/player.png" />
+
+## 프로젝트 폴더에 이미지 저장하기
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/plyaerImageLocation.png"
+  alt="이미지 저장 위치"
+  className="mx-auto rounded-lg"
+/>
+
+images 폴더를 만들고 images 폴더 안에 다운로드 받은 사진을 저장하세요. vscode를 사용하는 경우 ctrl-o를 눌러서 다운로드 받은 파일을 열 수 있어요. 또는 사진을 vscode 안으로 드래그 앤 드롭 방식으로 불러올 수 있어요.
+
+<span id="image_surf" />
+
+## 플레이어 이미지 그리는 코드 작성하기
+
+```python
+#main.py
+import pygame
+from os.path import join  # <---새로운 코드
+```
+
+### 1. join 라이브러리 가져오기
+
+프로젝트에 저장된 이미지의 위치를 알려주기 위해서는 `os.path.join` 라이브러리를 가져와야 해요. `os.path.join`은 파일의 위치를 알려주는 역할을 해요. join을 이용해서 이미지의 위치를 알려줄 거예요.
+
+```python
+#main.py
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1290, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+player_path = join("images", "player.png") #<-- 새로운 코드
+player_surf = pygame.image.load(player_path).convert_alpha() #<-- 새로운 코드
+```
+
+### 2. 이미지 가져오기
+
+join으로 이미지의 위치를 알려준 다음 `pygame.image.load` 함수로 이미지를 가져올 수 있어요. `pygame.image.load`는 이미지의 위치를 알려주면 이미지를 가져오는 역할을 해요. `convert_alpha()`는 이미지를 투명하게 만들어주는 역할을 해요.
+
+```python
+#main.py
+display_surface.fill("gray")
+display_surface.blit(player_surf, (100, 100)) #<--- 새로운 코드
+```
+
+### 3. 이미지 그리기
+
+`display_surface.blit` 함수로 이미지를 그릴 수 있어요. 첫 번째 인자는 그릴 이미지이고, 두 번째 인자는 이미지가 그려질 위치예요. `(100, 100)`은 이미지가 그려질 위치예요. `(0, 0)`은 화면의 왼쪽 상단이고, `(WINDOW_WIDTH, WINDOW_HEIGHT)`는 화면의 오른쪽 하단이에요.
+
+<span id="checkpoint1" />
+
+## 지금까지 완성된 코드
+
+```python
+#main.py
+import pygame
+from os.path import join # <-- join 라이브러리 가져오기
+
+pygame.init()
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1290, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter") # <-- 게임 창 제목 설정
+
+player_path = join("images", "player.png") # <-- 이미지 위치 알려주기
+player_surf = pygame.image.load(player_path).convert_alpha() # <-- 이미지 가져오기
+
+
+def main():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        display_surface.fill("gray")
+        display_surface.blit(player_surf, (100, 100)) # <-- 이미지 그리기
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+<span id="practice" />
+
+## 연습하기
+
+원하는 플레이어 사진을 가져와서 게임에 넣어보기. 원하는 사진을 직접 찾아서 게임 속에 넣어보세요. 어디서 어떻게 찾아야 하는지 검색하는 것부터 이미지 편집까지 스스로 해야 진정한 개발자예요. AI에게 이미지 생성을 부탁하는 것도 물론 가능하고, 직접 그려서 넣는 것도 가능해요. 하지만 아직은 코드에 집중하고 싶다면 아래의 이미지를 다운로드 받아서 코드를 작성해 보세요.
+
+<div className="flex flex-wrap gap-4">
+  <DownloadBtn label="보라 우주선" fileKey="spaceShooter/spaceship.png" />
+  <DownloadBtn label="초록 우주선" fileKey="spaceShooter/ship_2.png" />
+  <DownloadBtn label="파랑 우주선" fileKey="spaceShooter/ship_3.png" />
+</div>
+
+<span id="addingBG" />
+
+## 배경 추가하기
+
+게임에 배경을 추가해 보세요. 배경을 추가하는 방법은 플레이어 이미지를 추가하는 방법과 똑같아요. 아래의 이미지를 다운로드 받아서 코드를 작성해 보세요.
+
+<DownloadBtn label="우주 배경" fileKey="spaceShooter/background.png" />
+
+```python
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale( pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+### 배경 추가하는 코드
+
+이 코드에서 사용되는 `pygame.transform.scale` 함수는 이미지를 원하는 크기로 조절하는 역할을 해요. 배경 이미지는 화면 전체를 덮어야 하기 때문에 `display_surface`의 크기에 맞게 조절해주는 거예요.
+
+<span id="getFrect" />
+
+## Frect 이해하기
+
+캐릭터를 화면 정중앙에 놓고 싶을 때, 좌표를 직접 계산하면 번거로워요. 예를 들어 이미지 크기까지 고려해서 "왼쪽에서 375px, 위에서 275px"처럼 일일이 계산해야 하고, 화면 크기가 바뀌면 다시 계산해야 하죠.
+
+`get_frect(center=(400, 300))`을 쓰면 "이 사각형의 **중심**을 (400, 300)에 맞춰줘"라고만 하면 pygame이 알아서 계산해줘요. `midbottom`, `topright`처럼 기준점도 자유롭게 바꿀 수 있어요.
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/pygame_ce_frect_explainer.svg"
+  alt="frect 설명 이미지"
+  className="mx-auto w-2/3"
+/>
+
+그런데 왜 `get_rect`가 아니라 `get_frect`일까요? 일반 `get_rect()`는 위치값이 정수(1, 2, 3...)만 가능해서, 초당 2.5칸처럼 소수점 속도로 움직이면 소수점이 잘려 움직임이 끊겨 보여요.
+
+pygame-ce의 `get_frect()`는 `x=150.75` 같은 **소수점 값**을 그대로 저장할 수 있어서 훨씬 부드럽게 움직여요. 사용법은 `image.get_frect(center=(x, y))`로 똑같아요.
+
+`get_frect()`의 기준점은 종이를 벽에 붙일 때 "어느 모서리를 여기에 맞출까"를 정하는 것과 같아요. 자주 쓰는 것들이에요.
+
+- `center` — 중심
+- `topleft`, `topright`, `bottomleft`, `bottomright` — 네 모서리
+- `midtop`, `midbottom`, `midleft`, `midright` — 각 변의 가운데
+
+<span id="frectCenter" />
+
+## Frect를 사용해서 플레이어를 중앙에 배치하기
+
+```python
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)) #<-- 새로운 코드
+```
+
+### 플레이어 중앙 배치하는 코드
+
+`get_frect()` 함수로 플레이어 이미지를 화면 중앙에 배치하는 코드예요. `get_frect()`는 이미지의 크기를 보고 사각형의 크기를 자동으로 계산해 주고, `center=(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)`처럼 키워드 인자로 중심점을 화면 중앙으로 지정하면, pygame이 알아서 topleft 좌표를 계산해서 `player_rect`에 저장해 줘요. 이렇게 하면 화면 크기가 바뀌어도 항상 플레이어가 중앙에 위치하게 돼요.
+
+<span id="moveFrect" />
+
+## 우주선 이동시키기
+
+```python
+def main():
+    running = True
+    direction = 1 # <--- 방향
+    speed = 1 #<--- 속력
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0: # <-- 방향 바꾸는 조건
+            direction *= -1
+
+        player_rect.right += speed * direction #<-- 위치 업데이트
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect) # <--- 위치 업데이트
+
+        pygame.display.flip()
+    pygame.quit()
+```
+
+### 플레이어 이동시키는 코드
+
+`main()` 함수에서 플레이어를 좌우로 움직이는 코드예요. `direction` 변수로 이동 방향을 나타내고, `speed` 변수로 이동 속도를 조절해요. 매 프레임마다 플레이어의 오른쪽 끝이 화면 오른쪽 끝에 닿거나 왼쪽 끝이 화면 왼쪽 끝에 닿으면 `direction` 값을 -1로 바꿔서 이동 방향을 반대로 바꿔줘요. 그리고 `player_rect.right += speed * direction`으로 플레이어의 위치를 업데이트해요. 이렇게 하면 플레이어가 화면을 좌우로 왔다 갔다 움직이는 효과가 생겨요.
+
+<span id="result" />
+
+## 결과 확인하기
+
+```python
+# main.py
+import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+
+def main():
+    running = True
+    direction = 1
+    speed = 0.5
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0:
+            direction *= -1
+
+        player_rect.right += speed * direction
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+main()
+```

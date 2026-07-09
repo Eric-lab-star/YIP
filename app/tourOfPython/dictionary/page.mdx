@@ -1,0 +1,190 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "딕셔너리 dictionary",
+  description:
+    "키(key)와 값(value)의 쌍으로 자료를 다루는 딕셔너리를 만들고, 추가·삭제하고, keys·values·items·get·in·pop 메소드까지 배워봐요.",
+};
+
+<span id="title" />
+
+# 딕셔너리 dictionary
+
+딕셔너리는 **사전**과 똑같아요. 사전에서 "사과"를 찾으면 "apple"이 나오죠? 딕셔너리도 `{"사과": "apple"}` 처럼 **이름표(키)와 값(value)이 짝**으로 되어 있어요.
+
+리스트는 `fruits[0]` 처럼 번호로 찾지만, 딕셔너리는 `fruits["사과"]` 처럼 **이름으로 바로** 찾아요. 훨씬 직관적이에요.
+
+<span id="create" />
+
+## 1. 만들기
+
+```python
+# 방법 1 - 중괄호로 바로 만들기
+person = {"이름": "Alice", "나이": 15}
+
+# 방법 2 - 빈 딕셔너리에 하나씩 추가
+person = {}
+person["이름"] = "Bob"
+person["나이"] = 16
+```
+
+중괄호 `{}` 안에 `키: 값` 을 넣어 만들어요. 빈 `{}` 로 시작해서 나중에 채워도 돼요.
+
+<span id="add" />
+
+## 2. 추가하기
+
+```python
+person = {"이름": "Alice"}
+person["나이"] = 15          # 새 키 추가
+print(person)  # {'이름': 'Alice', '나이': 15}
+```
+
+없던 키에 값을 넣으면 **추가**돼요. 이미 있는 키에 넣으면 값이 **바뀌어요**.
+
+<span id="delete" />
+
+## 3. 삭제하기
+
+```python
+person = {"이름": "Alice", "나이": 15}
+
+del person["나이"]      # 키로 삭제
+print(person)  # {'이름': 'Alice'}
+```
+
+`del`로 원하는 키를 지워요. 딕셔너리 전체를 비우려면 `person.clear()` 를 써요.
+
+## 딕셔너리 메소드
+
+<span id="keys" />
+
+### 1. keys() — 키만 모으기
+
+```python
+person = {"이름": "Alice", "나이": 15}
+print(person.keys())  # dict_keys(['이름', '나이'])
+```
+
+`keys()`는 **이름표(키)만** 모아줘요. 리스트로 쓰려면 `list(person.keys())` 로 바꿔요.
+
+<span id="values" />
+
+### 2. values() — 값만 모으기
+
+```python
+scores = {"수학": 90, "영어": 85}
+print(scores.values())        # dict_values([90, 85])
+print(sum(scores.values()))   # 175  ← 합계 구하기
+```
+
+`values()`는 **값만** 모아줘요. `sum()`과 함께 쓰면 합계를 쉽게 구해요.
+
+<span id="items" />
+
+### 3. items() — 키와 값을 함께
+
+```python
+scores = {"수학": 90, "영어": 85}
+for subject, score in scores.items():
+    print(subject, ":", score)
+# 수학 : 90
+# 영어 : 85
+```
+
+`items()`는 **키와 값을 짝으로** 꺼내줘요. `for`문과 함께 쓰면 아주 편해요.
+
+<span id="clear" />
+
+### 4. clear() — 전부 비우기
+
+```python
+person = {"이름": "Alice", "나이": 15}
+person.clear()
+print(person)  # {}
+```
+
+`clear()`는 내용을 **전부 비워요**. 딕셔너리 자체는 그대로 남아서 다시 쓸 수 있어요. (`del person`은 딕셔너리 자체를 없애버려요.)
+
+<span id="get" />
+
+### 5. get() — 안전하게 꺼내기
+
+```python
+student = {"name": "Alice"}
+print(student.get("grade"))          # None      ← 오류 없음
+print(student.get("grade", "없음"))   # 없음      ← 기본값
+```
+
+`student["grade"]` 처럼 대괄호로 꺼내면 없는 키일 때 **오류가 나요**. `get()`은 없어도 오류 대신 `None`(또는 정한 기본값)을 돌려줘서 안전해요.
+
+<span id="in" />
+
+### 6. in — 있는지 확인
+
+```python
+library = {"파이썬": "A구역", "자바": "B구역"}
+print("파이썬" in library)   # True
+print("루비" in library)     # False
+```
+
+`in`은 그 **키가 있는지** 확인해줘요. `not in`은 반대로 없는지 확인해요.
+
+<span id="pop" />
+
+### 7. pop() — 꺼내면서 삭제
+
+```python
+student = {"name": "Alice", "age": 20}
+age = student.pop("age")
+print(age)      # 20   ← 꺼낸 값을 돌려줌
+print(student)  # {'name': 'Alice'}
+```
+
+`pop(키)`은 값을 **지우면서 그 값을 돌려줘요**. `del`과 달리 꺼낸 값을 쓸 수 있어요.
+
+---
+
+## 연습문제
+
+배운 걸 바로 확인해 봐요!
+
+<QuizzWithOptions answer={2} question="1. 딕셔너리를 올바르게 만드는 방법은?">
+  <Option value={1}>d = [1: "a", 2: "b"]</Option>
+  <Option value={2}>{'d = {"이름": "철수", "나이": 13}'}</Option>
+  <Option value={3}>d = ("이름": "철수")</Option>
+  <Option value={4}>d = "이름=철수"</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"name": "철수", "age": 13}
+print(d["name"])`} />
+  <Option value={1}>철수</Option>
+  <Option value={2}>13</Option>
+  <Option value={3}>name</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 키가 없을 때 오류 대신 기본값을 돌려주는 안전한 방법은?">
+  <Option value={1}>d["키"]</Option>
+  <Option value={2}>d.get("키", 0)</Option>
+  <Option value={3}>d.clear()</Option>
+  <Option value={4}>del d["키"]</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+d["c"] = 3
+print(len(d))`} />
+  <Option value={1}>2</Option>
+  <Option value={2}>3</Option>
+  <Option value={3}>1</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+### 직접 만들어보기
+
+1. 내 이름·나이·사는 도시를 담은 딕셔너리를 만들고 전체를 출력하세요.
+2. `scores = {"국어": 90, "영어": 80, "수학": 100}` 의 세 점수 합계와 평균을 구해 출력하세요. (힌트: `values()`, `sum()`, `len()`)

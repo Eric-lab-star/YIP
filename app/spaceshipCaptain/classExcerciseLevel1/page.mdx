@@ -1,0 +1,157 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "클래스 연습하기 Level1",
+  description: "클래스·객체·__init__·self·메서드·클래스 변수의 동작을 코드 출력 예측 문제로 익혀봐요.",
+};
+
+# 클래스 연습하기 Level1
+
+<QuizzWithOptions answer={2} question="1. 클래스에 관한 설명으로 틀린 것을 고르세요.">
+  <Option value={1}>클래스를 사용하면 데이터와 기능을 하나로 묶을 수 있다.</Option>
+  <Option value={2}>하나의 클래스로는 하나의 객체만 만들 수 있다.</Option>
+  <Option value={3}>클래스에서 정의된 함수를 메소드라고 한다.</Option>
+  <Option value={4}>클래스는 객체를 만들기 위한 설계도 역할을 한다.</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Dog:
+    def __init__(self, name):
+        self.name = name
+
+d = Dog("초코")
+print(d.name)`} />
+  <Option value={1}>초코</Option>
+  <Option value={2}>name</Option>
+  <Option value={3}>Dog</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Cat:
+    def __init__(self, age):
+        self.age = age
+
+c = Cat(3)
+print(c.age)`} />
+  <Option value={1}>Cat</Option>
+  <Option value={2}>3</Option>
+  <Option value={3}>age</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="4. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def greet(self):
+        return "안녕, 나는 " + self.name
+
+p = Person("민준")
+print(p.greet())`} />
+  <Option value={1}>안녕, 나는 Person</Option>
+  <Option value={2}>안녕, 나는 self.name</Option>
+  <Option value={3}>안녕, 나는 민준</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="5. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return self.radius * self.radius
+
+c = Circle(5)
+print(c.area())`} />
+  <Option value={1}>25</Option>
+  <Option value={2}>10</Option>
+  <Option value={3}>5</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="6. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Counter:
+    count = 0
+
+    def add(self):
+        self.count += 1
+
+c = Counter()
+c.add()
+c.add()
+print(c.count)`} />
+  <Option value={1}>0</Option>
+  <Option value={2}>1</Option>
+  <Option value={3}>2</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="7. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Box:
+    def __init__(self, color):
+        self.color = color
+
+b = Box("빨강")
+b.color = "파랑"
+print(b.color)`} />
+  <Option value={1}>빨강</Option>
+  <Option value={2}>Box</Option>
+  <Option value={3}>파랑</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="8. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Animal:
+    def __init__(self, name, sound):
+        self.name = name
+        self.sound = sound
+
+    def speak(self):
+        return self.name + ": " + self.sound
+
+a = Animal("강아지", "멍멍")
+print(a.speak())`} />
+  <Option value={1}>강아지</Option>
+  <Option value={2}>멍멍</Option>
+  <Option value={3}>name: sound</Option>
+  <Option value={4}>강아지: 멍멍</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="9. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+s1 = Student("지수", 90)
+s2 = Student("민호", 80)
+print(s1.score + s2.score)`} />
+  <Option value={1}>170</Option>
+  <Option value={2}>90</Option>
+  <Option value={3}>80</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="10. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Lamp:
+    def __init__(self):
+        self.on = False
+
+    def toggle(self):
+        self.on = not self.on
+
+lamp = Lamp()
+lamp.toggle()
+lamp.toggle()
+lamp.toggle()
+print(lamp.on)`} />
+  <Option value={1}>False</Option>
+  <Option value={2}>True</Option>
+  <Option value={3}>None</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>

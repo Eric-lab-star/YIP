@@ -1,0 +1,186 @@
+import { Callout } from "@/components/mdx/Callout";
+
+export const metadata = {
+  title: "To-Do App 만들기",
+  description:
+    "지금까지 배운 모든 것을 종합해서, 명령어로 할 일을 추가·삭제·완료 표시하는 터미널 To-Do 앱을 만들어봐요.",
+};
+
+<span id="title" />
+
+# To-Do App 만들기
+
+지금까지 우리가 배운 모든 것들을 종합한 **총정리 도전 과제**예요.
+
+<Callout type="important">
+  이 앱은 지금까지 중에 가장 큰 프로그램이에요. **한 번에 다 이해하지 못해도 괜찮아요!** 먼저 코드를 그대로 따라 쓰면서 "이렇게 큰 것도 만들 수 있구나"를 느끼는 게 목표예요. 이해는 천천히 해도 돼요. 😊
+</Callout>
+
+아래 코드에는 처음 보는 것들이 몇 개 나와요. 미리 살짝 알아둘게요.
+
+| 새로 나온 것 | 이게 뭐냐면 |
+| --- | --- |
+| `enumerate(리스트)` | 반복할 때 **번호와 값**을 함께 꺼내줘요. |
+| `[x for x in 리스트 if ...]` | 조건에 맞는 것만 골라 **새 리스트**를 만들어요. |
+| `global todos` | 함수 밖에 있는 변수 `todos`를 함수 안에서 쓰겠다는 표시예요. |
+| `"=".center(폭, "=")` | 글자를 가운데 정렬하며 양옆을 채워요. (표 모양 만들기) |
+| `if __name__ == "__main__":` | 이 파일을 직접 실행할 때만 `main()`을 실행해요. |
+
+지금은 "아, 이런 게 있구나" 정도만 알면 충분해요. 아래 코드를 따라 작성해보면서 나만의 앱으로 바꿔봐요.
+
+<span id="result" />
+
+```python
+# main.py
+import os
+
+heading = ["title", "state"]
+todos = []
+WIDTH = 100
+INDEX_ROW_PADDING = 3
+PADDING = (WIDTH - INDEX_ROW_PADDING) // len(heading)
+
+def banner(message=""):
+    """
+    앱을 실행할 때 나오는 멋있는 배너를 만드는 함수
+    """
+    print("=".center(WIDTH, "="))
+    print(f"|{message.center(WIDTH - 2)}|")
+    print("=".center(WIDTH, "="))
+
+def show_list(todos):
+    """
+    format_item 함수를 이용해서 todo 리스트를 표 형태로 보여주는 함수
+    """
+    index = "n".center(INDEX_ROW_PADDING)
+    title = "title".center(PADDING - 2)
+    state = "state".center(PADDING - 1)
+
+    print(f"|{index}|{title}|{state}|")  # table heading
+    print("-".center(WIDTH, "-"))
+
+    if len(todos) <= 0:
+        print(f"|{'No items'.center(WIDTH - 2)}|")
+    else:
+        for i, item in enumerate(todos):
+            format_item(i, item["title"], item["state"])
+
+def format_item(index, title, state):
+    """
+    index, title, state를 받아서 표 형태로 보여주는 함수
+    """
+    n = str(index + 1).center(INDEX_ROW_PADDING)
+    t = title[:PADDING - 2].center(PADDING - 2)
+    s = state.center(PADDING - 1)
+    row = f"|{n}|{t}|{s}|"
+    print(row)
+
+def header():
+    """
+    표의 헤더 부분을 보여주는 함수
+    """
+    banner("To-Do List")
+
+def body(todos):
+    """
+    표의 바디 부분을 보여주는 함수
+    """
+    show_list(todos)
+
+def footer():
+    """
+    표의 마지막 부분을 보여주는 함수
+    """
+    banner("You are Special")
+
+def table(todos):
+    header()
+    body(todos)
+    footer()
+
+
+def clear():
+    """
+    터미널 화면을 지우는 함수
+    """
+    os.system("cls" if os.name == "nt" else "clear")
+
+def create_item(title):
+    """
+    아이템을 생성하는 함수, title을 받아서 state는 "todo"로 초기화해서 딕셔너리 형태로 반환
+    """
+    return {"title": title, "state": "todo"}
+
+def add_item(todos, item):
+    """
+    아이템을 리스트에 추가하는 함수
+    """
+    todos.append(item)
+
+def delete_item(todos, title):
+    """
+    title과 일치하는 아이템을 제거하고 새로운 리스트를 반환
+    """
+    return [item for item in todos if item["title"] != title]
+
+def mark_item(todos, title):
+    """
+    title과 일치하는 아이템의 state를 todo <-> done 으로 토글
+    """
+    for i, item in enumerate(todos):
+        if item["title"] == title:
+            todos[i]["state"] = "done" if item["state"] == "todo" else "todo"
+            break
+
+def parser(todos, prompt):
+    """
+    사용자의 입력을 명령어와 제목으로 분리해서 알맞은 함수를 호출하고 todos를 반환
+    """
+    prompt_list = prompt.strip().split(" ", 1)
+    command = prompt_list[0]
+    title = prompt_list[1] if len(prompt_list) > 1 else ""
+
+    if command == "show":
+        pass
+    elif command == "add" and title != "":
+        new_item = create_item(title)
+        add_item(todos, new_item)
+    elif command == "delete" and title != "":
+        todos = delete_item(todos, title)
+    elif command == "mark" and title != "":
+        mark_item(todos, title)
+    return todos
+
+def main():
+    """
+    프로그램의 진입점. 무한 루프를 돌면서 명령어를 입력받아 todo 리스트를 갱신하고
+    표 형태로 보여준다. Ctrl+C 로 종료할 때까지 계속 실행된다.
+    """
+    global todos
+    try:
+        while True:
+            table(todos)
+            prompt = input("""
+todo commands:
+add [todo]   : add new items to list.
+delete [todo]: delete item from list.
+mark [todo]  : mark item as done.
+show         : show todo list items.\n""")
+            todos = parser(todos, prompt)
+            clear()
+    except KeyboardInterrupt:
+        print("\rbye".center(WIDTH, " "))
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## 나만의 앱으로 바꿔보기
+
+코드를 다 따라 썼다면, 아래 중 하나를 골라 바꿔보세요. 작은 변화부터 시작하면 돼요!
+
+1. 배너 문구 `"You are Special"` 을 내가 좋아하는 말로 바꿔보세요.
+2. 명령어 안내 문구를 한국어로 바꿔보세요. (예: `add` → `추가`)
+3. 할 일을 추가할 때 "할 일이 추가되었어요!" 같은 메시지를 출력해보세요.

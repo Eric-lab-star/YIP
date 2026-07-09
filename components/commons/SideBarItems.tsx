@@ -10,7 +10,9 @@ import {
 } from "@/components/ui/collapsible";
 import { FileTextIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface Folder {
   kind: "folder";
@@ -39,19 +41,40 @@ export function SideBarTree({
   );
 }
 
+const stripHash = (url: string) => url.split("#")[0].replace(/\/$/, "");
+
+/** True if any descendant file of this tree points at the current page. */
+function containsActivePath(item: SideBarTreeItem, pathname: string): boolean {
+  if ("files" in item) {
+    return item.files.some((child) => containsActivePath(child, pathname));
+  }
+  return stripHash(item.url) === pathname;
+}
+
 function TreeItem({ fileItem }: { fileItem: SideBarTreeItem }) {
+  const pathname = usePathname().replace(/\/$/, "") || "/";
+
   if ("files" in fileItem) {
     return <FolderItem key={fileItem.name} fileItem={fileItem} />;
   }
+
+  const isActive = stripHash(fileItem.url) === pathname;
 
   return (
     <Button
       variant="link"
       size="sm"
-      className="w-full justify-start text-foreground"
+      className={cn(
+        "w-full justify-start text-foreground",
+        isActive && "font-bold text-amber-500 no-underline"
+      )}
       asChild
     >
-      <Link key={fileItem.name} href={fileItem.url} className="">
+      <Link
+        key={fileItem.name}
+        href={fileItem.url}
+        aria-current={isActive ? "page" : undefined}
+      >
         {fileItem.name.endsWith(".py") ? (
           <FontAwesomeIcon icon={faPython} color="gray" size={"sm"} />
         ) : (
@@ -64,7 +87,15 @@ function TreeItem({ fileItem }: { fileItem: SideBarTreeItem }) {
 }
 
 function FolderItem({ fileItem }: { fileItem: Folder }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname().replace(/\/$/, "") || "/";
+  const hasActive = containsActivePath(fileItem, pathname);
+  const [isOpen, setIsOpen] = useState(hasActive);
+
+  // Auto-open (never auto-close) the folder holding the current lesson,
+  // including after client-side navigation.
+  useEffect(() => {
+    if (hasActive) setIsOpen(true);
+  }, [hasActive]);
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} key={fileItem.name}>

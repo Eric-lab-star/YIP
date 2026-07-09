@@ -1,0 +1,39 @@
+export const metadata = {
+  title: "색 바꾸기 과제",
+  description: "지금까지 배운 set_caption·fill·Surface를 활용해 창 제목과 화면 색을 바꾸는 과제를 풀어봐요.",
+};
+
+# 색 바꾸기 과제
+
+아래의 코드와 지금까지 배운 것을 활용해서 아래의 과제를 완료하세요.
+
+```python
+#main.py
+import pygame
+
+pygame.init()
+WINDOW_WIDTH,  WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("pygame shooter")
+
+def main():
+    running = True
+    surf = pygame.Surface((100, 150))
+    surf.fill("orange")
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.fill((0,0,0))
+        display_surface.blit(surf, (100,100))
+        pygame.display.flip()
+    pygame.quit()
+main()
+```
+
+## 과제
+
+1. 창의 제목을 `colors`로 바꾸세요.
+2. `display_surface`의 색상이 계속해서 랜덤한 색으로 바뀌게 만드세요.
+3. `surf`의 색을 흰색으로 바꾸세요.

@@ -1,0 +1,324 @@
+import CodeBlock from "@/components/commons/CodeBlock";
+import QuizzWithOptions from "@/components/forms/quizz/QuizzWithOptions";
+import { Option } from "@/components/forms/quizz/Option";
+
+export const metadata = {
+  title: "함수 Function",
+  description:
+    "믹서기에 비유해 함수를 정의하고 실행하는 법, 함수의 몸체, 매개변수와 인수, return 까지 차근차근 배워봐요.",
+};
+
+<span id="title" />
+
+# 함수 Function
+
+<span id="create" />
+
+## 함수를 만들자
+
+이제부터 함수를 배워봐요. 함수는 영어로 function이라고 해요. 프로그래밍에서 사용되는 함수는 수학에서 사용되는 함수와 같은 점도 있고 다른 점도 있어요. 먼저 기본적인 함수의 작동 방식을 알아볼까요?
+
+![함수를 믹서기에 비유한 그림](https://r2.kimkyungsub.com/pythonFunctionJuice.png)
+
+함수는 믹서기라고 생각하세요. 믹서기에는 사과를 넣으면 항상 사과주스가 나와요. 함수도 마찬가지로 함수 안에 무언가를 넣었을 때 어떤 결과를 만드는 기능을 합니다. 지금까지 사용했던 `print("hello")` 또한 함수에요. hello를 넣었을 때 hello가 출력되는 기능을 하고 있으니까요.
+
+```python
+def game_over():
+    print("You are dead. Game over")
+```
+
+이제 함수를 만들어 봐요. 함수를 만드는 방법은 변수를 만드는 것하고 조금 달라요. 먼저 `def`를 적어야 돼요. `def` 다음에 함수의 이름을 적어요. 위 코드에서 `game_over`는 함수 이름이에요. 꼭 `game_over`라고 적지 않아도 돼요. 이름은 자유롭게 바꾸어도 좋아요.
+
+```python
+# 올바른 작성방법
+def get_year():
+    # 함수 몸통, function body
+    print("2026")
+
+# 잘못된 작성 방법
+# 1. def로 시작하지 않음
+get_time():
+    print(14)
+
+# 2. 콜론이 없음
+def say_name()
+    print("rina")
+
+# 3. 바디에 공백이 없음
+def say_hello():
+print("hello")
+```
+
+이름을 만든 다음에는 `( )` 괄호를 입력하고, `:` 콜론을 입력해야 돼요. `:` 콜론을 작성한 다음, 밑에 줄부터는 함수의 바디가 되는 부분이에요. 바디를 입력할 때는 탭을 한번 눌러야 돼요.
+
+`def`는 영어 define을 의미해요. 한국어로 "정의하다"라는 의미에요. 다시 말해 파이썬을 이용해서 "game_over를 정의해"라고 컴퓨터에게 작성하고 있는 거예요.
+
+<span id="simple_create" />
+
+## 간단한 함수를 만드는 방법
+
+1. `def`를 작성한다.
+2. 한 칸을 띄우고 함수의 이름을 작성한다.
+3. `():`를 작성한다.
+4. 엔터키를 눌러서 다음 줄로 이동한다.
+5. `def`하고 같은 세로줄에서 새로운 문자가 입력될 경우 탭을 눌러준다. 아니면 6번으로 이동.
+6. 함수가 실행될 때 실행될 코드를 작성한다.
+
+```python
+# say_hello 함수
+def say_hello():
+    print("hello")
+
+say_hello()
+```
+
+아래에 `say_hello()`라고 입력하고 실행을 시켜봐요. 이제 함수가 실행되는 것을 확인할 수 있어요.
+
+함수를 실행하기 위해서는 `()` 괄호가 함수 이름 뒤에 반드시 있어야 해요. 괄호가 없으면 함수가 실행되지 않아요.
+
+### 연습해보기
+
+여기 아래의 코드를 따라서 작성해 봅시다.
+
+```python
+# 안녕함수
+def say_hi():
+    print("안녕")
+
+# 여러 줄을 출력하는 함수
+def multi_line_hi():
+    print("""
+    안
+    녕
+    하
+    세
+    요
+    """)
+```
+
+---
+
+<span id="why_create" />
+
+## 함수는 왜 만들까?
+
+함수가 복잡하고 어렵다고 생각했나요. 하지만 놀랍게도 함수는 복잡하고 어려운 코드를 간단하고 읽기 편하게 하려고 만들어요. 함수는 믹서기와 같다고 했던 거 기억하나요? 만약 믹서기 없이 주스를 만든다고 생각을 해봐요. 1개 2개는 쉽게 만들 수 있어요. 하지만 매일 300개 혹은 500개를 만들어야 한다면 어떨까요? 이렇게 함수는 번거로운 일을 간단하게 도와주는 역할을 해요. 어려운 말로 "추상화"라고 해요. 영어로는 "abstraction"이라고 해요. 추상화 수준이 높을수록 복잡하고 어려운 코드는 사라지고 읽기 편하고 사용하기 쉬운 코드를 작성할 수 있게 되는 거예요.
+
+[추상화 수준에 대해서 더 알고 싶다면? 여기를 클릭!](https://onestone-dev.tistory.com/3)
+
+```python
+def paint_text():
+    print("""
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    (긴 문단이 여기에 반복해서 출력됩니다.)
+    """)
+
+paint_text()
+paint_text()
+paint_text()
+paint_text()
+paint_text()
+paint_text()
+paint_text()
+paint_text()
+```
+
+함수의 가장 기본적인 기능은 다시 사용하기 편하게 만드는 거예요. 지금은 함수가 간단하기 때문에 좋다고 못 느낄 수 있지만 100줄 200줄 넘어간다고 생각해보세요. 반복적으로 쓰면 손이 아플 거예요. 대신 함수 바디에 넣어주면 편리하게 사용할 수 있게 돼요. 위에 있는 코드를 실행시켜 볼까요?
+
+<span id="function_body" />
+
+## 함수의 몸체 — Function Body
+
+"함수 바디", "함수의 몸체", "몸통" 이런 용어가 나오는데 무슨 뜻일까요? 다시 믹서기 비유로 돌아가면, 믹서기의 내부는 함수의 몸통이라고 생각할 수 있어요. 믹서기의 내부와 외부는 플라스틱으로 구분해요. 그렇다면 함수의 내부와 외부는 어떻게 구분할 수 있을까요? 함수의 내부와 외부는 공백으로 구분해요.
+
+```python
+def mixer():
+    print("start")
+
+def say_end():
+    print("end")
+```
+
+위에는 두 개의 함수가 정의되어 있어요. 이 두 함수는 모두 올바르게 동작해요. `print("start")`의 p가 윗줄 `def`의 e와 같은 세로줄에 있다는 것이 중요합니다.
+
+```python
+# 오류!
+def say_start():
+print("start")
+
+def say_end():
+print("end")
+```
+
+여기 위에 있는 코드는 잘못된 코드에요. 이유가 뭘까요? `print`라는 단어 앞에 공백이 없기 때문이에요. 파이썬은 공백에 아주 민감한 언어예요. 탭을 한번 눌러서 공백을 만들 수도 있고 스페이스바를 눌러서 공백을 만들 수 있어요.
+
+```python
+def say_start():
+print("start")
+```
+
+또한 함수를 정의할 때는 반드시 함수 바디에 무언가 입력해야 돼요. 함수 바디는 공백으로 시작하는데, 공백으로 시작되는 함수 바디가 없기 때문에 오류가 생기는 거예요.
+
+```python
+def say_start():
+    pass
+print("start")
+```
+
+함수 바디에 어떤 것도 넣고 싶지 않다면, `pass`를 넣어도 좋아요. `pass`가 뭔지 이해가 아직 안 되겠지만 지금은 오류를 무시해주는 마법이라고 생각하세요.
+
+![함수의 몸체를 설명하는 그림](https://r2.kimkyungsub.com/pythonFunctionBody.png)
+
+<span id="parameter" />
+
+## 매개변수와 인수 — Parameter and Argument
+
+```python
+print("hello")
+```
+
+이제 이 `print()` 함수는 아주 익숙해졌을 거예요. `print`가 함수의 이름이라는 것을 알고 있고, `"hello"`가 문자열이라는 것도 알고 있어요. 하지만 괄호 내부에 문자열을 넣으려면 어떻게 해야 할까요?
+
+```python
+def plus_one(number):
+    print(number + 1)
+```
+
+여기 위에 있는 함수에 새로운 게 조금 추가되어 있어요. 이제는 괄호 안에 `number`라는 단어가 생겼네요. `number`는 함수의 매개변수라고 하며 영어로는 `parameter`라고 불러요. 매개변수의 이름은 변수처럼 자유롭게 만들 수 있어요. 다시 말해 `number`뿐만 아니라 `num`, `x`, `y` 등등으로 바꾸어도 좋아요.
+
+```python
+def plus_one(number):
+    print(number + 1)
+number  # 오류!
+```
+
+매개변수는 함수 내부에서만 사용할 수 있어요. 함수 밖에서 number를 적으면 오류가 생깁니다.
+
+```python
+def plus_one(number):
+    print(number + 1)
+
+plus_one(10)
+```
+
+만든 함수를 실행시키려면 `plus_one(10)`과 같이 괄호 내부에 값을 넣어야 돼요. 여기서 10을 인수, 영어로 argument라고 해요. 하지만 argument와 parameter는 개발자들도 혼용해서 많이 사용하기 때문에 매개변수와 인수가 혼용되어 사용되고 있어요.
+
+```python
+def greet(name):
+    print("hello", name)
+
+greet("python")
+```
+
+매개변수를 이용하면, `hello python`과 같은 문자를 출력할 수 있어요. 그런데 위 코드를 보면 `print` 함수가 "hello"와 name 두 가지 값을 사용하고 있네요. 어떻게 하면 이렇게 만들 수 있을까요? 이번에는 함수가 변수 2개를 사용할 수 있게 만들어 봐요.
+
+```python
+def add(x, y):
+    print(x + y)
+
+add(10, 11)
+```
+
+`add`라는 함수의 괄호 안에 `x`, `y`를 작성했어요. 함수의 매개변수를 늘리고 싶을 때는 `,` 콤마를 사용해요. 함수를 실행할 때는 `add(10, 11)` 이렇게 작성해요. 10이 x의 위치에 있으므로 `x`는 `10`으로 바뀝니다. 같은 방식으로 `11`은 `y`의 위치에 있으므로 `y`는 `11`로 바뀌어서 `print(10 + 11)`이 `add` 함수 내부에서 실행되는 거예요.
+
+```python
+def add(x, y):
+    print(x + y)
+
+add(10)  # 오류!
+```
+
+이번에는 `add(10)`이라고 작성하고 코드를 실행해 봐요. `TypeError: add() missing 1 required argument: y on line 4` 이런 식의 메시지가 나왔네요. `add` 함수를 정의할 때 매개변수 x와 y를 만들었기에 함수를 실행할 때도 `x`와 `y` 자리에 인수를 반드시 넣어주어야 해요.
+
+```python
+def add(x, y=10):
+    print(x + y)
+
+add(10)
+```
+
+매개변수 기본값을 설정해줌으로써 해결하는 방법도 가능해요. `add` 함수가 정의될 때 매개변수 `y`의 자리에 `y=10`이라고 작성했어요. 이렇게 작성하면, 함수가 실행될 때 `y`가 전달받을 인수가 없다면 `y` 값을 `10`으로 정해줘요. 이런 방식을 default value for parameter라고 하며, 한국어로 "매개변수에 기본값 설정하기"라고 해요.
+
+```python
+def add_two(x):
+    return x + 2
+
+result = add_two(3)
+
+print(result)
+```
+
+마지막으로 `return`을 배워봐요. `return`을 통해서 함수로부터 새로운 값을 만들 수 있어요. 위의 `add_two` 함수에 어떤 숫자를 넣으면 2를 더해서 반환해주는 역할을 해요. 또한 `return`은 함수를 끝내는 역할을 하기 때문에 return 뒤에 오는 코드는 실행되지 않아요.
+
+<span id="quizz" />
+
+## ❓ Quizz! 문제를 맞춰봐요!
+
+<QuizzWithOptions layout="grid" answer={2} question="1. 올바르게 작성된 함수 코드를 고르세요.">
+  <Option value={1}>
+    **A.**
+
+    <CodeBlock code={`def get_year():
+print("2026")`} />
+  </Option>
+  <Option value={2}>
+    **B.**
+
+    <CodeBlock code={`def get_year():
+    print("2026")`} />
+  </Option>
+  <Option value={3}>
+    **C.**
+
+    <CodeBlock code={`get_year():
+    print("2026")`} />
+  </Option>
+  <Option value={4}>
+    **D.**
+
+    <CodeBlock code={`def get_year()
+    print("2026")`} />
+  </Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="2. 아래 코드에 관한 설명으로 틀린 것을 고르세요.">
+  <CodeBlock code={`def add(x, y):
+    return x + y
+add(10)
+`} />
+  <Option value={1}>1. 함수의 이름은 add이다.</Option>
+  <Option value={2}>2. x와 y는 함수의 매개변수이다.</Option>
+  <Option value={3}>3. 함수를 실행하기 위해서는 add(13)이라고 작성해야 된다.</Option>
+  <Option value={4}>4. return x + y는 함수 내부에서 실행되는 코드이다.</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="3. 함수를 만드는 이유에 관한 설명으로 틀린 것을 고르세요.">
+  <Option value={1}>1. 함수를 사용하면 복잡한 코드를 다시 사용하기 편하게 만들어 준다.</Option>
+  <Option value={2}>2. 함수의 추상화 수준을 높여준다.</Option>
+  <Option value={3}>3. 함수를 사용하면 읽기 편한 코드를 만들 수 있다.</Option>
+  <Option value={4}>4. 함수는 어렵기 때문에 사용하지 않는 것이 좋다.</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="4. 함수의 매개변수와 인수에 관한 설명으로 틀린 것을 고르세요.">
+  <Option value={1}>1. 매개변수는 함수 내부에서만 사용되는 변수이다.</Option>
+  <Option value={2}>2. 매개변수는 함수 밖에서 사용 가능하다.</Option>
+  <Option value={3}>3. 함수 실행 시 인수를 통해서 매개변수에 값을 전달할 수 있다.</Option>
+  <Option value={4}>4. 매개변수가 정의된 함수에서 함수를 실행 시, 매개변수가 사용할 값이 없다면 오류가 생길 수 있다.</Option>
+  <Option value={5}>5. 인수는 영어로 argument이다.</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="5. 아래의 코드에 관한 설명으로 틀린 것을 고르세요.">
+  <CodeBlock code={`# 믹서기 함수
+def blender(fruit="사과"):
+    return fruit + " 주스"
+    print("믹서기 함수 실행 종료")
+
+juice = blender(grape)
+print(juice)
+`} />
+  <Option value={1}>1. fruit는 blender 함수의 매개변수이다.</Option>
+  <Option value={2}>2. print는 juice를 인수로 사용하고 있다.</Option>
+  <Option value={3}>3. 이 코드는 오류가 없다.</Option>
+  <Option value={4}>4. blender 함수 안에 있는 print("믹서기 함수 실행 종료")는 실행되지 않는다.</Option>
+  <Option value={5}>5. blender 함수 실행 시 인수를 받지 않아도 실행 시 오류가 없다.</Option>
+</QuizzWithOptions>

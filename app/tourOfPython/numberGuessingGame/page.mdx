@@ -1,0 +1,242 @@
+export const metadata = {
+  title: "숫자 맞히기 게임",
+  description:
+    "random, while, if/elif/else, try...except, 함수 분리를 모두 활용해 3번의 기회로 숫자를 맞히는 게임을 만들어봐요.",
+};
+
+# 숫자 맞히기 게임
+
+이번에는 숫자 맞히기 게임을 만들어 볼 거예요. 지금까지 배운 것들을 활용해서 이렇게 재미있는 게임을 만들 수 있다는 점에 놀라지 않을 수 없을 거예요. 게임 방식은 아주 간단해요. 컴퓨터가 생각하고 있는 랜덤한 숫자를 사용자가 알아맞히면 되는 간단한 게임이에요. 3회 안에 정답을 입력하면 사용자가 승리하고 3회를 넘어가면 컴퓨터의 승리예요.
+
+### 이번에 활용할 코드
+
+1. 내장 함수 `print`
+2. 표준 라이브러리 `random`
+3. 반복문 `while`
+4. 조건문 `if...elif...else`
+5. 변수 만들기
+6. 예외 처리 `try...except`
+
+---
+
+<span id="title" />
+
+## 게임 환영 타이틀 만들기
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")  # 게임 타이틀
+    print("=====================")
+main()  # main 함수 호출
+```
+
+`main()` 내부에 게임 관련 중요한 로직을 만들 거예요. `print()`는 게임이 실행될 때 어떤 게임인지 알려주는 제목이에요. 간단하지만 의미는 확실하게 전달할 수 있을 것 같아요.
+
+<span id="while" />
+
+## while 루프 만들기
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        input("guess my number: ")
+        attempts += 1
+
+main()
+```
+
+코드가 위에서 아래로 한 번만 실행돼서는 안 되겠네요. `while`을 넣어서 게임이 반복되게 만들어요. 하지만 무한히 반복되면 안 되고 종료되는 조건이 필요해 보여요. 이 게임은 기회가 3번뿐이므로 시도 횟수가 3을 넘어가면 반복을 종료하게 만드는 건 어떨까요. 그리고 매번 시도할 때마다 변수 `attempts`에 1을 더해주면 몇 번 시도했는지 알 수 있겠네요.
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    chances = 3
+    attempts = 0
+    while attempts < chances:  # while 조건
+        input("guess my number: ")
+        attempts += 1
+    else:  # while 조건이 거짓일 때만 실행됨
+        print("you lose")
+
+main()
+```
+
+3번의 기회를 모두 사용했다면 `attempts`가 3이 돼요. 이렇게 되면 `while` 반복문 실행 조건이 참이 되지 않기 때문에 반복문이 종료되고 else로 넘어가게 돼요. 결국 `print("you lose")`가 실행이 되는 것이에요. 이제 기본적인 틀이 만들어졌어요. 여기에 사용자가 입력한 값이 컴퓨터가 생각하고 있는 숫자와 같은지 확인하는 코드만 만들면 게임 완성이에요.
+
+<span id="rand_number" />
+
+## 랜덤 숫자 생성하기
+
+```python
+# main.py
+import random  # <-- 라이브러리 가져오기
+
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)  # <-- 난수 생성
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        user_input = int(input("guess my number: "))  # <--- int형으로 바꾸기
+        attempts += 1
+    else:
+        print("you lose")
+
+main()
+```
+
+우선, 랜덤 숫자를 만들기 위해서는 `import random`을 사용해서 라이브러리를 가져와요. 그리고 1에서 10 사이의 랜덤한 숫자를 만들기 위해서 `random.randint(1, 11)` 코드를 입력할 거예요. 또한 숫자를 알아맞히는 게임이기 때문에 사용자가 입력한 값을 int형으로 바꿔줄 거예요. 이제 프로그램을 실행시키고 숫자를 입력하지 않고 엔터를 누르면 이상한 메시지가 나오면서 프로그램이 종료되는 것을 알 수 있어요.
+
+<span id="exception" />
+
+## 예외 처리하기
+
+```python
+# main.py
+import random
+
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        try:  # <-- 예외를 잡는 코드
+            user_input = int(input("guess my number: "))  # <-- int 예외 발생
+            attempts += 1
+        except ValueError:  # <-- ValueError 발생하면 실행
+            print("Invalid input. Only numbers are allowed")
+    else:
+        print("you lose")
+
+main()
+```
+
+`int` 함수는 내장함수에요. 이 함수는 문자열을 int형으로 바꿔주는 역할을 할 수 있어요. 하지만 숫자로 바꿀 수 없는 문자열도 있어요. 예를 들어 "안녕"이라는 단어는 숫자로 바꿀 수 없어요. 이렇게 예외가 발생하면 프로그램이 종료가 되기 때문에 예외를 잡아주는 코드가 필요해요. 예외를 잡아주는 코드는 `try...except`에요. `try` 내부에서 예외가 발생했으면 코드의 흐름이 `except`로 이동하게 돼요. `except`에서 반복을 종료하지 않으면 다시 반복문으로 이동하게 되어요.
+
+<span id="answer_checker" />
+
+## 정답인가요? 아닌가요?
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        try:
+            user_input = int(input("guess my number: "))
+            if isCorrect(answer, user_input):  # <--- 정답 확인 코드
+                break  # <--- 정답이면 반복 중단
+            else:
+                attempts += 1  # <-- 오답이면 시도횟수 증가
+        except ValueError:
+            print("숫자를 입력하세요")
+    else:
+        print("you lose")
+
+main()
+```
+
+미리 알려주면, 이 코드는 아직 완성되지 않은 코드에요. 정답을 확인하는 코드는 `isCorrect` 함수에서 할 거예요. 만약 정답이면 `isCorrect`는 `True`를 반환하고 거짓이면 `False`를 반환할 거예요. `isCorrect` 함수는 `main` 밖에 만들 거예요. 이렇게 함수를 분리하는 이유는 함수의 가독성을 높이기 위해서예요. 모든 코드를 한 곳에 작성하면 너무 길어지기 때문에 마치 코드가 스파게티처럼 보이게 돼요. 코드가 어떻게 흘러가는지 알 수 없는 상태가 되어버리는 거예요.
+
+[스파게티 코드 더 알아보기 🔗](https://namu.wiki/w/%EC%8A%A4%ED%8C%8C%EA%B2%8C%ED%8B%B0%20%EC%BD%94%EB%93%9C)
+
+스파게티 코드를 막기 위해서는 하나의 함수에 한 가지 역할만 지정하세요. 또한 코드가 길어지면 함수를 분리하세요.
+
+<span id="isCorrect" />
+
+## isCorrect() 함수 구현하기
+
+```python
+# main.py
+def isCorrect(answer, user_input):
+    if user_input > answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return False
+    elif user_input < answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return False
+    elif user_input == answer:
+        print("정답입니다.")
+        return True
+```
+
+`isCorrect()` 함수는 `main` 함수 밖 어디에 작성해도 문제없어요. 하지만 `main` 호출 이전에 작성해야 돼요.
+
+<span id="full_code" />
+
+## 전체 코드 확인하기
+
+```python
+# main.py
+import random
+
+def isCorrect(answer, user_input):
+    """
+    사용자가 입력한 답과 정답을 비교하는 함수. 정답일 경우 True를 반환하고
+    다른 모든 경우에는 False를 반환한다.
+    """
+    if user_input > answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return False
+    elif user_input < answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return False
+    elif user_input == answer:
+        print("정답입니다.")
+        return True
+
+def main():
+    """
+    실제 게임 로직이 진행되는 함수
+    """
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)
+    chances = 3
+    attempts = 0
+    while attempts < chances:  # 루프 종료 조건
+        try:  # int에서 발생하는 예외를 처리하기 위한 try 블록
+            user_input = int(input("guess my number: "))  # input은 문자열 값을 반환하기 때문에 int형으로 변경해줌
+            if isCorrect(answer, user_input):  # <--- 정답 확인 코드
+                break  # <--- 정답이면 반복 중단
+            else:
+                attempts += 1  # <-- 오답이면 시도횟수 증가
+        except ValueError:  # 예외 발생시 실행되는 블록
+            print("숫자를 입력하세요")
+    else:
+        print("you lose")
+
+main()
+```
+
+---
+
+## 도전! 게임을 바꿔보기
+
+게임을 완성했다면, 아래처럼 바꿔서 나만의 게임을 만들어보세요. 배운 걸 그대로 활용하는 연습이에요.
+
+1. 기회를 **3번에서 5번으로** 늘려보세요. (힌트: `chances` 값)
+2. 정답 범위를 **1~10에서 1~100으로** 바꿔보세요. (힌트: `random.randint(1, 11)`)
+3. 정답을 맞히면 "🎉 축하해요!" 같은 메시지를 출력해보세요.
