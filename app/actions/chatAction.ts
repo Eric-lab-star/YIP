@@ -138,7 +138,7 @@ export async function clearRoomMessagesAction(roomId: string) {
   }
 
   await deleteMessagesByRoom(roomId);
-  await pusherServer.trigger(`chat-${roomId}`, "messages-cleared", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "messages-cleared", {
     scope: "all",
   });
   return { success: true as const };
@@ -159,7 +159,7 @@ export async function deleteMessageAction(messageId: string) {
   }
 
   await deleteMessageById(messageId);
-  await pusherServer.trigger(`chat-${msg.roomId}`, "message-deleted", {
+  await pusherServer.trigger(`private-chat-${msg.roomId}`, "message-deleted", {
     id: messageId,
   });
   return { success: true as const };
@@ -185,7 +185,7 @@ export async function clearMyRoomMessagesAction(roomId: string) {
   }
 
   await deleteMessagesByRoomAndUser(roomId, auth.id);
-  await pusherServer.trigger(`chat-${roomId}`, "messages-cleared", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "messages-cleared", {
     scope: "user",
     userId: auth.id,
   });

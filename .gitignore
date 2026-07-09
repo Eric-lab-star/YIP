@@ -46,3 +46,9 @@ next-env.d.ts
 
 # local connectivity/debug script (contained credentials — do not commit)
 test-mongo.mjs
+
+# Judge0 local config (contains secrets)
+judge0/judge0.conf
+
+# Self-hosted Monaco assets (copied from node_modules by scripts/copy-monaco.mjs)
+/public/monaco/

@@ -2,6 +2,10 @@ import { validateToken } from "@/app/lib/auth/login";
 import { canModifyPost, createPost, readPost, updatePost } from "@/app/lib/mongo/posts";
 import { NextRequest } from "next/server";
 
+// Bounds on stored post fields so a single write can't inflate document size.
+const MAX_TITLE_LENGTH = 300;
+const MAX_CONTENT_LENGTH = 200_000;
+
 export async function POST(req: NextRequest) {
 	try {
 		const result = await validateToken()
@@ -18,6 +22,13 @@ export async function POST(req: NextRequest) {
 				ok: false,
 				error: "title or content is missing"
 			})
+		}
+
+		if (title.toString().length > MAX_TITLE_LENGTH || content.toString().length > MAX_CONTENT_LENGTH) {
+			return Response.json({
+				ok: false,
+				error: "title or content is too long"
+			}, { status: 413 })
 		}
 
 		if (postId) {

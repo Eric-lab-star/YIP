@@ -11,8 +11,12 @@ import {
   embedQuestion,
   setCachedAnswer,
 } from "@/app/lib/mongo/aiCache";
-import { consumeAiQuota } from "@/app/lib/mongo/aiUsage";
+import { consumeAiQuota, refundAiQuota } from "@/app/lib/mongo/aiUsage";
 import { pusherServer } from "@/app/lib/pusher/pusher_server";
+
+// Cap on a single chat message: persisted to Mongo and forwarded to Anthropic,
+// so an unbounded body would inflate storage and token cost.
+const MAX_MESSAGE_LENGTH = 4000;
 
 // Persist the AI reply and broadcast it over Pusher. Skips empty replies,
 // which would otherwise poison the history for the next request.
@@ -26,7 +30,7 @@ async function persistAiReply(roomId: string, text: string) {
     message: text,
     createdAt,
   });
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: inserted.insertedId.toString(),
     userId: "ai",
     userName: "AI 도우미",
@@ -60,18 +64,19 @@ export async function POST(req: Request) {
   if (!message?.trim() || !roomId) {
     return new Response("Missing fields", { status: 400 });
   }
+  if (typeof message !== "string" || message.length > MAX_MESSAGE_LENGTH) {
+    return new Response("Message too long", { status: 413 });
+  }
 
-  // Authorize: public rooms are open to any signed-in user; AI/private rooms
-  // require membership (or ownership). Prevents posting to someone else's room.
+  // AI chat only ever happens in a user's own per-user AI room. Enforcing this
+  // server-side (not just in the client) keeps the roomId-scoped response cache
+  // effectively per-user: no user can post into — and thus poison the cache of —
+  // a shared room, and no one can read another user's AI room.
   const room = await findChatRoomById(roomId).catch(() => null);
   if (!room) {
     return new Response("Room not found", { status: 404 });
   }
-  if (
-    room.type !== "public" &&
-    room.createdBy !== auth.id &&
-    !room.members.includes(auth.id)
-  ) {
+  if (room.type !== "ai" || room.createdBy !== auth.id) {
     return new Response("Forbidden", { status: 403 });
   }
 
@@ -101,7 +106,7 @@ export async function POST(req: Request) {
     createdAt: userCreatedAt,
   });
 
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: insertedUser.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,
@@ -196,10 +201,18 @@ export async function POST(req: Request) {
       }
 
       // Persist/broadcast the reply, and store it in the exact-match cache so
-      // the next identical question is served without a model call.
-      if (fullResponse.trim()) {
-        await persistAiReply(roomId, fullResponse);
-        await setCachedAnswer(roomId, message, fullResponse, embedding);
+      // the next identical question is served without a model call. Wrapped so a
+      // persistence/cache failure can't reject start() and skip close().
+      try {
+        if (fullResponse.trim()) {
+          await persistAiReply(roomId, fullResponse);
+          await setCachedAnswer(roomId, message, fullResponse, embedding);
+        } else if (auth.role !== "admin") {
+          // The model produced nothing — don't charge the user for a non-answer.
+          await refundAiQuota(auth.id);
+        }
+      } catch (err) {
+        console.error("AI persist error:", err);
       }
 
       controller.close();

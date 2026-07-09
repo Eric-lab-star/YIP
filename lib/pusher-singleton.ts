@@ -17,6 +17,12 @@ export async function getPusher(): Promise<PusherClient> {
     const Pusher = (await import("pusher-js")).default;
     pusherInstance = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      // Private channels require server-side authorization; the endpoint
+      // validates the JWT cookie and room membership before signing.
+      channelAuthorization: {
+        endpoint: "/api/pusher/auth",
+        transport: "ajax",
+      },
     });
     return pusherInstance;
   })();

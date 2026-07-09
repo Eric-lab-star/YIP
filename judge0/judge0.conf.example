@@ -1,0 +1,35 @@
+# Judge0 configuration — copy to judge0.conf and fill in real secrets.
+# judge0.conf is gitignored; never commit real credentials.
+
+################################################################################
+# Authentication
+################################################################################
+# When set, every request must send this token as the `X-Auth-Token` header.
+# Put the SAME value in the YIP app's JUDGE0_AUTH_TOKEN env var.
+AUTHN_TOKEN=change-me-to-a-long-random-string
+
+################################################################################
+# Postgres
+################################################################################
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DB=judge0
+POSTGRES_USER=judge0
+POSTGRES_PASSWORD=change-me-postgres-password
+
+################################################################################
+# Redis
+################################################################################
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=change-me-redis-password
+
+################################################################################
+# Sandbox limits (safe defaults; tune per your host capacity)
+################################################################################
+# Hard ceilings the per-problem limits must stay under.
+MAX_CPU_TIME_LIMIT=15
+MAX_MEMORY_LIMIT=512000
+MAX_PROCESSES_AND_OR_THREADS=60
+# Disallow network access from inside submissions.
+ENABLE_NETWORK=false

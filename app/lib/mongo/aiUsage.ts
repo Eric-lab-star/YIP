@@ -104,6 +104,20 @@ export async function consumeAiQuota(
   };
 }
 
+/**
+ * Give back one unit of quota — used when a consumed request ultimately
+ * produced no answer (e.g. the model stream failed), so the user isn't charged
+ * for a non-response. Only decrements within the current day and never below 0.
+ */
+export async function refundAiQuota(userId: string) {
+  const c = await col();
+  const day = todayKey();
+  await c.updateOne(
+    { userId, day, used: { $gt: 0 } },
+    { $inc: { used: -1 }, $set: { updatedAt: new Date() } }
+  );
+}
+
 /** Admin: enable or disable AI chat for a single user. */
 export async function setAiEnabled(userId: string, enabled: boolean) {
   const c = await col();

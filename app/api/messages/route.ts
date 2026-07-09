@@ -5,6 +5,9 @@ import { getMessagesByRoom } from "@/app/lib/mongo/chatMessages";
 import { findChatRoomById } from "@/app/lib/mongo/chatRooms";
 import { NextRequest, NextResponse } from "next/server";
 
+// Cap on a single persisted chat message to bound stored document size.
+const MAX_MESSAGE_LENGTH = 4000;
+
 // Authorize a user against a room: public rooms are open to any signed-in user;
 // AI/private rooms require membership (or ownership). Returns the room when
 // allowed, or a NextResponse to short-circuit with when not.
@@ -33,6 +36,9 @@ export async function POST(req: NextRequest) {
   if (!message || !roomId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
+  if (typeof message !== "string" || message.length > MAX_MESSAGE_LENGTH) {
+    return NextResponse.json({ error: "Message too long" }, { status: 413 });
+  }
 
   const authz = await authorizeRoom(roomId, auth.id);
   if (authz.error) return authz.error;
@@ -46,7 +52,7 @@ export async function POST(req: NextRequest) {
   };
   const inserted = await createChatMessage(chatMsg);
 
-  await pusherServer.trigger(`chat-${roomId}`, "new-message", {
+  await pusherServer.trigger(`private-chat-${roomId}`, "new-message", {
     id: inserted.insertedId.toString(),
     userId: auth.id,
     userName: auth.name,

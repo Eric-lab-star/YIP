@@ -26,6 +26,24 @@ export async function findChatRoomById(id: string) {
   return c.findOne({ _id: new ObjectId(id) });
 }
 
+/**
+ * Whether `userId` may read a room's live feed: public rooms are open to any
+ * signed-in user; AI/private rooms require ownership or membership. Shared by
+ * the messages API and the Pusher channel-auth endpoint. Never throws.
+ */
+export async function canAccessRoom(
+  roomId: string,
+  userId: string
+): Promise<boolean> {
+  const room = await findChatRoomById(roomId).catch(() => null);
+  if (!room) return false;
+  return (
+    room.type === "public" ||
+    room.createdBy === userId ||
+    room.members.includes(userId)
+  );
+}
+
 export async function findChatRoomByInviteCode(code: string) {
   const c = await col();
   return c.findOne({ inviteCode: code });

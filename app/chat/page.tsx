@@ -113,7 +113,7 @@ export default function ChatPage() {
       const pusher = await getPusher();
       if (cancelled) return;
 
-      channel = pusher.subscribe(`chat-${selectedRoom._id}`);
+      channel = pusher.subscribe(`private-chat-${selectedRoom._id}`);
       channel.bind("new-message", (msg: Message) => {
         setMessages((prev) => {
           if (prev.some((m) => m.id === msg.id)) return prev;
