@@ -164,6 +164,13 @@
 		background-color: var(--color-purple-200);
 		color: inherit;
 	}
+
+	/* 텍스트 감싸기(플로트) 이미지 뒤에서 에디터가 높이를 잃지 않도록 클리어 */
+	.tiptap.ProseMirror::after {
+		content: "";
+		display: block;
+		clear: both;
+	}
 }
 
 /*

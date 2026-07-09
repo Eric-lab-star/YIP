@@ -2,7 +2,7 @@
 import { Indent } from "@/lib/tiptapIndent";
 import { InlineSuggestion } from "@/lib/InlineSuggestion";
 import TextAlign from "@tiptap/extension-text-align";
-import Image from "@tiptap/extension-image";
+import { ResizableImage } from "@/lib/ImageResize";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import Youtube from "@tiptap/extension-youtube";
@@ -75,19 +75,12 @@ export default function TipTab({
 		content,
 		extensions: [
 			TextAlign.configure({
-				types: ["heading", "paragraph", "image"],
+				types: ["heading", "paragraph"],
 			}),
 			TextStyle,
-			Image.configure({
+			ResizableImage.configure({
 				inline: false,
 				allowBase64: false,
-				resize: {
-					enabled: content ? false : true,
-					directions: ["top", "bottom", "left", "right"],
-					minWidth: 50,
-					minHeight: 50,
-					alwaysPreserveAspectRatio: true,
-				},
 			}),
 			FontSize,
 			Highlight.configure({
