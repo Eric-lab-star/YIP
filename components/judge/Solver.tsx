@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import Editor, { loader } from "@monaco-editor/react";
+import Editor, { loader, type OnMount } from "@monaco-editor/react";
 import { toast } from "sonner";
+import { Wand2 } from "lucide-react";
+import type { editor as MonacoEditorNS } from "monaco-editor";
 
 // Serve Monaco from our own origin (public/monaco/vs) instead of the default
 // jsDelivr CDN, so the editor works offline / behind a strict CSP. The assets
@@ -67,6 +69,56 @@ function verdictTone(verdict: string): string {
 const POLL_INTERVAL_MS = 1200;
 const MAX_POLLS = 50;
 
+type CodeEditor = Parameters<OnMount>[0];
+type MonacoNamespace = Parameters<OnMount>[1];
+
+// Safe, language-agnostic cleanup: strip trailing whitespace, collapse runs of
+// blank lines, trim leading/trailing blank lines, and end with one newline. It
+// never touches indentation/structure, so it can't break whitespace-sensitive
+// languages like Python.
+function normalizeWhitespace(src: string): string {
+	const lines = src
+		.replace(/\r\n/g, "\n")
+		.split("\n")
+		.map((l) => l.replace(/[ \t]+$/, ""));
+	const out: string[] = [];
+	let blanks = 0;
+	for (const line of lines) {
+		if (line.trim() === "") {
+			blanks++;
+			if (blanks > 1) continue;
+		} else {
+			blanks = 0;
+		}
+		out.push(line);
+	}
+	while (out.length && out[0].trim() === "") out.shift();
+	while (out.length && out[out.length - 1].trim() === "") out.pop();
+	return out.join("\n") + "\n";
+}
+
+// Monaco ships real formatters only for JS/TS (and JSON/CSS/HTML). For the other
+// judge languages we register a fallback provider so the "포맷" button still
+// does useful whitespace cleanup everywhere.
+const FALLBACK_FORMAT_LANGS = ["python", "cpp", "c", "java", "go", "rust"];
+let formattersRegistered = false;
+function registerFallbackFormatters(monaco: MonacoNamespace) {
+	if (formattersRegistered) return;
+	formattersRegistered = true;
+	for (const lang of FALLBACK_FORMAT_LANGS) {
+		monaco.languages.registerDocumentFormattingEditProvider(lang, {
+			provideDocumentFormattingEdits(model: MonacoEditorNS.ITextModel) {
+				return [
+					{
+						range: model.getFullModelRange(),
+						text: normalizeWhitespace(model.getValue()),
+					},
+				];
+			},
+		});
+	}
+}
+
 export default function Solver({ problem }: { problem: SolverProblem }) {
 	const langOptions = useMemo(
 		() =>
@@ -80,6 +132,18 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	const [result, setResult] = useState<SubmissionState | null>(null);
 	// Track code edited per language so switching languages doesn't lose work.
 	const perLangCode = useRef<Record<string, string>>({ ...problem.starterCode });
+	const editorRef = useRef<CodeEditor | null>(null);
+
+	const handleMount: OnMount = (editor, monaco) => {
+		editorRef.current = editor;
+		registerFallbackFormatters(monaco);
+	};
+
+	const onFormat = useCallback(async () => {
+		const ed = editorRef.current;
+		if (!ed) return;
+		await ed.getAction("editor.action.formatDocument")?.run();
+	}, []);
 
 	const monacoLang =
 		LANGUAGES.find((l) => l.slug === language)?.monaco ?? "plaintext";
@@ -152,18 +216,30 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	return (
 		<div className="flex flex-col gap-3">
 			<div className="flex items-center justify-between gap-2">
-				<Select value={language} onValueChange={onLanguageChange}>
-					<SelectTrigger className="w-48">
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{langOptions.map((l) => (
-							<SelectItem key={l.slug} value={l.slug}>
-								{l.label}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
+				<div className="flex items-center gap-2">
+					<Select value={language} onValueChange={onLanguageChange}>
+						<SelectTrigger className="w-48">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{langOptions.map((l) => (
+								<SelectItem key={l.slug} value={l.slug}>
+									{l.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onFormat}
+						title="코드 정렬"
+					>
+						<Wand2 className="size-4" />
+						포맷
+					</Button>
+				</div>
 
 				<Button onClick={onSubmit} disabled={running}>
 					{running && <Spinner />}
@@ -178,11 +254,13 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 					theme="vs-dark"
 					value={code}
 					onChange={(v) => setCode(v ?? "")}
+					onMount={handleMount}
 					options={{
 						minimap: { enabled: false },
 						fontSize: 14,
 						scrollBeyondLastLine: false,
 						tabSize: 4,
+						padding: { top: 20, bottom: 20 },
 					}}
 				/>
 			</div>
