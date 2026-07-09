@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { listProblems } from "@/app/lib/mongo/problems";
+import { validateToken } from "@/app/lib/auth/login";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -11,11 +13,19 @@ const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 };
 
 export default async function ProblemsPage() {
-	const problems = await listProblems();
+	const [problems, auth] = await Promise.all([listProblems(), validateToken()]);
+	const isAdmin = auth.success && auth.role === "admin";
 
 	return (
 		<div className="mx-auto w-full max-w-3xl px-4 py-8">
-			<h1 className="mb-6 text-2xl font-bold">문제</h1>
+			<div className="mb-6 flex items-center justify-between">
+				<h1 className="text-2xl font-bold">문제</h1>
+				{isAdmin && (
+					<Button asChild>
+						<Link href="/problems/new">새 문제</Link>
+					</Button>
+				)}
+			</div>
 
 			{problems.length === 0 ? (
 				<p className="text-muted-foreground">
