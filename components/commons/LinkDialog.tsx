@@ -11,6 +11,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Editor } from "@tiptap/core";
 import { Link } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -48,11 +53,16 @@ export default function LinkDialog({className, editor}: {className: string; edit
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className={className}>
-					<Link strokeWidth={"2"} size={"16"} />
-				</button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <button type="button" aria-label="링크" className={className}>
+						<Link strokeWidth={"2"} size={"16"} />
+					</button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>링크</TooltipContent>
+      </Tooltip>
       <DialogContent className="sm:max-w-md">
 			<form className="space-y-3"  onSubmit={(e)=> handleSubmit(e)}>
         <DialogHeader>

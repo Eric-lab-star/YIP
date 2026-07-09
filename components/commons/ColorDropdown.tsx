@@ -5,6 +5,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Editor } from "@tiptap/core";
 import { Ban, Highlighter } from "lucide-react"
 import { tv } from "tailwind-variants";
@@ -18,9 +23,14 @@ export default function ColorDropDown({className, editor}:{className: string; ed
 	}
 	return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-				<button type="button" aria-label="형광펜" className={className}><Highlighter strokeWidth={"2"} size={"18"}/> </button>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <button type="button" aria-label="형광펜" className={className}><Highlighter strokeWidth={"2"} size={"18"}/> </button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>형광펜</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent className="w-auto" align="start">
           <DropdownMenuLabel>형광펜</DropdownMenuLabel>
 					<div className="grid grid-cols-5 items-center gap-1 p-1">

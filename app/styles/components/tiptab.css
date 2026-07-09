@@ -159,6 +159,11 @@
 		height: 0;
 		pointer-events: none;
 	}
+
+	/* AI 자동완성 고스트 텍스트가 떠 있는 동안에는 플레이스홀더를 숨겨 겹침을 막는다. */
+	.tiptap.has-inline-suggestion p.is-empty::before {
+		content: "";
+	}
 	
 	.tiptap.ProseMirror ::selection {
 		background-color: var(--color-purple-200);

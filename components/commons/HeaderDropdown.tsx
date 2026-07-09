@@ -5,6 +5,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Editor } from "@tiptap/core";
 import { Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6 } from "lucide-react"
 import { tv } from "tailwind-variants";
@@ -15,11 +20,16 @@ export default function HeaderDropdown({className, editor}:{className: string; e
 	}
 	return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-				<button type="button" aria-label="제목 크기" className={className}>
-					<Heading strokeWidth={"2"} size={"18"}/>
-				</button>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <button type="button" aria-label="제목 크기" className={className}>
+              <Heading strokeWidth={"2"} size={"18"}/>
+            </button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>제목 크기</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent className="w-40" align="start">
           <DropdownMenuLabel>제목 크기</DropdownMenuLabel>
 					<div className="grid gap-1 grid-cols-3 items-center p-1">

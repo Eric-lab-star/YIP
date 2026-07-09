@@ -12,6 +12,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Editor } from "@tiptap/core";
 import { Image } from "lucide-react";
 import { RefObject, useEffect, useState } from "react";
@@ -88,11 +93,16 @@ export default function ImageUploadDialog({className, editor, uploadedImageKeys}
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className={className}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <button type="button" aria-label="이미지" className={className}>
 					<Image strokeWidth={"2"} size={ICON_SIZE}/>
 				</button>
-      </DialogTrigger>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>이미지</TooltipContent>
+      </Tooltip>
       <DialogContent className="sm:max-w-md">
 			<form encType="multipart/form-data"  className="space-y-3"  onSubmit={(e)=> handleSubmit(e)}>
         <DialogHeader>

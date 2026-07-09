@@ -11,6 +11,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Editor } from "@tiptap/core";
 import { Youtube } from "lucide-react";
 import { useState } from "react";
@@ -31,11 +36,16 @@ const ICON_SIZE = 20;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className={className}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <button type="button" aria-label="유튜브" className={className}>
 					<Youtube strokeWidth={"2"} size={ICON_SIZE}/>
 				</button>
-      </DialogTrigger>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>유튜브</TooltipContent>
+      </Tooltip>
       <DialogContent className="sm:max-w-md">
 			<form className="space-y-3"  onSubmit={(e)=> handleSubmit(e)}>
         <DialogHeader>
@@ -52,7 +62,7 @@ const ICON_SIZE = 20;
 							<Input
 								name="url"
 								id="link"
-								defaultValue="https://www.youtube.com/watch?v=nLRL_NcnK-4"
+								placeholder="https://www.youtube.com/watch?v=..."
 							/>
 						</div>
 					</div>

@@ -89,6 +89,14 @@ export const InlineSuggestion = Extension.create<InlineSuggestionOptions>({
             return suggestionKey.getState(state);
           },
 
+          // 제안(고스트 텍스트)이 표시 중이면 에디터 루트에 클래스를 달아,
+          // 빈 문단의 플레이스홀더가 고스트 텍스트와 겹치지 않도록 CSS로 숨긴다.
+          attributes(state): Record<string, string> {
+            const deco = suggestionKey.getState(state);
+            const active = !!deco && deco.find().length > 0;
+            return { class: active ? "has-inline-suggestion" : "" };
+          },
+
           handleKeyDown(view, event) {
             // Tab: 제안 수락
             if (event.key === "Tab" && current?.text) {
