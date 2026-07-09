@@ -140,16 +140,24 @@ export default function TipTab({
 
 	if (!editor) {
 		return (
-			<div className="mx-auto max-w-4xl p-5 space-y-3">
-				<Skeleton className="w-full h-12 rounded-xl bg-zinc-200" />
-				<Skeleton className="w-full h-[580px] rounded-xl bg-zinc-200" />
+			<div className="mx-auto w-full max-w-4xl px-3 sm:px-5">
+				<Skeleton className="h-14 w-full rounded-2xl bg-zinc-200" />
+				<div className="mt-4 space-y-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+					<Skeleton className="h-9 w-2/3 bg-zinc-200" />
+					<Skeleton className="h-[520px] w-full bg-zinc-200" />
+				</div>
 			</div>
 		);
 	}
 
 	if (!editable) {
 		return (
-			<article className="mx-auto w-full max-w-3xl">
+			<article className="mx-auto w-full max-w-3xl px-5 py-2">
+				{title ? (
+					<h1 className="mb-6 border-b border-zinc-200 pb-4 text-3xl font-bold break-words text-zinc-800 sm:text-4xl">
+						{title}
+					</h1>
+				) : null}
 				<EditorContent editor={editor} />
 			</article>
 		);
@@ -204,9 +212,11 @@ function MenuBar({
 	setTitle: (v: string) => void;
 }) {
 	const uploadedImageKeys = useRef<string[]>([]);
+	// 사용자가 편집을 한 뒤 저장하지 않았는지 추적한다.
+	const isDirty = useRef(false);
 
 	useEffect(() => {
-		const handleBeforeUnload = () => {
+		const cleanupImages = () => {
 			if (uploadedImageKeys.current.length <= 0) return;
 			navigator.sendBeacon(
 				"/api/r2",
@@ -214,22 +224,28 @@ function MenuBar({
 			);
 		};
 
-		const cleanup = () => {
-			if (uploadedImageKeys.current.length <= 0) return;
-			navigator.sendBeacon(
-				"/api/r2",
-				JSON.stringify({
-					keys: uploadedImageKeys.current,
-				}),
-			);
+		const markDirty = () => {
+			isDirty.current = true;
+		};
+		editor.on("update", markDirty);
+
+		const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+			// 업로드했지만 본문에 쓰이지 않은 이미지는 정리한다.
+			cleanupImages();
+			// 저장 안 된 편집이 있으면 브라우저 기본 이탈 확인창을 띄운다.
+			if (isDirty.current) {
+				e.preventDefault();
+				e.returnValue = "";
+			}
 		};
 		window.addEventListener("beforeunload", handleBeforeUnload);
 
 		return () => {
+			editor.off("update", markDirty);
 			window.removeEventListener("beforeunload", handleBeforeUnload);
-			cleanup();
+			cleanupImages();
 		};
-	}, []);
+	}, [editor]);
 
 	const editorState = useEditorState({
 		editor,
@@ -290,7 +306,7 @@ function MenuBar({
 
 	return (
 		<TooltipProvider delayDuration={300}>
-			<div className="sticky top-15 z-20 flex flex-wrap items-center gap-1 rounded-2xl border border-zinc-200 bg-white/90 p-1.5 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/70">
+			<div className="sticky top-15 z-20 flex flex-nowrap items-center gap-1 overflow-x-auto rounded-2xl border border-zinc-200 bg-white/90 p-1.5 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/70 sm:flex-wrap sm:overflow-x-visible">
 				{/* 실행 취소 / 다시 실행 */}
 				<ToolGroup>
 					<ToolButton
@@ -446,7 +462,7 @@ function MenuBar({
 				</ToolGroup>
 
 				{/* 저장: 오른쪽 끝으로 밀착 */}
-				<div className="ml-auto">
+				<div className="ml-auto shrink-0">
 					<SaveDialog
 						title={title}
 						setTitle={setTitle}
@@ -493,12 +509,15 @@ function ToolButton({
 }
 
 function ToolGroup({ children }: { children: ReactNode }) {
-	return <div className="flex items-center gap-0.5">{children}</div>;
+	return <div className="flex shrink-0 items-center gap-0.5">{children}</div>;
 }
 
 function ToolDivider() {
 	return (
-		<Separator orientation="vertical" className="mx-0.5 !h-6 bg-zinc-200" />
+		<Separator
+			orientation="vertical"
+			className="mx-0.5 !h-6 shrink-0 bg-zinc-200"
+		/>
 	);
 }
 

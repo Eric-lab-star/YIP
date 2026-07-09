@@ -20,8 +20,13 @@ export default async function Page({
   }
 
   return (
-    <div className="w-full p-5">
-      <TipTab editable={false} id={id} content={post.db.content} />
+    <div className="min-h-screen w-full bg-zinc-50 py-6">
+      <TipTab
+        editable={false}
+        id={id}
+        title={post.db.title}
+        content={post.db.content}
+      />
     </div>
   );
 }
