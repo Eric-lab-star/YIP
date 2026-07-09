@@ -11,7 +11,7 @@ import {
   embedQuestion,
   setCachedAnswer,
 } from "@/app/lib/mongo/aiCache";
-import { consumeAiQuota } from "@/app/lib/mongo/aiUsage";
+import { consumeAiQuota, refundAiQuota } from "@/app/lib/mongo/aiUsage";
 import { pusherServer } from "@/app/lib/pusher/pusher_server";
 
 // Cap on a single chat message: persisted to Mongo and forwarded to Anthropic,
@@ -203,10 +203,18 @@ export async function POST(req: Request) {
       }
 
       // Persist/broadcast the reply, and store it in the exact-match cache so
-      // the next identical question is served without a model call.
-      if (fullResponse.trim()) {
-        await persistAiReply(roomId, fullResponse);
-        await setCachedAnswer(roomId, message, fullResponse, embedding);
+      // the next identical question is served without a model call. Wrapped so a
+      // persistence/cache failure can't reject start() and skip close().
+      try {
+        if (fullResponse.trim()) {
+          await persistAiReply(roomId, fullResponse);
+          await setCachedAnswer(roomId, message, fullResponse, embedding);
+        } else if (auth.role !== "admin") {
+          // The model produced nothing — don't charge the user for a non-answer.
+          await refundAiQuota(auth.id);
+        }
+      } catch (err) {
+        console.error("AI persist error:", err);
       }
 
       controller.close();
