@@ -68,17 +68,15 @@ export async function POST(req: Request) {
     return new Response("Message too long", { status: 413 });
   }
 
-  // Authorize: public rooms are open to any signed-in user; AI/private rooms
-  // require membership (or ownership). Prevents posting to someone else's room.
+  // AI chat only ever happens in a user's own per-user AI room. Enforcing this
+  // server-side (not just in the client) keeps the roomId-scoped response cache
+  // effectively per-user: no user can post into — and thus poison the cache of —
+  // a shared room, and no one can read another user's AI room.
   const room = await findChatRoomById(roomId).catch(() => null);
   if (!room) {
     return new Response("Room not found", { status: 404 });
   }
-  if (
-    room.type !== "public" &&
-    room.createdBy !== auth.id &&
-    !room.members.includes(auth.id)
-  ) {
+  if (room.type !== "ai" || room.createdBy !== auth.id) {
     return new Response("Forbidden", { status: 403 });
   }
 
