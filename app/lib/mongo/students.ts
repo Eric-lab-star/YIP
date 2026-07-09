@@ -76,7 +76,8 @@ export async function deleteStudent(id: ObjectId) {
 	try {
 		const db = await getDB();
 		const student = db.collection<StudentData>("students")
-		student.deleteOne({ _id: id })
+		const result = await student.deleteOne({ _id: id })
+		return { ok: true, deletedCount: result.deletedCount }
 	} catch (err) {
 		console.log(err)
 		return null

@@ -10,9 +10,17 @@ export interface ChatMessage {
   createdAt: Date;
 }
 
+let indexEnsured = false;
+
 async function col() {
   const db = await getDB();
-  return db.collection<ChatMessage>("chatMessages");
+  const c = db.collection<ChatMessage>("chatMessages");
+  // Supports the per-room, time-ordered reads below and the delete-by-room path.
+  if (!indexEnsured) {
+    await c.createIndex({ roomId: 1, createdAt: 1 });
+    indexEnsured = true;
+  }
+  return c;
 }
 
 export async function createChatMessage(msg: Omit<ChatMessage, "_id">) {
@@ -22,11 +30,14 @@ export async function createChatMessage(msg: Omit<ChatMessage, "_id">) {
 
 export async function getMessagesByRoom(roomId: string, limit = 100) {
   const c = await col();
-  return c
+  // Fetch the most recent `limit` messages, then return them oldest-first so
+  // callers (AI history window, chat UI) always see the latest turns.
+  const recent = await c
     .find({ roomId })
-    .sort({ createdAt: 1 })
+    .sort({ createdAt: -1 })
     .limit(limit)
     .toArray();
+  return recent.reverse();
 }
 
 export async function deleteMessagesByRoom(roomId: string) {

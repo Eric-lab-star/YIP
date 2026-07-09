@@ -1,6 +1,12 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { streamText, type ModelMessage } from "ai";
 import { validateToken } from "@/app/lib/auth/login";
+import { consumeAiQuota, ensureAiUsageIndex } from "@/app/lib/mongo/aiUsage";
+
+// Upper bounds on client-controlled input so a single request can't inflate
+// token spend without limit.
+const MAX_MESSAGES = 50;
+const MAX_MESSAGE_LENGTH = 8000;
 
 // 에디터 옆 AI 글쓰기 도우미용 스트리밍 채팅 엔드포인트.
 // 채팅방(Pusher/DB 저장)에 묶이지 않는 가벼운 대화이며, 현재 작성 중인
@@ -18,6 +24,27 @@ export async function POST(req: Request) {
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return new Response("Missing messages", { status: 400 });
+  }
+
+  if (
+    messages.length > MAX_MESSAGES ||
+    messages.some((m) => (m?.content?.length ?? 0) > MAX_MESSAGE_LENGTH)
+  ) {
+    return new Response("Payload too large", { status: 413 });
+  }
+
+  // Count this request against the same per-user daily AI quota as the chat
+  // room, and honour the admin kill-switch. Admins are exempt.
+  if (auth.role !== "admin") {
+    await ensureAiUsageIndex();
+    const quota = await consumeAiQuota(auth.id);
+    if (!quota.allowed) {
+      const msg =
+        quota.reason === "disabled"
+          ? "AI 사용이 비활성화되어 있습니다."
+          : "오늘의 AI 사용 한도를 모두 사용했습니다.";
+      return new Response(msg, { status: 429 });
+    }
   }
 
   // 토큰 비용을 줄이기 위해 현재 글 내용은 앞부분 일부만 문맥으로 쓴다.

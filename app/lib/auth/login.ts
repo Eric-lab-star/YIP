@@ -34,7 +34,9 @@ export async function validateToken(): Promise<ValidationFail | ValidationSucces
 			return { success: false }
 		}
 		if (token.value) {
-			const result = jwt.verify(token.value, JWT_SECRET) as JwtPayloadUser
+			const result = jwt.verify(token.value, JWT_SECRET, {
+				algorithms: ["HS256"],
+			}) as JwtPayloadUser
 			return { ...result, success: true }
 		}
 		return { success: false }
