@@ -24,6 +24,7 @@ import { LANGUAGES } from "@/app/lib/judge0/languages";
 import ResultPanel, {
 	type SubmissionResult,
 } from "@/components/judge/ResultPanel";
+import { registerCompletions } from "@/components/judge/editorCompletions";
 
 export interface SolverProblem {
 	slug: string;
@@ -102,6 +103,7 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	const handleMount: OnMount = (editor, monaco) => {
 		editorRef.current = editor;
 		registerFallbackFormatters(monaco);
+		registerCompletions(monaco);
 	};
 
 	const onFormat = useCallback(async () => {
@@ -257,6 +259,19 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 						scrollBeyondLastLine: false,
 						tabSize: 4,
 						padding: { top: 20, bottom: 20 },
+						// Coding assistance: autocomplete, snippets, smart editing.
+						quickSuggestions: true,
+						suggestOnTriggerCharacters: true,
+						acceptSuggestionOnEnter: "on",
+						tabCompletion: "on",
+						parameterHints: { enabled: true },
+						wordBasedSuggestions: "currentDocument",
+						suggestSelection: "first",
+						autoClosingBrackets: "languageDefined",
+						autoClosingQuotes: "languageDefined",
+						autoIndent: "full",
+						formatOnPaste: true,
+						bracketPairColorization: { enabled: true },
 					}}
 				/>
 			</div>
