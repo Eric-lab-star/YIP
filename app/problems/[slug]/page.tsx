@@ -76,6 +76,7 @@ export default async function ProblemPage({
 						slug: problem.slug,
 						languages: problem.languages,
 						starterCode: problem.starterCode,
+						sampleStdin: problem.sampleTestcases[0]?.stdin ?? "",
 					}}
 				/>
 			</section>
