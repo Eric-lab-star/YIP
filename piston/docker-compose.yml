@@ -1,0 +1,26 @@
+# Self-hosted Piston — the sandbox that runs untrusted user code. The YIP app
+# talks to it over REST at http://<host>:2000. Unlike Judge0, Piston runs fine
+# on Docker Desktop / WSL2 without cgroup-v1 host tweaks.
+#
+# Quick start:
+#   docker compose -f piston/docker-compose.yml up -d
+#   node piston/install-languages.mjs        # installs the language runtimes
+#   curl http://localhost:2000/api/v2/runtimes
+#
+# Then point the app at it: PISTON_URL=http://localhost:2000 (in .env.local).
+
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston:latest
+    container_name: piston_api
+    restart: unless-stopped
+    # Piston isolates each run; it needs privileged to set up its sandbox.
+    privileged: true
+    ports:
+      - "2000:2000"
+    volumes:
+      # Persist installed language packages across restarts.
+      - piston-packages:/piston/packages
+
+volumes:
+  piston-packages:

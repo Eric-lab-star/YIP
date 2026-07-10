@@ -36,7 +36,7 @@ The app throws at startup if these are missing:
 
 Optional: `VOYAGE_API_KEY` enables the AI chat semantic cache (`app/lib/mongo/aiCache.ts`) — without it, only the exact-match cache is active and semantic lookup is skipped (chat still works).
 
-Optional: `JUDGE0_URL` (and `JUDGE0_AUTH_TOKEN`) point the code-judge feature (`app/lib/judge0/`, `app/api/judge/`) at a self-hosted Judge0 sandbox. Read lazily — the app boots without them and `/api/judge/*` returns 503 until set. See `judge0/README.md`.
+Optional: `PISTON_URL` points the code-judge feature (`app/lib/judge0/`, `app/api/judge/`) at a self-hosted Piston sandbox (e.g. `http://localhost:2000`). Read lazily — the app boots without it and `/api/judge/*` returns 503 until set. See `piston/README.md`. (The `app/lib/judge0/` folder name is historical; it now targets Piston.)
 
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
