@@ -3,11 +3,13 @@
 import useSWR from "swr";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Check } from "lucide-react";
 
 interface ProblemItem {
 	slug: string;
 	title: string;
 	difficulty: string;
+	solved?: boolean;
 }
 
 const DIFFICULTY_DOT: Record<string, string> = {
@@ -57,6 +59,12 @@ export default function ProblemSidebarList() {
 							}`}
 						/>
 						<span className="truncate">{p.title}</span>
+						{p.solved && (
+							<span className="ml-auto flex shrink-0 items-center gap-0.5 text-xs font-medium text-green-600">
+								<Check className="size-3.5" />
+								완료
+							</span>
+						)}
 					</Link>
 				);
 			})}

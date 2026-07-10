@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { findProblemBySlug, toPublicProblem } from "@/app/lib/mongo/problems";
+import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
 import { validateToken } from "@/app/lib/auth/login";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import Solver from "@/components/judge/Solver";
 import ProblemAdminControls from "@/components/judge/ProblemAdminControls";
 import { Badge } from "@/components/ui/badge";
+import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,9 @@ export default async function ProblemPage({
 	]);
 	if (!raw) notFound();
 	const isAdmin = auth.success && auth.role === "admin";
+	const solved = auth.success
+		? (await getSolvedSlugs(auth.id)).includes(slug)
+		: false;
 
 	const problem = toPublicProblem(raw);
 	const d = DIFFICULTY[problem.difficulty] ?? {
@@ -39,6 +44,12 @@ export default async function ProblemPage({
 				<div className="mb-3 flex items-center gap-3">
 					<h1 className="text-xl font-bold">{problem.title}</h1>
 					<Badge className={d.tone}>{d.label}</Badge>
+					{solved && (
+						<span className="flex items-center gap-0.5 text-sm font-medium text-green-600">
+							<Check className="size-4" />
+							완료
+						</span>
+					)}
 					{isAdmin && (
 						<div className="ml-auto">
 							<ProblemAdminControls slug={problem.slug} />

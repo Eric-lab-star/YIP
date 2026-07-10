@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { listProblems } from "@/app/lib/mongo/problems";
+import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
 import { validateToken } from "@/app/lib/auth/login";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +17,9 @@ const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 export default async function ProblemsPage() {
 	const [problems, auth] = await Promise.all([listProblems(), validateToken()]);
 	const isAdmin = auth.success && auth.role === "admin";
+	const solved = auth.success
+		? new Set(await getSolvedSlugs(auth.id))
+		: new Set<string>();
 
 	return (
 		<div className="mx-auto w-full max-w-3xl px-4 py-8">
@@ -43,10 +48,16 @@ export default async function ProblemsPage() {
 							<li key={p._id}>
 								<Link
 									href={`/problems/${p.slug}`}
-									className="flex items-center justify-between px-4 py-3 hover:bg-accent"
+									className="flex items-center gap-3 px-4 py-3 hover:bg-accent"
 								>
 									<span className="font-medium">{p.title}</span>
-									<Badge className={d.tone}>{d.label}</Badge>
+									{solved.has(p.slug) && (
+										<span className="flex items-center gap-0.5 text-xs font-medium text-green-600">
+											<Check className="size-4" />
+											완료
+										</span>
+									)}
+									<Badge className={`ml-auto ${d.tone}`}>{d.label}</Badge>
 								</Link>
 							</li>
 						);
