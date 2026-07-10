@@ -23,11 +23,16 @@ inside WSL2, then:
 docker compose -f piston/docker-compose.yml up -d --build
 ```
 
-This compose also starts the **code-formatter** service (`formatter/`, port
-2100) used by the editor's "포맷" button — it bundles black, prettier, gofmt,
-rustfmt, clang-format and google-java-format. Point the app at it with
-`FORMATTER_URL=http://localhost:2100` in `.env.local`. Without it the button
-falls back to the editor's built-in formatting.
+This compose also starts:
+
+- the **code-formatter** service (`formatter/`, port 2100) for the "포맷" button
+  — black, prettier, gofmt, rustfmt, clang-format, google-java-format. Point the
+  app at it with `FORMATTER_URL=http://localhost:2100` in `.env.local`.
+- the **LSP bridge** (`lsp/`, port 2200) for type-aware editor completions
+  (pyright / Python). Enable it with `NEXT_PUBLIC_LSP_URL=ws://localhost:2200`.
+
+Both are optional; without them the editor falls back to built-in formatting and
+static keyword/snippet completions.
 
 ## 2. Install language runtimes
 

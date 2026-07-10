@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Editor, { loader, type OnMount } from "@monaco-editor/react";
 import { toast } from "sonner";
 import { Wand2 } from "lucide-react";
@@ -25,6 +25,16 @@ import ResultPanel, {
 	type SubmissionResult,
 } from "@/components/judge/ResultPanel";
 import { registerCompletions } from "@/components/judge/editorCompletions";
+import {
+	LspSession,
+	registerLspCompletions,
+	setActiveSession,
+} from "@/components/judge/lspClient";
+
+// Languages with a type-aware LSP backend (via the lsp/ bridge). Currently
+// Python (pyright); extend as more language servers are added.
+const LSP_URL = process.env.NEXT_PUBLIC_LSP_URL;
+const LSP_LANGS = new Set(["python"]);
 
 export interface SolverProblem {
 	slug: string;
@@ -99,12 +109,40 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	// Track code edited per language so switching languages doesn't lose work.
 	const perLangCode = useRef<Record<string, string>>({ ...problem.starterCode });
 	const editorRef = useRef<CodeEditor | null>(null);
+	const [editorReady, setEditorReady] = useState(false);
 
 	const handleMount: OnMount = (editor, monaco) => {
 		editorRef.current = editor;
 		registerFallbackFormatters(monaco);
 		registerCompletions(monaco);
+		if (LSP_URL) registerLspCompletions(monaco, "python");
+		setEditorReady(true);
 	};
+
+	// Manage a type-aware LSP session for the active language (if supported).
+	useEffect(() => {
+		const ed = editorRef.current;
+		if (!LSP_URL || !editorReady || !ed || !LSP_LANGS.has(language)) {
+			setActiveSession(null);
+			return;
+		}
+		const session = new LspSession(LSP_URL, language);
+		let disposed = false;
+		session
+			.start(ed.getValue())
+			.then(() => {
+				if (disposed) session.dispose();
+				else setActiveSession(session);
+			})
+			.catch(() => {
+				// LSP unavailable — static keyword/snippet completions still work.
+			});
+		return () => {
+			disposed = true;
+			setActiveSession(null);
+			session.dispose();
+		};
+	}, [language, editorReady]);
 
 	const onFormat = useCallback(async () => {
 		const ed = editorRef.current;

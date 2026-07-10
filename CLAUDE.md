@@ -40,6 +40,8 @@ Optional: `PISTON_URL` points the code-judge feature (`app/lib/judge0/`, `app/ap
 
 Optional: `FORMATTER_URL` points the "포맷" button (`app/api/judge/format/`) at the self-hosted code-formatter service (e.g. `http://localhost:2100`, from `formatter/`). Read lazily — without it, `/api/judge/format` returns 503 and the editor falls back to its built-in formatting.
 
+Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware editor completions via the LSP bridge (`lsp/`, pyright for Python). The browser connects directly over WebSocket (`components/judge/lspClient.ts`); without it the editor uses only the static keyword/snippet completions. As a `NEXT_PUBLIC_` var it is inlined at build time.
+
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
 ## Architecture
