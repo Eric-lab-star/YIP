@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { findProblemBySlug, toPublicProblem } from "@/app/lib/mongo/problems";
+import { validateToken } from "@/app/lib/auth/login";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import Solver from "@/components/judge/Solver";
+import ProblemAdminControls from "@/components/judge/ProblemAdminControls";
 import { Badge } from "@/components/ui/badge";
 
 export const dynamic = "force-dynamic";
@@ -18,8 +20,12 @@ export default async function ProblemPage({
 	params: Promise<{ slug: string }>;
 }) {
 	const { slug } = await params;
-	const raw = await findProblemBySlug(slug);
+	const [raw, auth] = await Promise.all([
+		findProblemBySlug(slug),
+		validateToken(),
+	]);
 	if (!raw) notFound();
+	const isAdmin = auth.success && auth.role === "admin";
 
 	const problem = toPublicProblem(raw);
 	const d = DIFFICULTY[problem.difficulty] ?? {
@@ -33,6 +39,11 @@ export default async function ProblemPage({
 				<div className="mb-3 flex items-center gap-3">
 					<h1 className="text-xl font-bold">{problem.title}</h1>
 					<Badge className={d.tone}>{d.label}</Badge>
+					{isAdmin && (
+						<div className="ml-auto">
+							<ProblemAdminControls slug={problem.slug} />
+						</div>
+					)}
 				</div>
 				<ChatMarkdown content={problem.description} className="text-base" />
 

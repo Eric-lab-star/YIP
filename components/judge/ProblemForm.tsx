@@ -27,7 +27,10 @@ import {
 	problemFormSchema,
 	type ProblemFormInput,
 } from "@/app/lib/zod/problemFormSchema";
-import { createProblemAction } from "@/app/actions/problemAction";
+import {
+	createProblemAction,
+	updateProblemAction,
+} from "@/app/actions/problemAction";
 
 function slugify(s: string): string {
 	return s
@@ -39,8 +42,15 @@ function slugify(s: string): string {
 		.slice(0, 200);
 }
 
-export default function ProblemForm() {
+export default function ProblemForm({
+	mode = "create",
+	initial,
+}: {
+	mode?: "create" | "edit";
+	initial?: ProblemFormInput;
+}) {
 	const router = useRouter();
+	const isEdit = mode === "edit";
 	const {
 		register,
 		control,
@@ -51,7 +61,7 @@ export default function ProblemForm() {
 		formState: { errors, isSubmitting },
 	} = useForm<ProblemFormInput>({
 		resolver: zodResolver(problemFormSchema),
-		defaultValues: {
+		defaultValues: initial ?? {
 			title: "",
 			slug: "",
 			difficulty: "easy",
@@ -72,9 +82,11 @@ export default function ProblemForm() {
 	const selectedLanguages = watch("languages") ?? [];
 
 	const onSubmit = async (data: ProblemFormInput) => {
-		const res = await createProblemAction(data);
+		const res = isEdit
+			? await updateProblemAction(initial!.slug, data)
+			: await createProblemAction(data);
 		if (res.success) {
-			toast.success("문제를 등록했습니다.");
+			toast.success(isEdit ? "문제를 수정했습니다." : "문제를 등록했습니다.");
 			router.push(`/problems/${res.slug}`);
 		} else {
 			toast.error(res.error);
@@ -86,7 +98,9 @@ export default function ProblemForm() {
 			onSubmit={handleSubmit(onSubmit)}
 			className="mx-auto w-full max-w-3xl px-4 py-8"
 		>
-			<h1 className="mb-6 text-2xl font-bold">새 문제 만들기</h1>
+			<h1 className="mb-6 text-2xl font-bold">
+				{isEdit ? "문제 수정" : "새 문제 만들기"}
+			</h1>
 
 			<FieldGroup className="gap-5">
 				{/* 제목 + slug */}
@@ -109,19 +123,28 @@ export default function ProblemForm() {
 							{...register("slug")}
 							aria-invalid={!!errors.slug}
 							placeholder="two-sum-stdin"
+							readOnly={isEdit}
+							className={isEdit ? "bg-muted" : undefined}
 						/>
-						<Button
-							type="button"
-							variant="outline"
-							onClick={() =>
-								setValue("slug", slugify(getValues("title")), {
-									shouldValidate: true,
-								})
-							}
-						>
-							제목으로 생성
-						</Button>
+						{!isEdit && (
+							<Button
+								type="button"
+								variant="outline"
+								onClick={() =>
+									setValue("slug", slugify(getValues("title")), {
+										shouldValidate: true,
+									})
+								}
+							>
+								제목으로 생성
+							</Button>
+						)}
 					</div>
+					{isEdit && (
+						<p className="text-xs text-muted-foreground">
+							Slug은 수정할 수 없습니다.
+						</p>
+					)}
 					{errors.slug && <FieldError errors={[errors.slug]} />}
 				</Field>
 
@@ -309,7 +332,7 @@ export default function ProblemForm() {
 
 				<Button type="submit" disabled={isSubmitting} className="self-start">
 					{isSubmitting && <Spinner />}
-					문제 등록
+					{isEdit ? "수정 저장" : "문제 등록"}
 				</Button>
 			</FieldGroup>
 		</form>
