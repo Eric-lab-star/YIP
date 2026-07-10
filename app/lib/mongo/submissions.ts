@@ -63,6 +63,21 @@ export async function createSubmission(
 	return result.insertedId.toString();
 }
 
+/** A user's submissions for a problem, most recent first. */
+export async function listSubmissionsByUserAndProblem(
+	userId: string,
+	problemSlug: string,
+	limit = 50
+): Promise<Submission[]> {
+	await ensureIndexes();
+	const c = await col();
+	return c
+		.find({ userId, problemSlug })
+		.sort({ createdAt: -1 })
+		.limit(limit)
+		.toArray();
+}
+
 export async function findSubmissionById(
 	id: string
 ): Promise<Submission | null> {
