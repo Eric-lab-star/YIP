@@ -107,8 +107,34 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	const onFormat = useCallback(async () => {
 		const ed = editorRef.current;
 		if (!ed) return;
+
+		// Prefer the server-side formatter service (real formatters per language).
+		try {
+			const res = await fetch("/api/judge/format", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ language, code: ed.getValue() }),
+			});
+			if (res.ok) {
+				const { formatted } = (await res.json()) as { formatted?: string };
+				const model = ed.getModel();
+				if (typeof formatted === "string" && formatted.length > 0 && model) {
+					// Replace via edit (not setValue) so undo history is preserved.
+					ed.executeEdits("format", [
+						{ range: model.getFullModelRange(), text: formatted },
+					]);
+					setCode(formatted);
+					return;
+				}
+			}
+			// Non-OK (503 not configured / 422 couldn't format) → fall through.
+		} catch {
+			// network error → fall through to the built-in formatter
+		}
+
+		// Fallback: Monaco's built-in formatter (JS/TS) or the whitespace provider.
 		await ed.getAction("editor.action.formatDocument")?.run();
-	}, []);
+	}, [language]);
 
 	const monacoLang =
 		LANGUAGES.find((l) => l.slug === language)?.monaco ?? "plaintext";

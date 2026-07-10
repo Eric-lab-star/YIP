@@ -38,6 +38,8 @@ Optional: `VOYAGE_API_KEY` enables the AI chat semantic cache (`app/lib/mongo/ai
 
 Optional: `PISTON_URL` points the code-judge feature (`app/lib/judge0/`, `app/api/judge/`) at a self-hosted Piston sandbox (e.g. `http://localhost:2000`). Read lazily — the app boots without it and `/api/judge/*` returns 503 until set. See `piston/README.md`. (The `app/lib/judge0/` folder name is historical; it now targets Piston.)
 
+Optional: `FORMATTER_URL` points the "포맷" button (`app/api/judge/format/`) at the self-hosted code-formatter service (e.g. `http://localhost:2100`, from `formatter/`). Read lazily — without it, `/api/judge/format` returns 503 and the editor falls back to its built-in formatting.
+
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
 ## Architecture

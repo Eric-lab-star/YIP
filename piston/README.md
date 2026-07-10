@@ -19,8 +19,15 @@ Requires Docker. On Windows, install Docker Desktop (WSL2 backend) or Docker
 inside WSL2, then:
 
 ```bash
-docker compose -f piston/docker-compose.yml up -d
+# --build also builds the code-formatter service (see below)
+docker compose -f piston/docker-compose.yml up -d --build
 ```
+
+This compose also starts the **code-formatter** service (`formatter/`, port
+2100) used by the editor's "포맷" button — it bundles black, prettier, gofmt,
+rustfmt, clang-format and google-java-format. Point the app at it with
+`FORMATTER_URL=http://localhost:2100` in `.env.local`. Without it the button
+falls back to the editor's built-in formatting.
 
 ## 2. Install language runtimes
 

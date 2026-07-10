@@ -28,5 +28,15 @@ services:
       # Persist installed language packages across restarts.
       - piston-packages:/piston/packages
 
+  # Code-formatter service for the "포맷" button (black, prettier, gofmt,
+  # rustfmt, clang-format, google-java-format). Build it with:
+  #   docker compose -f piston/docker-compose.yml up -d --build
+  formatter:
+    build: ../formatter
+    container_name: code_formatter
+    restart: unless-stopped
+    ports:
+      - "2100:2100"
+
 volumes:
   piston-packages:
