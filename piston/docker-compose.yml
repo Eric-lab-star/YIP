@@ -16,6 +16,12 @@ services:
     restart: unless-stopped
     # Piston isolates each run; it needs privileged to set up its sandbox.
     privileged: true
+    environment:
+      # Piston caps each request's run/compile timeout at these configured values
+      # (per-runtime timeouts derive from them). Raise them so problems with
+      # larger time budgets are accepted (app schema allows up to 15s).
+      PISTON_RUN_TIMEOUT: "15000"
+      PISTON_COMPILE_TIMEOUT: "20000"
     ports:
       - "2000:2000"
     volumes:
