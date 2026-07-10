@@ -211,7 +211,115 @@ const P = [
 		inputs: ["123", "9999", "0", "504"], solve: (s) => String(s.trim().split("").reduce((a, c) => a + Number(c), 0)) },
 ];
 
+// --- Starter code -----------------------------------------------------------
+// Input "kind" per problem (drives the input-reading boilerplate).
+const KIND = {
+	"s-hello-world": "none", "s-echo-line": "line", "s-sum-two": "int2",
+	"s-sub-two": "int2", "s-mul-two": "int2", "s-floor-div": "int2",
+	"s-remainder": "int2", "s-sum-three": "int3", "s-max-two": "int2",
+	"s-min-two": "int2", "s-abs": "int", "s-square": "int", "s-even-odd": "int",
+	"s-sign": "int", "s-sum-1-to-n": "int", "s-factorial": "int",
+	"s-power-of-two": "int", "s-countdown": "int", "s-gugudan": "int",
+	"s-sum-array": "array", "s-max-array": "array", "s-count-even": "array",
+	"s-reverse-string": "line", "s-string-length": "line", "s-to-upper": "line",
+	"s-count-vowels": "line", "s-palindrome": "line", "s-fib-nth": "int",
+	"s-gcd": "int2", "s-sum-digits": "int",
+};
+
+const PY_TODO = "# 여기에 코드를 작성하세요\n";
+const C_TODO = "    // 여기에 코드를 작성하세요\n";
+
+function pyStarter(kind) {
+	const read = {
+		none: "",
+		line: "s = input()\n",
+		int: "n = int(input())\n",
+		int2: "a, b = map(int, input().split())\n",
+		int3: "a, b, c = map(int, input().split())\n",
+		array: "n = int(input())\narr = list(map(int, input().split()))\n",
+	}[kind];
+	return read + (read ? "\n" : "") + PY_TODO;
+}
+
+function jsStarter(kind) {
+	const R = "require('fs').readFileSync(0, 'utf8')";
+	const read = {
+		none: "",
+		line: `const s = ${R}.replace(/\\r?\\n$/, '');\n`,
+		int: `const n = Number(${R}.trim());\n`,
+		int2: `const [a, b] = ${R}.trim().split(/\\s+/).map(Number);\n`,
+		int3: `const [a, b, c] = ${R}.trim().split(/\\s+/).map(Number);\n`,
+		array: `const lines = ${R}.split('\\n');\nconst n = Number(lines[0]);\nconst arr = lines[1].trim().split(/\\s+/).map(Number);\n`,
+	}[kind];
+	return read + (read ? "\n" : "") + "// 여기에 코드를 작성하세요\n";
+}
+
+function cppStarter(kind) {
+	const body = {
+		none: C_TODO,
+		line: "    string s;\n    getline(cin, s);\n\n" + C_TODO,
+		int: "    long long n;\n    cin >> n;\n\n" + C_TODO,
+		int2: "    long long a, b;\n    cin >> a >> b;\n\n" + C_TODO,
+		int3: "    long long a, b, c;\n    cin >> a >> b >> c;\n\n" + C_TODO,
+		array: "    int n;\n    cin >> n;\n    vector<long long> arr(n);\n    for (int i = 0; i < n; i++) cin >> arr[i];\n\n" + C_TODO,
+	}[kind];
+	return "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n" + body + "    return 0;\n}\n";
+}
+
+function javaStarter(kind) {
+	const body = {
+		none: "        // 여기에 코드를 작성하세요\n",
+		line: "        String s = sc.nextLine();\n\n        // 여기에 코드를 작성하세요\n",
+		int: "        int n = sc.nextInt();\n\n        // 여기에 코드를 작성하세요\n",
+		int2: "        int a = sc.nextInt(), b = sc.nextInt();\n\n        // 여기에 코드를 작성하세요\n",
+		int3: "        int a = sc.nextInt(), b = sc.nextInt(), c = sc.nextInt();\n\n        // 여기에 코드를 작성하세요\n",
+		array: "        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n\n        // 여기에 코드를 작성하세요\n",
+	}[kind];
+	return "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n" + body + "    }\n}\n";
+}
+
+function goStarter(kind) {
+	switch (kind) {
+		case "none":
+			return "package main\n\nfunc main() {\n\t// 여기에 코드를 작성하세요\n}\n";
+		case "line":
+			return "package main\n\nimport (\n\t\"bufio\"\n\t\"os\"\n)\n\nfunc main() {\n\treader := bufio.NewReader(os.Stdin)\n\ts, _ := reader.ReadString('\\n')\n\t_ = s\n\n\t// 여기에 코드를 작성하세요\n}\n";
+		case "int":
+			return "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar n int\n\tfmt.Scan(&n)\n\n\t// 여기에 코드를 작성하세요\n}\n";
+		case "int2":
+			return "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar a, b int\n\tfmt.Scan(&a, &b)\n\n\t// 여기에 코드를 작성하세요\n}\n";
+		case "int3":
+			return "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar a, b, c int\n\tfmt.Scan(&a, &b, &c)\n\n\t// 여기에 코드를 작성하세요\n}\n";
+		case "array":
+			return "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tvar n int\n\tfmt.Scan(&n)\n\tarr := make([]int, n)\n\tfor i := range arr {\n\t\tfmt.Scan(&arr[i])\n\t}\n\n\t// 여기에 코드를 작성하세요\n}\n";
+	}
+}
+
+function starterAll(kind) {
+	return {
+		python: pyStarter(kind),
+		javascript: jsStarter(kind),
+		cpp: cppStarter(kind),
+		java: javaStarter(kind),
+		go: goStarter(kind),
+	};
+}
+
+// LeetCode-style example block appended to the description (first sample I/O).
+function exampleSection(p) {
+	const first = p.inputs[0];
+	const trimmed = first.replace(/\n$/, "");
+	const out = p.solve(trimmed);
+	const inBlock = first === "" ? "(입력 없음)" : trimmed;
+	return (
+		"\n\n## 예시\n\n" +
+		"**입력**\n```\n" + inBlock + "\n```\n\n" +
+		"**출력**\n```\n" + out + "\n```"
+	);
+}
+
 function toProblem(p, now) {
+	const kind = KIND[p.slug];
 	const testcases = p.inputs.map((stdin, i) => {
 		const trimmed = stdin.replace(/\n$/, "");
 		const norm = stdin === "" ? "" : trimmed + "\n";
@@ -220,16 +328,56 @@ function toProblem(p, now) {
 	return {
 		slug: p.slug,
 		title: p.title,
-		description: p.description,
+		description: p.description + exampleSection(p),
 		difficulty: p.difficulty,
 		languages: ["python", "javascript", "cpp", "java", "go"],
-		starterCode: {},
+		starterCode: starterAll(kind),
 		testcases,
 		timeLimit: 5,
 		memoryLimit: 256000,
 		createdBy: "seed",
 		updatedAt: now,
 	};
+}
+
+// Dry preview (no DB): `node scripts/seed-simple-problems.mjs --print [slug]`
+if (process.argv.includes("--print")) {
+	const slug = process.argv[process.argv.length - 1];
+	const def = P.find((p) => p.slug === slug) ?? P[2];
+	const doc = toProblem(def, new Date());
+	console.log("=== slug:", doc.slug, "| kind:", KIND[doc.slug], "===");
+	console.log("--- description ---\n" + doc.description);
+	for (const [lang, code] of Object.entries(doc.starterCode)) {
+		console.log(`\n--- ${lang} ---\n${code}`);
+	}
+	process.exit(0);
+}
+
+// Verify each language starter compiles/runs via /api/judge/run.
+// VERIFY_URL=http://localhost:PORT VERIFY_TOKEN=<jwt> node ... --verify
+if (process.argv.includes("--verify")) {
+	const base = process.env.VERIFY_URL ?? "http://localhost:3000";
+	const token = process.env.VERIFY_TOKEN ?? "";
+	const sample = { none: "", line: "hello", int: "5", int2: "3 4", int3: "1 2 3", array: "3\n1 2 3" };
+	const langs = ["python", "javascript", "cpp", "java", "go"];
+	let fails = 0;
+	for (const kind of Object.keys(sample)) {
+		const codes = starterAll(kind);
+		for (const lang of langs) {
+			const res = await fetch(`${base}/api/judge/run`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json", Cookie: `logInToken=${token}` },
+				body: JSON.stringify({ language: lang, code: codes[lang], stdin: sample[kind] }),
+			});
+			const d = await res.json().catch(() => ({}));
+			const compileErr = d.compileOutput && d.compileOutput.trim();
+			const ok = res.ok && !compileErr;
+			if (!ok) fails++;
+			console.log(`${kind.padEnd(6)} ${lang.padEnd(11)} ${ok ? "OK" : "FAIL"}${compileErr ? " (compile)" : d.error ? " " + d.error : ""}`);
+		}
+	}
+	console.log(fails === 0 ? "\nALL STARTERS OK" : `\n${fails} FAILED`);
+	process.exit(fails === 0 ? 0 : 1);
 }
 
 loadEnv();
