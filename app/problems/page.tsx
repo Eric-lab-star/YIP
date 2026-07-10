@@ -33,7 +33,7 @@ export default async function ProblemsPage() {
 					문제를 추가할 수 있어요.
 				</p>
 			) : (
-				<ul className="flex flex-col divide-y rounded-md border">
+				<ul className="flex flex-col divide-y overflow-hidden rounded-md border">
 					{problems.map((p) => {
 						const d = DIFFICULTY[p.difficulty] ?? {
 							label: p.difficulty,
