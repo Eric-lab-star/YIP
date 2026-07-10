@@ -116,6 +116,18 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 		registerFallbackFormatters(monaco);
 		registerCompletions(monaco);
 		if (LSP_URL) registerLspCompletions(monaco, "python");
+
+		// Ctrl+C hides the suggestion popup while it's open. The `precondition`
+		// keeps the binding active only when the widget is visible, so Ctrl+C
+		// still copies normally when there are no suggestions showing.
+		editor.addAction({
+			id: "hide-suggest-on-ctrl-c",
+			label: "자동완성 팝업 숨기기",
+			keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC],
+			precondition: "suggestWidgetVisible",
+			run: (ed) => ed.trigger("keyboard", "hideSuggestWidget", {}),
+		});
+
 		setEditorReady(true);
 	};
 
@@ -300,7 +312,8 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 						// Coding assistance: autocomplete, snippets, smart editing.
 						quickSuggestions: true,
 						suggestOnTriggerCharacters: true,
-						acceptSuggestionOnEnter: "on",
+						// Enter never accepts a suggestion (inserts a newline); use Tab.
+						acceptSuggestionOnEnter: "off",
 						tabCompletion: "on",
 						parameterHints: { enabled: true },
 						wordBasedSuggestions: "currentDocument",
