@@ -32,7 +32,7 @@ async function main() {
 	for (const lang of WANTED) {
 		const versions = packages
 			.filter((p) => p.language === lang)
-			.map((p) => p.version)
+			.map((p) => p.language_version)
 			.sort(cmpVersionDesc);
 
 		if (versions.length === 0) {
