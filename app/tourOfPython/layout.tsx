@@ -1,5 +1,6 @@
 import LessonPager from "@/components/commons/LessonPager";
 import OnThisPage from "@/components/commons/OnThisPage";
+import RelatedProblems from "@/components/commons/RelatedProblems";
 
 // The MDX content already centers itself (mdx-components wrapper: max-w-3xl,
 // px-6). This layout only adds the in-page TOC and prev/next pager in matching
@@ -11,6 +12,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <OnThisPage />
       </div>
       {children}
+      <div className="mx-auto w-full max-w-3xl px-6">
+        <RelatedProblems />
+      </div>
       <div className="mx-auto w-full max-w-3xl px-6 pb-16">
         <LessonPager />
       </div>

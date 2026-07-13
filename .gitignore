@@ -50,5 +50,5 @@ test-mongo.mjs
 # Self-hosted Monaco assets (copied from node_modules by scripts/copy-monaco.mjs)
 /public/monaco/
 
-# 로컬 임시 작업 디렉터리
+# 로컬 임시 작업 디렉터리 (dev 로그 등)
 scratchpad/
