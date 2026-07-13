@@ -58,6 +58,23 @@ export async function readStudent(id: ObjectId) {
 	}
 }
 
+/** Map of student _id → display name for a set of ids (batch lookup). */
+export async function readStudentNames(
+	ids: string[]
+): Promise<Record<string, string>> {
+	if (ids.length === 0) return {};
+	const db = await getDB();
+	const students = db.collection<StudentData>("students");
+	const objIds = ids.filter((id) => ObjectId.isValid(id)).map((id) => new ObjectId(id));
+	const docs = await students
+		.find({ _id: { $in: objIds } })
+		.project<{ _id: ObjectId; name: string }>({ name: 1 })
+		.toArray();
+	const map: Record<string, string> = {};
+	for (const d of docs) map[d._id.toString()] = d.name ?? "익명";
+	return map;
+}
+
 export async function findStudent(name: string, phoneNumber: string) {
 	try {
 		const db = await getDB();
