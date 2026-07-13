@@ -11,7 +11,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: string;
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
     priority: number;
-  }[] = [{ path: "/", changeFrequency: "weekly", priority: 1 }];
+  }[] = [
+    { path: "/", changeFrequency: "weekly", priority: 1 },
+    { path: "/games/vamsurlike", changeFrequency: "monthly", priority: 0.5 },
+  ];
 
   return routes.map(({ path, changeFrequency, priority }) => ({
     url: `${SITE_URL}${path}`,
