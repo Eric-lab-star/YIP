@@ -13,6 +13,16 @@ function baseUrl(): string {
 	return url.replace(/\/$/, "");
 }
 
+// Piston has no auth of its own; in production it sits behind a reverse proxy
+// that requires a shared secret header. Send it when configured (JUDGE_SECRET);
+// locally (direct http://localhost:2000) it's unset and simply omitted.
+function judgeHeaders(extra?: Record<string, string>): Record<string, string> {
+	const headers: Record<string, string> = { ...extra };
+	const secret = process.env.JUDGE_SECRET;
+	if (secret) headers["X-Judge-Secret"] = secret;
+	return headers;
+}
+
 /** Whether the judge is configured at all (used to fail fast with a clear error). */
 export function isJudgeConfigured(): boolean {
 	return !!process.env.PISTON_URL;
@@ -30,6 +40,7 @@ let runtimesCache: Runtime[] | null = null;
 async function getRuntimes(): Promise<Runtime[]> {
 	if (runtimesCache) return runtimesCache;
 	const res = await fetch(`${baseUrl()}/api/v2/runtimes`, {
+		headers: judgeHeaders(),
 		signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
 	});
 	if (!res.ok) {
@@ -84,7 +95,7 @@ export async function execute(params: {
 }): Promise<PistonRunResult> {
 	const res = await fetch(`${baseUrl()}/api/v2/execute`, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: judgeHeaders({ "Content-Type": "application/json" }),
 		body: JSON.stringify({
 			language: params.language,
 			version: params.version,

@@ -38,6 +38,8 @@ Optional: `VOYAGE_API_KEY` enables the AI chat semantic cache (`app/lib/mongo/ai
 
 Optional: `PISTON_URL` points the code-judge feature (`app/lib/judge0/`, `app/api/judge/`) at a self-hosted Piston sandbox (e.g. `http://localhost:2000`). Read lazily — the app boots without it and `/api/judge/*` returns 503 until set. See `piston/README.md`. (The `app/lib/judge0/` folder name is historical; it now targets Piston.)
 
+Optional: `JUDGE_SECRET` — shared secret sent as the `X-Judge-Secret` header on every Piston request (`app/lib/judge0/client.ts`). In production Piston sits behind a reverse proxy that requires this header (Piston has no auth of its own); locally it's unset and omitted (direct `http://localhost:2000`). Must match the secret configured on the proxy.
+
 Optional: `FORMATTER_URL` points the "포맷" button (`app/api/judge/format/`) at the self-hosted code-formatter service (e.g. `http://localhost:2100`, from `formatter/`). Read lazily — without it, `/api/judge/format` returns 503 and the editor falls back to its built-in formatting.
 
 Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware editor completions via the LSP bridge (`lsp/`, pyright for Python). The browser connects directly over WebSocket (`components/judge/lspClient.ts`); without it the editor uses only the static keyword/snippet completions. As a `NEXT_PUBLIC_` var it is inlined at build time.

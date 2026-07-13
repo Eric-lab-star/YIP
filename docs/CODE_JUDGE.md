@@ -91,6 +91,21 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
   채점만으로 서비스 시작(가장 단순).
 - **2단계**: Formatter + LSP 추가.
 
+### 배포 현황 (2026-07-13, 1단계 — Piston)
+- **VM**: AWS EC2 `i-0f2e228490c0b1aa6`, t3.medium, Ubuntu 24.04, 20GB gp3,
+  리전 `ap-northeast-2`. Public IP `15.164.164.113`(**EIP 미할당 — 재부팅 시 변경**).
+  SG `sg-0dc425505ae9c8292`(SSH 22는 관리자 IP만, 2000은 미개방).
+  키페어 `~/.ssh/yip-judge.pem`.
+- **Piston**: `~/piston/docker-compose.yml`(Piston만), 7개 런타임 설치·실행 검증.
+- **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`) →
+  `https://judge.kimkyungsub.com`. 포트 개방 없이 자동 TLS. systemd 상시 구동.
+- **인증**: Piston 앞에 Caddy(`:8080`)가 `X-Judge-Secret` 검사 →
+  cloudflared→Caddy→Piston. 시크릿 없으면 403. 앱은 `JUDGE_SECRET`로 헤더 전송
+  (`app/lib/judge0/client.ts`). ⚠️ 시크릿 값은 저장소에 커밋 금지(Vercel env에만).
+- **Vercel env(수동 설정 필요)**: `PISTON_URL=https://judge.kimkyungsub.com`,
+  `JUDGE_SECRET=<Caddy와 동일한 값>`.
+- **미완**: Formatter/LSP 미배포(폴백 동작), EIP 미할당, Cloudflare Access 업그레이드.
+
 ---
 
 ## 4. 배포 전 보안 TODO (필수)
@@ -98,7 +113,8 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
 1. **Atlas 비밀번호 회전** — 과거 커밋된 자격증명이 git 히스토리에 남아 있음
    (`test-mongo.mjs`는 추적 제거했으나 히스토리 존재). 프로덕션 전 반드시 회전.
 2. **Piston/Formatter 인증** — 기본 인증이 없어 공개 시 임의 코드 실행 위험.
-   리버스 프록시에 공유 시크릿 헤더를 요구하고 앱이 전송하도록 하거나 사설망 격리.
+   ✅ Piston은 Caddy `X-Judge-Secret` 공유 시크릿으로 대응(2026-07-13, 위 배포 현황).
+   Formatter/LSP 배포 시 동일 처리 필요.
 3. **남용 방지(rate limit)** — 제출/LSP는 자원을 소모(LSP는 연결마다 pyright
    프로세스). 연결/요청 제한 필요.
 
@@ -112,6 +128,7 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
 선택:
 - `VOYAGE_API_KEY` — AI 채팅 시맨틱 캐시
 - `PISTON_URL` — 채점 샌드박스 (없으면 `/api/judge/*` 503)
+- `JUDGE_SECRET` — Piston 프록시 인증용 `X-Judge-Secret` 헤더 값 (프로덕션 필수, 로컬은 생략)
 - `FORMATTER_URL` — 포맷 서비스 (없으면 에디터 내장 포맷 폴백)
 - `NEXT_PUBLIC_LSP_URL` — LSP 자동완성 (없으면 정적 완성). 빌드 타임 인라인.
 - `PUSHER_APP_ID` / `PUSHER_SECRET` / `NEXT_PUBLIC_PUSHER_KEY` /
