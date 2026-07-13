@@ -94,3 +94,39 @@ export async function createProblem(
 		return { ok: false, error: e instanceof Error ? e.message : String(e) };
 	}
 }
+
+/** Update an existing problem, matched by its (immutable) slug. */
+export async function updateProblem(
+	slug: string,
+	fields: Omit<Problem, "_id" | "slug" | "createdBy" | "createdAt" | "updatedAt">
+): Promise<{ ok: true } | { ok: false; error: string }> {
+	try {
+		const c = await col();
+		const result = await c.updateOne(
+			{ slug },
+			{ $set: { ...fields, updatedAt: new Date() } }
+		);
+		if (result.matchedCount === 0) {
+			return { ok: false, error: "not found" };
+		}
+		return { ok: true };
+	} catch (e) {
+		return { ok: false, error: e instanceof Error ? e.message : String(e) };
+	}
+}
+
+/** Delete a problem by slug. */
+export async function deleteProblem(
+	slug: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+	try {
+		const c = await col();
+		const result = await c.deleteOne({ slug });
+		if (result.deletedCount === 0) {
+			return { ok: false, error: "not found" };
+		}
+		return { ok: true };
+	} catch (e) {
+		return { ok: false, error: e instanceof Error ? e.message : String(e) };
+	}
+}

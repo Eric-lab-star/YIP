@@ -5,7 +5,7 @@ import { CardImage } from "@/components/commons/CardImage";
 import TILTable from "@/components/commons/table/TILTable";
 import { CatIcon } from "@/components/mdx/CatIcon";
 import { Button } from "@/components/ui/button";
-import { BookOpen, FilePlusIcon, NotebookPen, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Code2, FilePlusIcon, NotebookPen, Sparkles } from "lucide-react";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -119,6 +119,30 @@ export default async function Page({
             아직 등록된 교재가 없어요 📚
           </div>
         )}
+      </section>
+
+      {/* 문제 풀이 */}
+      <section className="mb-16">
+        <SectionHeading icon={Code2} label="Coding Problems" title="문제 풀이" />
+
+        <Link
+          href="/problems"
+          className="doodle-box group flex items-center justify-between gap-4 bg-white px-6 py-6 transition hover:bg-accent/50"
+          style={{ rotate: "-0.4deg" }}
+        >
+          <div className="flex items-center gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Code2 className="h-6 w-6" strokeWidth={2.25} />
+            </span>
+            <div>
+              <p className="text-xl font-bold">코딩 문제 풀러 가기</p>
+              <p className="text-muted-foreground">
+                문제를 풀고 자동 채점으로 실력을 확인하세요. 💻
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="h-6 w-6 shrink-0 text-primary transition group-hover:translate-x-1" />
+        </Link>
       </section>
 
       {/* TIL */}

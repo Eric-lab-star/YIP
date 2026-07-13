@@ -1,0 +1,50 @@
+# Self-hosted Piston — the sandbox that runs untrusted user code. The YIP app
+# talks to it over REST at http://<host>:2000. Unlike Judge0, Piston runs fine
+# on Docker Desktop / WSL2 without cgroup-v1 host tweaks.
+#
+# Quick start:
+#   docker compose -f piston/docker-compose.yml up -d
+#   node piston/install-languages.mjs        # installs the language runtimes
+#   curl http://localhost:2000/api/v2/runtimes
+#
+# Then point the app at it: PISTON_URL=http://localhost:2000 (in .env.local).
+
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston:latest
+    container_name: piston_api
+    restart: unless-stopped
+    # Piston isolates each run; it needs privileged to set up its sandbox.
+    privileged: true
+    environment:
+      # Piston caps each request's run/compile timeout at these configured values
+      # (per-runtime timeouts derive from them). Raise them so problems with
+      # larger time budgets are accepted (app schema allows up to 15s).
+      PISTON_RUN_TIMEOUT: "15000"
+      PISTON_COMPILE_TIMEOUT: "20000"
+    ports:
+      - "2000:2000"
+    volumes:
+      # Persist installed language packages across restarts.
+      - piston-packages:/piston/packages
+
+  # Code-formatter service for the "포맷" button (black, prettier, gofmt,
+  # rustfmt, clang-format, google-java-format). Build it with:
+  #   docker compose -f piston/docker-compose.yml up -d --build
+  formatter:
+    build: ../formatter
+    container_name: code_formatter
+    restart: unless-stopped
+    ports:
+      - "2100:2100"
+
+  # LSP bridge (pyright over WebSocket) for type-aware editor completions.
+  lsp:
+    build: ../lsp
+    container_name: lsp_bridge
+    restart: unless-stopped
+    ports:
+      - "2200:2200"
+
+volumes:
+  piston-packages:

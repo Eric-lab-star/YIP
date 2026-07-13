@@ -1,27 +1,29 @@
-// Registry of languages the judge supports. `id` is the Judge0 language_id used
-// by the sandbox; `monaco` is the editor language id used on the client. The
-// Judge0 ids below match the default Judge0 CE language set — if you run a
-// different Judge0 build, verify them against `GET {JUDGE0_URL}/languages`.
+// Registry of languages the judge supports. `monaco` is the editor language id;
+// `filename` is the source file name handed to the sandbox (matters for e.g.
+// Java's public-class rule); `piston` is the list of candidate runtime names/
+// aliases used to resolve an installed Piston runtime (see lib/judge0/client).
 export interface JudgeLanguage {
 	/** Stable slug used in our DB, URLs and API payloads. */
 	slug: string;
 	/** Human-readable label for the UI. */
 	label: string;
-	/** Judge0 language_id. */
-	id: number;
 	/** Monaco editor language id. */
 	monaco: string;
+	/** Source file name given to the sandbox. */
+	filename: string;
+	/** Candidate Piston runtime names/aliases (first installed match wins). */
+	piston: string[];
 }
 
 export const LANGUAGES: readonly JudgeLanguage[] = [
-	{ slug: "python", label: "Python 3", id: 71, monaco: "python" },
-	{ slug: "javascript", label: "JavaScript (Node.js)", id: 63, monaco: "javascript" },
-	{ slug: "typescript", label: "TypeScript", id: 74, monaco: "typescript" },
-	{ slug: "cpp", label: "C++ (GCC)", id: 54, monaco: "cpp" },
-	{ slug: "c", label: "C (GCC)", id: 50, monaco: "c" },
-	{ slug: "java", label: "Java", id: 62, monaco: "java" },
-	{ slug: "go", label: "Go", id: 60, monaco: "go" },
-	{ slug: "rust", label: "Rust", id: 73, monaco: "rust" },
+	{ slug: "python", label: "Python 3", monaco: "python", filename: "main.py", piston: ["python"] },
+	{ slug: "javascript", label: "JavaScript (Node.js)", monaco: "javascript", filename: "main.js", piston: ["javascript", "node"] },
+	{ slug: "typescript", label: "TypeScript", monaco: "typescript", filename: "main.ts", piston: ["typescript"] },
+	{ slug: "cpp", label: "C++ (GCC)", monaco: "cpp", filename: "main.cpp", piston: ["c++", "cpp"] },
+	{ slug: "c", label: "C (GCC)", monaco: "c", filename: "main.c", piston: ["c"] },
+	{ slug: "java", label: "Java", monaco: "java", filename: "Main.java", piston: ["java"] },
+	{ slug: "go", label: "Go", monaco: "go", filename: "main.go", piston: ["go"] },
+	{ slug: "rust", label: "Rust", monaco: "rust", filename: "main.rs", piston: ["rust"] },
 ] as const;
 
 const BY_SLUG = new Map(LANGUAGES.map((l) => [l.slug, l]));

@@ -1,16 +1,19 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
-import Editor, { loader } from "@monaco-editor/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Editor, { loader, type OnMount } from "@monaco-editor/react";
 import { toast } from "sonner";
+import { Play, Wand2 } from "lucide-react";
+import type { editor as MonacoEditorNS } from "monaco-editor";
 
 // Serve Monaco from our own origin (public/monaco/vs) instead of the default
 // jsDelivr CDN, so the editor works offline / behind a strict CSP. The assets
 // are copied from the monaco-editor package by scripts/copy-monaco.mjs.
 loader.config({ paths: { vs: "/monaco/vs" } });
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import {
 	Select,
 	SelectContent,
@@ -19,53 +22,90 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { LANGUAGES } from "@/app/lib/judge0/languages";
+import ResultPanel, {
+	type SubmissionResult,
+} from "@/components/judge/ResultPanel";
+import { registerCompletions } from "@/components/judge/editorCompletions";
+import {
+	LspSession,
+	registerLspCompletions,
+	setActiveSession,
+} from "@/components/judge/lspClient";
+
+// Languages with a type-aware LSP backend (via the lsp/ bridge). Currently
+// Python (pyright); extend as more language servers are added.
+const LSP_URL = process.env.NEXT_PUBLIC_LSP_URL;
+const LSP_LANGS = new Set(["python"]);
 
 export interface SolverProblem {
 	slug: string;
 	languages: string[];
 	starterCode: Record<string, string>;
+	/** Sample stdin used to prefill the run input box. */
+	sampleStdin?: string;
 }
 
-interface TestResult {
-	index: number;
-	statusId: number;
-	status: string;
-	hidden: boolean;
+interface RunOutput {
+	stdout: string;
+	stderr: string;
+	compileOutput: string | null;
+	exitCode: number | null;
+	signal: string | null;
 	timeMs: number | null;
-	memoryKb: number | null;
-	stdout?: string | null;
-	stderr?: string | null;
-	compileOutput?: string | null;
-	expected?: string | null;
-}
-
-interface SubmissionState {
-	verdict: string;
-	passed: number;
-	total: number;
-	timeMs: number | null;
-	memoryKb: number | null;
-	results: TestResult[];
-}
-
-const VERDICT_LABEL: Record<string, string> = {
-	pending: "채점 중",
-	accepted: "정답",
-	wrong_answer: "오답",
-	compilation_error: "컴파일 에러",
-	runtime_error: "런타임 에러",
-	time_limit_exceeded: "시간 초과",
-	internal_error: "내부 오류",
-};
-
-function verdictTone(verdict: string): string {
-	if (verdict === "accepted") return "bg-green-600 text-white";
-	if (verdict === "pending") return "bg-neutral-500 text-white";
-	return "bg-red-600 text-white";
 }
 
 const POLL_INTERVAL_MS = 1200;
 const MAX_POLLS = 50;
+
+type CodeEditor = Parameters<OnMount>[0];
+type MonacoNamespace = Parameters<OnMount>[1];
+
+// Safe, language-agnostic cleanup: strip trailing whitespace, collapse runs of
+// blank lines, trim leading/trailing blank lines, and end with one newline. It
+// never touches indentation/structure, so it can't break whitespace-sensitive
+// languages like Python.
+function normalizeWhitespace(src: string): string {
+	const lines = src
+		.replace(/\r\n/g, "\n")
+		.split("\n")
+		.map((l) => l.replace(/[ \t]+$/, ""));
+	const out: string[] = [];
+	let blanks = 0;
+	for (const line of lines) {
+		if (line.trim() === "") {
+			blanks++;
+			if (blanks > 1) continue;
+		} else {
+			blanks = 0;
+		}
+		out.push(line);
+	}
+	while (out.length && out[0].trim() === "") out.shift();
+	while (out.length && out[out.length - 1].trim() === "") out.pop();
+	return out.join("\n") + "\n";
+}
+
+// Monaco ships real formatters only for JS/TS (and JSON/CSS/HTML). For the other
+// judge languages we register a fallback provider so the "포맷" button still
+// does useful whitespace cleanup everywhere.
+const FALLBACK_FORMAT_LANGS = ["python", "cpp", "c", "java", "go", "rust"];
+let formattersRegistered = false;
+function registerFallbackFormatters(monaco: MonacoNamespace) {
+	if (formattersRegistered) return;
+	formattersRegistered = true;
+	for (const lang of FALLBACK_FORMAT_LANGS) {
+		monaco.languages.registerDocumentFormattingEditProvider(lang, {
+			provideDocumentFormattingEdits(model: MonacoEditorNS.ITextModel) {
+				return [
+					{
+						range: model.getFullModelRange(),
+						text: normalizeWhitespace(model.getValue()),
+					},
+				];
+			},
+		});
+	}
+}
 
 export default function Solver({ problem }: { problem: SolverProblem }) {
 	const langOptions = useMemo(
@@ -77,9 +117,123 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	const [language, setLanguage] = useState(langOptions[0]?.slug ?? "python");
 	const [code, setCode] = useState(problem.starterCode[language] ?? "");
 	const [running, setRunning] = useState(false);
-	const [result, setResult] = useState<SubmissionState | null>(null);
+	const [result, setResult] = useState<SubmissionResult | null>(null);
+	const [stdin, setStdin] = useState(problem.sampleStdin ?? "");
+	const [runningRun, setRunningRun] = useState(false);
+	const [runOutput, setRunOutput] = useState<RunOutput | null>(null);
 	// Track code edited per language so switching languages doesn't lose work.
 	const perLangCode = useRef<Record<string, string>>({ ...problem.starterCode });
+	const editorRef = useRef<CodeEditor | null>(null);
+	const [editorReady, setEditorReady] = useState(false);
+
+	const handleMount: OnMount = (editor, monaco) => {
+		editorRef.current = editor;
+		registerFallbackFormatters(monaco);
+		registerCompletions(monaco);
+		if (LSP_URL) registerLspCompletions(monaco, "python");
+
+		// Ctrl+C hides the suggestion popup while it's open. The `precondition`
+		// keeps the binding active only when the widget is visible, so Ctrl+C
+		// still copies normally when there are no suggestions showing.
+		editor.addAction({
+			id: "hide-suggest-on-ctrl-c",
+			label: "자동완성 팝업 숨기기",
+			keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC],
+			precondition: "suggestWidgetVisible",
+			run: (ed) => ed.trigger("keyboard", "hideSuggestWidget", {}),
+		});
+
+		setEditorReady(true);
+	};
+
+	// Manage a type-aware LSP session for the active language (if supported).
+	useEffect(() => {
+		const ed = editorRef.current;
+		if (!LSP_URL || !editorReady || !ed || !LSP_LANGS.has(language)) {
+			setActiveSession(null);
+			return;
+		}
+		const session = new LspSession(LSP_URL, language);
+		let disposed = false;
+		session
+			.start(ed.getValue())
+			.then(() => {
+				if (disposed) session.dispose();
+				else setActiveSession(session);
+			})
+			.catch(() => {
+				// LSP unavailable — static keyword/snippet completions still work.
+			});
+		return () => {
+			disposed = true;
+			setActiveSession(null);
+			session.dispose();
+		};
+	}, [language, editorReady]);
+
+	const onFormat = useCallback(async () => {
+		const ed = editorRef.current;
+		if (!ed) return;
+
+		// Prefer the server-side formatter service (real formatters per language).
+		try {
+			const res = await fetch("/api/judge/format", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ language, code: ed.getValue() }),
+			});
+			if (res.ok) {
+				const { formatted } = (await res.json()) as { formatted?: string };
+				const model = ed.getModel();
+				if (typeof formatted === "string" && formatted.length > 0 && model) {
+					// Replace via edit (not setValue) so undo history is preserved.
+					ed.executeEdits("format", [
+						{ range: model.getFullModelRange(), text: formatted },
+					]);
+					setCode(formatted);
+					return;
+				}
+			}
+			// Non-OK (503 not configured / 422 couldn't format) → fall through.
+		} catch {
+			// network error → fall through to the built-in formatter
+		}
+
+		// Fallback: Monaco's built-in formatter (JS/TS) or the whitespace provider.
+		await ed.getAction("editor.action.formatDocument")?.run();
+	}, [language]);
+
+	// Run the code once against the custom stdin (no judging) and show output.
+	const onRun = useCallback(async () => {
+		if (runningRun) return;
+		if (!code.trim()) {
+			toast.error("코드를 입력하세요.");
+			return;
+		}
+		setRunningRun(true);
+		setRunOutput(null);
+		try {
+			const res = await fetch("/api/judge/run", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ language, code, stdin }),
+			});
+			if (res.status === 401) {
+				toast.error("로그인이 필요합니다.");
+				return;
+			}
+			if (!res.ok) {
+				const err = await res.json().catch(() => ({}));
+				toast.error(err.error ?? "실행에 실패했습니다.");
+				return;
+			}
+			setRunOutput((await res.json()) as RunOutput);
+		} catch {
+			toast.error("네트워크 오류가 발생했습니다.");
+		} finally {
+			setRunningRun(false);
+		}
+	}, [runningRun, code, language, stdin]);
 
 	const monacoLang =
 		LANGUAGES.find((l) => l.slug === language)?.monaco ?? "plaintext";
@@ -98,7 +252,7 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 			await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
 			const res = await fetch(`/api/judge/submission/${submissionId}`);
 			if (!res.ok) continue;
-			const data = (await res.json()) as SubmissionState;
+			const data = (await res.json()) as SubmissionResult;
 			setResult(data);
 			if (data.verdict !== "pending") return;
 		}
@@ -152,23 +306,50 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 	return (
 		<div className="flex flex-col gap-3">
 			<div className="flex items-center justify-between gap-2">
-				<Select value={language} onValueChange={onLanguageChange}>
-					<SelectTrigger className="w-48">
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{langOptions.map((l) => (
-							<SelectItem key={l.slug} value={l.slug}>
-								{l.label}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
+				<div className="flex items-center gap-2">
+					<Select value={language} onValueChange={onLanguageChange}>
+						<SelectTrigger className="w-48">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{langOptions.map((l) => (
+								<SelectItem key={l.slug} value={l.slug}>
+									{l.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 
-				<Button onClick={onSubmit} disabled={running}>
-					{running && <Spinner />}
-					제출
-				</Button>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onFormat}
+						title="코드 정렬"
+					>
+						<Wand2 className="size-4" />
+						포맷
+					</Button>
+				</div>
+
+				<div className="flex items-center gap-2">
+					<Button asChild variant="ghost">
+						<Link href={`/problems/${problem.slug}/submissions`}>제출 기록</Link>
+					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onRun}
+						disabled={runningRun}
+					>
+						{runningRun && <Spinner />}
+						<Play className="size-4" />
+						실행
+					</Button>
+					<Button onClick={onSubmit} disabled={running}>
+						{running && <Spinner />}
+						제출
+					</Button>
+				</div>
 			</div>
 
 			<div className="overflow-hidden rounded-md border">
@@ -178,97 +359,94 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 					theme="vs-dark"
 					value={code}
 					onChange={(v) => setCode(v ?? "")}
+					onMount={handleMount}
 					options={{
 						minimap: { enabled: false },
 						fontSize: 14,
 						scrollBeyondLastLine: false,
 						tabSize: 4,
+						padding: { top: 20, bottom: 20 },
+						// Coding assistance: autocomplete, snippets, smart editing.
+						quickSuggestions: true,
+						suggestOnTriggerCharacters: true,
+						// Enter never accepts a suggestion (inserts a newline); use Tab.
+						acceptSuggestionOnEnter: "off",
+						tabCompletion: "on",
+						parameterHints: { enabled: true },
+						wordBasedSuggestions: "currentDocument",
+						suggestSelection: "first",
+						autoClosingBrackets: "languageDefined",
+						autoClosingQuotes: "languageDefined",
+						autoIndent: "full",
+						formatOnPaste: true,
+						bracketPairColorization: { enabled: true },
 					}}
 				/>
 			</div>
+
+			<div>
+				<label className="mb-1 block text-sm font-medium text-muted-foreground">
+					입력 (stdin)
+				</label>
+				<Textarea
+					value={stdin}
+					onChange={(e) => setStdin(e.target.value)}
+					rows={3}
+					placeholder="실행 시 프로그램에 전달할 입력을 여기에 넣으세요."
+					className="font-mono text-sm"
+				/>
+			</div>
+
+			{runOutput && <RunResultPanel output={runOutput} />}
 
 			{result && <ResultPanel result={result} />}
 		</div>
 	);
 }
 
-function ResultPanel({ result }: { result: SubmissionState }) {
+function RunResultPanel({ output }: { output: RunOutput }) {
+	const failed =
+		(output.compileOutput && output.compileOutput.trim().length > 0) ||
+		(output.exitCode !== null && output.exitCode !== 0) ||
+		!!output.signal;
+
 	return (
 		<div className="rounded-md border p-3">
-			<div className="mb-2 flex items-center gap-3">
-				<Badge className={verdictTone(result.verdict)}>
-					{VERDICT_LABEL[result.verdict] ?? result.verdict}
-				</Badge>
-				{result.verdict === "pending" ? (
-					<span className="text-sm text-muted-foreground">
-						채점 중입니다…
-					</span>
-				) : (
-					<span className="text-sm text-muted-foreground">
-						{result.passed}/{result.total} 통과
-						{result.timeMs !== null && ` · ${result.timeMs}ms`}
-						{result.memoryKb !== null &&
-							` · ${Math.round(result.memoryKb / 1024)}MB`}
-					</span>
+			<div className="mb-2 flex items-center gap-2 text-sm">
+				<span className="font-medium">실행 결과</span>
+				<span className={failed ? "text-red-600" : "text-green-600"}>
+					{output.signal
+						? `종료 신호 ${output.signal}`
+						: `종료 코드 ${output.exitCode ?? 0}`}
+				</span>
+				{output.timeMs !== null && (
+					<span className="text-muted-foreground">· {output.timeMs}ms</span>
 				)}
 			</div>
 
-			{result.results.length > 0 && (
-				<ul className="flex flex-col gap-2">
-					{result.results.map((r) => (
-						<li
-							key={r.index}
-							className="rounded border px-3 py-2 text-sm"
-						>
-							<div className="flex items-center justify-between">
-								<span className="font-medium">
-									테스트 {r.index + 1}
-									{r.hidden && (
-										<span className="ml-1 text-xs text-muted-foreground">
-											(숨김)
-										</span>
-									)}
-								</span>
-								<span
-									className={
-										r.statusId === 3
-											? "text-green-600"
-											: "text-red-600"
-									}
-								>
-									{r.status}
-								</span>
-							</div>
-							{!r.hidden && r.statusId !== 3 && (
-								<div className="mt-1 space-y-1 text-xs text-muted-foreground">
-									{r.compileOutput && (
-										<pre className="overflow-x-auto whitespace-pre-wrap">
-											{r.compileOutput}
-										</pre>
-									)}
-									{r.expected !== undefined &&
-										r.expected !== null && (
-											<div>
-												<span className="font-medium">기대: </span>
-												<code>{r.expected}</code>
-											</div>
-										)}
-									{r.stdout !== undefined && r.stdout !== null && (
-										<div>
-											<span className="font-medium">출력: </span>
-											<code>{r.stdout}</code>
-										</div>
-									)}
-									{r.stderr && (
-										<pre className="overflow-x-auto whitespace-pre-wrap">
-											{r.stderr}
-										</pre>
-									)}
-								</div>
-							)}
-						</li>
-					))}
-				</ul>
+			{output.compileOutput && output.compileOutput.trim() && (
+				<div className="mb-2">
+					<div className="text-xs font-medium text-red-600">컴파일 오류</div>
+					<pre className="mt-1 overflow-x-auto whitespace-pre-wrap rounded bg-muted p-2 text-xs">
+						{output.compileOutput}
+					</pre>
+				</div>
+			)}
+
+			<div>
+				<div className="text-xs font-medium text-muted-foreground">출력 (stdout)</div>
+				<pre className="mt-1 max-h-60 overflow-auto whitespace-pre-wrap rounded bg-muted p-2 text-xs">
+					{output.stdout || "(출력 없음)"}
+				</pre>
+			</div>
+
+			{output.stderr && output.stderr.trim() && (
+				<div className="mt-2">
+					<div className="text-xs font-medium text-red-600">오류 (stderr)</div>
+					<pre className="mt-1 max-h-60 overflow-auto whitespace-pre-wrap rounded bg-muted p-2 text-xs">
+						{output.stderr}
+					</pre>
+				</div>
 			)}
 		</div>
 	);

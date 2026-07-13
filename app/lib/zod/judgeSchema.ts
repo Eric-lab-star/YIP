@@ -11,3 +11,13 @@ export const submitSchema = z.object({
 });
 
 export type SubmitInput = z.infer<typeof submitSchema>;
+
+// A one-off run against user-provided stdin (no judging). Used by the "실행"
+// button so a user can see their program's output before submitting.
+export const runSchema = z.object({
+	language: z.string().min(1).max(40),
+	code: z.string().min(1, "코드를 입력하세요").max(MAX_CODE_LENGTH, "코드가 너무 깁니다"),
+	stdin: z.string().max(MAX_CODE_LENGTH).optional().default(""),
+});
+
+export type RunInput = z.infer<typeof runSchema>;
