@@ -112,8 +112,9 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
 
 ## 4. 배포 전 보안 TODO (필수)
 
-1. **Atlas 비밀번호 회전** — 과거 커밋된 자격증명이 git 히스토리에 남아 있음
-   (`test-mongo.mjs`는 추적 제거했으나 히스토리 존재). 프로덕션 전 반드시 회전.
+1. **Atlas 비밀번호 회전** — ✅ 완료(2026-07-13). `Vercel-Admin-yipDB` 비밀번호
+   재생성, 로컬 `.env.local`·Vercel env 갱신·재배포, 로컬(mongosh ping)·프로덕션
+   (`/problems` DB 읽기) 검증. 과거 유출 자격증명 무효화됨.
 2. **Piston/Formatter 인증** — 기본 인증이 없어 공개 시 임의 코드 실행 위험.
    ✅ Piston은 Caddy `X-Judge-Secret` 공유 시크릿으로 대응(2026-07-13, 위 배포 현황).
    Formatter/LSP 배포 시 동일 처리 필요.
