@@ -29,10 +29,16 @@ export async function POST(req: NextRequest) {
 		return NextResponse.json({ error: "too large" }, { status: 413 });
 	}
 
+	// Formatter has no auth of its own; in production it sits behind the same
+	// reverse proxy as Piston, which requires the shared secret header. Send it
+	// when configured; locally (direct http://localhost:2100) it's unset.
+	const headers: Record<string, string> = { "Content-Type": "application/json" };
+	if (process.env.JUDGE_SECRET) headers["X-Judge-Secret"] = process.env.JUDGE_SECRET;
+
 	try {
 		const res = await fetch(`${url.replace(/\/$/, "")}/format`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers,
 			body: JSON.stringify({ language, code }),
 			signal: AbortSignal.timeout(TIMEOUT_MS),
 		});

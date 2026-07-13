@@ -93,30 +93,45 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
 
 ### 배포 현황 (2026-07-13, 1단계 — Piston)
 - **VM**: AWS EC2 `i-0f2e228490c0b1aa6`, t3.medium, Ubuntu 24.04, 20GB gp3,
-  리전 `ap-northeast-2`. Public IP `15.164.164.113`(**EIP 미할당 — 재부팅 시 변경**).
-  SG `sg-0dc425505ae9c8292`(SSH 22는 관리자 IP만, 2000은 미개방).
-  키페어 `~/.ssh/yip-judge.pem`.
-- **Piston**: `~/piston/docker-compose.yml`(Piston만), 7개 런타임 설치·실행 검증.
-- **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`) →
-  `https://judge.kimkyungsub.com`. 포트 개방 없이 자동 TLS. systemd 상시 구동.
-- **인증**: Piston 앞에 Caddy(`:8080`)가 `X-Judge-Secret` 검사 →
-  cloudflared→Caddy→Piston. 시크릿 없으면 403. 앱은 `JUDGE_SECRET`로 헤더 전송
-  (`app/lib/judge0/client.ts`). ⚠️ 시크릿 값은 저장소에 커밋 금지(Vercel env에만).
-- **Vercel env(수동 설정 필요)**: `PISTON_URL=https://judge.kimkyungsub.com`,
+  리전 `ap-northeast-2`. **고정 IP(EIP) `3.39.185.109`**
+  (alloc `eipalloc-0339da9ca0b3d2016`). SG `sg-0dc425505ae9c8292`
+  (SSH 22는 관리자 IP만, 2000은 미개방). 키페어 `~/.ssh/yip-judge.pem`.
+- **컨테이너(4개)**: Piston(`~/piston/`, `0.0.0.0:2000`, 7개 런타임),
+  Caddy `judge_proxy`(`:8080`), Formatter `code_formatter`(`127.0.0.1:2100`,
+  `yip-formatter` 이미지), LSP `lsp_bridge`(`127.0.0.1:2200`, `yip-lsp` 이미지,
+  pyright). formatter/lsp 빌드 컨텍스트는 `~/build/`.
+- **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`), 포트 개방 없이 자동 TLS,
+  systemd 상시. Caddy(`:8080`)가 Host별 라우팅:
+  - `judge.kimkyungsub.com` + `X-Judge-Secret` → Piston(2000)
+  - `format.kimkyungsub.com` + `X-Judge-Secret` → Formatter(2100)
+  - `lsp.kimkyungsub.com` + `Origin: https://yipcode.xyz` → LSP(2200, wss)
+  - 조건 불충족 시 403.
+- **인증**: Piston/Formatter는 서버사이드 호출이라 공유 시크릿(`JUDGE_SECRET`) 헤더
+  (`app/lib/judge0/client.ts`, `app/api/judge/format/route.ts`). LSP는 브라우저가
+  직접 WS 연결(커스텀 헤더 불가)이라 **Origin 검사**로 대응(남용=자원소모, 추후
+  rate limit 필요). ⚠️ 시크릿 값은 저장소 커밋 금지(Vercel env에만).
+- **Vercel env**: `PISTON_URL=https://judge.kimkyungsub.com`,
+  `FORMATTER_URL=https://format.kimkyungsub.com`,
+  `NEXT_PUBLIC_LSP_URL=wss://lsp.kimkyungsub.com`(빌드타임 인라인→재배포 필수),
   `JUDGE_SECRET=<Caddy와 동일한 값>`.
-- **미완**: Formatter/LSP 미배포(폴백 동작), EIP 미할당, Cloudflare Access 업그레이드.
+- **AWS 자격증명**: 로컬 CLI는 IAM 사용자 `yip-cli`(AdministratorAccess) 사용.
+  루트 액세스 키는 삭제됨(2026-07-13). 루트는 콘솔 로그인만.
+- **미완**: 제출/LSP rate limit, Cloudflare Access 업그레이드.
 
 ---
 
 ## 4. 배포 전 보안 TODO (필수)
 
-1. **Atlas 비밀번호 회전** — 과거 커밋된 자격증명이 git 히스토리에 남아 있음
-   (`test-mongo.mjs`는 추적 제거했으나 히스토리 존재). 프로덕션 전 반드시 회전.
+1. **Atlas 비밀번호 회전** — ✅ 완료(2026-07-13). `Vercel-Admin-yipDB` 비밀번호
+   재생성, 로컬 `.env.local`·Vercel env 갱신·재배포, 로컬(mongosh ping)·프로덕션
+   (`/problems` DB 읽기) 검증. 과거 유출 자격증명 무효화됨.
 2. **Piston/Formatter 인증** — 기본 인증이 없어 공개 시 임의 코드 실행 위험.
    ✅ Piston은 Caddy `X-Judge-Secret` 공유 시크릿으로 대응(2026-07-13, 위 배포 현황).
    Formatter/LSP 배포 시 동일 처리 필요.
 3. **남용 방지(rate limit)** — 제출/LSP는 자원을 소모(LSP는 연결마다 pyright
    프로세스). 연결/요청 제한 필요.
+4. **루트 Access Key 폐기** — ✅ 완료(2026-07-13). IAM 사용자 `yip-cli`로 교체,
+   루트 키 삭제. (`AccountAccessKeysPresent=0` 확인.)
 
 ---
 
