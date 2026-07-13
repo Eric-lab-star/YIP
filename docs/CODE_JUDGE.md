@@ -93,9 +93,9 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
 
 ### 배포 현황 (2026-07-13, 1단계 — Piston)
 - **VM**: AWS EC2 `i-0f2e228490c0b1aa6`, t3.medium, Ubuntu 24.04, 20GB gp3,
-  리전 `ap-northeast-2`. Public IP `15.164.164.113`(**EIP 미할당 — 재부팅 시 변경**).
-  SG `sg-0dc425505ae9c8292`(SSH 22는 관리자 IP만, 2000은 미개방).
-  키페어 `~/.ssh/yip-judge.pem`.
+  리전 `ap-northeast-2`. **고정 IP(EIP) `3.39.185.109`**
+  (alloc `eipalloc-0339da9ca0b3d2016`). SG `sg-0dc425505ae9c8292`
+  (SSH 22는 관리자 IP만, 2000은 미개방). 키페어 `~/.ssh/yip-judge.pem`.
 - **Piston**: `~/piston/docker-compose.yml`(Piston만), 7개 런타임 설치·실행 검증.
 - **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`) →
   `https://judge.kimkyungsub.com`. 포트 개방 없이 자동 TLS. systemd 상시 구동.
@@ -104,7 +104,7 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
   (`app/lib/judge0/client.ts`). ⚠️ 시크릿 값은 저장소에 커밋 금지(Vercel env에만).
 - **Vercel env(수동 설정 필요)**: `PISTON_URL=https://judge.kimkyungsub.com`,
   `JUDGE_SECRET=<Caddy와 동일한 값>`.
-- **미완**: Formatter/LSP 미배포(폴백 동작), EIP 미할당, Cloudflare Access 업그레이드.
+- **미완**: Formatter/LSP 미배포(폴백 동작), Cloudflare Access 업그레이드.
 
 ---
 
