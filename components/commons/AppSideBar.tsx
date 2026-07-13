@@ -14,6 +14,7 @@ import { spaceshipCaptainTree } from "@/utils/sideBarTree/spaceshipCaptainTree";
 import { SideBarTree } from "./SideBarItems";
 import { aIDeveloperTree } from "@/utils/sideBarTree/AIDeveloperTree";
 import ChatRoomList from "./ChatRoomList";
+import ProblemSidebarList from "./ProblemSidebarList";
 import Link from "next/link";
 
 export default function AppSideBar() {
@@ -25,6 +26,24 @@ export default function AppSideBar() {
       <Sidebar side="left" variant={"floating"}>
         <SidebarContent className="pb-50">
           <ChatRoomList />
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+    );
+  }
+
+  if (section === "problems") {
+    return (
+      <Sidebar side="left" variant={"floating"}>
+        <SidebarHeader>
+          <SidebarMenu>
+            <Link href="/problems">
+              <Title size="h2"> 문제 </Title>
+            </Link>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent className="pb-50">
+          <ProblemSidebarList />
         </SidebarContent>
         <SidebarRail />
       </Sidebar>

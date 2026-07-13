@@ -63,6 +63,27 @@ export async function createSubmission(
 	return result.insertedId.toString();
 }
 
+/** Slugs of problems the user has solved (≥1 accepted submission). */
+export async function getSolvedSlugs(userId: string): Promise<string[]> {
+	const c = await col();
+	return c.distinct("problemSlug", { userId, verdict: "accepted" });
+}
+
+/** A user's submissions for a problem, most recent first. */
+export async function listSubmissionsByUserAndProblem(
+	userId: string,
+	problemSlug: string,
+	limit = 50
+): Promise<Submission[]> {
+	await ensureIndexes();
+	const c = await col();
+	return c
+		.find({ userId, problemSlug })
+		.sort({ createdAt: -1 })
+		.limit(limit)
+		.toArray();
+}
+
 export async function findSubmissionById(
 	id: string
 ): Promise<Submission | null> {
