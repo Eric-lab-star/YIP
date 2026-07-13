@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { findProblemBySlug, toPublicProblem } from "@/app/lib/mongo/problems";
 import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
 import { validateToken } from "@/app/lib/auth/login";
@@ -50,6 +51,12 @@ export default async function ProblemPage({
 							완료
 						</span>
 					)}
+					<Link
+						href={`/problems/${problem.slug}/solutions`}
+						className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+					>
+						다른 풀이
+					</Link>
 					{isAdmin && (
 						<div className="ml-auto">
 							<ProblemAdminControls slug={problem.slug} />
