@@ -104,6 +104,8 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
   (`app/lib/judge0/client.ts`). ⚠️ 시크릿 값은 저장소에 커밋 금지(Vercel env에만).
 - **Vercel env(수동 설정 필요)**: `PISTON_URL=https://judge.kimkyungsub.com`,
   `JUDGE_SECRET=<Caddy와 동일한 값>`.
+- **AWS 자격증명**: 로컬 CLI는 IAM 사용자 `yip-cli`(AdministratorAccess) 사용.
+  루트 액세스 키는 삭제됨(2026-07-13). 루트는 콘솔 로그인만.
 - **미완**: Formatter/LSP 미배포(폴백 동작), Cloudflare Access 업그레이드.
 
 ---
@@ -117,6 +119,8 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
    Formatter/LSP 배포 시 동일 처리 필요.
 3. **남용 방지(rate limit)** — 제출/LSP는 자원을 소모(LSP는 연결마다 pyright
    프로세스). 연결/요청 제한 필요.
+4. **루트 Access Key 폐기** — ✅ 완료(2026-07-13). IAM 사용자 `yip-cli`로 교체,
+   루트 키 삭제. (`AccountAccessKeysPresent=0` 확인.)
 
 ---
 
