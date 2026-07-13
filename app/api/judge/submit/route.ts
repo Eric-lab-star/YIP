@@ -8,12 +8,23 @@ import { getLanguage } from "@/app/lib/judge0/languages";
 import { execute, isJudgeConfigured, resolveRuntime } from "@/app/lib/judge0/client";
 import { deriveVerdict, evaluateRun, type CaseEval } from "@/app/lib/judge0/evaluate";
 import { submitSchema } from "@/app/lib/zod/judgeSchema";
+import { consumeSubmitRate } from "@/app/lib/mongo/judgeRateLimit";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
 	const auth = await validateToken();
 	if (!auth.success) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+	}
+
+	// Rate-limit per user before the expensive Piston fan-out (one run per test
+	// case). Blocks hammering the judge; humans stay well under the limit.
+	const rate = await consumeSubmitRate(auth.id);
+	if (!rate.allowed) {
+		return NextResponse.json(
+			{ error: "제출이 너무 잦습니다. 잠시 후 다시 시도해주세요." },
+			{ status: 429, headers: { "Retry-After": String(rate.retryAfterSec) } }
+		);
 	}
 
 	if (!isJudgeConfigured()) {
