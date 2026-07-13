@@ -14,25 +14,31 @@ export const DEFAULT_SUBMIT_LIMIT = Number(
 	process.env.JUDGE_SUBMIT_LIMIT_PER_MIN ?? 20
 );
 
+/** Max AI-hint requests per user per window. Override with JUDGE_HINT_LIMIT_PER_MIN. */
+export const DEFAULT_HINT_LIMIT = Number(
+	process.env.JUDGE_HINT_LIMIT_PER_MIN ?? 10
+);
+
 interface RateDoc {
 	userId: string; // student _id as string (unique)
 	window: number; // Math.floor(now / WINDOW_MS) the count belongs to
-	count: number; // submissions consumed in the current window
+	count: number; // actions consumed in the current window
 	updatedAt: Date;
 }
 
-async function col() {
+async function col(name: string) {
 	const db = await getDB();
-	return db.collection<RateDoc>("judgeRateLimit");
+	return db.collection<RateDoc>(name);
 }
 
-let indexEnsured = false;
+// Track which collections have had their unique index ensured (one per limiter).
+const indexEnsured = new Set<string>();
 
-async function ensureIndex() {
-	if (indexEnsured) return;
-	const c = await col();
+async function ensureIndex(name: string) {
+	if (indexEnsured.has(name)) return;
+	const c = await col(name);
 	await c.createIndex({ userId: 1 }, { unique: true });
-	indexEnsured = true;
+	indexEnsured.add(name);
 }
 
 export type SubmitRateResult =
@@ -40,17 +46,18 @@ export type SubmitRateResult =
 	| { allowed: false; retryAfterSec: number; limit: number };
 
 /**
- * Atomically consume one submission slot for a user in the current minute
- * window. The guarded `$inc` (`count < limit`) only increments when under the
- * limit, so racing requests can't exceed it. Returns whether the submission is
- * allowed and, if not, how long until the window resets.
+ * Atomically consume one slot for a user in the current minute window against a
+ * named limiter collection. The guarded `$inc` (`count < limit`) only increments
+ * when under the limit, so racing requests can't exceed it. Returns whether the
+ * action is allowed and, if not, how long until the window resets.
  */
-export async function consumeSubmitRate(
+async function consumeRate(
+	collection: string,
 	userId: string,
-	limit = DEFAULT_SUBMIT_LIMIT
+	limit: number
 ): Promise<SubmitRateResult> {
-	await ensureIndex();
-	const c = await col();
+	await ensureIndex(collection);
+	const c = await col(collection);
 	const now = Date.now();
 	const window = Math.floor(now / WINDOW_MS);
 
@@ -81,4 +88,20 @@ export async function consumeSubmitRate(
 	// Over the limit — report seconds until this window ends.
 	const retryAfterSec = Math.max(1, Math.ceil(((window + 1) * WINDOW_MS - now) / 1000));
 	return { allowed: false, retryAfterSec, limit };
+}
+
+/** Rate-limit code submissions (the heaviest judge action — one Piston run per case). */
+export function consumeSubmitRate(
+	userId: string,
+	limit = DEFAULT_SUBMIT_LIMIT
+): Promise<SubmitRateResult> {
+	return consumeRate("judgeRateLimit", userId, limit);
+}
+
+/** Rate-limit AI-hint requests (each one calls the model — cap spend/abuse). */
+export function consumeHintRate(
+	userId: string,
+	limit = DEFAULT_HINT_LIMIT
+): Promise<SubmitRateResult> {
+	return consumeRate("hintRateLimit", userId, limit);
 }

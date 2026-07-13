@@ -1,7 +1,9 @@
 import { validateToken } from "@/app/lib/auth/login";
 import { failPost, readPosts, successPost } from "@/app/lib/mongo/posts";
 import { readStudent } from "@/app/lib/mongo/students";
+import { getUserProgress } from "@/app/lib/mongo/progress";
 import { CardImage } from "@/components/commons/CardImage";
+import ProgressCard from "@/components/judge/ProgressCard";
 import TILTable from "@/components/commons/table/TILTable";
 import { CatIcon } from "@/components/mdx/CatIcon";
 import { Button } from "@/components/ui/button";
@@ -76,6 +78,7 @@ export default async function Page({
   const posts = await readPosts({ userId: student._id.toString() });
   const serial = getSerialized(posts);
   const isOwner = user?.success && user.id === student._id.toString();
+  const progress = await getUserProgress(student._id.toString());
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
@@ -124,6 +127,10 @@ export default async function Page({
       {/* 문제 풀이 */}
       <section className="mb-16">
         <SectionHeading icon={Code2} label="Coding Problems" title="문제 풀이" />
+
+        <div className="mb-5">
+          <ProgressCard progress={progress} />
+        </div>
 
         <Link
           href="/problems"
