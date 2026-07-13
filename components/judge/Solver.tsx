@@ -24,7 +24,9 @@ import {
 import { LANGUAGES } from "@/app/lib/judge0/languages";
 import ResultPanel, {
 	type SubmissionResult,
+	VERDICT_LABEL,
 } from "@/components/judge/ResultPanel";
+import HintPanel from "@/components/judge/HintPanel";
 import { registerCompletions } from "@/components/judge/editorCompletions";
 import {
 	LspSession,
@@ -235,6 +237,28 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 		}
 	}, [runningRun, code, language, stdin]);
 
+	// Summarize the last failing submission for the AI "오답 진단" action. Null
+	// while pending, accepted, or before any submission. Only non-hidden case
+	// details are included — hidden judging data must never reach the model.
+	const failureSummary = useMemo(() => {
+		if (!result || result.verdict === "pending" || result.verdict === "accepted") {
+			return null;
+		}
+		const label = VERDICT_LABEL[result.verdict] ?? result.verdict;
+		const lines = [`판정: ${label} (${result.passed}/${result.total} 통과)`];
+		const firstFail = result.results.find((r) => r.statusId !== 3 && !r.hidden);
+		if (firstFail) {
+			lines.push(`실패한 예시 테스트 ${firstFail.index + 1}`);
+			if (firstFail.compileOutput) lines.push(`컴파일 출력: ${firstFail.compileOutput}`);
+			if (firstFail.expected != null) lines.push(`기대 출력: ${firstFail.expected}`);
+			if (firstFail.stdout != null) lines.push(`실제 출력: ${firstFail.stdout}`);
+			if (firstFail.stderr) lines.push(`에러: ${firstFail.stderr}`);
+		} else {
+			lines.push("숨김 테스트에서 실패했습니다 (구체적 입출력은 공개되지 않음).");
+		}
+		return lines.join("\n");
+	}, [result]);
+
 	const monacoLang =
 		LANGUAGES.find((l) => l.slug === language)?.monaco ?? "plaintext";
 
@@ -396,6 +420,13 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 					className="font-mono text-sm"
 				/>
 			</div>
+
+			<HintPanel
+				problemSlug={problem.slug}
+				language={language}
+				code={code}
+				failureSummary={failureSummary}
+			/>
 
 			{runOutput && <RunResultPanel output={runOutput} />}
 
