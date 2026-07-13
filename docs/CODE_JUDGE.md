@@ -96,17 +96,27 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
   리전 `ap-northeast-2`. **고정 IP(EIP) `3.39.185.109`**
   (alloc `eipalloc-0339da9ca0b3d2016`). SG `sg-0dc425505ae9c8292`
   (SSH 22는 관리자 IP만, 2000은 미개방). 키페어 `~/.ssh/yip-judge.pem`.
-- **Piston**: `~/piston/docker-compose.yml`(Piston만), 7개 런타임 설치·실행 검증.
-- **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`) →
-  `https://judge.kimkyungsub.com`. 포트 개방 없이 자동 TLS. systemd 상시 구동.
-- **인증**: Piston 앞에 Caddy(`:8080`)가 `X-Judge-Secret` 검사 →
-  cloudflared→Caddy→Piston. 시크릿 없으면 403. 앱은 `JUDGE_SECRET`로 헤더 전송
-  (`app/lib/judge0/client.ts`). ⚠️ 시크릿 값은 저장소에 커밋 금지(Vercel env에만).
-- **Vercel env(수동 설정 필요)**: `PISTON_URL=https://judge.kimkyungsub.com`,
+- **컨테이너(4개)**: Piston(`~/piston/`, `0.0.0.0:2000`, 7개 런타임),
+  Caddy `judge_proxy`(`:8080`), Formatter `code_formatter`(`127.0.0.1:2100`,
+  `yip-formatter` 이미지), LSP `lsp_bridge`(`127.0.0.1:2200`, `yip-lsp` 이미지,
+  pyright). formatter/lsp 빌드 컨텍스트는 `~/build/`.
+- **노출**: cloudflared 터널(`yip-judge`, id `d28db5bc-…`), 포트 개방 없이 자동 TLS,
+  systemd 상시. Caddy(`:8080`)가 Host별 라우팅:
+  - `judge.kimkyungsub.com` + `X-Judge-Secret` → Piston(2000)
+  - `format.kimkyungsub.com` + `X-Judge-Secret` → Formatter(2100)
+  - `lsp.kimkyungsub.com` + `Origin: https://yipcode.xyz` → LSP(2200, wss)
+  - 조건 불충족 시 403.
+- **인증**: Piston/Formatter는 서버사이드 호출이라 공유 시크릿(`JUDGE_SECRET`) 헤더
+  (`app/lib/judge0/client.ts`, `app/api/judge/format/route.ts`). LSP는 브라우저가
+  직접 WS 연결(커스텀 헤더 불가)이라 **Origin 검사**로 대응(남용=자원소모, 추후
+  rate limit 필요). ⚠️ 시크릿 값은 저장소 커밋 금지(Vercel env에만).
+- **Vercel env**: `PISTON_URL=https://judge.kimkyungsub.com`,
+  `FORMATTER_URL=https://format.kimkyungsub.com`,
+  `NEXT_PUBLIC_LSP_URL=wss://lsp.kimkyungsub.com`(빌드타임 인라인→재배포 필수),
   `JUDGE_SECRET=<Caddy와 동일한 값>`.
 - **AWS 자격증명**: 로컬 CLI는 IAM 사용자 `yip-cli`(AdministratorAccess) 사용.
   루트 액세스 키는 삭제됨(2026-07-13). 루트는 콘솔 로그인만.
-- **미완**: Formatter/LSP 미배포(폴백 동작), Cloudflare Access 업그레이드.
+- **미완**: 제출/LSP rate limit, Cloudflare Access 업그레이드.
 
 ---
 
