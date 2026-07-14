@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Lightbulb, ChevronDown, Stethoscope, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,8 @@ interface HintPanelProps {
 	 * last submission passed / none has run. Enables the "오답 진단" action.
 	 */
 	failureSummary: string | null;
+	/** AI hints are members-only; guests see a sign-up prompt instead. */
+	isLoggedIn: boolean;
 }
 
 // Progressive AI hints for the current problem. Level 1→3 escalates from a
@@ -29,6 +32,7 @@ export default function HintPanel({
 	language,
 	code,
 	failureSummary,
+	isLoggedIn,
 }: HintPanelProps) {
 	const [text, setText] = useState("");
 	const [level, setLevel] = useState(0); // 0 = nothing requested yet
@@ -91,6 +95,26 @@ export default function HintPanel({
 	};
 
 	const showPanel = loading || text.length > 0;
+
+	// AI hints are a members-only feature. Guests never see the request buttons —
+	// they get a sign-up prompt instead, so the AI can't be triggered without an
+	// account (the API also enforces this with a 401).
+	if (!isLoggedIn) {
+		return (
+			<div className="rounded-md border p-4 text-center">
+				<div className="flex items-center justify-center gap-2 text-sm font-medium">
+					<Lightbulb className="size-4" />
+					AI 힌트는 회원 전용이에요
+				</div>
+				<p className="mt-1 text-sm text-muted-foreground">
+					회원가입 후 단계별 AI 힌트와 오답 진단을 이용할 수 있어요.
+				</p>
+				<Button asChild size="sm" className="mt-3">
+					<Link href="/login">회원가입하고 이용하기</Link>
+				</Button>
+			</div>
+		);
+	}
 
 	return (
 		<div className="rounded-md border p-3">

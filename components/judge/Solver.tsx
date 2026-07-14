@@ -109,7 +109,14 @@ function registerFallbackFormatters(monaco: MonacoNamespace) {
 	}
 }
 
-export default function Solver({ problem }: { problem: SolverProblem }) {
+export default function Solver({
+	problem,
+	isLoggedIn,
+}: {
+	problem: SolverProblem;
+	/** Gates the AI hint UI — guests are prompted to sign up instead. */
+	isLoggedIn: boolean;
+}) {
 	const langOptions = useMemo(
 		() =>
 			LANGUAGES.filter((l) => problem.languages.includes(l.slug)),
@@ -426,6 +433,7 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 				language={language}
 				code={code}
 				failureSummary={failureSummary}
+				isLoggedIn={isLoggedIn}
 			/>
 
 			{runOutput && <RunResultPanel output={runOutput} />}

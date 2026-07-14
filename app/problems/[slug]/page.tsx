@@ -96,6 +96,7 @@ export default async function ProblemPage({
 						starterCode: problem.starterCode,
 						sampleStdin: problem.sampleTestcases[0]?.stdin ?? "",
 					}}
+					isLoggedIn={auth.success}
 				/>
 			</section>
 		</div>
