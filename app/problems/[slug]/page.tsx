@@ -7,6 +7,8 @@ import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import Solver from "@/components/judge/Solver";
 import ProblemAdminControls from "@/components/judge/ProblemAdminControls";
 import { Badge } from "@/components/ui/badge";
+import Squiggle from "@/components/mdx/Squiggle";
+import { doodleBox, ink } from "@/components/mdx/doodle";
 import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -42,8 +44,15 @@ export default async function ProblemPage({
 	return (
 		<div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-6 lg:grid-cols-2">
 			<section className="min-w-0">
-				<div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-					<h1 className="text-xl font-bold">{problem.title}</h1>
+				{/* Title gets the same treatment as an MDX <h1> on the lesson pages:
+				    big handwritten type with a squiggle underline. Meta sits on its
+				    own row below so the heading is never squeezed. */}
+				<h1 className="relative inline-block text-3xl leading-[1.15] font-bold md:text-4xl">
+					{problem.title}
+					<Squiggle className="absolute -bottom-3 left-0 h-3.5 w-full" />
+				</h1>
+
+				<div className="mt-7 mb-6 flex flex-wrap items-center gap-x-3 gap-y-2">
 					<Badge className={d.tone}>{d.label}</Badge>
 					{solved && (
 						<span className="flex items-center gap-0.5 text-sm font-medium text-green-600">
@@ -63,23 +72,39 @@ export default async function ProblemPage({
 						</div>
 					)}
 				</div>
-				<ChatMarkdown content={problem.description} className="text-base" />
 
-				<h2 className="mt-6 mb-2 text-sm font-semibold text-muted-foreground">
+				{/* Body scale matches an MDX lesson page. ChatMarkdown's defaults are
+				    tuned for chat bubbles, so its headings need bumping here or they
+				    come out the same size as the body text. */}
+				<ChatMarkdown
+					content={problem.description}
+					className="text-lg leading-[1.8] [&_h1]:mt-8 [&_h1]:mb-3 [&_h1]:text-2xl [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-lg [&_li]:my-1 [&_p]:my-4"
+				/>
+
+				<h2 className="mt-10 mb-4 flex items-center gap-3 text-2xl font-bold">
+					<span aria-hidden>🧪</span>
 					예시 테스트
 				</h2>
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-5">
 					{problem.sampleTestcases.map((t, i) => (
-						<div key={i} className="rounded-md border p-3 text-sm">
+						<div key={i} className="px-6 py-5" style={doodleBox}>
+							<div className="mb-3 flex items-center gap-2">
+								<span
+									className="rounded-full px-3 py-1 text-sm font-bold text-white"
+									style={{ backgroundColor: ink }}
+								>
+									예시 {i + 1}
+								</span>
+							</div>
 							<div>
-								<span className="font-medium">입력</span>
-								<pre className="mt-1 overflow-x-auto whitespace-pre-wrap rounded bg-muted p-2">
+								<span className="font-bold">입력</span>
+								<pre className="mt-1 overflow-x-auto rounded-lg bg-muted p-3 font-mono text-sm whitespace-pre-wrap">
 									{t.stdin}
 								</pre>
 							</div>
-							<div className="mt-2">
-								<span className="font-medium">출력</span>
-								<pre className="mt-1 overflow-x-auto whitespace-pre-wrap rounded bg-muted p-2">
+							<div className="mt-3">
+								<span className="font-bold">출력</span>
+								<pre className="mt-1 overflow-x-auto rounded-lg bg-muted p-3 font-mono text-sm whitespace-pre-wrap">
 									{t.expectedOutput}
 								</pre>
 							</div>

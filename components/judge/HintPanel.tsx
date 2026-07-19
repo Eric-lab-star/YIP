@@ -7,6 +7,7 @@ import { Lightbulb, ChevronDown, Stethoscope, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
+import { cream, doodleBox, ink } from "@/components/mdx/doodle";
 
 const MAX_LEVEL = 3;
 
@@ -105,12 +106,15 @@ export default function HintPanel({
 	// account (the API also enforces this with a 401).
 	if (!isLoggedIn) {
 		return (
-			<div className="rounded-md border p-4 text-center">
-				<div className="flex items-center justify-center gap-2 text-sm font-medium">
-					<Lightbulb className="size-4" />
+			<div
+				className="px-6 py-5 text-center"
+				style={{ ...doodleBox, backgroundColor: cream }}
+			>
+				<div className="flex items-center justify-center gap-2 text-lg font-bold">
+					<Lightbulb className="size-5" />
 					AI 힌트는 회원 전용이에요
 				</div>
-				<p className="mt-1 text-sm text-muted-foreground">
+				<p className="mt-1 text-base text-muted-foreground">
 					회원가입 후 단계별 AI 힌트와 오답 진단을 이용할 수 있어요.
 				</p>
 				<Button asChild size="sm" className="mt-3">
@@ -121,7 +125,7 @@ export default function HintPanel({
 	}
 
 	return (
-		<div className="rounded-md border p-3">
+		<div className="px-6 py-5" style={{ ...doodleBox, backgroundColor: cream }}>
 			<div className="flex flex-wrap items-center gap-2">
 				<Button
 					type="button"
@@ -166,14 +170,19 @@ export default function HintPanel({
 
 			{showPanel && (
 				<div className="mt-3">
-					<div className="mb-1 flex items-center gap-2 text-xs font-medium text-muted-foreground">
-						{mode === "diagnose"
-							? "오답 진단"
-							: `AI 힌트 · ${level}/${MAX_LEVEL}단계`}
-						{loading && <Spinner className="size-3" />}
+					<div className="mb-2 flex items-center gap-2">
+						<span
+							className="rounded-full px-3 py-1 text-sm font-bold text-white"
+							style={{ backgroundColor: ink }}
+						>
+							{mode === "diagnose"
+								? "오답 진단"
+								: `AI 힌트 · ${level}/${MAX_LEVEL}단계`}
+						</span>
+						{loading && <Spinner className="size-4" />}
 					</div>
 
-					<ChatMarkdown content={text || "…"} className="text-sm" />
+					<ChatMarkdown content={text || "…"} className="text-base leading-[1.8]" />
 
 					{mode === "hint" && level > 0 && level < MAX_LEVEL && !loading && (
 						<Button

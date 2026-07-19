@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import CopyCodeBlock from "@/components/mdx/CopyCodeBlock";
+import Squiggle from "@/components/mdx/Squiggle";
 
 /* ── Doodle tokens (mirror app/styles/theme.css) ─────────────────── */
 const ink = "#263D5B"; // secondary — hand-drawn ink line / text
@@ -11,32 +12,6 @@ const doodleBox: React.CSSProperties = {
 	border: `2.5px solid ${ink}`,
 	borderRadius: "255px 15px 225px 15px / 15px 225px 15px 255px",
 };
-
-/* A wobbly hand-drawn divider, reused for <hr> and heading underlines. */
-function Squiggle({
-	color = sky,
-	className = "",
-}: {
-	color?: string;
-	className?: string;
-}) {
-	return (
-		<svg
-			className={className}
-			viewBox="0 0 300 14"
-			fill="none"
-			preserveAspectRatio="none"
-			aria-hidden
-		>
-			<path
-				d="M3 8 Q 30 2, 58 7 T 116 7 Q 150 12, 184 6 T 242 7 Q 270 2, 297 8"
-				stroke={color}
-				strokeWidth="4.5"
-				strokeLinecap="round"
-			/>
-		</svg>
-	);
-}
 
 /**
  * Doodle-styled MDX element map. Every `.mdx` route under app/ renders through

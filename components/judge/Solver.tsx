@@ -22,6 +22,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { LANGUAGES } from "@/app/lib/judge0/languages";
+import { doodleBox, ink } from "@/components/mdx/doodle";
 import ResultPanel, {
 	type SubmissionResult,
 	VERDICT_LABEL,
@@ -387,7 +388,9 @@ export default function Solver({
 				</div>
 			</div>
 
-			<div className="overflow-hidden rounded-md border">
+			{/* Hand-drawn frame around the dark editor, matching how lesson pages
+			    present code (CopyCodeBlock puts the same border on its highlighter). */}
+			<div className="overflow-hidden" style={doodleBox}>
 				<Editor
 					height="52vh"
 					language={monacoLang}
@@ -420,15 +423,14 @@ export default function Solver({
 			</div>
 
 			<div>
-				<label className="mb-1 block text-sm font-medium text-muted-foreground">
-					입력 (stdin)
-				</label>
+				<label className="mb-2 block text-base font-bold">입력 (stdin)</label>
 				<Textarea
 					value={stdin}
 					onChange={(e) => setStdin(e.target.value)}
 					rows={3}
 					placeholder="실행 시 프로그램에 전달할 입력을 여기에 넣으세요."
-					className="font-mono text-sm"
+					className="bg-muted px-4 py-3 font-mono text-sm"
+					style={doodleBox}
 				/>
 			</div>
 
@@ -454,16 +456,28 @@ function RunResultPanel({ output }: { output: RunOutput }) {
 		!!output.signal;
 
 	return (
-		<div className="rounded-md border p-3">
-			<div className="mb-2 flex items-center gap-2 text-sm">
-				<span className="font-medium">실행 결과</span>
-				<span className={failed ? "text-red-600" : "text-green-600"}>
+		<div
+			className="px-6 py-5"
+			style={{ ...doodleBox, backgroundColor: failed ? "#FDECEC" : "#EAF7EF" }}
+		>
+			<div className="mb-3 flex flex-wrap items-center gap-2">
+				<span
+					className="rounded-full px-3 py-1 text-sm font-bold text-white"
+					style={{ backgroundColor: ink }}
+				>
+					실행 결과
+				</span>
+				<span
+					className={`font-bold ${failed ? "text-red-600" : "text-green-600"}`}
+				>
 					{output.signal
 						? `종료 신호 ${output.signal}`
 						: `종료 코드 ${output.exitCode ?? 0}`}
 				</span>
 				{output.timeMs !== null && (
-					<span className="text-muted-foreground">· {output.timeMs}ms</span>
+					<span className="text-sm text-muted-foreground">
+						· {output.timeMs}ms
+					</span>
 				)}
 			</div>
 

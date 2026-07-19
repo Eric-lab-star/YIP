@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { doodleBox } from "@/components/mdx/doodle";
 
 // Shared judge-result types + presentation, used by the live Solver and the
 // submission-history view. Pure presentational (no hooks), so it works in both
@@ -50,15 +51,28 @@ export function VerdictBadge({ verdict }: { verdict: string }) {
 	);
 }
 
+// Same tint vocabulary as the lesson-page callouts: green reads as "됐다",
+// red as "봐야 한다", cream as "아직 진행 중".
+function verdictTint(verdict: string): string {
+	if (verdict === "accepted") return "#EAF7EF";
+	if (verdict === "pending") return "#FFF6E9";
+	return "#FDECEC";
+}
+
 export default function ResultPanel({ result }: { result: SubmissionResult }) {
 	return (
-		<div className="rounded-md border p-3">
-			<div className="mb-2 flex items-center gap-3">
+		<div
+			className="px-6 py-5"
+			style={{ ...doodleBox, backgroundColor: verdictTint(result.verdict) }}
+		>
+			<div className="mb-3 flex flex-wrap items-center gap-3">
 				<VerdictBadge verdict={result.verdict} />
 				{result.verdict === "pending" ? (
-					<span className="text-sm text-muted-foreground">채점 중입니다…</span>
+					<span className="text-base text-muted-foreground">
+						채점 중입니다…
+					</span>
 				) : (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-base font-bold">
 						{result.passed}/{result.total} 통과
 						{result.timeMs !== null && ` · ${result.timeMs}ms`}
 						{result.memoryKb !== null &&
@@ -70,7 +84,10 @@ export default function ResultPanel({ result }: { result: SubmissionResult }) {
 			{result.results.length > 0 && (
 				<ul className="flex flex-col gap-2">
 					{result.results.map((r) => (
-						<li key={r.index} className="rounded border px-3 py-2 text-sm">
+						<li
+							key={r.index}
+							className="rounded-xl border-2 bg-white/60 px-4 py-3 text-sm"
+						>
 							<div className="flex items-center justify-between">
 								<span className="font-medium">
 									테스트 {r.index + 1}
@@ -89,22 +106,24 @@ export default function ResultPanel({ result }: { result: SubmissionResult }) {
 								</span>
 							</div>
 							{!r.hidden && r.statusId !== 3 && (
-								<div className="mt-1 space-y-1 text-xs text-muted-foreground">
+								<div className="mt-2 space-y-1 text-xs text-muted-foreground">
 									{r.compileOutput && (
 										<pre className="overflow-x-auto whitespace-pre-wrap">
 											{r.compileOutput}
 										</pre>
 									)}
+									{/* `break-all` so a long single-token expected/actual value wraps
+									    instead of pushing the card past the viewport. */}
 									{r.expected !== undefined && r.expected !== null && (
 										<div>
-											<span className="font-medium">기대: </span>
-											<code>{r.expected}</code>
+											<span className="font-bold">기대: </span>
+											<code className="font-mono break-all">{r.expected}</code>
 										</div>
 									)}
 									{r.stdout !== undefined && r.stdout !== null && (
 										<div>
-											<span className="font-medium">출력: </span>
-											<code>{r.stdout}</code>
+											<span className="font-bold">출력: </span>
+											<code className="font-mono break-all">{r.stdout}</code>
 										</div>
 									)}
 									{r.stderr && (
