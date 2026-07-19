@@ -8,6 +8,15 @@ const EMBED_MODEL = "voyage-3.5-lite";
 const EMBED_DIMS = 1024;
 const VECTOR_INDEX = "ai_cache_vector_index";
 
+// Entries idle for this long are reaped by MongoDB's TTL monitor (see
+// ensureAiCacheIndex). Expiry is keyed on `lastUsedAt`, which every cache hit
+// refreshes, so a question that keeps being asked never expires — only genuinely
+// unused entries are removed. Changing this value is picked up automatically on
+// the next ensureAiCacheIndex() call.
+const CACHE_TTL_DAYS = 30;
+const CACHE_TTL_SECONDS = CACHE_TTL_DAYS * 24 * 60 * 60;
+const TTL_INDEX = "lastUsedAt_ttl";
+
 // Atlas returns a normalized cosine score in [0, 1] where score = (1 + cos)/2.
 // Empirically (voyage-3.5-lite, Korean), rephrasings of the *same* question
 // score ~0.93–0.98 while unrelated questions sit far lower, so 0.97 was too
@@ -41,10 +50,34 @@ async function col() {
 let indexEnsured = false;
 
 /**
- * Ensure both indexes exist:
+ * Create (or retune) the TTL index that expires idle cache entries.
+ *
+ * `createIndex` will not alter the options of an index that already exists — if
+ * CACHE_TTL_DAYS changes it rejects with IndexOptionsConflict (85) rather than
+ * quietly leaving the old expiry in place, so the change has to be applied
+ * explicitly. The usual tool for that is `collMod`, but that requires dbAdmin
+ * and the Atlas application user only has readWrite ("user is not allowed to do
+ * action [collMod]"). Dropping and recreating stays inside readWrite; the gap
+ * with no TTL index lasts milliseconds and costs nothing but a delayed reap.
+ */
+async function ensureTtlIndex() {
+  const c = await col();
+  const spec = { name: TTL_INDEX, expireAfterSeconds: CACHE_TTL_SECONDS };
+  try {
+    await c.createIndex({ lastUsedAt: 1 }, spec);
+  } catch (err) {
+    if ((err as { code?: number }).code !== 85) throw err;
+    await c.dropIndex(TTL_INDEX);
+    await c.createIndex({ lastUsedAt: 1 }, spec);
+  }
+}
+
+/**
+ * Ensure all three indexes exist:
  *  - a unique B-tree on `questionHash` (concurrency-safe upsert + fast exact hit)
+ *  - a TTL index on `lastUsedAt` that expires idle entries (see CACHE_TTL_DAYS)
  *  - an Atlas Vector Search index on `embedding` for semantic lookup
- * Both calls are idempotent; the in-process guard avoids re-issuing them. The
+ * All calls are idempotent; the in-process guard avoids re-issuing them. The
  * vector index is Atlas-only and builds asynchronously — failures (e.g. running
  * against a non-Atlas server) are logged, not thrown, so chat still works.
  */
@@ -52,6 +85,15 @@ export async function ensureAiCacheIndex() {
   if (indexEnsured) return;
   const c = await col();
   await c.createIndex({ questionHash: 1 }, { unique: true });
+
+  // Expiry is an optimization, not a correctness requirement — a permissions or
+  // connectivity failure here must not take down the chat-room list that calls
+  // this. Logged, not thrown, same as the vector index below.
+  try {
+    await ensureTtlIndex();
+  } catch (err) {
+    console.error("aiCache: TTL index setup skipped:", err);
+  }
 
   try {
     const existing = await c.listSearchIndexes().toArray();
