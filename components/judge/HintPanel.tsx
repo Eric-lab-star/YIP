@@ -40,7 +40,7 @@ export default function HintPanel({
 	const [loading, setLoading] = useState(false);
 
 	const request = useCallback(
-		async (reqMode: "hint" | "diagnose", reqLevel: number) => {
+		async (reqMode: "hint" | "diagnose", reqLevel?: number) => {
 			if (loading) return;
 			setLoading(true);
 			setMode(reqMode);
@@ -54,7 +54,11 @@ export default function HintPanel({
 						language,
 						code,
 						mode: reqMode,
-						level: reqLevel,
+						// Only hint mode has levels; the route builds a diagnose prompt from
+						// `failure` and never reads `level`. Omit it rather than sending a
+						// placeholder — hintSchema requires 1-3 and rejected the 0 that used
+						// to be sent here, so 오답 진단 always failed with 400 Invalid input.
+						level: reqMode === "hint" ? reqLevel : undefined,
 						failure: reqMode === "diagnose" ? failureSummary ?? undefined : undefined,
 					}),
 				});
@@ -71,7 +75,7 @@ export default function HintPanel({
 					toast.error(err.error ?? "AI 힌트를 가져오지 못했습니다.");
 					return;
 				}
-				if (reqMode === "hint") setLevel(reqLevel);
+				if (reqMode === "hint" && reqLevel !== undefined) setLevel(reqLevel);
 				const reader = res.body.getReader();
 				const decoder = new TextDecoder();
 				for (;;) {
@@ -136,7 +140,7 @@ export default function HintPanel({
 						type="button"
 						variant="outline"
 						size="sm"
-						onClick={() => request("diagnose", 0)}
+						onClick={() => request("diagnose")}
 						disabled={loading}
 						title="틀린 제출의 원인을 진단합니다 (정답은 알려주지 않아요)"
 					>
