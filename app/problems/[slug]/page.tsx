@@ -42,7 +42,7 @@ export default async function ProblemPage({
 	return (
 		<div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-6 lg:grid-cols-2">
 			<section className="min-w-0">
-				<div className="mb-3 flex items-center gap-3">
+				<div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
 					<h1 className="text-xl font-bold">{problem.title}</h1>
 					<Badge className={d.tone}>{d.label}</Badge>
 					{solved && (

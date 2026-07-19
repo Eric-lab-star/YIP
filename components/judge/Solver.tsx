@@ -336,8 +336,12 @@ export default function Solver({
 
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="flex items-center justify-between gap-2">
-				<div className="flex items-center gap-2">
+			{/* Wraps rather than overflowing: the full row needs ~590px, which the
+			    solver column only has above ~1280px wide (it is half the grid from
+			    the lg breakpoint up). Without wrapping, 실행/제출 fall off-screen on
+			    phones and on tablet/small-laptop widths alike. */}
+			<div className="flex flex-wrap items-center justify-between gap-2">
+				<div className="flex flex-wrap items-center gap-2">
 					<Select value={language} onValueChange={onLanguageChange}>
 						<SelectTrigger className="w-48">
 							<SelectValue />
@@ -362,7 +366,7 @@ export default function Solver({
 					</Button>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex flex-wrap items-center gap-2">
 					<Button asChild variant="ghost">
 						<Link href={`/problems/${problem.slug}/submissions`}>제출 기록</Link>
 					</Button>
