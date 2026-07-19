@@ -23,7 +23,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { LANGUAGES } from "@/app/lib/judge0/languages";
-import { doodleBox, ink } from "@/components/mdx/doodle";
+import { doodleBox, doodleButtonRadius, ink } from "@/components/mdx/doodle";
 import ResultPanel, {
 	type SubmissionResult,
 	VERDICT_LABEL,
@@ -344,13 +344,28 @@ export default function Solver({
 			    phones and on tablet/small-laptop widths alike. */}
 			<div className="flex flex-wrap items-center justify-between gap-2">
 				<div className="flex flex-wrap items-center gap-2">
+					{/* Border colour already resolves to ink through --input/--border, so
+					    matching the doodle look only needs the heavier stroke and the
+					    hand-drawn corners. The button radius is used rather than
+					    doodleBox: a dropdown listing one or two languages is shorter
+					    than doodleBox's 50px vertical radius sum and would clamp. */}
 					<Select value={language} onValueChange={onLanguageChange}>
-						<SelectTrigger className="w-48">
+						<SelectTrigger
+							className="w-48 border-[2.5px] font-bold"
+							style={{ borderRadius: doodleButtonRadius }}
+						>
 							<SelectValue />
 						</SelectTrigger>
-						<SelectContent>
+						<SelectContent
+							className="border-[2.5px]"
+							style={{ borderRadius: doodleButtonRadius }}
+						>
 							{langOptions.map((l) => (
-								<SelectItem key={l.slug} value={l.slug}>
+								<SelectItem
+									key={l.slug}
+									value={l.slug}
+									className="rounded-lg font-bold"
+								>
 									{l.label}
 								</SelectItem>
 							))}
