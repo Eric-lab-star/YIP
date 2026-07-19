@@ -12,6 +12,7 @@ import type { editor as MonacoEditorNS } from "monaco-editor";
 loader.config({ paths: { vs: "/monaco/vs" } });
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { DoodleButton } from "@/components/ui/doodle-button";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -356,35 +357,25 @@ export default function Solver({
 						</SelectContent>
 					</Select>
 
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onFormat}
-						title="코드 정렬"
-					>
+					<DoodleButton type="button" onClick={onFormat} title="코드 정렬">
 						<Wand2 className="size-4" />
 						포맷
-					</Button>
+					</DoodleButton>
 				</div>
 
 				<div className="flex flex-wrap items-center gap-2">
-					<Button asChild variant="ghost">
+					<Button asChild variant="ghost" className="font-bold">
 						<Link href={`/problems/${problem.slug}/submissions`}>제출 기록</Link>
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onRun}
-						disabled={runningRun}
-					>
+					<DoodleButton type="button" onClick={onRun} disabled={runningRun}>
 						{runningRun && <Spinner />}
 						<Play className="size-4" />
 						실행
-					</Button>
-					<Button onClick={onSubmit} disabled={running}>
+					</DoodleButton>
+					<DoodleButton tone="primary" onClick={onSubmit} disabled={running}>
 						{running && <Spinner />}
 						제출
-					</Button>
+					</DoodleButton>
 				</div>
 			</div>
 

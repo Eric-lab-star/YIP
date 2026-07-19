@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Lightbulb, ChevronDown, Stethoscope, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DoodleButton } from "@/components/ui/doodle-button";
 import { Spinner } from "@/components/ui/spinner";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import { cream, doodleBox, ink } from "@/components/mdx/doodle";
@@ -117,9 +118,9 @@ export default function HintPanel({
 				<p className="mt-1 text-base text-muted-foreground">
 					회원가입 후 단계별 AI 힌트와 오답 진단을 이용할 수 있어요.
 				</p>
-				<Button asChild size="sm" className="mt-3">
+				<DoodleButton asChild tone="primary" size="sm" className="mt-3">
 					<Link href="/login">회원가입하고 이용하기</Link>
-				</Button>
+				</DoodleButton>
 			</div>
 		);
 	}
@@ -127,9 +128,8 @@ export default function HintPanel({
 	return (
 		<div className="px-6 py-5" style={{ ...doodleBox, backgroundColor: cream }}>
 			<div className="flex flex-wrap items-center gap-2">
-				<Button
+				<DoodleButton
 					type="button"
-					variant="outline"
 					size="sm"
 					onClick={() => request("hint", 1)}
 					disabled={loading}
@@ -137,12 +137,11 @@ export default function HintPanel({
 				>
 					<Lightbulb className="size-4" />
 					AI 힌트
-				</Button>
+				</DoodleButton>
 
 				{failureSummary && (
-					<Button
+					<DoodleButton
 						type="button"
-						variant="outline"
 						size="sm"
 						onClick={() => request("diagnose")}
 						disabled={loading}
@@ -150,7 +149,7 @@ export default function HintPanel({
 					>
 						<Stethoscope className="size-4" />
 						오답 진단
-					</Button>
+					</DoodleButton>
 				)}
 
 				{showPanel && (
@@ -185,16 +184,15 @@ export default function HintPanel({
 					<ChatMarkdown content={text || "…"} className="text-base leading-[1.8]" />
 
 					{mode === "hint" && level > 0 && level < MAX_LEVEL && !loading && (
-						<Button
+						<DoodleButton
 							type="button"
-							variant="outline"
 							size="sm"
-							className="mt-2"
+							className="mt-3"
 							onClick={() => request("hint", level + 1)}
 						>
 							<ChevronDown className="size-4" />
 							더 자세한 힌트 ({level + 1}단계)
-						</Button>
+						</DoodleButton>
 					)}
 				</div>
 			)}
