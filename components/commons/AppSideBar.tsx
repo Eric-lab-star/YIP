@@ -13,6 +13,7 @@ import { pythonLangCurriculum } from "@/utils/sideBarTree/tourOfPythonTree";
 import { spaceshipCaptainTree } from "@/utils/sideBarTree/spaceshipCaptainTree";
 import { SideBarTree } from "./SideBarItems";
 import { aIDeveloperTree } from "@/utils/sideBarTree/AIDeveloperTree";
+import { algorithmTree } from "@/utils/sideBarTree/AlgorithmTree";
 import ChatRoomList from "./ChatRoomList";
 import ProblemSidebarList from "./ProblemSidebarList";
 import Link from "next/link";
@@ -79,6 +80,8 @@ function getTitle(section: string) {
       return "우주의 수호자";
     case "AIDeveloper":
       return "인공 지능 입문";
+    case "Algorithm":
+      return "알고리즘 입문";
   }
 }
 
@@ -90,5 +93,7 @@ function getSidebarItems(section: string) {
       return spaceshipCaptainTree;
     case "AIDeveloper":
       return aIDeveloperTree;
+    case "Algorithm":
+      return algorithmTree;
   }
 }
