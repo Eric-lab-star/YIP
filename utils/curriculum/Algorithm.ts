@@ -31,4 +31,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "range 를 자유롭게 쓰고 누적 상자의 시작값을 제대로 고르는 법을 배워보자냥!",
   },
+  {
+    name: "정렬",
+    slug: "sorting",
+    description:
+      "sorted 와 key 로 원하는 기준으로 줄을 세우고, 정렬한 뒤 원하는 값을 꺼내보자냥!",
+  },
 ];
