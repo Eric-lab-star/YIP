@@ -55,4 +55,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "멈추는 조건과 자기 호출로 문제를 쪼개고, 재귀가 느려질 때 고치는 법을 배워보자냥!",
   },
+  {
+    name: "2차원 리스트",
+    slug: "grid",
+    description:
+      "리스트 안의 리스트로 격자를 만들고, 행과 열을 훑고, 이웃 칸을 안전하게 들여다보자냥!",
+  },
 ];
