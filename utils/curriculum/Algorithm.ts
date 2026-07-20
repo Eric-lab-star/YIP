@@ -43,4 +43,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "딕셔너리로 개수를 세고 집합으로 본 것을 기억해서, 정렬보다 빠르게 답을 찾아보자냥!",
   },
+  {
+    name: "이분 탐색",
+    slug: "binary_search",
+    description:
+      "반씩 줄여가며 찾는 법과 답 자체를 이분 탐색하는 법을 배워보자냥!",
+  },
 ];
