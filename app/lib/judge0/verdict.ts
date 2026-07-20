@@ -7,6 +7,7 @@ export type Verdict =
 	| "compilation_error"
 	| "runtime_error"
 	| "time_limit_exceeded"
+	| "output_limit_exceeded"
 	| "internal_error";
 
 export function isTerminal(v: Verdict): boolean {

@@ -13,11 +13,13 @@ import { loadEnv, resolveMongoUri } from "./lib/mongoUri.mjs";
 
 const LANGS = ["python", "javascript", "cpp", "java", "go"];
 
-// The judge sandbox aborts (SIGABRT) once a submission writes more than 1024
-// bytes to stdout — it is not a timeout, and a correct solution fails just as
-// hard as a wrong one. Keep every expected output under that, which is what
-// bounds n in the two problems that print a whole enumeration below.
-const STDOUT_CAP = 1024;
+// Piston kills (does not truncate) a submission that overruns its per-stream
+// stdio cap, and a correct solution dies just as hard as a wrong one, so any
+// problem whose expected output crosses the cap is unsolvable. The cap is
+// PISTON_OUTPUT_MAX_SIZE in piston/docker-compose.yml, raised from Piston's
+// 1024-byte default to 1 MB; assert against it here so a case that crosses it
+// fails at seed time instead of silently shipping an unsolvable problem.
+const STDOUT_CAP = 1_048_576;
 
 const STARTERS = {
 	singleInt: {
@@ -53,10 +55,9 @@ const P = [
 		shape: "singleInt",
 		visible: 2,
 		description:
-			"# 이진 문자열 만들기\n\n정수 `n` (1 이상 6 이하) 이 주어집니다.\n\n`0` 과 `1` 로만 이루어진 **길이 `n` 인 문자열을 전부**, 사전순으로 한 줄에 하나씩 출력하세요.",
-		// n=6 이 상한이다. 출력은 64줄 × 7바이트 = 448바이트로 STDOUT_CAP 안에 든다.
-		// n=7 이면 정확히 1024바이트라 여유가 없고, n=10 은 11KB 라 정답도 죽는다.
-		inputs: ["2", "1", "3", "4", "6"],
+			"# 이진 문자열 만들기\n\n정수 `n` (1 이상 10 이하) 이 주어집니다.\n\n`0` 과 `1` 로만 이루어진 **길이 `n` 인 문자열을 전부**, 사전순으로 한 줄에 하나씩 출력하세요.",
+		// n=10 의 출력은 1024줄 × 11바이트 = 약 11KB. 1 MB 상한 안에 넉넉히 든다.
+		inputs: ["2", "1", "3", "4", "10"],
 		solve: (s) => {
 			const n = Number(s.trim());
 			const out = [];
@@ -78,10 +79,10 @@ const P = [
 		shape: "singleInt",
 		visible: 2,
 		description:
-			"# 하노이 탑\n\n원판이 `n`개 (1 이상 7 이하) 쌓인 1번 기둥에서 3번 기둥으로 원판을 모두 옮기려 합니다.\n한 번에 한 개씩만 옮길 수 있고, 큰 원판을 작은 원판 위에 올릴 수 없습니다.\n\n첫 줄에 **옮기는 횟수**를 출력하고,\n이어서 각 줄에 **어느 기둥에서 어느 기둥으로** 옮기는지 공백으로 구분해 출력하세요.\n\n옮기는 순서는 원판을 가장 적게 움직이는 방법이어야 합니다.",
-		// n=7 이 상한이다. 출력은 127줄 × 4바이트 + 개수 줄 = 512바이트라 여유가 있다.
-		// n=8 이면 1024바이트로 딱 걸리고, n=10 은 4KB 라 정답도 죽는다.
-		inputs: ["2", "1", "3", "4", "7"],
+			"# 하노이 탑\n\n원판이 `n`개 (1 이상 10 이하) 쌓인 1번 기둥에서 3번 기둥으로 원판을 모두 옮기려 합니다.\n한 번에 한 개씩만 옮길 수 있고, 큰 원판을 작은 원판 위에 올릴 수 없습니다.\n\n첫 줄에 **옮기는 횟수**를 출력하고,\n이어서 각 줄에 **어느 기둥에서 어느 기둥으로** 옮기는지 공백으로 구분해 출력하세요.\n\n옮기는 순서는 원판을 가장 적게 움직이는 방법이어야 합니다.",
+		// n=10 의 출력은 1023줄 × 4바이트 + 개수 줄 = 약 4KB. 상한보다는 재귀 호출
+		// 수가 지수로 늘어난다는 점이 먼저 체감되도록 고른 값이다.
+		inputs: ["2", "1", "3", "4", "10"],
 		solve: (s) => {
 			const n = Number(s.trim());
 			const moves = [];

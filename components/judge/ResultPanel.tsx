@@ -34,6 +34,7 @@ export const VERDICT_LABEL: Record<string, string> = {
 	compilation_error: "컴파일 에러",
 	runtime_error: "런타임 에러",
 	time_limit_exceeded: "시간 초과",
+	output_limit_exceeded: "출력 초과",
 	internal_error: "내부 오류",
 };
 

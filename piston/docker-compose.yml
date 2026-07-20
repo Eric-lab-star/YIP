@@ -22,6 +22,12 @@ services:
       # larger time budgets are accepted (app schema allows up to 15s).
       PISTON_RUN_TIMEOUT: "15000"
       PISTON_COMPILE_TIMEOUT: "20000"
+      # Max size of *each* stdio buffer (stdout and stderr are capped
+      # separately). Piston's default is 1024 bytes, and it does not truncate —
+      # it kills the process, reporting SIGKILL exactly like a timeout does. A
+      # correct solution whose expected output crossed 1KB was therefore
+      # unjudgeable. 1 MB leaves ample headroom for any lesson problem.
+      PISTON_OUTPUT_MAX_SIZE: "1048576"
     ports:
       - "2000:2000"
     volumes:
