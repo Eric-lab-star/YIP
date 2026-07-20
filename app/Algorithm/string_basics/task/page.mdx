@@ -1,0 +1,171 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 문자열 5문제',
+  description: '길이 재기부터 회문 판별까지, 배운 슬라이싱과 순회로 다섯 문제를 채점기에 제출해보자냥!',
+  session: 2,
+}
+
+# 직접 풀어보자! 문자열 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 문제는 다섯 개고 **위에서 아래로 갈수록
+  어려워진다냥.** 순서대로 푸는 걸 추천한다냥. 앞 문제에서 쓴 게 뒤 문제의
+  재료가 되니까 건너뛰면 오히려 손해라냥.
+</NyangSpeech>
+
+---
+
+## 먼저 · 문자열 입력 받기
+
+<NyangSpeech>
+  숫자와 달리 문자열은 `int()` 로 바꿀 필요가 없다냥. 대신 조심할 게 하나
+  있다냥.
+</NyangSpeech>
+
+```python
+word = input().strip()
+```
+
+<StepCard step="해설" title="strip() 을 왜 붙이냥?">
+  `input()` 은 줄 끝의 **보이지 않는 줄바꿈**까지 같이 가져올 때가 있다냥.
+  그러면 길이가 1 더 나오거나 비교가 틀어진다냥.
+
+  `.strip()` 은 앞뒤의 공백과 줄바꿈을 떼어낸다냥. 문자열 문제에서는 습관처럼
+  붙여두면 이유 모를 오답을 피할 수 있다냥.
+</StepCard>
+
+---
+
+<MissionCard number={1} title="문자열 길이" time="5분">
+  입력받은 문자열이 **몇 글자인지** 출력하는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-string-length)
+
+  <Callout type="tip">
+    배운 것 그대로라냥. `len()` 하나면 끝이라냥. 몸풀기 문제니까 빠르게 넘어가자냥.
+  </Callout>
+
+  ```python
+  word = input().strip()
+
+  # 여기에 한 줄
+  ```
+</MissionCard>
+
+<MissionCard number={2} title="문자열 뒤집기" time="7분">
+  입력받은 문자열을 **거꾸로** 출력하는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-reverse-string)
+
+  <Callout type="tip">
+    슬라이싱으로 한 줄에 끝낼 수 있다냥. `[::-1]` 을 떠올려보자냥.
+
+    한 줄로 푼 다음, `for` 로 하나씩 훑으면서 앞에 붙여 쌓는 방법으로도
+    풀어보면 좋다냥. 두 방법 다 익혀두면 나중에 리스트에서도 써먹는다냥.
+  </Callout>
+
+  ```python
+  word = input().strip()
+
+  # 방법 1: 슬라이싱 한 줄
+  # 방법 2: for 로 훑으면서 result = ch + result
+  ```
+</MissionCard>
+
+<MissionCard number={3} title="대문자로 변환" time="7분">
+  입력받은 문자열을 **전부 대문자로** 바꿔 출력하는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-to-upper)
+
+  <Callout type="tip">
+    파이썬에는 이미 만들어진 도구가 있다냥. `word.upper()` 라냥.
+
+    여기서 중요한 걸 하나 확인하고 가자냥 — `word.upper()` 는 **원본을 바꾸지
+    않는다냥.** 바뀐 새 문자열을 돌려줄 뿐이라냥. 어제 배운 "문자열은 못
+    바꾼다"가 여기서도 그대로 통한다냥.
+  </Callout>
+
+  ```python
+  word = input().strip()
+
+  # word.upper() 는 새 문자열을 "돌려준다"냥.
+  # word 자체가 바뀌는 게 아니라는 걸 기억하자냥.
+  ```
+</MissionCard>
+
+<MissionCard number={4} title="모음의 개수" time="10분">
+  문자열 안에 **모음(a, e, i, o, u)이 몇 개**인지 세는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-count-vowels)
+
+  <Callout type="tip">
+    지난 시간 **개수 세기** 뼈대를 그대로 쓰면 된다냥. 상자를 0으로 두고,
+    훑으면서, 조건에 맞을 때만 1 늘린다냥.
+
+    조건은 이렇게 쓸 수 있다냥 — `if ch in "aeiou":`
+
+    `in` 은 "안에 들어있냐"고 묻는 말이라냥. `if ch == "a" or ch == "e" or ...`
+    라고 길게 쓰지 않아도 된다냥.
+  </Callout>
+
+  ```python
+  word = input().strip()
+
+  count = 0
+
+  for ch in word:
+      # 모음일 때만 count 를 1 늘린다냥
+      pass
+
+  print(count)
+  ```
+</MissionCard>
+
+<MissionCard number={5} title="회문 판별" time="12분">
+  거꾸로 읽어도 같은 말인지 판별하는 문제다냥. 오늘의 마지막이자 제일 어려운
+  문제라냥.
+
+  [문제 풀러 가기](/problems/s-palindrome)
+
+  <Callout type="tip">
+    **뒤집은 것과 원본이 같으면** 회문이라냥. 2번 문제에서 뒤집는 법을 이미
+    배웠지? 그걸 그대로 가져와서 `==` 로 비교하면 된다냥.
+
+    출력 형식을 문제에서 꼭 확인하자냥. 무엇을 출력하라고 했는지 잘못 읽으면
+    로직이 맞아도 오답이 된다냥.
+  </Callout>
+
+  ```python
+  word = input().strip()
+
+  # 뒤집은 것과 원본을 비교한다냥
+  ```
+</MissionCard>
+
+---
+
+## 다 풀었냥?
+
+<NyangSpeech>
+  5번 문제가 사실은 2번 문제의 응용이었다는 걸 눈치챘냥? 알고리즘 공부가
+  이렇게 굴러간다냥. 새로 배우는 것보다 **이미 배운 걸 엮는 일**이 훨씬 많다냥.
+</NyangSpeech>
+
+<Callout type="goal">
+  **스스로 점검해보자냥**
+
+  - 다섯 문제를 전부 채점기에서 통과했냥?
+  - `word[1:4]` 가 몇 글자인지 바로 말할 수 있냥?
+  - `word.upper()` 를 해도 `word` 자체는 안 바뀌는 이유를 설명할 수 있냥?
+  - 회문 판별을 뒤집기로 푸는 이유를 설명할 수 있냥?
+</Callout>
+
+<NyangSpeech>
+  다음 시간엔 **반복과 누적**을 더 깊게 파본다냥. 구구단, 팩토리얼, 피보나치
+  같은 것들이라냥. 오늘 쓴 "상자에 모으기"가 거기서 진짜 힘을 발휘한다냥.
+  가보자냥~
+</NyangSpeech>
