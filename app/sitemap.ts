@@ -26,10 +26,12 @@ type Entry = {
 // can be found in search, so its pages belong in the sitemap. They are derived
 // from the curriculum below rather than listed by hand, so a new chapter is
 // crawlable as soon as it is added.
+// /simpleWebDev is deliberately absent: the page is still a placeholder that
+// renders a single word. Submitting it would only earn a thin-content strike.
+// Add it back once it has real material.
 const STATIC_ROUTES: Entry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/Algorithm", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/simpleWebDev", changeFrequency: "weekly", priority: 0.8 },
   { path: "/problems", changeFrequency: "weekly", priority: 0.8 },
   { path: "/games/vamsurlike", changeFrequency: "monthly", priority: 0.5 },
 ];

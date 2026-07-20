@@ -1,5 +1,3 @@
-"use client";
-import { useEffect } from "react";
 import {
   ArrowUpRight,
   Gamepad2,
@@ -59,18 +57,11 @@ function Squiggle({
   );
 }
 
+// No "use client" and no font-injecting effect: the root layout already loads
+// this exact Google Fonts stylesheet in <head>, so the effect was fetching it a
+// second time. Nothing here is interactive, so the page ships as a server
+// component with no client JS.
 export default function CodingAcademyLanding() {
-  useEffect(() => {
-    if (!document.getElementById("doodle-fonts")) {
-      const link = document.createElement("link");
-      link.id = "doodle-fonts";
-      link.rel = "stylesheet";
-      link.href =
-        "https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Delius+Swash+Caps&family=JetBrains+Mono:wght@400;500;700&display=swap";
-      document.head.appendChild(link);
-    }
-  }, []);
-
   // Hand-written font for Korean body + headings (Gaegu), Latin display fallback.
   const handFont = {
     fontFamily: '"Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive',

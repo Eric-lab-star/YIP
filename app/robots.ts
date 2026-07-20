@@ -17,6 +17,12 @@ export default function robots(): MetadataRoute.Robots {
     "/tourOfPython",
     "/spaceshipCaptain",
     "/AIDeveloper",
+    // /problems and /problems/<slug> stay crawlable — these are the sub-routes
+    // that need a session (or admin rights) and would only burn crawl budget.
+    "/problems/new",
+    "/problems/*/edit",
+    "/problems/*/solutions",
+    "/problems/*/submissions",
   ];
 
   return {

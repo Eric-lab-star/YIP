@@ -86,8 +86,12 @@ export const metadata: Metadata = {
 };
 
 // WebSite structured data. `alternateName` is the strongest signal that
-// "yipcode" / "yip코드" refer to this site, and `potentialAction` enables the
-// Google sitelinks search box.
+// "yipcode" / "yip코드" refer to this site.
+//
+// There is deliberately no `potentialAction`/SearchAction here: the sitelinks
+// search box requires a real search endpoint, and this site has no /search
+// route. Declaring one that 404s is worse than declaring none. Add it back
+// alongside an actual /search?q= page.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["Organization", "WebSite"],
@@ -98,14 +102,6 @@ const jsonLd = {
   logo: OG_IMAGE,
   description: "기계와 대화하는 언어를 배우는 코딩 아카데미",
   inLanguage: "ko-KR",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
 };
 
 export default async function RootLayout({

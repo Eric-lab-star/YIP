@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { listProblems } from "@/app/lib/mongo/problems";
 import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
@@ -7,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+	title: "코딩 문제 풀이",
+	description:
+		"YIP의 파이썬 코딩 문제 목록입니다. 난이도별 문제를 브라우저에서 바로 작성하고 채점 결과를 확인해 보세요.",
+	alternates: { canonical: "https://yipcode.xyz/problems" },
+};
 
 const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 	easy: { label: "쉬움", tone: "bg-green-600 text-white" },
