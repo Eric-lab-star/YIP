@@ -79,4 +79,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "경우의 수를 먼저 세고, 중첩 반복문과 itertools 와 재귀로 모든 경우를 만들어보고, 가지치기로 살려내자냥!",
   },
+  {
+    name: "그리디",
+    slug: "greedy",
+    description:
+      "정렬 기준 하나로 답이 갈리는 그리디를 배우고, 언제 되고 언제 안 되는지 반례로 확인해보자냥!",
+  },
 ];
