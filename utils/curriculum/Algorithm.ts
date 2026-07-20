@@ -37,4 +37,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "sorted 와 key 로 원하는 기준으로 줄을 세우고, 정렬한 뒤 원하는 값을 꺼내보자냥!",
   },
+  {
+    name: "딕셔너리와 집합",
+    slug: "counting",
+    description:
+      "딕셔너리로 개수를 세고 집합으로 본 것을 기억해서, 정렬보다 빠르게 답을 찾아보자냥!",
+  },
 ];

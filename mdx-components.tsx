@@ -199,9 +199,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 				{children}
 			</th>
 		),
+		// Cells wrap (prose belongs in them) but not below a readable width. With
+		// no floor, a narrow screen squeezes a Korean phrase down to two
+		// characters per line — "리스/트로/세기/…" stacked seven rows deep. The
+		// floor pushes the table past the wrapper instead, which then scrolls.
 		td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => (
 			<td
-				className="px-4 py-3 align-top"
+				className="min-w-[8rem] px-4 py-3 align-top"
 				style={{ borderTop: `2px dashed ${ink}33` }}
 				{...props}
 			>
