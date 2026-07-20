@@ -6,6 +6,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Use `rg` (ripgrep) instead of `grep` for searching files.
 
+## Responsive Checks
+
+Any new page or UI must be checked across screen widths before it is called
+done — visitors arrive on whatever device they happen to have.
+
+Check at least 320 / 390 / 768 / 1024 / 1280, and **include the width just past
+a breakpoint**. `app/problems/[slug]` shipped with its 실행 and 제출 buttons off
+screen not only on phones (320–570px) but also at 1024–1250px, where
+`lg:grid-cols-2` halves the column while the toolbar keeps its full width.
+Checking only the narrow end misses that class of bug entirely.
+
+Two notes on measuring it:
+
+- If the browser window is maximized, resizing it does nothing. Loading the page
+  in a fixed-width `iframe` on the same origin works, since media queries follow
+  the iframe's width.
+- `documentElement.scrollWidth > innerWidth` on the page itself is a bug. A wide
+  table or code block extending past the viewport is not, **provided it scrolls
+  inside an `overflow-x: auto` container** — inside `overflow: hidden` the
+  content is simply unreachable.
+
+Numbers alone miss overlap and squeezing, so look at it too.
+
 ## Lesson Content
 
 Lesson pages (`app/AIDeveloper`, `app/tourOfPython`, `app/Algorithm`,

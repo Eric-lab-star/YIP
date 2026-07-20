@@ -163,10 +163,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		),
 
 		// GFM table → hand-drawn grid.
+		//
+		// `min-w-full` rather than `w-full`: with `w-full` the table is pinned to
+		// the wrapper's width, so on a narrow screen the columns squeeze and the
+		// cells wrap instead of the wrapper scrolling — a two-column table ends up
+		// with a header several lines tall. `min-w-full` lets the table grow past
+		// the wrapper when the content needs it, and `overflow-x-auto` then does
+		// its job.
 		table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
 			<div className="my-8 overflow-x-auto">
 				<table
-					className="w-full border-collapse text-lg"
+					className="min-w-full border-collapse text-lg"
 					style={{ ...doodleBox, overflow: "hidden" }}
 					{...props}
 				>
@@ -180,7 +187,15 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			</thead>
 		),
 		th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => (
-			<th className="px-4 py-3 text-left font-bold" {...props}>
+			// Headers stay on one line; a wrapped header makes the row taller than
+			// the data it labels. The wrapper scrolls instead. The `[&_code]` part
+			// is needed because the inline-code chip sets `whitespace-pre-wrap`
+			// itself, which otherwise overrides the inherited `nowrap` and splits a
+			// short token like `len(단어)` across two lines.
+			<th
+				className="px-4 py-3 text-left font-bold whitespace-nowrap [&_code]:whitespace-nowrap"
+				{...props}
+			>
 				{children}
 			</th>
 		),
