@@ -1,0 +1,288 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '줄을 세우자! 정렬',
+  description: 'sorted 와 key 로 원하는 기준으로 줄을 세우고, 정렬한 뒤 인덱스로 원하는 값을 꺼내보자냥!',
+  session: 4,
+}
+
+# 줄을 세우자! 정렬
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 첫 시간에 최댓값을 찾았지? 그럼 **두 번째로 큰 값**은
+  어떻게 찾냥? 훑는 것만으로는 슬슬 벅차다냥. 오늘 배울 **정렬**을 쓰면 이런
+  문제가 한 번에 풀린다냥.
+</NyangSpeech>
+
+<Callout type="important">
+  오늘부터 문제 난이도가 **medium** 으로 올라간다냥. 지금까지 푼 easy 문제와
+  달리 한 가지 기술만으로는 안 풀리고, **정렬한 다음 무언가를 더 해야** 한다냥.
+  천천히 가도 괜찮다냥.
+</Callout>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `sorted()` 와 `.sort()` 의 **차이**를 알고 골라 쓴다.
+  - `reverse=True` 로 큰 것부터 세운다.
+  - `key=` 로 **정렬 기준을 바꾼다**.
+  - **튜플 키**로 1순위, 2순위를 정한다.
+  - 정렬한 뒤 **인덱스로 원하는 값**을 꺼낸다.
+</Callout>
+
+---
+
+## 1단계 · 정렬하면 뭐가 좋냥 (5분)
+
+<NyangSpeech>
+  정렬은 그 자체가 목적인 경우보다, **정렬해두면 다른 게 쉬워지는** 경우가
+  훨씬 많다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **줄을 세우면 보이는 것들**
+
+  | 알고 싶은 것 | 정렬 전 | 정렬 후 |
+  |---|---|---|
+  | 가장 큰 값 | 전부 훑어야 한다 | 맨 뒤 `arr[-1]` |
+  | 두 번째로 큰 값 | 꽤 까다롭다 | 뒤에서 두 번째 |
+  | 가운데 값 | 거의 불가능 | 딱 가운데 인덱스 |
+  | 상위 3개 | 세 번 훑어야? | 뒤에서 세 개 |
+
+  줄만 세워두면 **위치가 곧 답**이 된다냥. 이게 정렬을 배우는 진짜 이유라냥.
+</Callout>
+
+---
+
+## 2단계 · sorted 와 sort 는 다르다냥 (7분)
+
+```python
+arr = [3, 1, 2]
+
+new = sorted(arr)     # 새 리스트를 만들어 돌려준다냥
+print(new)            # [1, 2, 3]
+print(arr)            # [3, 1, 2]   원본 그대로!
+
+arr.sort()            # 원본을 직접 바꾼다냥
+print(arr)            # [1, 2, 3]
+```
+
+<Callout type="important">
+  `arr.sort()` 는 **아무것도 돌려주지 않는다냥.**
+
+  ```python
+  arr = sorted(arr)     # 맞다냥
+  arr = arr.sort()      # 틀렸다냥! arr 이 None 이 된다냥
+  ```
+
+  두 번째 줄은 에러도 안 나고 조용히 `None` 이 들어간다냥. 그 다음 줄에서
+  이상한 에러가 터져서 원인을 찾기 어렵다냥. 헷갈리면 **`sorted()` 만** 쓰면
+  된다냥.
+</Callout>
+
+<StepCard step="정리" title="언제 뭘 쓰냥">
+  - **원본을 남겨야 한다** → `sorted(arr)`
+  - **원본을 그냥 바꿔도 된다** → `arr.sort()`
+
+  잘 모르겠으면 `sorted()` 를 쓰자냥. 원본이 안 바뀌니 사고가 안 난다냥.
+</StepCard>
+
+---
+
+## 3단계 · 거꾸로 세우기 (3분)
+
+```python
+arr = [3, 1, 4, 1, 5]
+
+print(sorted(arr))                  # [1, 1, 3, 4, 5]
+print(sorted(arr, reverse=True))    # [5, 4, 3, 1, 1]
+print(sorted(arr)[::-1])            # [5, 4, 3, 1, 1]  같은 결과라냥
+```
+
+<Callout type="tip">
+  **상위 k개**를 뽑는 건 이 둘을 붙이면 끝이라냥.
+
+  ```python
+  top3 = sorted(arr, reverse=True)[:3]
+  ```
+
+  큰 것부터 줄을 세우고, 앞에서 세 개를 자른다냥. 지난 시간에 배운 슬라이싱이
+  여기서 바로 쓰인다냥.
+</Callout>
+
+---
+
+## 4단계 · 기준을 바꾸는 key (10분)
+
+<NyangSpeech>
+  오늘의 핵심이라냥. 지금까지는 **값 자체**로 줄을 세웠는데, `key=` 를 주면
+  **다른 기준**으로 세울 수 있다냥.
+</NyangSpeech>
+
+```python
+words = ["banana", "kiwi", "fig"]
+
+print(sorted(words))                  # ['banana', 'fig', 'kiwi']   사전순
+print(sorted(words, key=len))         # ['fig', 'kiwi', 'banana']   길이순
+```
+
+<StepCard step="원리" title="key 는 '무엇을 보고 비교할지'">
+  `key=len` 은 이런 뜻이라냥 — **"각 단어를 `len()` 에 넣어본 결과로 비교해라."**
+
+  | 단어 | `len(단어)` | 이 값으로 줄 세움 |
+  |---|---|---|
+  | banana | 6 | 3등 |
+  | kiwi | 4 | 2등 |
+  | fig | 3 | 1등 |
+
+  단어 자체가 아니라 **길이라는 잣대**로 비교한 거라냥.
+</StepCard>
+
+### 내 마음대로 기준 만들기 — lambda
+
+`len` 같은 이름 있는 함수 말고, 그 자리에서 기준을 만들 수도 있다냥.
+
+```python
+arr = [-5, 2, -1, 4]
+
+print(sorted(arr, key=abs))              # [-1, 2, 4, -5]   절댓값 기준
+print(sorted(arr, key=lambda x: -x))     # [4, 2, -1, -5]   부호를 뒤집어 큰 순
+```
+
+<Callout type="tip">
+  `lambda x: -x` 는 "x를 받아서 -x를 돌려주는 이름 없는 함수"라냥. 지금은
+  **`key=` 자리에 쓰는 짧은 규칙**이라고만 알아둬도 충분하다냥.
+</Callout>
+
+---
+
+## 5단계 · 1순위, 2순위 — 튜플 키 (10분)
+
+<NyangSpeech>
+  실전에서 제일 많이 쓰는 기술이라냥. **"길이순으로, 길이가 같으면 사전순"**
+  같은 조건이라냥.
+</NyangSpeech>
+
+```python
+words = ["dd", "a", "ccc", "bb", "ab"]
+
+print(sorted(words, key=lambda s: (len(s), s)))
+# ['a', 'ab', 'bb', 'dd', 'ccc']
+```
+
+<StepCard step="원리" title="튜플은 앞에서부터 비교한다냥">
+  `(len(s), s)` 는 **비교할 잣대를 순서대로 늘어놓은 것**이라냥.
+
+  1. 먼저 `len(s)` 로 비교한다냥
+  2. 그게 **같으면** 그때 `s` 로 비교한다냥
+
+  | 단어 | 키 | 순서 |
+  |---|---|---|
+  | a | (1, "a") | 1등 |
+  | ab | (2, "ab") | 2등 |
+  | bb | (2, "bb") | 3등 |
+  | dd | (2, "dd") | 4등 |
+  | ccc | (3, "ccc") | 5등 |
+
+  길이 2인 셋은 `ab`, `bb`, `dd` 순으로 사전순 정렬됐다냥. 3순위, 4순위가
+  필요하면 튜플에 계속 이어붙이면 된다냥.
+</StepCard>
+
+---
+
+## 6단계 · 정렬 뒤에 조심할 것 (7분)
+
+<NyangSpeech>
+  정렬만 하면 끝이 아니라냥. 여기서 틀리는 경우가 많다냥.
+</NyangSpeech>
+
+### 함정 하나 — 중복
+
+**두 번째로 큰 수**를 구한다고 하자냥.
+
+```python
+arr = [5, 5, 3]
+
+print(sorted(arr)[-2])    # 5   ...이게 맞냥?
+```
+
+<Callout type="important">
+  `[5, 5, 3]` 을 정렬하면 `[3, 5, 5]` 라서 뒤에서 두 번째는 **5** 라냥.
+
+  그런데 "서로 다른 값 중 두 번째로 큰 값"을 원했다면 답은 **3** 이라냥!
+
+  중복을 하나로 세려면 먼저 **`set()` 으로 중복을 없애야** 한다냥.
+
+  ```python
+  print(sorted(set(arr))[-2])    # 3
+  ```
+
+  문제를 읽을 때 **중복을 어떻게 세라고 했는지** 꼭 확인하자냥. 이걸 놓쳐서
+  틀리는 경우가 정말 많다냥.
+</Callout>
+
+### 함정 둘 — 가운데 인덱스
+
+`n` 개를 정렬했을 때 가운데는 몇 번이냥?
+
+```python
+arr = sorted([3, 1, 4, 1, 5])    # [1, 1, 3, 4, 5]
+n = len(arr)
+print(arr[n // 2])               # 3
+```
+
+<StepCard step="확인" title="왜 n // 2 냥">
+  `n` 이 5면 인덱스는 0, 1, **2**, 3, 4 라냥. 가운데는 2번이고 `5 // 2` 가
+  2라서 딱 맞는다냥.
+
+  `n // 2 - 1` 이나 `n / 2` 로 쓰면 틀린다냥. `/` 는 소수를 만들어서 인덱스로
+  못 쓴다냥. **정수 나눗셈 `//`** 를 써야 한다냥.
+</StepCard>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  먼저 스스로 답해보고, "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'arr = arr.sort() 라고 쓰면 왜 위험하냥?',
+      answer: '.sort() 는 원본을 바꾸고 아무것도 돌려주지 않아서 arr 에 None 이 들어간다냥. 에러도 안 나고 조용히 망가지니 더 위험하다냥. 헷갈리면 sorted() 만 쓰면 된다냥.',
+    },
+    {
+      question: '단어들을 길이순으로, 길이가 같으면 사전순으로 정렬하려면?',
+      answer: 'sorted(words, key=lambda s: (len(s), s)) 라냥. 튜플은 앞에서부터 비교해서, 길이가 같을 때만 두 번째 잣대인 s 로 비교한다냥.',
+    },
+    {
+      question: '[5, 5, 3] 에서 두 번째로 큰 수는 5냥 3이냥?',
+      answer: '문제가 무엇을 물었느냐에 따라 다르다냥. 그냥 두 번째 원소면 5, "서로 다른 값 중 두 번째"면 3이라냥. 후자면 sorted(set(arr))[-2] 처럼 중복을 먼저 없애야 한다냥.',
+    },
+    {
+      question: '큰 값부터 k개를 뽑는 가장 짧은 방법은?',
+      answer: 'sorted(arr, reverse=True)[:k] 라냥. 큰 것부터 줄을 세우고 앞에서 k개를 슬라이싱한다냥.',
+    },
+    {
+      question: 'n개를 정렬했을 때 가운데 값의 인덱스는?',
+      answer: 'n // 2 라냥. 정수 나눗셈 // 를 써야 한다냥. / 를 쓰면 소수가 나와서 인덱스로 못 쓴다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 이제 직접 풀어볼 차례다냥
+
+<NyangSpeech>
+  오늘 문제는 다섯 개고 **처음 만나는 medium 난이도**라냥. 정렬만으로 끝나는 건
+  1번뿐이고 나머지는 정렬한 뒤에 한 걸음을 더 가야 한다냥. 특히 4번은 오늘 배운
+  함정이 그대로 나온다냥. 가보자냥~
+</NyangSpeech>

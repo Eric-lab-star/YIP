@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listProblems } from "@/app/lib/mongo/problems";
+import { AlgorithmCurriculum } from "@/utils/curriculum/Algorithm";
 
 const SITE_URL = "https://yipcode.xyz";
 
@@ -14,12 +15,17 @@ type Entry = {
   priority: number;
 };
 
-// Only genuinely public, crawlable pages belong here. The lesson curricula
-// (/tourOfPython, /spaceshipCaptain, /AIDeveloper) are login-gated in proxy.ts
-// — an anonymous crawler is 307-redirected to /login — so listing them would
-// just feed Google "page with redirect" errors. They're excluded here and
+// Only genuinely public, crawlable pages belong here. Three of the four lesson
+// curricula (/tourOfPython, /spaceshipCaptain, /AIDeveloper) are login-gated in
+// proxy.ts — an anonymous crawler is 307-redirected to /login — so listing them
+// would just feed Google "page with redirect" errors. They're excluded here and
 // disallowed in robots.ts. Other auth-gated routes (chat, dashBoard, editor,
 // login, students, /problems/*/solutions, /problems/new) are excluded too.
+//
+// /Algorithm is the exception: it is deliberately left ungated so its chapters
+// can be found in search, so its pages belong in the sitemap. They are derived
+// from the curriculum below rather than listed by hand, so a new chapter is
+// crawlable as soon as it is added.
 const STATIC_ROUTES: Entry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/Algorithm", changeFrequency: "weekly", priority: 0.8 },
@@ -40,6 +46,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   );
 
+  // Algorithm chapters. `goal` carries the explanation a search visitor is
+  // looking for, so it outranks `task`, which is mostly links into /problems.
+  const algorithmEntries: MetadataRoute.Sitemap = AlgorithmCurriculum.flatMap(
+    ({ slug }) => [
+      {
+        url: `${SITE_URL}/Algorithm/${slug}/goal`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      },
+      {
+        url: `${SITE_URL}/Algorithm/${slug}/task`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      },
+    ]
+  );
+
   // Problem detail pages are public and live in MongoDB. Failing to reach the
   // DB (e.g. during a build without network) shouldn't break the whole sitemap.
   let problemEntries: MetadataRoute.Sitemap = [];
@@ -55,5 +80,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     problemEntries = [];
   }
 
-  return [...staticEntries, ...problemEntries];
+  return [...staticEntries, ...algorithmEntries, ...problemEntries];
 }

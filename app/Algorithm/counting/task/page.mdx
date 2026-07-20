@@ -1,0 +1,219 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 세기 5문제',
+  description: '딕셔너리와 집합으로 개수 세기, 중복 찾기, 애너그램, 두 수의 합까지 풀어보자냥!',
+  session: 5,
+}
+
+# 직접 풀어보자! 세기 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 다섯 문제는 전부 **"무엇이 몇 개냐"** 또는
+  **"본 적 있냐"** 로 풀린다냥. 문제를 읽으면서 둘 중 어느 쪽인지 먼저
+  판단해보자냥. 그것만 정하면 코드는 금방이라냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **딕셔너리냐 집합이냐 고르는 법**
+
+  - **몇 번 나왔는지** 알아야 한다 → 딕셔너리 `{}`
+  - **나왔는지 아닌지만** 알면 된다 → 집합 `set()`
+
+  1~2번은 딕셔너리, 3번은 집합, 4~5번은 둘 다 쓸 수 있다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="글자 세기" time="10분">
+  각 글자가 몇 번 나왔는지 **사전순으로** 한 줄에 하나씩 출력하는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-char-count)
+
+  <Callout type="important">
+    딕셔너리는 **넣은 순서**를 기억한다냥. 사전순이 아니라냥.
+
+    `banana` 를 세면 `b` 가 먼저 들어가서 `b, a, n` 순으로 나온다냥. 문제는
+    `a, b, n` 을 원하니 **출력 전에 정렬**해야 한다냥.
+
+    ```python
+    for c, k in sorted(count.items()):
+        print(c, k)
+    ```
+
+    `sorted()` 를 빼먹는 게 이 문제에서 제일 흔한 오답이라냥.
+  </Callout>
+
+  ```python
+  s = input().strip()
+
+  count = {}
+  for ch in s:
+      # count.get(ch, 0) 을 써보자냥
+      pass
+
+  # 사전순으로 출력한다냥
+  ```
+</MissionCard>
+
+<MissionCard number={2} title="가장 많이 나온 글자" time="12분">
+  가장 많이 나온 글자를 출력하는 문제다냥. **동점이면 사전순으로 앞선 글자**를
+  출력한다냥.
+
+  [문제 풀러 가기](/problems/s-most-frequent)
+
+  <Callout type="important">
+    동점 처리가 이 문제의 전부라냥.
+
+    `max(count, key=count.get)` 만 쓰면 동점일 때 **먼저 나온 글자**가 나온다냥.
+    운이 좋으면 맞고 운이 나쁘면 틀리는 코드라냥.
+
+    숨겨진 테스트에 동점 케이스가 들어있다냥. 사전순 조건을 반드시 넣자냥.
+  </Callout>
+
+  <StepCard step="힌트" title="튜플 키를 다시 쓴다냥">
+    ```python
+    min(count, key=lambda ch: (-count[ch], ch))
+    ```
+
+    `-count[ch]` 는 개수가 많을수록 **작은 값**이 되니 `min` 으로 고르면 가장
+    많은 글자가 뽑힌다냥. 개수가 같으면 두 번째 잣대인 `ch` 로 사전순 비교라냥.
+  </StepCard>
+
+  ```python
+  s = input().strip()
+
+  count = {}
+  for ch in s:
+      pass
+
+  # 가장 많은 글자, 동점이면 사전순 앞
+  ```
+</MissionCard>
+
+<MissionCard number={3} title="처음 중복되는 수" time="10분">
+  앞에서부터 읽을 때 **이미 나온 수가 처음으로 다시 나오는 순간** 그 수를
+  출력하는 문제다냥. 중복이 없으면 `-1` 을 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-first-duplicate)
+
+  <Callout type="tip">
+    개수는 필요 없고 **봤는지만** 알면 되니 집합이 알맞다냥.
+
+    찾자마자 **바로 멈춰야** 한다냥. 끝까지 돌면 *마지막* 중복이 남아서 틀린
+    답이 나온다냥. `break` 를 잊지 말자냥.
+  </Callout>
+
+  ```python
+  n = int(input())
+  arr = list(map(int, input().split()))
+
+  seen = set()
+  ans = -1
+  for x in arr:
+      # 이미 봤으면 답으로 두고 멈춘다냥
+      pass
+
+  print(ans)
+  ```
+</MissionCard>
+
+<MissionCard number={4} title="애너그램 판별" time="12분">
+  두 문자열이 **글자를 재배열해 서로 만들 수 있는 관계**인지 판별하는 문제다냥.
+
+  [문제 풀러 가기](/problems/s-anagram)
+
+  <Callout type="tip">
+    두 가지 방법이 있다냥. 둘 다 해보면 좋다냥.
+
+    - **정렬**: `sorted(a) == sorted(b)` — 짧고 직관적이라냥
+    - **세기**: 두 문자열의 딕셔너리를 만들어 비교 — 더 빠르다냥
+
+    길이가 다르면 애초에 애너그램이 아니라냥. 다만 **길이만 비교하면 안 된다냥.**
+    `abc` 와 `cba` 는 길이도 같고 애너그램이지만, `abc` 와 `abd` 는 길이가
+    같아도 아니라냥.
+  </Callout>
+
+  ```python
+  a = input().strip()
+  b = input().strip()
+
+  # 정렬로도, 세기로도 풀 수 있다냥
+  ```
+</MissionCard>
+
+<MissionCard number={5} title="합이 목표값인 두 수" time="15분">
+  오늘의 마지막이라냥. **서로 다른 두 자리**의 수를 더해 `target` 을 만들 수
+  있는지 판별한다냥.
+
+  [문제 풀러 가기](/problems/s-pair-sum)
+
+  <Callout type="important">
+    **"서로 다른 두 자리"** 라는 조건이 함정이라냥.
+
+    `4 1 2` 에서 `target` 이 8이면 답은 `NO` 라냥. 4가 하나뿐이라 `4 + 4` 를
+    만들 수 없기 때문이라냥.
+
+    그런데 이렇게 쓰면 `YES` 가 나온다냥.
+
+    ```python
+    s = set(arr)
+    any(target - x in s for x in arr)    # 자기 자신을 또 쓴다냥
+    ```
+
+    반면 `3 3` 에서 `target` 이 6이면 답은 `YES` 라냥. 3이 **두 자리에** 있기
+    때문이라냥. 이 둘을 모두 맞춰야 한다냥.
+  </Callout>
+
+  <StepCard step="힌트" title="훑으면서 그때까지 본 것만 확인한다냥">
+    답은 의외로 간단하다냥. 집합을 **미리 다 만들지 말고**, 훑으면서 하나씩
+    채우는 거라냥.
+
+    ```python
+    seen = set()
+    for x in arr:
+        if target - x in seen:   # 지금까지 본 것 중에 짝이 있냥?
+            ...
+        seen.add(x)              # 확인한 뒤에 넣는다냥
+    ```
+
+    확인을 **넣기 전에** 하니까 자기 자신은 절대 짝이 될 수 없다냥. 그리고
+    같은 값이 두 번 나오면 두 번째 것이 첫 번째 것을 짝으로 찾는다냥.
+    두 조건이 한 번에 해결된다냥.
+  </StepCard>
+
+  ```python
+  n, target = map(int, input().split())
+  arr = list(map(int, input().split()))
+
+  # 훑으면서 확인하고, 확인한 뒤에 넣는다냥
+  ```
+</MissionCard>
+
+---
+
+## 다 풀었냥?
+
+<NyangSpeech>
+  5번의 "확인하고 나서 넣는다"는 순서, 인상 깊었냥? 코드는 두 줄인데 조건 두
+  개를 동시에 해결한다냥. 알고리즘에는 이런 게 자주 있다냥. **순서를 바꾸는
+  것만으로** 어려운 문제가 쉬워진다냥.
+</NyangSpeech>
+
+<Callout type="goal">
+  **스스로 점검해보자냥**
+
+  - 다섯 문제를 전부 채점기에서 통과했냥?
+  - 딕셔너리를 쓸 때와 집합을 쓸 때를 구분할 수 있냥?
+  - 1번에서 `sorted()` 가 왜 필요했는지 설명할 수 있냥?
+  - 5번에서 확인과 추가의 순서가 왜 중요한지 설명할 수 있냥?
+</Callout>
+
+<NyangSpeech>
+  여기까지 오면 "세는 문제는 딕셔너리" 라는 감이 생겼을 거다냥. 다음 시간엔
+  **이분 탐색**을 배운다냥. 정렬해두면 얼마나 빨라지는지, 정렬의 진짜 보상을
+  보게 될 거다냥. 수고했다냥~
+</NyangSpeech>
