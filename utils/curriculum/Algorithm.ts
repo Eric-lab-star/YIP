@@ -61,4 +61,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "리스트 안의 리스트로 격자를 만들고, 행과 열을 훑고, 이웃 칸을 안전하게 들여다보자냥!",
   },
+  {
+    name: "스택과 큐",
+    slug: "stack_queue",
+    description:
+      "나중에 넣은 걸 먼저 꺼내는 스택과 먼저 넣은 걸 먼저 꺼내는 큐로 괄호 검사부터 오큰수까지 풀어보자냥!",
+  },
 ];
