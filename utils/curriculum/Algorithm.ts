@@ -67,4 +67,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "나중에 넣은 걸 먼저 꺼내는 스택과 먼저 넣은 걸 먼저 꺼내는 큐로 괄호 검사부터 오큰수까지 풀어보자냥!",
   },
+  {
+    name: "BFS와 DFS",
+    slug: "graph_search",
+    description:
+      "큐로 가까운 곳부터 퍼지는 BFS와 끝까지 파고드는 DFS로 섬을 세고 미로의 최단 거리를 구해보자냥!",
+  },
 ];

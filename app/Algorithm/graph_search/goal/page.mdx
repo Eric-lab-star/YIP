@@ -1,0 +1,272 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '퍼져나가며 찾자! BFS와 DFS',
+  description: '큐로 가까운 곳부터 퍼지는 BFS와 끝까지 파고드는 DFS로 섬을 세고 미로의 최단 거리를 구해보자냥!',
+  session: 10,
+}
+
+# 퍼져나가며 찾자! BFS와 DFS
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘은 지금까지 배운 걸 **전부** 쓴다냥. 8장의 격자와
+  방향표, 9장의 큐와 스택이 오늘을 위한 준비였다냥. 알고리즘 두 개를 배우는데,
+  둘 다 뼈대가 열 줄 남짓이라냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 격자와 그래프가 **같은 것**임을 안다.
+  - **BFS**를 큐로, **DFS**를 스택이나 재귀로 쓴다.
+  - **방문 표시**를 언제 해야 하는지 안다.
+  - **최단 거리는 BFS만** 준다는 것을 안다.
+</Callout>
+
+---
+
+## 1단계 · 격자도 그래프라냥 (7분)
+
+<NyangSpeech>
+  그래프라고 하면 어려워 보이지만, **점들과 그 사이의 연결**일 뿐이라냥.
+  8장에서 다룬 격자가 이미 그래프였다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **비유로 이해하기 — 지하철 노선도**
+
+  역이 **점**이고 선로가 **연결**이라냥. "여기서 저기까지 몇 정거장이냥?"이
+  오늘 푸는 문제라냥.
+
+  격자에서는 **칸이 점**이고, **상하좌우로 붙어 있는 것**이 연결이라냥.
+  그래서 8장의 방향표가 그대로 쓰인다냥.
+</Callout>
+
+```python
+DIRS = ((-1, 0), (1, 0), (0, -1), (0, 1))
+```
+
+<Callout type="tip">
+  격자가 아닌 그래프는 **인접 리스트**로 담는다냥. `adj[u]` 에 `u` 와 이어진
+  점들을 넣어두는 거라냥.
+
+  ```python
+  adj = [[] for _ in range(n + 1)]
+  for _ in range(m):
+      u, v = map(int, input().split())
+      adj[u].append(v)
+      adj[v].append(u)      # 방향이 없으면 양쪽 다 넣는다냥
+  ```
+
+  격자든 인접 리스트든 **"지금 칸에서 갈 수 있는 곳들"** 을 주는 건 똑같다냥.
+  그래서 알고리즘은 하나도 안 바뀐다냥.
+</Callout>
+
+---
+
+## 2단계 · BFS는 물결처럼 퍼진다냥 (12분)
+
+<NyangSpeech>
+  BFS는 **가까운 곳부터** 차례로 본다냥. 연못에 돌을 던지면 물결이 동그랗게
+  퍼지는 것과 같다냥. 큐를 쓰면 저절로 그렇게 된다냥.
+</NyangSpeech>
+
+<StepCard step="뼈대" title="큐에 넣고, 꺼내고, 이웃을 넣는다냥">
+  1. 시작점을 **큐에 넣고 방문 표시**한다
+  2. 큐에서 하나 **꺼낸다**
+  3. 그 칸의 이웃 중 **아직 안 간 곳**을 큐에 넣고 방문 표시한다
+  4. 큐가 빌 때까지 2~3을 반복한다
+</StepCard>
+
+```python
+from collections import deque
+
+q = deque([(sr, sc)])
+seen[sr][sc] = True
+
+while q:
+    r, c = q.popleft()
+    for dr, dc in DIRS:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < m and not seen[nr][nc]:
+            seen[nr][nc] = True      # 넣을 때 표시한다냥
+            q.append((nr, nc))
+```
+
+<Callout type="important">
+  **방문 표시는 큐에 넣을 때 한다냥.** 꺼낼 때 하면 안 된다냥.
+
+  꺼낼 때 표시하면, 아직 큐 안에서 기다리는 칸을 **다른 이웃이 또 넣는다냥.**
+  같은 칸이 큐에 여러 번 쌓인다냥.
+
+  작은 입력에서는 답이 맞게 나오기도 한다냥. 하지만 큐가 쓸데없이 부풀어서
+  입력이 커지면 느려지고 메모리도 먹는다냥. **처음부터 넣을 때 표시하는
+  습관을 들이자냥.**
+</Callout>
+
+<Callout type="tip">
+  9장에서 배운 대로 큐는 `deque` 로 만들자냥. `list.pop(0)` 을 쓰면 칸 수가
+  많아질 때 그것만으로 느려진다냥.
+</Callout>
+
+---
+
+## 3단계 · 거리도 같이 적는다냥 (10분)
+
+<NyangSpeech>
+  BFS의 진짜 힘이라냥. 방문 표시 대신 **거리를 적어두면** 최단 거리가
+  공짜로 나온다냥.
+</NyangSpeech>
+
+```python
+dist = [[-1] * m for _ in range(n)]
+dist[sr][sc] = 0
+q = deque([(sr, sc)])
+
+while q:
+    r, c = q.popleft()
+    for dr, dc in DIRS:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < m and dist[nr][nc] == -1:
+            dist[nr][nc] = dist[r][c] + 1
+            q.append((nr, nc))
+```
+
+<Callout type="tip">
+  `dist` 를 `-1` 로 채워두면 **방문 표시와 거리를 한 배열로** 해결한다냥.
+  `-1` 이면 아직 안 간 곳이라냥. `seen` 을 따로 둘 필요가 없다냥.
+
+  끝나고도 `-1` 인 칸은 **아예 갈 수 없는 곳**이라냥.
+</Callout>
+
+<Callout type="important">
+  **최단 거리는 BFS만 준다냥.** DFS로 먼저 도착한 경로는 최단이 아니라냥.
+
+  DFS는 한 방향으로 끝까지 파고들기 때문에, 빙 돌아가는 길로 먼저 닿을 수
+  있다냥. 오늘 3번 문제의 숨겨진 테스트가 정확히 그걸 잡는다냥.
+
+  가까운 곳부터 보는 BFS는 **처음 닿았을 때가 곧 최단**이라 그런 일이 없다냥.
+</Callout>
+
+---
+
+## 4단계 · DFS는 끝까지 파고든다냥 (12분)
+
+<NyangSpeech>
+  DFS는 갈 수 있는 데까지 쭉 간 다음, 막히면 되돌아온다냥. 미로에서 한 손을
+  벽에 대고 걷는 것과 비슷하다냥.
+</NyangSpeech>
+
+큐 대신 **스택**을 쓰면 된다냥. 딱 한 글자만 바뀐다냥.
+
+```python
+st = [(sr, sc)]
+seen[sr][sc] = True
+
+while st:
+    r, c = st.pop()          # popleft 가 아니라 pop 이라냥
+    ...
+```
+
+재귀로 쓰면 더 짧다냥.
+
+```python
+def dfs(r, c):
+    seen[r][c] = True
+    for dr, dc in DIRS:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < n and 0 <= nc < m and not seen[nr][nc]:
+            dfs(nr, nc)
+```
+
+<Callout type="important">
+  **재귀 DFS에는 깊이 함정이 있다냥.** 7장에서 배운 그거라냥.
+
+  파이썬은 재귀가 1000번쯤 쌓이면 `RecursionError` 로 터진다냥. 그런데 격자가
+  크면 깊이가 쉽게 그걸 넘긴다냥.
+
+  ```python
+  import sys
+  sys.setrecursionlimit(10 ** 6)
+  ```
+
+  이 한 줄로 풀린다냥. 오늘 2번 문제에 **100 x 100이 전부 땅인 격자**가
+  들어 있는데, 이 줄이 없으면 정답 코드도 터진다냥.
+</Callout>
+
+<Callout type="tip">
+  깊이는 **칸 수가 아니라 파고든 길이**라냥. 그래서 헷갈린다냥.
+
+  땅이 3000칸이어도 여기저기 흩어진 모양이면 깊이는 얕게 끝난다냥. 반대로
+  빈틈없이 꽉 찬 격자는 뱀처럼 훑고 지나가서 **깊이가 칸 수만큼** 된다냥.
+
+  큰 격자에서 깊이가 걱정되면 그냥 **BFS를 쓰자냥.** BFS는 큐를 쓰니 깊이
+  문제가 아예 없다냥.
+</Callout>
+
+---
+
+## 5단계 · 무엇을 세느냐에 따라 (8분)
+
+<NyangSpeech>
+  뼈대는 하나인데 붙이는 것만 바꾸면 여러 문제가 풀린다냥. 오늘 문제들이
+  전부 이 변주라냥.
+</NyangSpeech>
+
+<StepCard step="정리" title="같은 뼈대, 다른 목적">
+  - **덩어리 개수** — 아직 안 간 칸에서 탐색을 시작한 **횟수**를 센다
+  - **덩어리 크기** — 한 번의 탐색에서 꺼낸 칸 수를 센다
+  - **최단 거리** — 방문 표시 대신 거리를 적는다
+  - **여러 곳에서 동시에** — 시작점을 **전부 큐에 넣고** 시작한다
+
+  마지막 것이 오늘 5번 문제라냥. 시작점마다 따로 탐색할 필요가 없다냥.
+  한꺼번에 넣으면 물결이 동시에 퍼진다냥.
+</StepCard>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  먼저 스스로 답해보고, "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'BFS와 DFS는 뭐가 다르냥?',
+      answer: '꺼내는 순서라냥. BFS는 큐를 써서 가까운 곳부터 물결처럼 퍼지고, DFS는 스택이나 재귀로 한 방향을 끝까지 파고든 뒤 되돌아온다냥. 코드는 popleft 냐 pop 이냐만 다르다냥.',
+    },
+    {
+      question: '방문 표시는 언제 하냥?',
+      answer: '큐에 넣을 때 한다냥. 꺼낼 때 하면 아직 큐에서 기다리는 칸을 다른 이웃이 또 넣어서 같은 칸이 여러 번 쌓인다냥. 답이 맞게 나오더라도 큐가 부풀어서 느려진다냥.',
+    },
+    {
+      question: '최단 거리를 구할 때 DFS를 쓰면 왜 안 되냥?',
+      answer: 'DFS는 한 방향으로 끝까지 가기 때문에 빙 돌아가는 길로 먼저 도착할 수 있다냥. BFS는 가까운 곳부터 보니까 처음 닿았을 때가 곧 최단이라냥.',
+    },
+    {
+      question: '재귀 DFS 로 큰 격자를 풀면 무슨 일이 생기냥?',
+      answer: 'RecursionError 로 터질 수 있다냥. 파이썬 기본 재귀 한도가 1000쯤이라 꽉 찬 큰 격자에서는 금방 넘긴다냥. sys.setrecursionlimit(10 ** 6) 을 넣거나, 아예 깊이 문제가 없는 BFS 를 쓰면 된다냥.',
+    },
+    {
+      question: '시작점이 여러 개일 때는 어떻게 하냥?',
+      answer: '시작점을 전부 큐에 넣고 시작하면 된다냥. 그러면 물결이 동시에 퍼져서 한 번의 탐색으로 끝난다냥. 시작점마다 따로 탐색할 필요가 없다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 이제 직접 풀어볼 차례다냥
+
+<NyangSpeech>
+  오늘 문제는 다섯 개라냥. 1~2번은 덩어리 세기, 3번은 최단 거리, 4번은 격자가
+  아닌 그래프, 5번은 여러 곳에서 동시에라냥. **뼈대는 다섯 문제가 전부
+  똑같다냥.** 한 번 익혀두면 나머지는 변주일 뿐이라냥. 가보자냥~
+</NyangSpeech>
