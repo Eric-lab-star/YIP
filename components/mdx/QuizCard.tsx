@@ -33,7 +33,7 @@ function QuizRow({ item, index }: { item: QuizItem; index: number }) {
         }}
         aria-expanded={open}
       >
-        {open ? "🙈 정답 숨기기" : "🐾 정답 보기"}
+        {open ? "정답 숨기기" : "정답 보기"}
       </button>
 
       {open && (

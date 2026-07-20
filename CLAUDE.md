@@ -6,6 +6,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Use `rg` (ripgrep) instead of `grep` for searching files.
 
+## Lesson Content
+
+Lesson pages (`app/AIDeveloper`, `app/tourOfPython`, `app/Algorithm`,
+`app/spaceshipCaptain`) and the components that render them
+(`components/mdx/`) must not use emoji — including in 코딩냥이's dialogue,
+headings, and card labels. Use plain text, or `CatIcon` when a character
+image is wanted.
+
+Two exceptions, because there the emoji is content rather than decoration:
+
+- inside code examples (e.g. `print(" ❤️ " * 10)`)
+- when the lesson is *about* emoji (e.g. an exercise that prints ☀️🌧️❄️
+  based on the weather)
+
+This applies only to lesson content. General app UI (landing page, games,
+navigation) is unaffected.
+
+Note that box drawing (`─ ┌ ┐ │ ├ └ ┘`), arrows (`→ ←`), enclosed numbers
+(`① ② ③`), and `○ ■ ▶ ★ ░` are **not** emoji and are used deliberately —
+several appear inside Python examples, where removing them breaks the code.
+
 ## Commands
 
 ```bash
