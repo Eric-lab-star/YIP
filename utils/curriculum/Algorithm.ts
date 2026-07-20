@@ -49,4 +49,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "반씩 줄여가며 찾는 법과 답 자체를 이분 탐색하는 법을 배워보자냥!",
   },
+  {
+    name: "재귀",
+    slug: "recursion",
+    description:
+      "멈추는 조건과 자기 호출로 문제를 쪼개고, 재귀가 느려질 때 고치는 법을 배워보자냥!",
+  },
 ];
