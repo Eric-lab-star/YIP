@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { findProblemBySlug, toPublicProblem } from "@/app/lib/mongo/problems";
@@ -13,11 +15,78 @@ import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
+const SITE_URL = "https://yipcode.xyz";
+
+// generateMetadata and the page body both need the problem. React's `cache`
+// collapses them into a single query per request.
+const getProblem = cache(findProblemBySlug);
+
 const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 	easy: { label: "쉬움", tone: "bg-green-600 text-white" },
 	medium: { label: "보통", tone: "bg-yellow-500 text-white" },
 	hard: { label: "어려움", tone: "bg-red-600 text-white" },
 };
+
+/**
+ * Flatten a Markdown problem statement into a one-line search snippet.
+ * Fenced code blocks go first — a statement often opens with an example, and
+ * leading code makes for a useless description. A statement almost always
+ * opens with an `# <title>` heading, which would otherwise repeat the <title>
+ * tag verbatim and waste the snippet's first words, so `title` is trimmed off
+ * the front when present.
+ */
+function toSnippet(markdown: string, title: string, limit = 155): string {
+	let text = markdown
+		.replace(/```[\s\S]*?```/g, " ")
+		.replace(/`([^`]*)`/g, "$1")
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+		.replace(/<[^>]+>/g, " ")
+		.replace(/^\s{0,3}#{1,6}\s+/gm, "")
+		.replace(/^\s{0,3}>\s?/gm, "")
+		.replace(/[*_~]/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
+
+	if (text.toLowerCase().startsWith(title.trim().toLowerCase())) {
+		text = text.slice(title.trim().length).trim();
+	}
+
+	if (text.length <= limit) return text;
+	// Prefer cutting on a word boundary so the snippet doesn't end mid-word.
+	const cut = text.slice(0, limit);
+	const lastSpace = cut.lastIndexOf(" ");
+	return `${(lastSpace > limit * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const problem = await getProblem(slug);
+	if (!problem) return { title: "문제를 찾을 수 없습니다" };
+
+	const level = DIFFICULTY[problem.difficulty]?.label ?? problem.difficulty;
+	const snippet = toSnippet(problem.description, problem.title);
+	const description = snippet
+		? `[난이도 ${level}] ${snippet}`
+		: `YIP 코딩 문제 "${problem.title}" — 난이도 ${level}. 브라우저에서 바로 풀고 채점해 보세요.`;
+	const url = `${SITE_URL}/problems/${problem.slug}`;
+
+	return {
+		title: problem.title,
+		description,
+		alternates: { canonical: url },
+		openGraph: {
+			title: `${problem.title} | YIP 코딩 문제`,
+			description,
+			url,
+			type: "article",
+		},
+	};
+}
 
 export default async function ProblemPage({
 	params,
@@ -25,10 +94,7 @@ export default async function ProblemPage({
 	params: Promise<{ slug: string }>;
 }) {
 	const { slug } = await params;
-	const [raw, auth] = await Promise.all([
-		findProblemBySlug(slug),
-		validateToken(),
-	]);
+	const [raw, auth] = await Promise.all([getProblem(slug), validateToken()]);
 	if (!raw) notFound();
 	const isAdmin = auth.success && auth.role === "admin";
 	const solved = auth.success
