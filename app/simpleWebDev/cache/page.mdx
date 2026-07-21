@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "느린 앱을 빠르게",
@@ -9,8 +10,18 @@ export const metadata = {
 
 # 느린 앱을 빠르게
 
+<Callout type="note">
+  **심화 강이다냥**
+
+  이번 강은 심화 내용이라냥. 앱이 느려서 답답할 때 꺼내 쓰는 기술이다냥.
+  지금 앱이 빠르면 "이런 게 있구나" 하고 넘어가도 된다냥!
+</Callout>
+
 <NyangSpeech>
-  @st.cache_data 로 매번 다시 하던 무거운 일을 한 번만 하게 만들어보자냥! (심화)
+  9강에서 배운 재실행 규칙, 기억하냥? 위젯을 건드릴 때마다 코드가 **처음부터
+  전부** 다시 돈다냥. 그런데 그 안에 **무거운 일**(큰 파일 읽기 등)이 있으면,
+  매번 다시 해서 앱이 답답하게 느려진다냥. 오늘은 그걸 해결하는 **캐시** 를
+  배운다냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +29,114 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - 재실행 때문에 앱이 **왜 느려지는지** 이해한다.
+  - `@st.cache_data` 로 무거운 일을 **한 번만** 하게 만든다.
+  - 캐시가 어울리는 상황을 안다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 매번 다시 하니까 느리다냥
 
-  5부 · 진짜 앱처럼 · 26강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  큰 CSV 파일(수천 줄)을 읽는 앱을 생각해보자냥. 슬라이더를 한 번 밀 때마다
+  재실행되고, 그때마다 그 큰 파일을 **처음부터 다시** 읽는다냥. 파일이
+  안 바뀌었는데도 말이다냥. 이게 낭비라냥!
+</NyangSpeech>
+
+<Callout type="analogy">
+  **매번 장 보러 가기 vs 냉장고에 넣어두기**
+
+  요리할 때마다 시장에 다시 가서 재료를 사 오면 너무 오래 걸린다냥.
+  한 번 사서 **냉장고에 넣어두면** 다음엔 꺼내 쓰기만 하면 된다냥.
+
+  캐시는 바로 그 **냉장고**라냥. 한 번 한 일의 결과를 저장해뒀다가,
+  다음엔 다시 안 하고 저장된 걸 꺼내 쓴다냥!
 </Callout>
+
+---
+
+## 2단계 · 캐시 붙이기 — @st.cache_data
+
+<NyangSpeech>
+  방법은 아주 간단하다냥. 무거운 일을 하는 **함수를 만들고**, 그 위에
+  `@st.cache_data` 한 줄을 붙이면 끝이라냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+@st.cache_data
+def load_data():
+    return pd.read_csv("big_data.csv")   # 무거운 일이라냥
+
+df = load_data()      # 처음 한 번만 진짜로 읽고, 그 다음엔 냉장고에서 꺼낸다냥
+
+st.dataframe(df)
+```
+
+<Callout type="important">
+  **`@` 로 시작하는 한 줄의 정체**
+
+  함수 바로 위에 붙는 `@st.cache_data` 를 **데코레이터**라고 부른다냥.
+  "이 함수의 결과를 저장해뒀다가 재사용해줘" 라고 Streamlit 에게 부탁하는
+  표시라냥. 함수 정의 바로 위 줄에 붙여야 한다냥!
+</Callout>
+
+---
+
+## 3단계 · 캐시가 똑똑한 점
+
+<NyangSpeech>
+  캐시는 **입력이 같으면** 저장된 결과를 주고, **입력이 다르면** 새로
+  계산한다냥. 그래서 안심하고 쓸 수 있다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+@st.cache_data
+def slow_square(n):
+    # 실제로는 오래 걸리는 계산이라 치자냥
+    return n * n
+
+x = st.slider("숫자", 1, 100, 10)
+st.write(slow_square(x))   # 같은 x 면 저장된 값, 새 x 면 새로 계산이라냥
+```
+
+<Callout type="tip">
+  **캐시가 어울리는 것**
+
+  - 큰 파일 읽기 (`read_csv`)
+  - 인터넷에서 데이터 받아오기
+  - 시간이 오래 걸리는 계산
+
+  반대로 **매번 달라져야 하는 것**(예: 현재 시각)에는 캐시를 쓰면 안
+  된다냥. 옛날 값이 계속 나오기 때문이라냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "재실행 때 무거운 일을 매번 다시 해서 앱이 느려질 때 쓰는 것은?",
+    answer: "캐시다냥. 함수 위에 @st.cache_data 를 붙인다냥.",
+  },
+  {
+    question: "함수 바로 위에 붙는 @st.cache_data 같은 줄을 뭐라고 부르냥?",
+    answer: "데코레이터라고 부른다냥. 함수 정의 바로 위에 붙여야 한다냥.",
+  },
+  {
+    question: "캐시를 쓰면 안 되는 것의 예는?",
+    answer: "현재 시각처럼 매번 달라져야 하는 값이라냥. 옛날 값이 계속 나오기 때문이라냥.",
+  },
+]} />
+
+<NyangSpeech>
+  느린 앱을 빠르게 만드는 법을 배웠다냥! 다음 시간엔 앱이 일하는 동안
+  사용자가 답답하지 않게 **기다림을 보여주는** 법을 배운다냥. 로딩 표시,
+  진행 막대 같은 거다냥!
+</NyangSpeech>

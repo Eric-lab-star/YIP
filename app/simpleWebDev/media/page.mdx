@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "이미지와 파일 업로드",
@@ -10,7 +11,9 @@ export const metadata = {
 # 이미지와 파일 업로드
 
 <NyangSpeech>
-  st.image 로 사진을 띄우고 file_uploader 로 파일을 받아보자냥!
+  5부에 온 걸 환영한다냥! 이제부터는 앱을 **진짜처럼** 다듬는 기술을
+  배운다냥. 첫 시간은 **이미지와 파일** 이다냥. 글자만 있던 앱에 사진이
+  들어가면 확 살아난다냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,124 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - `st.image` 로 **사진**을 화면에 띄운다.
+  - `st.file_uploader` 로 사용자가 **파일을 올리게** 한다.
+  - 올린 이미지·CSV 를 **받아서 처리**한다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 이미지 띄우기 — image
 
-  5부 · 진짜 앱처럼 · 23강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  `st.image` 는 사진을 화면에 보여준다냥. 인터넷 주소를 주거나, 내 컴퓨터의
+  파일 경로를 주면 된다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.image("https://placekitten.com/400/300", caption="귀여운 냥이라냥")
+```
+
+<Callout type="tip">
+  **`caption` 은 사진 설명이라냥**
+
+  `caption="..."` 을 주면 사진 아래에 작은 설명이 붙는다냥. `width=300`
+  으로 크기도 정할 수 있다냥!
 </Callout>
+
+---
+
+## 2단계 · 파일 올리게 하기 — file_uploader
+
+<NyangSpeech>
+  `st.file_uploader` 는 사용자가 **자기 파일을 올릴 수 있는** 상자를
+  만든다냥. 올리기 전엔 `None`(아무것도 없음)이고, 올리면 그 파일이
+  담긴다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+uploaded = st.file_uploader("이미지를 올려주세요")
+
+if uploaded is not None:
+    st.image(uploaded, caption="올린 사진이다냥")
+else:
+    st.info("아직 올린 파일이 없다냥")
+```
+
+<Callout type="important">
+  **올리기 전에는 None 이라냥**
+
+  파일을 올리기 전에 `uploaded` 는 `None` 이다냥. 그래서
+  `if uploaded is not None:` 으로 **올렸을 때만** 처리해야 에러가 안
+  난다냥. 6강에서 배운 "빈 입력 확인" 과 같은 맥락이라냥!
+</Callout>
+
+---
+
+## 3단계 · 올린 CSV 읽기
+
+<NyangSpeech>
+  이미지뿐 아니라 CSV 파일도 올려서 바로 표로 볼 수 있다냥. 18강의
+  `read_csv` 를 올린 파일에 그대로 쓰면 된다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+uploaded = st.file_uploader("CSV 파일을 올려주세요", type="csv")
+
+if uploaded is not None:
+    df = pd.read_csv(uploaded)
+    st.dataframe(df)
+```
+
+<Callout type="note">
+  **`type="csv"` 로 파일 종류 제한**
+
+  `type="csv"` 를 주면 CSV 파일만 올릴 수 있게 막아준다냥. 이미지면
+  `type=["png", "jpg"]` 처럼 리스트로 여러 개도 된다냥!
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 나만의 갤러리**
+
+  - `st.file_uploader` 로 이미지를 올리게 하고
+  - 올리면 `st.image` 로 화면에 크게 보여주고
+  - `st.caption` 으로 파일 이름(`uploaded.name`)을 밑에 표시해보자냥.
+
+  내 사진을 올려서 바로 보이면 진짜 앱 같다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "사진을 화면에 띄우는 함수는?",
+    answer: "st.image 다냥. 인터넷 주소나 파일 경로, 올린 파일을 넣을 수 있다냥.",
+  },
+  {
+    question: "사용자가 자기 파일을 올리게 하는 함수는?",
+    answer: "st.file_uploader 다냥. type 으로 파일 종류를 제한할 수 있다냥.",
+  },
+  {
+    question: "파일을 아직 안 올렸을 때 그 값은 무엇이냥?",
+    answer: "None 이다냥. if uploaded is not None: 으로 올렸을 때만 처리해야 한다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  이미지와 파일까지 다룰 수 있게 됐다냥! 다음 시간엔 앱을 **여러 페이지로
+  나누는** 법을 배운다냥. 지금까지는 한 화면이었지만, 진짜 웹사이트는
+  여러 장으로 되어 있다냥!
+</NyangSpeech>

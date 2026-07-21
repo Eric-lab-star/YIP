@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "페이지 이동과 링크",
@@ -10,7 +11,9 @@ export const metadata = {
 # 페이지 이동과 링크
 
 <NyangSpeech>
-  st.navigation 과 page_link 로 페이지 사이를 오가게 만들어보자냥!
+  지난 시간엔 페이지를 나눴지? 그런데 사이드바 메뉴 말고, **본문 안의
+  버튼이나 링크**로도 페이지를 오가게 하고 싶을 때가 있다냥. "다음 페이지
+  →" 버튼 같은 거 말이다냥. 오늘은 그걸 배워보자냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,118 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - `st.page_link` 로 **본문에 페이지 링크**를 넣는다.
+  - 외부 사이트로 가는 **링크 버튼**을 만든다.
+  - `st.navigation` 으로 메뉴를 **직접 구성**하는 법을 안다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 본문 속 페이지 링크 — page_link
 
-  5부 · 진짜 앱처럼 · 25강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  `st.page_link` 는 화면 아무 데나 놓을 수 있는 **페이지로 가는 링크**라냥.
+  사이드바가 아니라 본문 한가운데에 "메뉴 보러 가기" 같은 링크를 넣을 수
+  있다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.title("환영한다냥")
+st.write("어디로 갈지 골라보자냥")
+
+st.page_link("pages/1_소개.py", label="소개 보기")
+st.page_link("pages/2_메뉴.py", label="메뉴 보기")
+```
+
+<Callout type="tip">
+  **`label` 은 링크에 보이는 글자라냥**
+
+  `label="소개 보기"` 가 화면에 보이는 링크 글자다냥. `icon` 을 주면 작은
+  아이콘도 붙일 수 있다냥. 안내 화면(홈)에서 다른 페이지로 안내할 때
+  딱이다냥!
 </Callout>
+
+---
+
+## 2단계 · 외부 사이트 링크
+
+<NyangSpeech>
+  내 페이지뿐 아니라 **바깥 사이트**로 가는 링크도 만들 수 있다냥. 주소를
+  그대로 넣으면 된다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.page_link("https://streamlit.io", label="Streamlit 공식 사이트")
+
+st.link_button("유튜브로 가기", "https://youtube.com")
+```
+
+<Callout type="note">
+  **`page_link` vs `link_button`**
+
+  - `st.page_link` : 링크 글자 모양
+  - `st.link_button` : 눌리는 버튼 모양
+
+  둘 다 하는 일은 비슷하다냥. 버튼처럼 보이게 하고 싶으면 `link_button`
+  을 쓴다냥!
+</Callout>
+
+---
+
+## 3단계 · 메뉴를 직접 짜기 — navigation (심화)
+
+<NyangSpeech>
+  24강의 `pages` 폴더 방식은 편하지만, 메뉴를 더 자유롭게 꾸미고 싶을 때가
+  있다냥. `st.navigation` 을 쓰면 어떤 페이지를 어떤 순서로 묶을지 **직접**
+  정할 수 있다냥. 조금 어려우니 가볍게 봐두자냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+home = st.Page("home.py", title="홈")
+about = st.Page("about.py", title="소개")
+menu = st.Page("menu.py", title="메뉴")
+
+nav = st.navigation([home, about, menu])
+nav.run()
+```
+
+<Callout type="important">
+  **언제 navigation 을 쓰냥**
+
+  - **간단한 앱** → 24강의 `pages` 폴더로 충분하다냥.
+  - **메뉴를 그룹으로 묶거나, 순서·이름을 세밀하게** 정하고 싶을 때 →
+    `st.navigation` 이 좋다냥.
+
+  지금은 `pages` 폴더 방식만 확실히 익혀도 충분하다냥. navigation 은
+  "이런 것도 있다" 정도로 기억해두자냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "본문 한가운데에 다른 페이지로 가는 링크를 넣는 함수는?",
+    answer: "st.page_link 다냥. label 로 보이는 글자를 정한다냥.",
+  },
+  {
+    question: "버튼 모양으로 외부 사이트에 연결하는 함수는?",
+    answer: "st.link_button 이다냥. 글자 모양 링크는 st.page_link 라냥.",
+  },
+  {
+    question: "메뉴를 직접 구성하고 싶을 때 쓰는 심화 도구는?",
+    answer: "st.navigation 이다냥. 간단한 앱은 pages 폴더로 충분하다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  페이지를 자유롭게 오갈 수 있게 됐다냥! 다음 시간은 **심화** 강이라냥.
+  앱이 느려질 때 확 빠르게 만드는 마법, **캐시** 를 배워본다냥.
+</NyangSpeech>
