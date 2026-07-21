@@ -133,4 +133,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "정수의 비트로 집합을 표현해 넣고 빼고 확인하고, 2의 n제곱 부분집합을 훑고, 비트 DP까지 익혀보자냥!",
   },
+  {
+    name: "트라이",
+    slug: "trie",
+    description:
+      "문자열을 글자마다 갈라지는 나무에 담는 트라이를 배우고, 접두사 검색·완전 일치·접두사 관계까지 익혀보자냥!",
+  },
 ];
