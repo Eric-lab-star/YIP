@@ -1,0 +1,161 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 최소 신장 트리 5문제',
+  description: 'MST 비용, 연결 판별, 가장 비싼 간선, 두 그룹 나누기, 이미 놓인 간선을 풀어보자냥!',
+  session: 17,
+}
+
+# 직접 풀어보자! 최소 신장 트리 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 다섯 문제는 **크루스칼 한 뼈대**의 변주라냥.
+  16장의 유니온 파인드를 그대로 쓰니, 그걸 아직 안 익혔으면 먼저 보고 오자냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **크루스칼 뼈대**
+
+  ```python
+  edges.sort()                 # (비용, u, v) 오름차순이라냥
+
+  parent = list(range(n + 1))
+  def find(x):
+      while parent[x] != x:
+          parent[x] = parent[parent[x]]
+          x = parent[x]
+      return x
+
+  total = used = 0
+  for w, u, v in edges:
+      ru, rv = find(u), find(v)
+      if ru != rv:
+          parent[rv] = ru
+          total += w
+          used += 1
+  ```
+
+  이걸 외워두면 오늘 문제는 마지막 출력만 바뀐다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="최소 신장 트리" time="20분">
+  모든 노드를 잇는 최소 비용을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-mst-weight)
+
+  <Callout type="important">
+    **간선을 비용 순으로 정렬해야 한다냥.**
+
+    `edges` 를 `(w, u, v)` 순서로 담고 `sort()` 하면 비용 오름차순이 된다냥.
+    정렬을 빼먹으면 최소가 아닌 아무 트리가 나와서 틀린다냥. 숨겨진 테스트가
+    이걸 잡는다냥.
+  </Callout>
+
+  <Callout type="tip">
+    비용 합이 40억까지 갈 수 있다냥. 파이썬은 괜찮지만 다른 언어면
+    `long`/`int64` 를 쓰자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="연결이 될까" time="15분">
+  못 이으면 `-1` 을 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-mst-connected)
+
+  <Callout type="important">
+    **쓴 간선이 `n-1`개인지 확인한다냥.**
+
+    ```python
+    print(total if used == n - 1 else -1)
+    ```
+
+    크루스칼이 끝났는데 쓴 간선이 `n-1`개보다 적으면, 따로 노는 무리가
+    남은 거라냥. 이 확인을 빼먹으면 끊어진 그래프에서 부분 합을 출력해
+    틀린다냥. 공개된 예시 `4 2 → -1` 로 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="가장 비싼 다리" time="15분">
+  MST 에 쓰는 간선 중 가장 비싼 것을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-mst-max-edge)
+
+  <Callout type="tip">
+    크루스칼은 싼 것부터 더하니, **MST 에 실제로 쓴 마지막 간선**이 가장
+    비싸다냥.
+
+    ```python
+    if ru != rv:
+        parent[rv] = ru
+        mx = w        # 계속 덮어쓰면 최댓값이 남는다냥
+    ```
+
+    쓴 간선에서만 `mx = w` 를 하면, 버린 간선은 세지 않아 정확하다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="두 그룹으로 나누기" time="20분">
+  모두 잇되 두 그룹으로 나누는 최소 유지 비용을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-network-split)
+
+  <StepCard step="핵심" title="MST 에서 가장 비싼 간선을 끊는다냥">
+    MST 는 트리라 **간선 하나를 끊으면 딱 두 조각**이 된다냥. 그중 가장 비싼
+    간선을 끊으면 유지 비용을 가장 많이 아낀다냥.
+
+    ```python
+    # 크루스칼로 total 과 mx(가장 비싼 간선)를 구한 뒤
+    print(total - mx)
+    ```
+  </StepCard>
+
+  <Callout type="tip">
+    3번에서 구한 "가장 비싼 간선" 을 MST 비용에서 빼면 끝이라냥. 3번과
+    4번이 사실상 같은 계산을 쓴다냥. 공개된 예시 `4 5 ... → 3` (MST 7,
+    최대 간선 4)로 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="이미 놓인 다리" time="20분">
+  이미 놓인 연결은 공짜로 쓰고, 추가 최소 비용을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-mst-prebuilt)
+
+  <StepCard step="뼈대" title="먼저 합쳐두고 크루스칼이라냥">
+    ```python
+    for _ in range(k):
+        a, b = map(int, input().split())
+        parent[find(a)] = find(b)      # 이미 놓인 것부터 합친다냥
+
+    comp = sum(1 for i in range(1, n + 1) if find(i) == i)
+    # 이제 후보 간선으로 크루스칼을 돌린다냥
+    ```
+
+    이미 놓인 쌍을 먼저 union 하면, 그 무리들은 이미 하나라 크루스칼이
+    나머지만 잇는다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **연결 조건이 `n-1` 이 아니라 `(무리 수)-1` 이라냥.**
+
+    이미 놓인 간선으로 무리가 줄었으니, 필요한 추가 간선도 줄어든다냥.
+    미리 센 무리 수 `comp` 에 대해 `used == comp - 1` 이면 다 이은 거라냥.
+    못 이으면 `-1` 이라냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 크루스칼은 **정렬 + 유니온 파인드**라, 16장을 익혔으면
+  절반은 이미 아는 거였다냥.
+
+  다음은 **최단 경로**라냥. MST 가 "다 잇는 최소 비용"이라면, 최단 경로는
+  "한 점에서 다른 점까지 가장 짧은 길"이라냥. 비슷해 보이지만 다른 문제라냥.
+  정말 수고했다냥~
+</NyangSpeech>

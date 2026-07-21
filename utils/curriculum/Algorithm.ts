@@ -109,4 +109,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "서로소 집합을 대표로 관리하는 유니온 파인드를 배우고, 경로 압축과 크기 세기, 사이클 판별까지 익혀보자냥!",
   },
+  {
+    name: "최소 신장 트리",
+    slug: "mst",
+    description:
+      "간선을 싼 것부터 골라 사이클 없이 잇는 크루스칼로 최소 신장 트리를 만들고, 연결·최대 간선·두 그룹 나누기까지 익혀보자냥!",
+  },
 ];
