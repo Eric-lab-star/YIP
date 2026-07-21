@@ -139,4 +139,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "문자열을 글자마다 갈라지는 나무에 담는 트라이를 배우고, 접두사 검색·완전 일치·접두사 관계까지 익혀보자냥!",
   },
+  {
+    name: "세그먼트 트리",
+    slug: "segment_tree",
+    description:
+      "갱신과 구간 질의를 둘 다 O(log n)에 하는 세그먼트 트리를 배우고, 합·최솟값·최댓값과 k번째 찾기까지 익혀보자냥!",
+  },
 ];
