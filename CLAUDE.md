@@ -88,6 +88,10 @@ Optional: `FORMATTER_URL` points the "포맷" button (`app/api/judge/format/`) a
 
 Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware editor completions via the LSP bridge (`lsp/`, pyright for Python). The browser connects directly over WebSocket (`components/judge/lspClient.ts`); without it the editor uses only the static keyword/snippet completions. As a `NEXT_PUBLIC_` var it is inlined at build time.
 
+Optional: `TOKEN_MAX_AGE_HOURS` (default `6`) sets the auth-token lifetime in hours (`app/lib/auth/login.ts`). Shorter bounds how long a leaked or revoked token stays usable; login is low-friction so a short window costs little.
+
+Optional (must be set together to enable): `PHONE_ENC_KEY` + `PHONE_INDEX_KEY` turn on reversible encryption of the student phone number at rest (`app/lib/auth/phoneCrypto.ts`). `PHONE_ENC_KEY` is a 32-byte AES-256 key as base64 or 64 hex chars; `PHONE_INDEX_KEY` is any non-empty HMAC secret used to build the searchable blind index login queries by. **Opt-in and dual-mode**: with the keys unset the number is stored/read as plaintext exactly as before, so deploying changes nothing until you set the keys AND run `scripts/migrate-phone-encryption.mjs` (which encrypts existing rows and adds their blind index). During migration the app reads both legacy-plaintext and encrypted rows, so the safe order is: set keys → deploy → migrate. Losing `PHONE_ENC_KEY` makes stored numbers unrecoverable; losing/rotating `PHONE_INDEX_KEY` breaks login lookups until re-migrated — treat both as durable secrets.
+
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
 ## Architecture
@@ -98,7 +102,12 @@ Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware 
 
 All database writes go through **Server Actions** (`app/actions/`) which validate with Zod, then call the MongoDB layer (`app/lib/mongo/`). Client components use **SWR** (`components/SWR/`) for reads, or consume data passed as props from server components.
 
-There is no `middleware.ts`. Auth is handled per-route: `validateToken()` is called server-side in API routes and Server Actions. **Authentication** uses a JWT stored in an `httpOnly` cookie (`logInToken`). Token lifetime is 20 hours.
+**Authentication** uses a JWT stored in an `httpOnly` cookie (`logInToken`). Lifetime defaults to 6 hours (`TOKEN_MAX_AGE_HOURS`). Enforcement has two layers, and both matter — the middleware is a fast redirect, not the boundary:
+
+- `proxy.ts` (Next 16's middleware, Edge runtime) verifies the token **signature** on the gated route matcher using `jose`. It only checks the signature — never merely the cookie's presence — and clears a rejected cookie.
+- Server-side, `validateToken()` (`app/lib/auth/login.ts`) is called in API routes, Server Actions, and via `requireAuth()` (`app/lib/auth/requireAuth.ts`) in the gated section layouts. It verifies the signature with `jsonwebtoken` **and** checks the revocation list (`app/lib/mongo/revocation.ts`): a deleted/disabled user's still-valid token is rejected. `deleteStudentAction` calls `revokeUserTokens`.
+
+Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed.
 
 ### Key Patterns
 
