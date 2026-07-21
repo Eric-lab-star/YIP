@@ -127,4 +127,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "진입 차수로 선후 관계를 지키며 순서를 정하는 위상 정렬을 배우고, 사전순·유일성·사이클 판별·임계 경로까지 익혀보자냥!",
   },
+  {
+    name: "비트마스킹",
+    slug: "bitmask",
+    description:
+      "정수의 비트로 집합을 표현해 넣고 빼고 확인하고, 2의 n제곱 부분집합을 훑고, 비트 DP까지 익혀보자냥!",
+  },
 ];
