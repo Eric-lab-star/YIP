@@ -1,0 +1,216 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 트리 기초 5문제',
+  description: '부모 찾기, 깊이, 서브트리 크기, 이진 트리 순회, 트리의 지름을 풀어보자냥!',
+  session: 15,
+}
+
+# 직접 풀어보자! 트리 기초 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 문제는 대부분 **한 번 훑으며 원하는 걸 적으면**
+  풀린다냥. 다만 3번과 4번은 **재귀 깊이**를 조심해야 한다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **트리 문제를 풀 때**
+
+  1. 간선을 **양방향**으로 인접 리스트에 넣는다
+  2. 루트(보통 1번)에서 **BFS 나 DFS** 로 훑는다
+  3. 훑으면서 **무엇을 적을지** 정한다 — 부모냥, 깊이냥, 크기냥?
+  4. 재귀로 풀 거면 **`setrecursionlimit`** 을 챙긴다
+</Callout>
+
+---
+
+<MissionCard number={1} title="트리의 부모 찾기" time="15분">
+  루트를 1번으로 할 때 각 노드의 부모를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-tree-parent)
+
+  <StepCard step="뼈대" title="BFS 로 훑으며 부모를 적는다냥">
+    ```python
+    from collections import deque
+
+    parent = [0] * (n + 1)
+    seen = [False] * (n + 1)
+    seen[1] = True
+    q = deque([1])
+    while q:
+        u = q.popleft()
+        for v in adj[u]:
+            if not seen[v]:
+                seen[v] = True
+                parent[v] = u
+                q.append(v)
+    ```
+
+    `2`번부터 `n`번까지 `parent[i]` 를 순서대로 출력하면 된다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **간선을 양방향으로 넣어야 한다냥.**
+
+    `adj[u].append(v)` 만 하고 `adj[v].append(u)` 를 빼먹으면 트리를 반쪽밖에
+    못 훑는다냥. 대부분의 노드가 부모를 못 찾아 `0` 으로 남는다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="트리의 깊이" time="10분">
+  루트를 1번으로 할 때 각 노드의 깊이를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-tree-depth)
+
+  <Callout type="tip">
+    **1번과 입력이 완전히 똑같다냥.** BFS 로 훑는 것도 똑같다냥. 부모 대신
+    **깊이를 적으면** 된다냥.
+
+    ```python
+    depth = [-1] * (n + 1)
+    depth[1] = 0
+    # BFS 중에
+    depth[v] = depth[u] + 1
+    ```
+
+    루트의 깊이는 `0` 이라냥. `1`번부터 `n`번까지 순서대로 출력하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="서브트리의 크기" time="20분">
+  각 노드를 뿌리로 하는 서브트리의 크기를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-subtree-size)
+
+  <StepCard step="뼈대" title="자식을 먼저 세고 나를 더한다냥">
+    ```python
+    import sys
+    sys.setrecursionlimit(10 ** 6)
+
+    size = [1] * (n + 1)
+
+    def dfs(u, parent):
+        for v in adj[u]:
+            if v != parent:
+                dfs(v, u)
+                size[u] += size[v]
+
+    dfs(1, 0)
+    ```
+
+    `size` 를 `1` 로 시작하고, 자식들의 크기를 다 더한다냥. 부모를 넘겨서
+    되돌아가지 않게 한다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **`setrecursionlimit` 을 빼먹으면 터진다냥.**
+
+    숨겨진 테스트에 **일자로 뻗은 트리**(깊이 5000)가 있다냥. 파이썬 기본
+    재귀 한도가 1000쯤이라, 이 줄이 없으면 정답 코드도 `RecursionError` 로
+    터진다냥.
+
+    재귀가 싫으면 BFS 순서를 뒤집어서(리프에 가까운 것부터) 반복문으로
+    더해도 된다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="이진 트리 순회" time="20분">
+  전위·중위·후위 순회 결과를 각각 한 줄에 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-binary-traversal)
+
+  <StepCard step="뼈대" title="한 함수로 세 순회를 한꺼번에라냥">
+    ```python
+    import sys
+    sys.setrecursionlimit(10 ** 6)
+
+    pre, ino, post = [], [], []
+
+    def go(u):
+        if u == 0:
+            return
+        pre.append(u)      # 전위
+        go(left[u])
+        ino.append(u)      # 중위
+        go(right[u])
+        post.append(u)     # 후위
+
+    go(1)
+    ```
+
+    왼쪽으로 내려가기 전에 적으면 전위, 사이에 적으면 중위, 다 하고 적으면
+    후위라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **여기도 `setrecursionlimit` 이 필요하다냥.**
+
+    이진 트리도 한쪽으로만 뻗으면 재귀 깊이가 `n` 이라냥. 숨겨진 테스트에
+    그런 트리가 있다냥.
+  </Callout>
+
+  <StepCard step="확인" title="자식이 0 이면 없는 거라냥">
+    입력에서 자식 번호가 `0` 이면 그쪽 자식이 없는 거라냥. `go(0)` 은 바로
+    멈추게 해두면 깔끔하다냥.
+
+    공개된 예시 `1 / 0 0 → 1 / 1 / 1` (노드 하나짜리)로 확인하자냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={5} title="트리의 지름" time="20분">
+  가장 먼 두 노드 사이의 거리를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-tree-diameter)
+
+  <StepCard step="뼈대" title="BFS 를 두 번 한다냥">
+    ```python
+    def bfs(start):
+        dist = [-1] * (n + 1)
+        dist[start] = 0
+        q = deque([start])
+        far = start
+        while q:
+            u = q.popleft()
+            if dist[u] > dist[far]:
+                far = u
+            for v in adj[u]:
+                if dist[v] == -1:
+                    dist[v] = dist[u] + 1
+                    q.append(v)
+        return far, dist
+
+    a, _ = bfs(1)          # 아무 데서나 가장 먼 점
+    b, dist = bfs(a)       # 거기서 다시 가장 먼 거리
+    print(dist[b])
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **왜 두 번의 BFS 로 되냥?**
+
+    아무 점에서 출발해 가장 먼 점은 **반드시 지름의 한 끝**이라냥. 그래서
+    거기서 다시 가장 먼 곳을 재면 반대쪽 끝까지가 지름이라냥.
+
+    BFS 라서 재귀 깊이 걱정이 없다냥. 일자로 뻗은 트리도 문제없다냥.
+  </Callout>
+
+  <StepCard step="확인" title="지름은 지나는 간선의 수라냥">
+    노드 개수가 아니라 **간선의 개수**라냥. 노드가 2개면 지름은 `1` 이라냥.
+
+    공개된 예시 `2 / 1 2 → 1` 로 확인하자냥.
+  </StepCard>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 오늘 배운 트리는 **그래프의 특별한 경우**라, 10장의
+  BFS·DFS 가 거의 그대로 쓰였다냥. 대신 "부모가 하나", "사이클이 없다" 는
+  성질 덕에 더 간단해진다냥.
+
+  다음 장부터는 이 트리를 **직접 만들거나** 활용하는 알고리즘으로 넘어간다냥.
+  정말 수고했다냥~
+</NyangSpeech>

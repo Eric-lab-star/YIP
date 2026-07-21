@@ -97,4 +97,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "누적합으로 구간 합을 O(1)에 구하고, 투 포인터와 슬라이딩 윈도우로 이중 반복문을 한 번의 훑기로 바꿔보자냥!",
   },
+  {
+    name: "트리 기초",
+    slug: "tree",
+    description:
+      "간선만 주어진 트리를 루트에서 훑어 부모·깊이·서브트리 크기를 구하고, 이진 트리 순회와 지름까지 익혀보자냥!",
+  },
 ];
