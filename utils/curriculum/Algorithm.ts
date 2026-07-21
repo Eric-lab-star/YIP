@@ -103,4 +103,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "간선만 주어진 트리를 루트에서 훑어 부모·깊이·서브트리 크기를 구하고, 이진 트리 순회와 지름까지 익혀보자냥!",
   },
+  {
+    name: "유니온 파인드",
+    slug: "union_find",
+    description:
+      "서로소 집합을 대표로 관리하는 유니온 파인드를 배우고, 경로 압축과 크기 세기, 사이클 판별까지 익혀보자냥!",
+  },
 ];
