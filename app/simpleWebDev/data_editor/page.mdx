@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "편집 가능한 표",
@@ -9,8 +10,18 @@ export const metadata = {
 
 # 편집 가능한 표
 
+<Callout type="note">
+  **심화 강이다냥**
+
+  이번 강은 심화 내용이라냥. 지금 당장 필요 없으면 가볍게 훑고 넘어가도
+  된다냥. 나중에 "표를 직접 고치게 하고 싶다" 는 순간이 오면 다시 찾아오면
+  된다냥!
+</Callout>
+
 <NyangSpeech>
-  st.data_editor 로 사용자가 표를 직접 고칠 수 있게 만들어보자냥! (심화)
+  지금까지 표는 **보여주기만** 했다냥. 그런데 엑셀처럼 사용자가 칸을 직접
+  **고치게** 할 수도 있다냥. 오늘은 `st.data_editor` 로 편집 가능한 표를
+  만들어보자냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +29,108 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - `st.data_editor` 로 **고칠 수 있는 표**를 만든다.
+  - 사용자가 고친 결과를 **받아서 쓴다.**
+  - 행을 **추가·삭제**하게 한다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · dataframe 과 무엇이 다르냥
 
-  4부 · 데이터 다루기 · 20강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  17강의 `st.dataframe` 은 정렬·스크롤은 돼도 **고칠 수는 없었다냥.**
+  `st.data_editor` 는 칸을 더블클릭하면 **값을 바로 고칠 수 있다냥.**
+  엑셀을 웹에 올려놓은 느낌이라냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+df = pd.DataFrame({
+    "이름": ["코딩냥", "노랑이"],
+    "나이": [3, 5],
+})
+
+edited = st.data_editor(df)
+
+st.write("고친 뒤의 표라냥:")
+st.dataframe(edited)
+```
+
+<Callout type="important">
+  **고친 결과는 돌려받는다냥**
+
+  `edited = st.data_editor(df)` 처럼 결과를 변수로 받는다냥. `edited` 에는
+  사용자가 고친 뒤의 표가 담긴다냥. 원본 `df` 는 그대로고, 고친 건 `edited`
+  라는 걸 기억하자냥!
 </Callout>
+
+---
+
+## 2단계 · 행 추가·삭제 허용하기
+
+<NyangSpeech>
+  `num_rows="dynamic"` 을 주면, 표 아래에 **행 추가 버튼**이 생기고 행을
+  **지울 수도** 있게 된다냥. 목록을 관리하는 앱에 딱이다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+df = pd.DataFrame({"할 일": ["장보기"], "완료": [False]})
+
+edited = st.data_editor(df, num_rows="dynamic")
+
+done = edited[edited["완료"] == True]
+st.metric("완료한 일", len(done))
+```
+
+<Callout type="tip">
+  **체크박스 열도 자동이라냥**
+
+  값이 `True`/`False` 인 열은 `data_editor` 가 **체크박스**로 보여준다냥.
+  그래서 위 코드는 체크로 완료 표시를 하는 할 일 목록이 된다냥. 심화지만
+  꽤 강력하다냥!
+</Callout>
+
+---
+
+## 3단계 · 언제 쓰면 좋냥
+
+<Callout type="analogy">
+  **data_editor 가 빛나는 순간**
+
+  - 사용자가 값을 직접 고쳐야 할 때 (예: 재고 수량 조정)
+  - 행을 추가·삭제하며 목록을 관리할 때 (예: 할 일, 명단)
+  - 엑셀처럼 여러 칸을 한 번에 다룰 때
+
+  단순히 보여주기만 할 거면 `st.dataframe` 으로 충분하다냥. 고치게 할
+  때만 `data_editor` 를 꺼내면 된다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "사용자가 칸을 더블클릭해서 값을 직접 고칠 수 있는 표는?",
+    answer: "st.data_editor 다냥. dataframe 과 달리 편집이 된다냥.",
+  },
+  {
+    question: "사용자가 고친 결과는 어떻게 받냥?",
+    answer: "edited = st.data_editor(df) 처럼 변수로 받는다냥. 원본 df 는 그대로다냥.",
+  },
+  {
+    question: "행을 추가·삭제하게 하려면 어떤 옵션을 주냥?",
+    answer: "num_rows=\"dynamic\" 을 준다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  편집 가능한 표까지 배웠다냥! 다음 시간엔 숫자를 **그림(그래프)** 으로
+  바꿔본다냥. 표보다 그래프가 한눈에 들어올 때가 많다냥. 앱이 더 멋있어진다냥!
+</NyangSpeech>
