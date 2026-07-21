@@ -4,6 +4,7 @@ import { StudentData } from "@/types";
 import { createStudent, deleteStudent, updateStudent } from "../lib/mongo/students";
 import studentSchema from "../lib/zod/studentSchema";
 import { validateToken } from "../lib/auth/login";
+import { revokeUserTokens } from "../lib/mongo/revocation";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
@@ -65,6 +66,9 @@ export async function deleteStudentAction(id: string) {
 		return { success: false as const, errors: new Error("권한이 없습니다.") }
 	}
 	await deleteStudent(new ObjectId(id))
+	// Invalidate any session the deleted student still holds, so a live token
+	// can't outlive the account until it expires on its own.
+	await revokeUserTokens(id)
 	revalidatePath(".")
 	return { success: true as const }
 }
