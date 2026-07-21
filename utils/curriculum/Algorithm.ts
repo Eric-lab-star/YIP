@@ -145,4 +145,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "갱신과 구간 질의를 둘 다 O(log n)에 하는 세그먼트 트리를 배우고, 합·최솟값·최댓값과 k번째 찾기까지 익혀보자냥!",
   },
+  {
+    name: "실전 종합",
+    slug: "final_practice",
+    description:
+      "문제를 보고 어떤 기법을 꺼낼지 고르는 눈을 기르고, 이분 탐색·DP·다익스트라·스위핑을 실전 문제로 종합해보자냥!",
+  },
 ];
