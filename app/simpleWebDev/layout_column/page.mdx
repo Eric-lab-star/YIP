@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "화면을 나누는 법",
@@ -10,7 +11,9 @@ export const metadata = {
 # 화면을 나누는 법
 
 <NyangSpeech>
-  columns 와 container 로 화면을 좌우로 나누고 묶어보자냥!
+  지금까지는 글자가 **위에서 아래로 주르륵** 쌓이기만 했다냥. 그런데 진짜
+  웹사이트는 내용이 **좌우로 나란히** 놓이기도 한다냥. 사진은 왼쪽, 설명은
+  오른쪽… 이렇게 말이다냥. 오늘은 그 배치를 배워보자냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,124 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - Streamlit 이 내용을 쌓는 **기본 규칙**을 이해한다.
+  - `st.columns` 로 화면을 **좌우로 나눈다.**
+  - `st.container` 로 관련된 것끼리 **묶는다.**
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 기본은 세로 쌓기
 
-  1부 · 첫 화면 만들기 · 4강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  먼저 규칙 하나를 기억하자냥. Streamlit 은 코드를 **위에서 아래로 읽으면서,
+  나오는 순서대로 화면에 쌓는다냥.** 그래서 아무것도 안 하면 전부 세로로
+  줄을 선다냥. 이걸 좌우로 바꾸려면 **칸을 나눠야** 한다냥.
+</NyangSpeech>
+
+---
+
+## 2단계 · 좌우로 나누기 — columns
+
+<NyangSpeech>
+  `st.columns` 는 화면을 여러 칸으로 쪼갠다냥. 숫자를 주면 그만큼 칸이
+  생기고, 각 칸에 `with` 로 내용을 넣는다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.title("코딩냥이 소개")
+
+left, right = st.columns(2)   # 화면을 두 칸으로 나눈다냥
+
+with left:
+    st.header("사진")
+    st.write("(여기에 사진)")
+
+with right:
+    st.header("소개")
+    st.write("파이썬을 사랑하는 고양이라냥")
+```
+
+<Callout type="tip">
+  **칸의 크기도 정할 수 있다냥**
+
+  `st.columns(2)` 처럼 숫자를 주면 **똑같은 크기**로 나뉜다냥. 대신
+  `st.columns([2, 1])` 처럼 리스트를 주면 **2:1 비율**로 나뉜다냥.
+  왼쪽을 넓게, 오른쪽을 좁게 만들고 싶을 때 쓴다냥!
 </Callout>
+
+<Callout type="note">
+  **`with` 가 뭐냥?**
+
+  `with left:` 아래에 들여쓴 코드는 **왼쪽 칸 안에** 들어간다냥. 파이썬
+  탐험하기에서 배운 들여쓰기 그대로다냥 — 들여쓰기가 "이건 이 칸 소속"
+  이라는 표시라냥!
+</Callout>
+
+---
+
+## 3단계 · 관련된 것 묶기 — container
+
+<NyangSpeech>
+  `st.container` 는 여러 요소를 **하나의 상자로 묶는다냥.** 지금 당장은
+  큰 차이가 없어 보여도, 앞으로 상태나 데이터를 다룰 때 "이 부분만 따로
+  다시 그리기" 같은 걸 할 때 아주 요긴하다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+with st.container(border=True):   # 테두리 있는 상자로 묶는다냥
+    st.subheader("오늘의 냥이")
+    st.write("이름: 코딩냥")
+    st.write("기분: 아주 좋음")
+
+st.write("이 줄은 상자 밖이라냥")
+```
+
+<Callout type="tip">
+  **`border=True` 로 상자를 눈에 보이게**
+
+  `border=True` 를 넣으면 상자에 테두리가 생겨서, 어디까지가 한 묶음인지
+  눈에 보인다냥. 카드처럼 만들고 싶을 때 좋다냥!
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 3단 비교 화면**
+
+  `st.columns(3)` 으로 화면을 세 칸으로 나누고, 각 칸에 좋아하는 동물
+  하나씩(이름 + 한 줄 설명)을 넣어보자냥.
+
+  다 만들면 세 마리가 나란히 놓인 카드 화면이 된다냥. `with` 들여쓰기를
+  잘 맞추는 게 핵심이라냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "Streamlit 은 아무것도 안 하면 내용을 어떻게 쌓냥?",
+    answer: "코드를 위에서 아래로 읽으면서 나오는 순서대로 세로로 쌓는다냥.",
+  },
+  {
+    question: "화면을 좌우 두 칸으로 나누는 함수는?",
+    answer: "st.columns(2) 다냥. 각 칸에는 with 로 내용을 넣는다냥.",
+  },
+  {
+    question: "왼쪽을 넓게, 오른쪽을 좁게(2:1) 만들려면?",
+    answer: "st.columns([2, 1]) 처럼 비율을 리스트로 준다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  화면을 자유롭게 나눌 수 있게 됐다냥! 다음 시간엔 **사이드바·탭·확장 패널**
+  로 많은 내용을 더 깔끔하게 정리하는 법을 배워보자냥.
+</NyangSpeech>

@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "마크다운으로 꾸미기",
@@ -10,7 +11,9 @@ export const metadata = {
 # 마크다운으로 꾸미기
 
 <NyangSpeech>
-  마크다운으로 표와 링크를 만들고 st.code 로 코드를 예쁘게 보여주자냥!
+  글자를 올릴 줄은 알게 됐지? 그런데 전부 밋밋한 글씨면 심심하다냥.
+  **굵게, 링크, 표, 목록**… 이런 꾸밈을 넣는 방법이 바로 **마크다운**이라냥.
+  사실 너는 이미 마크다운을 매일 보고 있었다냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,133 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - `st.markdown` 으로 **굵게·기울임·링크·목록**을 만든다.
+  - 표를 마크다운으로 그린다.
+  - `st.code` 로 **코드를 색깔 입혀** 보여준다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 마크다운이 뭐냥
 
-  1부 · 첫 화면 만들기 · 3강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  마크다운은 **간단한 기호로 글자를 꾸미는 약속**이다냥. 별표 두 개로 감싸면
+  굵게, 대괄호와 소괄호를 쓰면 링크… 이런 규칙이라냥. 지금 보고 있는 이
+  강의 화면도 전부 마크다운으로 쓰였다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.markdown("**굵은 글씨** 와 *기울인 글씨* 를 섞을 수 있다냥")
+st.markdown("- 첫째 줄\n- 둘째 줄\n- 셋째 줄")
+st.markdown("[코딩냥이의 블로그](https://example.com) 처럼 링크도 된다냥")
+```
+
+<Callout type="tip">
+  **자주 쓰는 마크다운 기호**
+
+  | 쓰고 싶은 것 | 이렇게 쓴다냥 |
+  |---|---|
+  | 굵게 | `**글자**` |
+  | 기울임 | `*글자*` |
+  | 목록 | 줄 맨 앞에 `- ` |
+  | 링크 | `[보여줄 글자](주소)` |
+  | 제목 | 줄 맨 앞에 `#`, `##`, `###` |
 </Callout>
+
+---
+
+## 2단계 · 표 만들기
+
+<NyangSpeech>
+  마크다운으로 표도 그릴 수 있다냥. 세로 막대 `|` 로 칸을 나누고, 두 번째
+  줄에 `---` 를 넣어 머리글과 본문을 구분하면 된다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.markdown("""
+| 메뉴 | 가격 |
+|---|---|
+| 참치캔 | 3000원 |
+| 닭가슴살 | 5000원 |
+| 츄르 | 500원 |
+""")
+```
+
+<Callout type="note">
+  **따옴표 세 개가 뭐냥?**
+
+  `"""` 로 감싸면 **여러 줄 문자열**이 된다냥. 표처럼 줄바꿈이 여러 번
+  필요한 글은 이렇게 세 겹 따옴표로 감싸면 편하다냥!
+</Callout>
+
+---
+
+## 3단계 · 코드를 코드답게 — st.code
+
+<NyangSpeech>
+  프로그래밍을 가르치는 화면이라면 **코드를 코드처럼** 보여줘야 한다냥.
+  `st.code` 를 쓰면 배경이 어두워지고 색깔이 입혀져서, 딱 봐도 코드처럼
+  보인다냥. 복사 버튼도 자동으로 붙는다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+code = '''
+def hello():
+    print("안녕이다냥")
+'''
+
+st.code(code, language="python")
+```
+
+<Callout type="tip">
+  **`language` 를 알려주면 색이 더 정확하다냥**
+
+  `language="python"` 처럼 언어를 알려주면 그 언어 규칙에 맞게 색을
+  칠해준다냥. `"bash"`, `"json"` 등 다른 언어도 된다냥!
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 나만의 메뉴판**
+
+  마크다운으로 아래를 만들어보자냥.
+
+  - `st.markdown` 으로 **굵은 가게 이름** 한 줄
+  - 마크다운 표로 메뉴 3개와 가격
+  - `st.code` 로 "주문 방법" 예시 코드 한 조각
+
+  다 만들면 진짜 가게 홈페이지처럼 보인다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "글자를 굵게 만드는 마크다운 기호는?",
+    answer: "별표 두 개로 감싼다냥. **글자** 처럼 쓰면 된다냥.",
+  },
+  {
+    question: "여러 줄짜리 표 같은 긴 글은 어떤 따옴표로 감싸면 편하냥?",
+    answer: "따옴표 세 개(트리플 쿼트) 로 감싼다냥. 줄바꿈을 그대로 담을 수 있다냥.",
+  },
+  {
+    question: "코드에 색을 입히고 복사 버튼까지 붙여주는 함수는?",
+    answer: "st.code 다냥. language 를 알려주면 색이 더 정확해진다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  이제 글자를 예쁘게 꾸밀 수 있게 됐다냥! 다음 시간엔 이 내용들을
+  **화면 여기저기에 배치하는 법** 을 배워보자냥. 화면을 좌우로 쫙 나눠볼 거다냥!
+</NyangSpeech>

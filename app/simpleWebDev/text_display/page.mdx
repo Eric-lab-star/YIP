@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: "글자 보여주기",
@@ -10,7 +11,9 @@ export const metadata = {
 # 글자 보여주기
 
 <NyangSpeech>
-  title, header, write 로 화면에 글자를 띄우고 print 와 뭐가 다른지 알아보자냥!
+  첫 화면을 띄웠으니, 이제 그 화면에 **여러 가지 글자**를 올려볼 거다냥.
+  제목, 소제목, 본문… 이런 걸 함수 하나씩으로 뚝딱 만들 수 있다냥.
+  오늘 배우는 함수들은 앞으로 모든 강에서 계속 쓰게 된다냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,124 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - `st.title`, `st.header`, `st.subheader` 로 **제목의 크기**를 구분한다.
+  - `st.write` 로 **거의 모든 것**을 화면에 띄운다.
+  - `print()` 와 Streamlit 이 **어떻게 다른지** 설명할 수 있다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · print 와 무엇이 다르냥
 
-  1부 · 첫 화면 만들기 · 2강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  질문 하나 하겠다냥. 지금까지 결과를 보여줄 때 뭘 썼냥? 그렇지, `print()`
+  였다냥. 그런데 `print()` 는 **까만 터미널 화면**에 글자를 찍는다냥.
+  Streamlit 은 그 글자를 **웹 브라우저 화면**에 올린다냥. 목적지가 다른 거다냥!
+</NyangSpeech>
+
+<Callout type="analogy">
+  **print 와 Streamlit, 목적지가 다르다냥**
+
+  | | 어디에 나오냥 | 누가 보냥 |
+  |---|---|---|
+  | `print("안녕")` | 까만 터미널 | 나(개발자)만 |
+  | `st.write("안녕")` | 웹 브라우저 | 누구나 |
+
+  코드를 짜는 방식은 거의 똑같다냥. `print` 자리에 `st.write` 를 넣으면
+  터미널 대신 웹 화면에 나온다고 생각하면 편하다냥!
 </Callout>
+
+---
+
+## 2단계 · 제목 삼형제 — title, header, subheader
+
+<NyangSpeech>
+  글자에도 크기가 있어야 보기 좋다냥. 신문을 떠올려보자냥. 큰 헤드라인,
+  중간 소제목, 작은 본문… Streamlit 도 똑같이 크기별 함수가 있다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.title("코딩냥이의 요리 블로그")      # 가장 큰 제목 (페이지에 하나면 충분)
+st.header("오늘의 메뉴")               # 중간 크기 소제목
+st.subheader("재료 준비")              # 더 작은 소제목
+st.write("양파 2개, 당근 1개, 감자 3개")  # 평범한 본문 글자
+```
+
+<Callout type="tip">
+  **크기를 고르는 기준**
+
+  - `st.title` : 페이지 전체의 이름. 보통 **맨 위에 한 번만** 쓴다냥.
+  - `st.header` : 큰 문단의 제목. "오늘의 메뉴", "손님 후기" 처럼.
+  - `st.subheader` : 그 안의 작은 제목.
+
+  크기는 눈에 보이는 것뿐 아니라 **내용의 계급**을 나타낸다냥. 큰 제목 아래에
+  작은 제목이 오도록 순서를 지키면 화면이 훨씬 정돈돼 보인다냥!
+</Callout>
+
+---
+
+## 3단계 · 만능 함수 write
+
+<NyangSpeech>
+  `st.write` 는 Streamlit 의 **맥가이버 칼** 같은 함수라냥. 글자든 숫자든
+  리스트든 딕셔너리든, 뭐를 넣어도 알아서 예쁘게 보여준다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.write("문자열도 되고")
+st.write(2026)                      # 숫자도 되고
+st.write(["사과", "바나나", "포도"])   # 리스트를 넣으면 목록으로
+st.write({"이름": "코딩냥", "나이": 3})  # 딕셔너리를 넣으면 표로
+```
+
+<Callout type="note">
+  **`st.text` 와 `st.write` 의 차이**
+
+  `st.text` 도 글자를 보여주지만, **입력한 그대로** 꾸밈 없이 보여준다냥.
+  `st.write` 는 상황에 맞게 알아서 꾸며주니, 헷갈리면 일단 `st.write` 를
+  쓰면 된다냥!
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 나를 소개하는 화면**
+
+  `app.py` 에 아래 내용이 담긴 화면을 만들어보자냥.
+
+  - 큰 제목: 내 이름
+  - 소제목: "좋아하는 것"
+  - 본문: 좋아하는 음식 세 가지를 리스트로
+
+  힌트 : `st.title`, `st.subheader`, `st.write` 를 순서대로 쓰면 된다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "페이지의 가장 큰 제목을 만들 때 쓰는 함수는?",
+    answer: "st.title 이다냥. 보통 페이지 맨 위에 한 번만 쓴다냥.",
+  },
+  {
+    question: "리스트나 딕셔너리를 넣어도 알아서 예쁘게 보여주는 만능 함수는?",
+    answer: "st.write 다냥. 문자열·숫자·리스트·딕셔너리 뭐든 받아준다냥.",
+  },
+  {
+    question: "print() 와 st.write() 의 가장 큰 차이는?",
+    answer: "print 는 까만 터미널에, st.write 는 웹 브라우저 화면에 나온다냥. 목적지가 다르다냥!",
+  },
+]} />
+
+<NyangSpeech>
+  이제 화면에 글자를 자유롭게 올릴 수 있게 됐다냥! 다음 시간엔 이 글자들을
+  **마크다운으로 더 예쁘게 꾸미는 법** 을 배워보자냥.
+</NyangSpeech>

@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
 
 export const metadata = {
   title: "웹사이트는 무엇으로 되어 있냥",
@@ -10,7 +11,10 @@ export const metadata = {
 # 웹사이트는 무엇으로 되어 있냥
 
 <NyangSpeech>
-  Streamlit 을 설치하고 streamlit run 으로 첫 화면을 띄워보자냥!
+  안녕, 나 코딩냥이다냥! 지금까지 만든 파이썬 코드는 전부 **까만 화면에
+  글자만** 나왔지? 오늘부터는 그걸 **버튼이 있고 입력창이 있는 진짜 웹 화면**으로
+  바꿔볼 거다냥. 첫 시간이니까 도구를 설치하고, 첫 화면을 띄우는 것까지만
+  차근차근 해보자냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +22,155 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - 웹사이트가 **무엇으로 이루어져 있는지** 큰 그림을 이해한다.
+  - 내 컴퓨터에 **Streamlit 을 설치**한다.
+  - `streamlit run` 으로 **첫 화면을 띄운다.**
+  - 화면이 안 뜰 때 **어디를 확인해야 하는지** 안다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 웹사이트는 무엇으로 되어 있냥
 
-  1부 · 첫 화면 만들기 · 1강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  우리가 매일 보는 웹사이트는 사실 딱 네 가지가 반복되는 거다냥.
+  이걸 알면 앞으로 배울 게 전부 이 네 칸 어딘가에 들어간다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **웹사이트를 이루는 네 가지**
+
+  | 구성요소 | 하는 일 | 예시 |
+  |---|---|---|
+  | 화면(레이아웃) | 내용을 어디에 배치할지 | 제목, 사이드바, 표 |
+  | 입력 | 사용자가 조작하는 부분 | 입력창, 버튼, 슬라이더 |
+  | 상태 | 값을 기억하는 부분 | 로그인 정보, 장바구니 |
+  | 데이터 | 보여줄 내용 | 표, 그래프, 이미지 |
+
+  이 수업은 이 네 가지를 **1부 화면 → 2부 입력 → 3부 상태 → 4부 데이터**
+  순서로 하나씩 배우는 거다냥!
 </Callout>
+
+---
+
+## 2단계 · Streamlit 이 뭐냥
+
+<NyangSpeech>
+  보통 웹사이트를 만들려면 HTML, CSS, 자바스크립트라는 걸 따로 배워야 한다냥.
+  그런데 우리는 **파이썬밖에 모른다냥.** 그래서 쓰는 도구가 Streamlit 이다냥.
+  파이썬 코드만으로 웹 화면을 만들어주는 고마운 도구라냥!
+</NyangSpeech>
+
+<Callout type="analogy">
+  **주방과 테이블로 이해하기**
+
+  지금까지 우리는 `.py` 파일이라는 **주방**에서 요리(코드 결과)를 만들었다냥.
+  그런데 그 요리를 손님에게 내놓을 **예쁜 그릇과 테이블**이 없었다냥.
+
+  Streamlit 은 바로 그 **테이블 담당**이다냥. 주방에서 만든 데이터를 손님이
+  보기 좋은 화면(글자, 입력창, 버튼)에 자동으로 차려준다냥!
+</Callout>
+
+---
+
+## 3단계 · 설치하기
+
+<NyangSpeech>
+  이제 진짜 설치다냥. 터미널(명령 프롬프트)을 열고 아래 한 줄만 입력하면
+  된다냥. 파이썬 탐험하기에서 파이썬은 이미 깔았을 테니, Streamlit 만 추가로
+  받으면 된다냥.
+</NyangSpeech>
+
+```bash
+pip install streamlit
+```
+
+<Callout type="note">
+  **설치가 잘 됐는지 확인하기**
+
+  아래 명령을 치면 버전 번호가 주르륵 나온다냥. 숫자가 보이면 성공이라냥!
+
+  ```bash
+  streamlit --version
+  ```
+</Callout>
+
+<Callout type="important">
+  **`pip` 이 없다고 나오면?**
+
+  파이썬이 제대로 안 깔렸을 수 있다냥. `python --version` 을 먼저 쳐보고,
+  버전이 안 나오면 파이썬부터 다시 설치해야 한다냥. 파이썬 탐험하기 1강을
+  다시 보고 오는 걸 추천한다냥!
+</Callout>
+
+---
+
+## 4단계 · 첫 화면 띄우기
+
+<StepCard step="1단계" title="파일 만들기">
+  아무 폴더에나 `app.py` 라는 파일을 만들고, 아래 코드를 그대로 써보자냥.
+
+```python
+import streamlit as st
+
+st.title("첫 화면이 떴다냥")
+st.write("내가 만든 첫 번째 웹사이트라냥!")
+```
+</StepCard>
+
+<StepCard step="2단계" title="실행하기">
+  터미널에서 `app.py` 가 있는 폴더로 간 다음, 아래 명령을 입력한다냥.
+
+```bash
+streamlit run app.py
+```
+
+  잠깐 기다리면 **웹 브라우저가 저절로 열리면서** 우리가 쓴 제목과 글자가
+  화면에 나타난다냥!
+</StepCard>
+
+<Callout type="tip">
+  **코드를 고치면?**
+
+  `app.py` 를 고치고 저장하면, 브라우저 오른쪽 위에 **"Rerun"** 버튼이
+  나타난다냥. 누르면 바뀐 화면이 바로 반영된다냥. "Always rerun" 을 켜두면
+  저장할 때마다 자동으로 새로고침된다냥!
+</Callout>
+
+---
+
+## 5단계 · 화면이 안 뜰 때
+
+<NyangSpeech>
+  처음이라 화면이 안 뜨는 게 오히려 정상이다냥. 당황하지 말고 아래 세 가지를
+  순서대로 확인해보자냥. 대부분 여기서 해결된다냥!
+</NyangSpeech>
+
+<Callout type="important">
+  **화면이 안 떠요 — 3단계 점검**
+
+  1. **실행 명령이 맞냥?** `python app.py` 가 아니라 `streamlit run app.py`
+     여야 한다냥. 그냥 `python` 으로 실행하면 화면이 안 뜬다냥!
+  2. **폴더가 맞냥?** 터미널이 `app.py` 가 있는 폴더에 있어야 한다냥.
+     `streamlit run app.py` 를 쳤을 때 "파일을 찾을 수 없다" 고 나오면
+     폴더가 틀린 거다냥.
+  3. **주소를 직접 열어보자냥.** 터미널에 `Local URL: http://localhost:8501`
+     같은 주소가 뜬다냥. 브라우저가 자동으로 안 열리면 이 주소를 직접
+     복사해서 열면 된다냥.
+</Callout>
+
+---
+
+## 정리
+
+<Callout type="tip">
+  - 웹사이트는 **화면 · 입력 · 상태 · 데이터** 네 가지로 이루어진다냥.
+  - **Streamlit** 은 파이썬만으로 웹 화면을 만들어주는 도구라냥.
+  - 설치는 `pip install streamlit`, 실행은 `streamlit run app.py` 라냥.
+  - 안 뜨면 **실행 명령 · 폴더 · 주소** 를 순서대로 확인한다냥!
+</Callout>
+
+<NyangSpeech>
+  첫 화면을 띄웠다면 이미 절반은 성공이다냥! 다음 시간에는 이 화면에
+  **여러 가지 글자를 예쁘게 보여주는 법** 을 배워볼 거다냥. 가보자냥!
+</NyangSpeech>
