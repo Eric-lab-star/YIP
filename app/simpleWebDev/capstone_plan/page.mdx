@@ -1,5 +1,6 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
 
 export const metadata = {
   title: "기획하고 화면 뼈대 잡기",
@@ -10,7 +11,9 @@ export const metadata = {
 # 기획하고 화면 뼈대 잡기
 
 <NyangSpeech>
-  만들 사이트를 정하고 페이지 구성과 화면 뼈대를 먼저 그려보자냥!
+  드디어 마지막 6부다냥! 지금까지 배운 걸 전부 모아 **나만의 소개 사이트**
+  를 만든다냥. 오늘은 코드를 짜기 전에 먼저 **무엇을 만들지 기획**하고
+  **화면 뼈대**를 잡는다냥. 집을 지을 때 설계도부터 그리는 것과 같다냥!
 </NyangSpeech>
 
 ---
@@ -18,14 +21,121 @@ export const metadata = {
 ## 오늘의 학습 목표
 
 <Callout type="goal">
-  - (이 강에서 배울 것을 채워넣기)
+  - 만들 사이트의 **페이지 구성**을 정한다.
+  - 각 페이지에 **어떤 기능**을 넣을지 계획한다.
+  - 내용 없이 **화면 뼈대(제목만)** 부터 만든다.
 </Callout>
 
 ---
 
-<Callout type="note">
-  **집필 중인 강이다냥**
+## 1단계 · 무엇을 만들 거냥
 
-  6부 · 나만의 사이트 · 29강. 아직 내용을 준비하는 중이라냥.
-  먼저 배울 수 있는 강부터 왼쪽 목차에서 골라보자냥!
+<NyangSpeech>
+  우리가 만들 건 **나만의 소개 사이트**다냥. 나를 소개하고, 취미를 보여주고,
+  방명록을 받는 사이트라냥. 5부에서 배운 여러 페이지로 만든다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **사이트 지도 — 3페이지 구성**
+
+  | 페이지 | 넣을 내용 | 쓰는 기술 |
+  |---|---|---|
+  | 홈 (`app.py`) | 환영 인사, 내 사진 | image, columns |
+  | 소개 (`pages/1_소개.py`) | 나에 대한 표, 취미 그래프 | dataframe, chart |
+  | 방명록 (`pages/2_방명록.py`) | 방문자 글 받기 | form, session_state |
+
+  이 지도만 있으면 뭘 만들지 헷갈리지 않는다냥!
 </Callout>
+
+---
+
+## 2단계 · 기능을 배운 강과 연결하기
+
+<NyangSpeech>
+  각 기능이 어느 강에서 배운 건지 짚어두면, 막힐 때 어디로 돌아가야 할지
+  바로 알 수 있다냥. 복습 지도라고 생각하자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **기능 → 배운 강**
+
+  - 사진 띄우기 → 23강 (`st.image`)
+  - 화면 좌우 나누기 → 4강 (`st.columns`)
+  - 표 보여주기 → 17강 (`st.dataframe`)
+  - 그래프 → 21강 (`st.bar_chart`)
+  - 방명록 → 13·14강 (`session_state`, `form`)
+  - 여러 페이지 → 24강 (`pages` 폴더)
+</Callout>
+
+---
+
+## 3단계 · 뼈대부터 세우기
+
+<NyangSpeech>
+  기획이 끝났으니 이제 **뼈대**를 세운다냥. 처음부터 완벽하게 만들려 하지
+  말고, 일단 **제목만 있는 빈 페이지 세 개**를 먼저 만드는 거다냥. 내용은
+  다음 시간에 채운다냥!
+</NyangSpeech>
+
+<StepCard step="1단계" title="폴더와 파일 만들기">
+  아래 구조로 폴더와 파일을 만든다냥.
+
+  ```text
+  내소개사이트/
+    app.py
+    pages/
+      1_소개.py
+      2_방명록.py
+  ```
+</StepCard>
+
+<StepCard step="2단계" title="제목만 채우기">
+  각 파일에 제목만 먼저 넣는다냥. 내용은 비워둬도 된다냥.
+
+  ```python
+  # app.py
+  import streamlit as st
+
+  st.set_page_config(page_title="코딩냥이 소개", page_icon="🐱")
+  st.title("어서 오라냥")
+  st.write("여기는 나를 소개하는 사이트라냥")
+  ```
+
+  ```python
+  # pages/1_소개.py
+  import streamlit as st
+
+  st.title("나를 소개한다냥")
+  ```
+
+  ```python
+  # pages/2_방명록.py
+  import streamlit as st
+
+  st.title("방명록이다냥")
+  ```
+</StepCard>
+
+<StepCard step="3단계" title="실행해서 확인하기">
+  `streamlit run app.py` 로 실행하면, 사이드바에 홈·소개·방명록 세 페이지가
+  나타난다냥. 아직 제목뿐이지만 **뼈대가 선 거다냥!**
+</StepCard>
+
+---
+
+## 오늘의 과제
+
+<Callout type="important">
+  **뼈대 완성하기**
+
+  위 3단계를 따라 제목만 있는 세 페이지를 만들고, 사이드바에서 세 페이지가
+  잘 나타나는지 확인하자냥.
+
+  뼈대가 서면 절반은 끝난 거다냥. "빈 페이지라도 일단 돌아가게" 만드는 게
+  개발의 좋은 습관이라냥 — 조금씩 채워나가면 되니까 덜 막막하다냥!
+</Callout>
+
+<NyangSpeech>
+  설계도와 뼈대가 완성됐다냥! 다음 시간엔 이 빈 페이지들에 **진짜 기능**을
+  하나씩 붙인다냥. 지금까지 배운 게 전부 쏟아져 나온다냥. 기대하라냥!
+</NyangSpeech>
