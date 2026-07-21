@@ -1,0 +1,170 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 세그먼트 트리 5문제',
+  description: '바뀌는 구간 합·최솟값·최댓값, k번째 원소, x 이하 개수를 풀어보자냥!',
+  session: 22,
+}
+
+# 직접 풀어보자! 세그먼트 트리 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 1·2·3번은 **merge 만 다른** 같은 뼈대라냥.
+  1번을 제대로 짜두면 2·3번은 두 줄만 바꾸면 된다냥. 4·5번은 트리를 값에
+  세우는 새 발상이라냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **세그먼트 트리 뼈대 (구간 합)**
+
+  ```python
+  size = 1
+  while size < n:
+      size *= 2
+  tree = [0] * (2 * size)
+  for i in range(n):
+      tree[size + i] = a[i]
+  for i in range(size - 1, 0, -1):
+      tree[i] = tree[2 * i] + tree[2 * i + 1]
+
+  def update(i, v):
+      p = size + i
+      tree[p] = v
+      p >>= 1
+      while p:
+          tree[p] = tree[2 * p] + tree[2 * p + 1]
+          p >>= 1
+
+  def query(l, r):          # l..r 포함, 0번부터
+      res = 0
+      l += size; r += size + 1
+      while l < r:
+          if l & 1: res += tree[l]; l += 1
+          if r & 1: r -= 1; res += tree[r]
+          l >>= 1; r >>= 1
+      return res
+  ```
+</Callout>
+
+---
+
+<MissionCard number={1} title="바뀌는 구간 합" time="25분">
+  값을 바꾸며 구간 합을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-seg-sum)
+
+  <Callout type="important">
+    **14장 누적합으로 풀면 틀린다냥.**
+
+    누적합을 한 번 만들어두고 값이 바뀔 때 안 고치면, 갱신 이후의 구간 합이
+    어긋난다냥. 값이 바뀌니 세그먼트 트리가 필요하다냥. 숨겨진 테스트에
+    갱신이 섞여 있어서 이걸 잡는다냥.
+  </Callout>
+
+  <Callout type="tip">
+    위 뼈대를 그대로 쓰면 된다냥. 입력의 위치는 1번부터니, `update` 와
+    `query` 에 넘길 때 `1` 을 빼서 0번부터로 맞추자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="바뀌는 구간 최솟값" time="15분">
+  값을 바꾸며 구간 최솟값을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-seg-min)
+
+  <Callout type="important">
+    **1번에서 두 곳만 바꾼다냥.**
+
+    - 합치는 방법: `+` → `min`
+    - 항등원(빈 값): `0` → `무한대`
+
+    ```python
+    INF = float("inf")
+    tree = [INF] * (2 * size)
+    # tree[p] = min(tree[2*p], tree[2*p+1])
+    # query 의 res 도 INF 로 시작, res = min(res, ...)
+    ```
+
+    항등원을 `0` 으로 두면 최솟값이 항상 `0` 이하로 오염되니, **무한대**로
+    맞추는 게 중요하다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="바뀌는 구간 최댓값" time="10분">
+  값을 바꾸며 구간 최댓값을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-seg-max)
+
+  <Callout type="tip">
+    이번엔 `merge = max`, 항등원 `-무한대` 라냥. 2번에서 `min` 을 `max` 로,
+    `무한대` 를 `-무한대` 로 바꾸면 끝이라냥.
+
+    세 문제가 같은 뼈대에서 **합치는 방법과 항등원만** 다르다는 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="k번째 원소 꺼내기" time="25분">
+  현재 원소 중 k번째로 작은 값을 출력하고 꺼낸다냥.
+
+  [문제 풀러 가기](/problems/s-seg-kth)
+
+  <StepCard step="뼈대" title="값 공간 개수 트리 + 내려가기라냥">
+    값 `1..M` 의 **개수**를 담은 트리를 만든다냥. 넣기는 그 값의 잎에 `+1`,
+    꺼내기는 `k`번째 값을 찾아 `-1` 이라냥.
+
+    ```python
+    def kth(k):
+        node = 1
+        while node < size:
+            left = tree[2 * node]
+            if k <= left:
+                node = 2 * node
+            else:
+                k -= left
+                node = 2 * node + 1
+        return node - size
+    ```
+
+    루트에서 왼쪽 개수와 `k` 를 비교하며 내려가면 `O(log M)` 에 찾는다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **찾은 뒤에 그 값을 꺼내야 한다냥.**
+
+    `2 k` 연산은 k번째 값을 **출력하고 제거**한다냥. `kth(k)` 로 값을 찾은
+    다음, 그 값의 개수를 `1` 줄이는 갱신을 잊지 말자냥. 공개된 예시에서
+    같은 값을 여러 번 꺼내는 경우를 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="x 이하가 몇 개" time="15분">
+  현재 원소 중 값이 x 이하인 것의 개수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-seg-count-le)
+
+  <Callout type="tip">
+    **4번과 같은 개수 트리라냥.** 이번엔 k번째 내려가기 대신 **값 `1..x` 의
+    구간 합** 을 구하면 된다냥.
+
+    ```python
+    # 넣기: 그 값의 잎에 +1
+    # 질의: sum_to(x) = 값 1..x 개수의 합
+    ```
+
+    트리는 4번과 똑같고, 하는 연산만 "구간 합 질의" 로 바뀐다냥. 이게 값
+    공간 트리의 유연함이라냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 오늘로 **자료구조와 알고리즘 한 바퀴**를 돌았다냥.
+  세그먼트 트리는 "값이 바뀌는 구간 질의" 의 만능 열쇠라냥.
+
+  다음은 **마지막, 실전 종합**이라냥. 지금까지 배운 걸 섞어서 진짜 문제처럼
+  풀어본다냥. 정말 수고했다냥~
+</NyangSpeech>
