@@ -115,4 +115,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "간선을 싼 것부터 골라 사이클 없이 잇는 크루스칼로 최소 신장 트리를 만들고, 연결·최대 간선·두 그룹 나누기까지 익혀보자냥!",
   },
+  {
+    name: "최단 경로",
+    slug: "dijkstra",
+    description:
+      "가중치 있는 그래프에서 최단 거리를 구하는 다익스트라를 우선순위 큐로 익히고, 경유·다중 출발·역방향까지 다뤄보자냥!",
+  },
 ];
