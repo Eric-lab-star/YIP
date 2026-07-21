@@ -1,0 +1,107 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+
+export const metadata = {
+  title: "연습하기 Level 2",
+  description: "상태를 기억하는 앱을 직접 설계하고 만들어보자냥!",
+  session: 16,
+}
+
+# 연습하기 Level 2
+
+<NyangSpeech>
+  3부에서 배운 **기억하는 앱** 을 손에 확실히 익혀보자냥. 이번 연습은
+  `session_state` 가 주인공이다냥. 카운터, 리스트 쌓기, 폼… 배운 걸
+  조합해서 작은 앱 두 개를 만들어보자냥!
+</NyangSpeech>
+
+---
+
+## 이번 시간에 쓰는 무기
+
+<Callout type="goal">
+  - 상태: `st.session_state` (초기화 → 수정 → 보여주기)
+  - 목록: 리스트 + `append` + `for`
+  - 입력: `st.form` + `st.form_submit_button`
+</Callout>
+
+---
+
+<MissionCard number={1} title="투표 집계기" time="12분">
+
+세 후보 중 하나에 투표하면, 각 후보의 표가 쌓이는 앱이다냥.
+
+- `session_state` 에 후보별 표 수를 딕셔너리로 저장한다냥.
+- 버튼 세 개(후보 A/B/C)를 만들고, 누르면 해당 후보의 표를 1 늘린다냥.
+- 현재 집계를 아래에 보여준다냥.
+
+```python
+import streamlit as st
+
+if "votes" not in st.session_state:
+    st.session_state["votes"] = {"A": 0, "B": 0, "C": 0}
+
+st.title("최애 간식 투표다냥")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("참치캔"):
+        st.session_state["votes"]["A"] += 1
+with col2:
+    if st.button("닭가슴살"):
+        st.session_state["votes"]["B"] += 1
+with col3:
+    if st.button("츄르"):
+        st.session_state["votes"]["C"] += 1
+
+st.write("참치캔: " + str(st.session_state["votes"]["A"]) + "표")
+st.write("닭가슴살: " + str(st.session_state["votes"]["B"]) + "표")
+st.write("츄르: " + str(st.session_state["votes"]["C"]) + "표")
+```
+
+<Callout type="tip">
+  카운터가 세 개로 늘어난 것뿐이라냥. 딕셔너리 하나에 세 후보를 담으니
+  깔끔하다냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={2} title="할 일 목록 (심화)" time="15분">
+
+폼으로 할 일을 받아서 리스트에 쌓는 앱이다냥. 방명록과 거의 같지만,
+직접 처음부터 설계해보자냥.
+
+<Callout type="important">
+  **스스로 설계하기 — 순서만 알려준다냥**
+
+  1. `session_state` 에 빈 리스트 `todos` 를 초기화한다냥.
+  2. `st.form` 안에 `st.text_input` 으로 할 일을 받고, 제출 버튼을 둔다냥.
+  3. 제출되고 내용이 비어 있지 않으면 리스트에 `append` 한다냥.
+  4. `for` 로 할 일들을 화면에 보여준다냥.
+  5. (도전) `st.metric` 으로 "남은 할 일 개수" 를 보여준다냥.
+
+  막히면 13강(방명록)과 14강(폼)을 다시 보면 된다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+## 스스로 점검하기
+
+<Callout type="important">
+  **다 했다면 확인해보자냥**
+
+  - 버튼/제출을 반복해도 값이 **쌓이냥**? (안 사라지고 계속 늘어나냥?)
+  - 서랍(`session_state`) 초기화를 **맨 위에 한 번만** 했냥?
+  - 빈 입력을 걸러냈냥?
+
+  세 개 다 예스면 3부를 완전히 소화한 거다냥!
+</Callout>
+
+<NyangSpeech>
+  여기까지가 **3부 · 기억하는 앱** 이다냥! 이제 화면·입력·상태를 다룰 수
+  있으니, 웹사이트의 네 기둥 중 셋을 손에 넣은 거다냥. 4부에서는 마지막
+  기둥 **데이터** 를 배운다냥. 표와 그래프로 앱이 확 멋있어진다냥!
+</NyangSpeech>

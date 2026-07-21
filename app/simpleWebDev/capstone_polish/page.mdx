@@ -1,0 +1,140 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "다듬기",
+  description: "캐시·테마·빈 화면 처리까지 챙겨서 남에게 보여줄 만하게 다듬어보자냥!",
+  session: 31,
+}
+
+# 다듬기
+
+<NyangSpeech>
+  사이트가 동작은 하지만 아직 좀 투박하지 않냥? 오늘은 그걸 **남에게
+  자랑할 만하게** 다듬는다냥. 큰 기능을 더하는 게 아니라, 작은 배려들을
+  더하는 시간이라냥. 이 차이가 "학생 작품" 과 "진짜 앱" 을 가른다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **빈 화면**을 친절하게 처리한다.
+  - **테마**로 사이트에 색을 입힌다.
+  - **캐시**로 데이터 읽기를 빠르게 한다.
+</Callout>
+
+---
+
+## 1단계 · 빈 화면을 친절하게
+
+<NyangSpeech>
+  방명록에 아직 글이 하나도 없으면 화면이 휑하다냥. "아직 글이 없다냥,
+  첫 글을 남겨보라냥!" 같은 안내를 넣으면 훨씬 친절하다냥. 이걸 **빈 상태
+  처리** 라고 한다냥.
+</NyangSpeech>
+
+```python
+st.subheader("남겨진 글")
+
+if len(st.session_state["guestbook"]) == 0:
+    st.info("아직 글이 없다냥. 첫 방문자가 되어보라냥!")
+else:
+    for line in st.session_state["guestbook"]:
+        st.write("- " + line)
+```
+
+<Callout type="tip">
+  **빈 상태를 챙기는 습관**
+
+  목록이 비었을 때, 검색 결과가 없을 때, 파일을 안 올렸을 때 —
+  이런 "아무것도 없는 순간" 에 안내를 넣는 게 좋은 앱의 조건이라냥.
+  `if len(...) == 0:` 으로 확인하면 된다냥!
+</Callout>
+
+---
+
+## 2단계 · 테마로 색 입히기
+
+<NyangSpeech>
+  28강에서 배운 테마를 적용해보자냥. `.streamlit/config.toml` 을 만들어
+  내 사이트만의 색을 정하는 거다냥. 노란 고양이색이 잘 어울린다냥!
+</NyangSpeech>
+
+```text
+# .streamlit/config.toml
+
+[theme]
+primaryColor = "#F59E0B"
+backgroundColor = "#FFFDF7"
+textColor = "#1F2937"
+```
+
+<Callout type="note">
+  설정 파일을 만든 뒤 앱을 새로 실행하면 색이 바뀐다냥. 버튼과 강조가
+  노란색으로, 배경이 살짝 크림색으로 변한다냥. 훨씬 아늑해진다냥!
+</Callout>
+
+---
+
+## 3단계 · 캐시로 빠르게
+
+<NyangSpeech>
+  소개 페이지에서 CSV 를 읽는다면, 26강의 캐시를 붙여서 빠르게 만들자냥.
+  데이터가 안 바뀌는데 매번 다시 읽을 필요 없다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+@st.cache_data
+def load_hobby():
+    return pd.read_csv("hobby.csv")
+
+df = load_hobby()      # 처음 한 번만 읽고 다음엔 냉장고에서 꺼낸다냥
+st.bar_chart(df)
+```
+
+---
+
+## 4단계 · 마무리 점검표
+
+<Callout type="important">
+  **배포 전 체크리스트**
+
+  - [ ] 모든 페이지가 에러 없이 열리냥?
+  - [ ] 빈 목록·빈 입력을 친절하게 처리했냥?
+  - [ ] 테마 색이 적용됐냥?
+  - [ ] 비밀값(API 키 등)을 코드에 안 박았냥? (28강)
+  - [ ] 사진·글에 오타나 깨진 게 없냥?
+
+  이 다섯 개를 다 통과하면, 이제 **세상에 내놓을 준비**가 된 거다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "목록이 비었을 때 안내 문구를 보여주는 처리를 뭐라고 하냥?",
+    answer: "빈 상태 처리라냥. if len(...) == 0: 으로 확인해서 안내를 띄운다냥.",
+  },
+  {
+    question: "내 사이트만의 색을 정하는 설정 파일은?",
+    answer: ".streamlit/config.toml 이다냥. [theme] 아래에 색을 적는다냥.",
+  },
+  {
+    question: "배포 전에 꼭 확인할, 코드에 절대 박으면 안 되는 것은?",
+    answer: "API 키·비밀번호 같은 비밀값이라냥. st.secrets 로 숨겨야 한다냥(28강).",
+  },
+]} />
+
+<NyangSpeech>
+  사이트가 반짝반짝 다듬어졌다냥! 이제 정말 마지막 한 걸음만 남았다냥 —
+  이 사이트를 **인터넷에 올려서 링크로 공유** 하는 거다냥. 다음 시간,
+  드디어 이 수업의 결승선이다냥!
+</NyangSpeech>

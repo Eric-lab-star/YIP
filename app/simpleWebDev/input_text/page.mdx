@@ -1,0 +1,135 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "글자 입력받기",
+  description: "text_input 과 text_area 로 사용자에게 글자를 받아보자냥!",
+  session: 6,
+}
+
+# 글자 입력받기
+
+<NyangSpeech>
+  2부에 온 걸 환영한다냥! 지금까지는 우리가 화면에 글자를 **보여주기만**
+  했다냥. 이제부터는 반대로, 사용자에게 **입력을 받아본다냥.** 파이썬의
+  `input()` 기억나냥? Streamlit 버전 `input()` 을 배우는 거라냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.text_input` 으로 **한 줄 글자**를 입력받는다.
+  - `st.text_area` 로 **여러 줄 글자**를 입력받는다.
+  - 입력받은 값을 **변수에 담아** 화면에 다시 보여준다.
+</Callout>
+
+---
+
+## 1단계 · input 과 닮았다냥
+
+<NyangSpeech>
+  파이썬에서 이름을 물어볼 때 `name = input("이름? ")` 이라고 썼지?
+  Streamlit 도 똑같다냥. `name = st.text_input("이름?")` — 함수만 바뀌고
+  나머지는 그대로다냥. 입력한 값이 `name` 에 담긴다냥!
+</NyangSpeech>
+
+<Callout type="analogy">
+  **input 과 text_input, 어디가 다르냥**
+
+  | | 어디서 입력하냥 |
+  |---|---|
+  | `input("이름?")` | 까만 터미널에 타이핑 |
+  | `st.text_input("이름?")` | 웹 화면의 입력창에 타이핑 |
+
+  둘 다 **입력한 값을 돌려준다**는 점은 똑같다냥. 그래서 변수에 받아서
+  쓰면 된다냥!
+</Callout>
+
+---
+
+## 2단계 · 한 줄 입력 — text_input
+
+```python
+import streamlit as st
+
+name = st.text_input("이름을 입력하세요")
+
+st.write("안녕, " + name + " 님이다냥!")
+```
+
+<Callout type="note">
+  **아직 아무것도 안 쳤을 때는?**
+
+  입력창이 비어 있으면 `name` 은 **빈 문자열 `""`** 이라냥. 그래서 처음
+  화면엔 "안녕,  님이다냥!" 처럼 이름 자리가 비어 보인다냥. 이걸 깔끔하게
+  처리하는 법은 곧 배운다냥!
+</Callout>
+
+<Callout type="tip">
+  **미리 채워두기 — value**
+
+  `st.text_input("이름", value="코딩냥")` 처럼 `value` 를 주면 입력창에
+  **기본값**이 미리 들어가 있다냥. 사용자가 지우고 새로 칠 수 있다냥.
+</Callout>
+
+---
+
+## 3단계 · 여러 줄 입력 — text_area
+
+<NyangSpeech>
+  이름처럼 짧은 건 `text_input` 이 좋지만, 자기소개나 후기처럼 **긴 글**은
+  `text_area` 가 좋다냥. 입력창이 넓은 상자로 바뀌어서 여러 줄을 쓸 수
+  있다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+story = st.text_area("자기소개를 써주세요")
+
+st.write("입력한 소개는 아래와 같다냥:")
+st.write(story)
+```
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 인사 카드 만들기**
+
+  - `st.text_input` 으로 이름을 받고
+  - `st.text_area` 로 하고 싶은 말을 받아서
+  - 아래에 "OO 님이 남긴 말: ..." 형태로 다시 보여주기
+
+  입력창에 글자를 칠 때마다 아래 화면이 **자동으로 바뀌는** 걸 볼 수
+  있다냥. 왜 그런지는 다음다음 강(재실행)에서 설명한다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "웹 화면에서 한 줄 글자를 입력받는 함수는?",
+    answer: "st.text_input 이다냥. 입력한 값을 변수로 받아서 쓴다냥.",
+  },
+  {
+    question: "자기소개처럼 여러 줄 긴 글을 받을 때는?",
+    answer: "st.text_area 다냥. 넓은 상자로 나와서 여러 줄을 쓸 수 있다냥.",
+  },
+  {
+    question: "입력창에 아직 아무것도 안 쳤을 때 변수에는 뭐가 들어 있냥?",
+    answer: "빈 문자열 \"\" 이 들어 있다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  글자를 받을 수 있게 됐다냥! 그런데 이름을 자유롭게 치는 것보다 **정해진
+  것 중에 고르게** 하는 게 나을 때도 많다냥. 다음 시간엔 선택 위젯들을
+  배워보자냥.
+</NyangSpeech>

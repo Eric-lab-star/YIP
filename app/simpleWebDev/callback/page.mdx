@@ -1,0 +1,154 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "위젯 콜백",
+  description: "on_change 와 on_click 으로 위젯이 바뀔 때 함수를 실행시켜보자냥! (심화)",
+  session: 15,
+}
+
+# 위젯 콜백
+
+<Callout type="note">
+  **심화 강이다냥**
+
+  이번 강은 조금 어려운 심화 내용이라냥. 지금 당장 다 이해하지 못해도
+  괜찮다냥. "이런 게 있구나" 정도만 알아두고, 필요할 때 다시 와서 봐도
+  충분하다냥!
+</Callout>
+
+<NyangSpeech>
+  지금까지는 `if st.button(...)` 처럼 **버튼을 눌렀는지 확인**해서 처리했지?
+  오늘은 다른 방식이다냥 — 위젯이 바뀌는 **바로 그 순간에 함수가 저절로
+  실행**되게 하는 콜백을 배워보자냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **콜백(callback)** 이 무엇인지 이해한다.
+  - `on_click` 으로 버튼에 함수를 연결한다.
+  - `on_change` 로 입력이 바뀔 때 함수를 실행한다.
+</Callout>
+
+---
+
+## 1단계 · 콜백이 뭐냥
+
+<NyangSpeech>
+  콜백은 "이 일이 생기면 이 함수를 대신 실행해줘" 라고 **미리 맡겨두는**
+  거다냥. 위젯한테 함수를 하나 쥐여주면, 그 위젯이 눌리거나 바뀔 때
+  Streamlit 이 알아서 그 함수를 불러준다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **초인종에 맡겨두기**
+
+  "누가 초인종을 누르면 문을 열어줘" 라고 미리 부탁해두는 것과 같다냥.
+  나는 계속 문을 쳐다볼 필요 없이, 초인종이 눌리면 부탁한 일이 저절로
+  일어난다냥. 여기서 초인종 = 위젯, 부탁한 일 = 콜백 함수라냥!
+</Callout>
+
+---
+
+## 2단계 · 버튼에 함수 연결 — on_click
+
+<NyangSpeech>
+  12강 카운터를 콜백으로 다시 써보자냥. 먼저 "1 늘리는 함수" 를 만들고,
+  버튼의 `on_click` 에 그 함수를 넘긴다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+if "count" not in st.session_state:
+    st.session_state["count"] = 0
+
+def add_one():
+    st.session_state["count"] += 1
+
+st.button("증가", on_click=add_one)
+
+st.write("횟수: " + str(st.session_state["count"]))
+```
+
+<Callout type="important">
+  **함수 이름 뒤에 괄호를 붙이지 않는다냥**
+
+  `on_click=add_one` 이라고 쓴다냥. `add_one()` 처럼 괄호를 붙이면 **지금
+  당장 실행**해버린다냥. 괄호 없이 이름만 넘겨야 "나중에 눌리면 실행해줘"
+  라는 뜻이 된다냥!
+</Callout>
+
+---
+
+## 3단계 · 값이 바뀔 때 — on_change
+
+<NyangSpeech>
+  `on_change` 는 입력값이 **바뀌는 순간** 함수를 실행한다냥. 예를 들어
+  이름을 다 치면 자동으로 인사말을 만드는 식이라냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+def greet():
+    st.session_state["greeting"] = "안녕, " + st.session_state["name"] + " 님이다냥!"
+
+if "greeting" not in st.session_state:
+    st.session_state["greeting"] = ""
+
+st.text_input("이름", key="name", on_change=greet)
+st.write(st.session_state["greeting"])
+```
+
+<Callout type="tip">
+  **`key` 가 중요하다냥**
+
+  `key="name"` 을 주면, 그 위젯의 값이 `st.session_state["name"]` 에
+  자동으로 저장된다냥. 콜백 함수 안에서는 그 열쇠로 값을 꺼내 쓴다냥.
+  콜백은 `key` 와 짝을 이뤄서 쓴다고 기억하면 된다냥!
+</Callout>
+
+---
+
+## 4단계 · 언제 콜백을 쓰냥
+
+<Callout type="note">
+  **콜백이 없어도 대부분 된다냥**
+
+  솔직히 말하면, 지금까지 배운 `if st.button(...)` 방식만으로도 웬만한 건
+  다 만들 수 있다냥. 콜백은 **여러 위젯이 얽혀서 순서가 중요해질 때** 코드를
+  더 깔끔하게 만들어주는 도구라냥.
+
+  그러니 지금은 "이런 방법도 있구나" 하고 넘어가도 된다냥. 나중에 앱이
+  복잡해지면 다시 찾아오게 될 거다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "위젯이 눌리거나 바뀔 때 저절로 실행되도록 맡겨두는 함수를 뭐라고 하냥?",
+    answer: "콜백(callback) 이라냥. 위젯한테 함수를 미리 쥐여주는 거다냥.",
+  },
+  {
+    question: "on_click=add_one 처럼 쓸 때, 함수 이름 뒤에 괄호를 붙이면 어떻게 되냥?",
+    answer: "지금 당장 실행돼버린다냥. 괄호 없이 이름만 넘겨야 나중에 실행된다냥.",
+  },
+  {
+    question: "콜백 함수가 위젯 값을 꺼내 쓰려면 그 위젯에 무엇을 줘야 하냥?",
+    answer: "key 를 줘야 한다냥. 그 열쇠로 session_state 에서 값을 꺼낸다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  심화 강을 잘 버텼다냥! 다음 시간엔 3부에서 배운 상태 관리를 총정리하는
+  **연습 문제 Level 2** 를 풀어본다냥. 카운터와 방명록의 기술을 손에 확실히
+  익혀보자냥!
+</NyangSpeech>

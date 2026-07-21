@@ -1,0 +1,116 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+
+export const metadata = {
+  title: "연습하기 Level 1",
+  description: "지금까지 배운 화면 구성과 입력 위젯을 직접 조합해보자냥!",
+  session: 10,
+}
+
+# 연습하기 Level 1
+
+<NyangSpeech>
+  여기까지 배운 걸 정리하면 화면 만들기(1부)와 입력 위젯(2부)이다냥. 이번
+  시간엔 새 개념 없이, **배운 걸 직접 조합**해서 작은 화면 세 개를 만들어
+  보자냥. 막히면 앞 강으로 돌아가서 함수를 다시 봐도 좋다냥!
+</NyangSpeech>
+
+---
+
+## 이번 시간에 쓰는 무기
+
+<Callout type="goal">
+  - 글자: `st.title` · `st.write` · `st.markdown`
+  - 배치: `st.columns` · `st.sidebar` · `st.expander`
+  - 입력: `st.text_input` · `st.selectbox` · `st.slider` · `st.checkbox`
+</Callout>
+
+---
+
+<MissionCard number={1} title="자기소개 명함" time="8분">
+
+한 화면에 나를 소개하는 명함을 만들어보자냥.
+
+- `st.text_input` 으로 이름을 받는다냥.
+- `st.selectbox` 로 MBTI 를 고르게 한다냥.
+- `st.columns(2)` 로 화면을 나눠, 왼쪽엔 이름, 오른쪽엔 MBTI 를 보여준다냥.
+
+```python
+import streamlit as st
+
+name = st.text_input("이름")
+mbti = st.selectbox("MBTI", ["ISTJ", "ENFP", "INTP", "ESFJ"])
+
+left, right = st.columns(2)
+with left:
+    st.subheader("이름")
+    st.write(name)
+with right:
+    st.subheader("MBTI")
+    st.write(mbti)
+```
+
+<Callout type="tip">
+  이름을 칠 때마다 오른쪽 화면이 바로 바뀌는 게 보이냥? 9강에서 배운
+  **재실행** 덕분이라냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={2} title="음료 주문서" time="10분">
+
+2부에서 배운 선택 위젯을 총동원해보자냥.
+
+- `st.radio` 로 음료 종류
+- `st.slider` 로 잔 수(1~5)
+- `st.checkbox` 로 "얼음 많이"
+
+고른 내용을 `st.expander("주문 내역 보기")` 안에 정리해서 보여주자냥.
+
+<Callout type="note">
+  숫자(잔 수)를 글자와 이어 붙일 땐 `str()` 로 감싸는 걸 잊지 말자냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={3} title="사이드바 설정" time="7분">
+
+사이드바를 설정 서랍처럼 써보자냥.
+
+- 사이드바 안에 `st.selectbox` 로 테마 색("빨강"/"파랑"/"초록")
+- 사이드바 안에 `st.slider` 로 글자 크기(10~40)
+- 본문에는 고른 설정을 글로 정리해서 보여준다냥.
+
+```python
+import streamlit as st
+
+with st.sidebar:
+    color = st.selectbox("테마 색", ["빨강", "파랑", "초록"])
+    size = st.slider("글자 크기", 10, 40, 20)
+
+st.write("고른 색: " + color)
+st.write("글자 크기: " + str(size))
+```
+
+</MissionCard>
+
+---
+
+## 스스로 점검하기
+
+<Callout type="important">
+  **다 했다면 아래를 확인해보자냥**
+
+  - 위젯을 건드릴 때마다 화면이 **바로바로** 바뀌냥?
+  - 숫자를 글자와 붙일 때 `str()` 을 썼냥?
+  - `with` 아래 들여쓰기가 잘 맞냥?
+
+  세 개 다 예스면 2부를 완벽히 소화한 거다냥!
+</Callout>
+
+<NyangSpeech>
+  연습 잘했다냥! 이제 진짜 실전이다냥. 다음 시간엔 지금까지 배운 걸로
+  **BMI 계산기** 라는 완성된 앱을 처음부터 끝까지 만들어본다냥. 두근두근
+  하지 않냥?
+</NyangSpeech>
