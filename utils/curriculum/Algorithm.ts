@@ -85,4 +85,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "정렬 기준 하나로 답이 갈리는 그리디를 배우고, 언제 되고 언제 안 되는지 반례로 확인해보자냥!",
   },
+  {
+    name: "동적계획법",
+    slug: "dp",
+    description:
+      "겹치는 부분 문제를 표에 적어두는 DP를 배우고, 상태와 점화식 세우는 법을 계단과 배낭과 동전으로 익혀보자냥!",
+  },
 ];
