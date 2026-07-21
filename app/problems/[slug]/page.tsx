@@ -6,7 +6,7 @@ import { findProblemBySlug, toPublicProblem } from "@/app/lib/mongo/problems";
 import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
 import { validateToken } from "@/app/lib/auth/login";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
-import Solver from "@/components/judge/Solver";
+import Solver from "@/components/judge/Solver.lazy";
 import ProblemAdminControls from "@/components/judge/ProblemAdminControls";
 import { Badge } from "@/components/ui/badge";
 import Squiggle from "@/components/mdx/Squiggle";
