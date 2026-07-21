@@ -91,4 +91,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "겹치는 부분 문제를 표에 적어두는 DP를 배우고, 상태와 점화식 세우는 법을 계단과 배낭과 동전으로 익혀보자냥!",
   },
+  {
+    name: "누적합과 투 포인터",
+    slug: "prefix_sum",
+    description:
+      "누적합으로 구간 합을 O(1)에 구하고, 투 포인터와 슬라이딩 윈도우로 이중 반복문을 한 번의 훑기로 바꿔보자냥!",
+  },
 ];
