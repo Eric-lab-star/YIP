@@ -121,4 +121,10 @@ export const AlgorithmCurriculum: Lesson[] = [
     description:
       "가중치 있는 그래프에서 최단 거리를 구하는 다익스트라를 우선순위 큐로 익히고, 경유·다중 출발·역방향까지 다뤄보자냥!",
   },
+  {
+    name: "위상 정렬",
+    slug: "topological_sort",
+    description:
+      "진입 차수로 선후 관계를 지키며 순서를 정하는 위상 정렬을 배우고, 사전순·유일성·사이클 판별·임계 경로까지 익혀보자냥!",
+  },
 ];
