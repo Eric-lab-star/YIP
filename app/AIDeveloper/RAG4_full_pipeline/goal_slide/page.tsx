@@ -25,8 +25,9 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-6">
         {[
           { num: "1", text: "검색(Retrieval)과 생성(Generation)을 연결하는 전체 RAG 흐름을 이해한다" },
-          { num: "2", text: "임베딩 · 청킹 · 벡터DB를 하나의 앱으로 통합한다" },
-          { num: "3", text: "검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 안다" },
+          { num: "2", text: "PDF 같은 외부 파일을 pypdf로 불러와 청킹하고 벡터DB에 채우는 법을 익힌다" },
+          { num: "3", text: "임베딩 · 청킹 · 벡터DB를 하나의 앱으로 통합한다" },
+          { num: "4", text: "검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 안다" },
         ].map((item) => (
           <div key={item.num} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
             <span className="bg-purple-500 text-white rounded-full w-9 h-9 flex items-center justify-center shrink-0 font-bold">{item.num}</span>
@@ -60,6 +61,77 @@ const slides: Slide[] = [
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "진짜 도서관 채우기: PDF 불러오기",
+    bg: "from-sky-50 to-blue-50",
+    script: "본격적인 합체에 앞서 중요한 질문을 하나 던지겠습니다. 지금까지 우리는 벡터DB에 문서를 어떻게 넣었습니까? 코드에 문장을 손으로 직접 타이핑해서 넣었습니다. 연습용으로는 괜찮지만, 실제로 쓸모 있는 챗봇을 만들려면 내 교재 PDF나 안내문 파일을 통째로 넣을 수 있어야 합니다. 오늘은 pypdf라는 도구로 PDF 파일을 불러와서 벡터DB를 채우는 방법을 배우겠습니다. 왼쪽은 지금까지의 하드코딩 방식이고, 오른쪽은 오늘 배울 파일 불러오기 방식입니다. 하드코딩은 짧은 연습용, 파일 불러오기는 실전용이라고 이해하시면 됩니다.",
+    content: (
+      <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="bg-orange-50 rounded-xl p-5 border-l-4 border-orange-400">
+            <p className="text-lg font-bold text-orange-700 mb-2">✍️ 지금까지 (하드코딩)</p>
+            <ul className="text-base text-gray-600 space-y-1">
+              <li>코드에 문장을 직접 타이핑</li>
+              <li>긴 문서는 넣기가 너무 힘듦</li>
+              <li>실제 자료(PDF)는 못 넣음 → 연습용</li>
+            </ul>
+          </div>
+          <div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
+            <p className="text-lg font-bold text-blue-700 mb-2">📄 오늘부터 (파일 불러오기)</p>
+            <ul className="text-base text-gray-600 space-y-1">
+              <li>PDF 파일을 통째로 불러옴</li>
+              <li>긴 교재도 한 번에 처리</li>
+              <li>내 진짜 자료로 챗봇 제작 → 실전용</li>
+            </ul>
+          </div>
+        </div>
+        <div className="bg-white/60 rounded-xl p-4 text-center">
+          <p className="text-lg text-gray-700">PDF에서 <strong>글자만 뽑아내면</strong>, 그 다음은 지난 시간의 청킹·저장과 똑같습니다!</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "PDF가 도서관 책이 되는 세 걸음",
+    bg: "from-cyan-50 to-sky-50",
+    script: "PDF를 벡터DB에 넣는 과정은 딱 세 걸음입니다. 첫째, 읽기 단계입니다. pypdf의 PdfReader로 PDF 파일을 엽니다. pip install pypdf로 설치할 수 있습니다. 둘째, 텍스트 추출 단계입니다. 페이지를 하나씩 돌면서 extract_text 함수로 글자를 뽑아 이어붙입니다. 셋째, 청킹과 적재 단계입니다. 지난 시간에 만든 split_into_chunks 함수로 잘게 나눈 뒤, collection.add로 벡터DB에 넣습니다. 코드를 보면, PDF를 열고, 모든 페이지의 텍스트를 하나로 합치고, 청킹해서 add하는 흐름이 그대로 담겨 있습니다. 한 가지 주의할 점은, extract_text는 글자로 된 PDF에서만 글자를 뽑을 수 있다는 것입니다. 사진을 스캔한 이미지 PDF는 글자가 안 나올 수 있으니, 글자를 드래그해서 선택할 수 있는 PDF를 사용하시기 바랍니다.",
+    content: (
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { num: "1", title: "읽기", desc: "PdfReader로 PDF 열기", color: "bg-sky-500" },
+            { num: "2", title: "텍스트 추출", desc: "extract_text()로 글자 뽑기", color: "bg-cyan-500" },
+            { num: "3", title: "청킹 + 적재", desc: "chunk 후 collection.add()", color: "bg-blue-500" },
+          ].map((item) => (
+            <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-center gap-3">
+              <span className={`${item.color} text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold`}>{item.num}</span>
+              <div>
+                <p className="text-base font-semibold text-gray-800">{item.title}</p>
+                <p className="text-sm text-gray-600">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <CodeBlock>
+          {`from pypdf import PdfReader
+
+reader = PdfReader("교재.pdf")          # 1) 읽기
+text = ""
+for page in reader.pages:               # 2) 텍스트 추출
+    text += page.extract_text()
+
+chunks = split_into_chunks(text, 200)   # 3) 청킹 + 적재
+collection.add(
+    documents=chunks,
+    ids=[f"chunk_{'{i}'}" for i in range(len(chunks))],
+)`}
+        </CodeBlock>
+        <div className="bg-amber-50 rounded-xl p-3">
+          <p className="text-base text-gray-600">🐾 주의: <strong>스캔(사진) PDF</strong>는 글자가 안 뽑힐 수 있어요. 글자를 선택할 수 있는 PDF를 쓰세요!</p>
         </div>
       </div>
     ),

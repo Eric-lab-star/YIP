@@ -6,7 +6,7 @@ import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: '검색 + 생성 합체! RAG 챗봇 완성하기',
-  description: '도서관에서 자료를 찾는 검색(Retrieval)과 친절하게 설명하는 생성(Generation)을 하나로 합쳐, 진짜 RAG 챗봇을 완성하는 흐름을 배워보자냥!',
+  description: '진짜 PDF 파일을 불러와 벡터DB에 채우고, 검색(Retrieval)과 생성(Generation)을 합쳐 나만의 문서로 답하는 RAG 챗봇을 완성해보자냥!',
   session: 10,
 }
 
@@ -18,6 +18,10 @@ export const metadata = {
   자료를 빠르게 찾아주는 **벡터DB(Chroma)**까지! 그런데… 자료를 찾기만 하고
   끝내면 좀 아쉽지 않냥? 오늘은 드디어 찾은 자료를 제미나이에게 건네서
   **자연스러운 답변**까지 만들어내는, 진짜 **RAG 챗봇**을 완성할 거다냥! 두근두근! 🐟
+
+  게다가 오늘은 특별한 게 하나 더 있다냥! 지금까지는 도서관(벡터DB)에 책을
+  **손으로 한 문장씩 써넣었지만**, 오늘은 진짜 **PDF 파일을 통째로 불러와서**
+  채워볼 거다냥. 내 교재 PDF로 답해주는 챗봇, 상상만 해도 두근거리지 않냥? 📄✨
 </NyangSpeech>
 
 ---
@@ -26,6 +30,7 @@ export const metadata = {
 
 <Callout type="goal">
   - 검색(**Retrieval**)과 생성(**Generation**)을 연결하는 전체 **RAG 흐름**을 이해한다.
+  - **PDF 같은 외부 파일**을 `pypdf`로 불러와 텍스트를 뽑고, 청킹해서 **벡터DB에 채우는** 방법을 익힌다.
   - 지난 3차시 동안 만든 결과물(**임베딩 · 청킹 · 벡터DB**)을 하나의 앱으로 통합한다.
   - 검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 걸 안다.
 </Callout>
@@ -56,7 +61,86 @@ export const metadata = {
 
 ---
 
-## 2단계 · 핵심 비유 — "AI 사서의 완성" (3분)
+## 2단계 · 진짜 도서관 채우기 — PDF 불러오기 (5~7분)
+
+<NyangSpeech>
+  잠깐! 합체를 하기 전에 중요한 질문이 하나 있다냥. 🤔 지금까지 우리 도서관(벡터DB)에는
+  책을 어떻게 넣었냥? 코드에 `"고양이는 생선을 좋아한다"` 처럼 **손으로 한 문장씩**
+  써넣었다냥. 그런데 진짜로 쓸모 있는 챗봇을 만들려면, **내 교재 PDF**나
+  **학교 안내문 파일**을 통째로 넣을 수 있어야 하지 않겠냥? 😺
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '✍️',
+    label: '지금까지 (하드코딩)',
+    color: 'orange',
+    items: [
+      '코드에 문장을 직접 타이핑',
+      '문서가 길면 넣기가 너무 힘듦',
+      '실제 자료(PDF)는 못 넣음',
+      '연습용으로만 OK',
+    ],
+  }}
+  right={{
+    emoji: '📄',
+    label: '오늘부터 (파일 불러오기)',
+    color: 'blue',
+    items: [
+      'PDF 파일을 통째로 불러옴',
+      '긴 교재도 한 번에 처리',
+      '내 진짜 자료로 챗봇을 만듦',
+      '실전용으로 쓸 수 있음!',
+    ],
+  }}
+/>
+
+<NyangSpeech>
+  PDF를 벡터DB에 넣는 건 딱 **세 걸음**이면 된다냥. 어렵지 않으니 천천히 따라와보자냥! 🐾
+</NyangSpeech>
+
+<StepCard step="3단계" title="PDF가 도서관 책이 되기까지">
+
+1. **읽기** — `pypdf`의 `PdfReader`로 PDF 파일을 연다냥. (`pip install pypdf`)
+2. **텍스트 추출** — 페이지를 하나씩 돌면서 `page.extract_text()`로 글자를 뽑아 이어붙인다냥.
+3. **청킹 + 적재** — 지난 시간에 만든 `split_into_chunks()`로 잘게 나눠서 `collection.add()`로 벡터DB에 넣는다냥!
+
+</StepCard>
+
+```python
+from pypdf import PdfReader
+
+# 1) PDF 열기
+reader = PdfReader("교재.pdf")
+
+# 2) 모든 페이지의 텍스트를 하나로 이어붙이기
+text = ""
+for page in reader.pages:
+    text += page.extract_text()
+
+# 3) 청킹해서 벡터DB에 넣기 (지난 시간에 만든 함수 재사용!)
+chunks = split_into_chunks(text, chunk_size=200)
+collection.add(
+    documents=chunks,
+    ids=[f"chunk_{i}" for i in range(len(chunks))],
+)
+print(f"PDF에서 {len(chunks)}개의 청크를 도서관에 넣었다냥!")
+```
+
+<Callout type="tip">
+  📄 **핵심은 이거다냥!** PDF든, 손으로 쓴 문장이든, 결국 벡터DB에 들어가는 건 **똑같은 텍스트 청크**라냥.
+  PDF에서 **글자만 뽑아내면**, 그 다음은 지난 시간에 배운 청킹·저장과 **완전히 똑같다냥!**
+</Callout>
+
+<Callout type="note">
+  🐾 **주의!** `extract_text()`는 **글자로 된 PDF**에서만 글자를 뽑을 수 있다냥.
+  사진을 찍어 스캔한 PDF(그림으로 된 PDF)는 글자가 안 나올 수 있다냥. 그럴 땐 글자가 살아있는
+  PDF를 쓰거나, 나중에 **OCR**(그림 속 글자 읽기) 기술을 배우면 된다냥!
+</Callout>
+
+---
+
+## 3단계 · 핵심 비유 — "AI 사서의 완성" (3분)
 
 <NyangSpeech>
   RAG가 뭔지 한 번에 와닿게 해줄 비유가 있다냥. 도서관을 한번 떠올려보자냥! 📚
@@ -104,7 +188,7 @@ export const metadata = {
 
 ---
 
-## 3단계 · 전체 RAG 파이프라인 흐름 (5~7분)
+## 4단계 · 전체 RAG 파이프라인 흐름 (5~7분)
 
 <NyangSpeech>
   자, 그럼 손님의 질문이 답변이 되어 나오기까지, 안에서 어떤 일이
@@ -140,7 +224,7 @@ export const metadata = {
 
 ---
 
-## 4단계 · 코드로 미리 보는 RAG 함수 (3분)
+## 5단계 · 코드로 미리 보는 RAG 함수 (3분)
 
 <NyangSpeech>
   실습에서 직접 빈칸을 채워볼 거지만, 먼저 RAG 함수가 어떻게 생겼는지
@@ -201,6 +285,10 @@ def rag_answer(question):
     {
       question: 'RAG의 두 글자, R과 G는 각각 무슨 단계를 뜻하냥?',
       answer: 'R은 Retrieval(검색) — 벡터DB에서 관련 자료를 찾아오는 단계다냥. G는 Generation(생성) — 찾아온 자료로 제미나이가 답변을 만드는 단계다냥!',
+    },
+    {
+      question: 'PDF 파일을 벡터DB에 넣으려면 어떤 세 걸음을 거치냥?',
+      answer: '1) pypdf의 PdfReader로 PDF를 열고, 2) page.extract_text()로 페이지마다 글자를 뽑아 이어붙이고, 3) split_into_chunks()로 잘게 나눠 collection.add()로 벡터DB에 넣는다냥. PDF에서 글자만 뽑으면, 그 다음은 지난 시간과 똑같다냥!',
     },
     {
       question: 'AI 사서 비유에서 "사서"와 "설명 잘하는 직원"은 각각 무엇을 맡냥?',
