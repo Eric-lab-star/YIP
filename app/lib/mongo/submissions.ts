@@ -69,6 +69,51 @@ export async function getSolvedSlugs(userId: string): Promise<string[]> {
 	return c.distinct("problemSlug", { userId, verdict: "accepted" });
 }
 
+export interface AcceptedSolution {
+	userId: string;
+	language: string;
+	code: string;
+	createdAt: Date;
+}
+
+/**
+ * One accepted solution per other user for a problem (their most recent accept),
+ * most recent first. Excludes `excludeUserId` so a viewer never sees their own
+ * submission listed. Callers must gate access — only reveal these to users who
+ * have themselves solved the problem, so it can't be used to copy an answer.
+ */
+export async function listAcceptedSolutions(
+	problemSlug: string,
+	excludeUserId: string,
+	limit = 30
+): Promise<AcceptedSolution[]> {
+	const c = await col();
+	return c
+		.aggregate<AcceptedSolution>([
+			{
+				$match: {
+					problemSlug,
+					verdict: "accepted",
+					userId: { $ne: excludeUserId },
+				},
+			},
+			{ $sort: { createdAt: -1 } },
+			{
+				$group: {
+					_id: "$userId",
+					userId: { $first: "$userId" },
+					language: { $first: "$language" },
+					code: { $first: "$code" },
+					createdAt: { $first: "$createdAt" },
+				},
+			},
+			{ $sort: { createdAt: -1 } },
+			{ $limit: limit },
+			{ $project: { _id: 0, userId: 1, language: 1, code: 1, createdAt: 1 } },
+		])
+		.toArray();
+}
+
 /** A user's submissions for a problem, most recent first. */
 export async function listSubmissionsByUserAndProblem(
 	userId: string,

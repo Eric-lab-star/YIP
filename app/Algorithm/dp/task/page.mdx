@@ -1,0 +1,258 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 동적계획법 5문제',
+  description: '계단 오르기, 1로 만들기, 배낭, 그리고 입력이 똑같은 동전 문제 두 개를 풀어보자냥!',
+  session: 13,
+}
+
+# 직접 풀어보자! 동적계획법 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 문제는 **코드보다 종이가 먼저**라냥. 바로
+  키보드를 두드리지 말고, `dp[i]` 가 무슨 뜻인지부터 한 줄로 적어보자냥.
+  그것만 정하면 나머지는 반복문 몇 줄이라냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **DP 문제를 풀 때 순서**
+
+  1. **상태** — `dp[i]` 가 무슨 뜻인지 한 문장으로 적는다
+  2. **점화식** — `dp[i]` 를 더 작은 `dp` 로 어떻게 만드는지 적는다
+  3. **시작값** — `dp[0]` 이 뭔지 정한다
+  4. **그 다음에** 반복문을 짠다
+
+  1번을 흐릿하게 두고 코드부터 짜면 반드시 헤맨다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="계단 오르기" time="15분">
+  1, 2, 3칸씩 올라 `n`칸까지 가는 방법의 수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-climb-stairs)
+
+  <StepCard step="상태" title="dp[i] = i칸까지 오는 방법의 수라냥">
+    마지막에 1칸, 2칸, 3칸 중 하나를 뛰어서 도착한다냥. 그러니 —
+
+    ```python
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        dp[i] = dp[i - 1]
+        if i >= 2:
+            dp[i] += dp[i - 2]
+        if i >= 3:
+            dp[i] += dp[i - 3]
+    ```
+
+    7장의 피보나치가 `dp[i-1] + dp[i-2]` 였다냥. 여기에 `dp[i-3]` 이 하나
+    더 붙은 것뿐이라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **`dp[0] = 1` 이 핵심이라냥.**
+
+    "아무 칸도 안 오르는 방법이 한 가지" 라는 뜻이라냥. 이걸 `0` 으로 두면
+    전부 `0` 이 나온다냥.
+
+    그리고 `i >= 2`, `i >= 3` 조건을 빼먹으면 `dp[i-2]` 가 음수 인덱스를
+    건드려서 틀린다냥. 공개된 첫 예시 `3` 의 답이 `4` 인지 꼭 확인하자냥.
+  </Callout>
+
+  <Callout type="tip">
+    `n` 이 60까지라 값이 꽤 커진다냥 (수천조 단위). 파이썬은 큰 정수도 알아서
+    다루니 걱정 없다냥. 다른 언어로 푼다면 `long long` / `int64` 를 쓰자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="1로 만들기" time="20분">
+  `n` 을 1로 만드는 최소 연산 횟수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-make-one)
+
+  <StepCard step="상태" title="dp[i] = i를 1로 만드는 최소 횟수라냥">
+    `i` 에서 할 수 있는 건 세 가지라냥 — `-1`, `÷2`(나눠지면), `÷3`(나눠지면).
+    각각 한 번의 연산이라냥.
+
+    ```python
+    dp = [0] * (n + 1)
+    for i in range(2, n + 1):
+        best = dp[i - 1] + 1
+        if i % 2 == 0:
+            best = min(best, dp[i // 2] + 1)
+        if i % 3 == 0:
+            best = min(best, dp[i // 3] + 1)
+        dp[i] = best
+    ```
+
+    `dp[1] = 0` 이라냥 (이미 1이니 연산 0번). 나머지를 `min` 으로 채운다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **그리디로 풀면 틀린다냥.**
+
+    "나눌 수 있으면 무조건 나눈다"는 그럴듯하지만 틀린다냥. `10` 을 보자냥.
+
+    - 그리디: `10 → 5 → 4 → 2 → 1` (4번)
+    - 최적: `10 → 9 → 3 → 1` (3번)
+
+    당장 `-1` 을 하는 게 더 나을 때가 있다냥. 공개된 첫 예시가 `10` 이고
+    답이 `3` 이라, 그리디로 짜면 여기서 바로 틀린다냥.
+  </Callout>
+
+  <Callout type="tip">
+    `n` 이 100만까지라 표가 크지만, 한 번씩만 채우니 금방이라냥. 재귀로 짜면
+    깊이가 깊어져 위험하니 **표 방식(반복문)** 으로 풀자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="배낭 채우기" time="25분">
+  무게 한도 안에서 가치 합을 최대로 담는다냥.
+
+  [문제 풀러 가기](/problems/s-knapsack)
+
+  <StepCard step="뼈대" title="한 줄 표로 담는다냥">
+    각 물건마다 **무게가 큰 칸부터** 훑으며 갱신한다냥.
+
+    ```python
+    dp = [0] * (cap + 1)
+    for w, v in items:
+        for c in range(cap, w - 1, -1):
+            dp[c] = max(dp[c], dp[c - w] + v)
+    ```
+
+    `dp[c]` = 무게 `c` 를 쓸 수 있을 때 최대 가치라냥. 답은 `dp[cap]` 이라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **무게를 큰 쪽부터 훑어야 한다냥.**
+
+    작은 쪽부터(`range(w, cap + 1)`) 훑으면 방금 담은 물건을 **같은 칸에서
+    또** 담아버린다냥. 그러면 같은 물건을 여러 번 담은 답이 나와서 틀린다냥.
+
+    각 물건은 한 번만 담아야 하니 **거꾸로** 도는 거라냥. 헷갈리면 강의
+    4단계를 다시 보자냥.
+  </Callout>
+
+  <Callout type="important">
+    **비율 그리디로 풀면 틀린다냥.**
+
+    "가치÷무게가 높은 것부터" 담는 그리디는 그럴듯하지만 틀린다냥. 비율 높은
+    작은 물건이 자리를 애매하게 남겨서 더 좋은 조합을 놓친다냥.
+
+    숨겨진 테스트에 그런 경우가 있다냥 — 비율 순으로 담으면 `160`, 정답은
+    `220` 이라냥.
+  </Callout>
+
+  <StepCard step="확인" title="2차원으로 먼저 짜봐도 좋다냥">
+    한 줄 표가 헷갈리면 강의 4단계의 **2차원 `dp[i][w]`** 로 또박또박 짜도
+    된다냥. 답은 똑같이 나온다냥. `n` 과 `W` 가 크지 않아서 2차원도 충분히
+    빠르다냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={4} title="동전 최소 개수" time="20분">
+  동전으로 금액 `k` 를 만드는 최소 개수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-coin-min)
+
+  <StepCard step="상태" title="dp[a] = 금액 a를 만드는 최소 동전 개수라냥">
+    ```python
+    INF = float("inf")
+    dp = [INF] * (k + 1)
+    dp[0] = 0
+    for a in range(1, k + 1):
+        for c in coins:
+            if c <= a:
+                dp[a] = min(dp[a], dp[a - c] + 1)
+    ```
+
+    `dp[0] = 0` 이라냥 (0원은 동전 0개). 나머지는 `INF` 로 시작해서 `min`
+    으로 채운다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **만들 수 없으면 `-1` 이라냥.**
+
+    끝까지 채웠는데 `dp[k]` 가 아직 `INF` 면 그 금액은 못 만드는 거라냥.
+    그때 `-1` 을 출력한다냥.
+
+    ```python
+    print(-1 if dp[k] == INF else dp[k])
+    ```
+
+    숨겨진 테스트에 `2, 4` 로 홀수 `7` 을 만드는 경우가 있다냥. 답은 `-1`
+    이라냥. `INF` 처리를 빼먹으면 여기서 틀린다냥.
+  </Callout>
+
+  <Callout type="important">
+    **12장 그리디로 풀면 틀린다냥.**
+
+    12장 거스름돈은 "큰 동전이 작은 동전의 배수" 라서 큰 것부터 집는
+    그리디가 됐다냥. 이 문제는 **그 조건이 없다냥.**
+
+    공개된 첫 예시가 `1, 3, 4` 로 `6` 을 만드는 거라냥. 그리디는 `4 + 1 + 1`
+    로 3개인데, 정답은 `3 + 3` 으로 **2개**라냥. DP 는 이걸 제대로 찾는다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="동전으로 만드는 방법의 수" time="25분">
+  동전으로 금액 `k` 를 만드는 방법의 수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-coin-ways)
+
+  <Callout type="important">
+    **4번과 입력 형식이 똑같다냥. 그런데 질문이 다르다냥.**
+
+    4번은 "최소 몇 개", 5번은 "몇 가지 방법" 이라냥. 상태 `dp[a]` 의 뜻은
+    같은데, 채우는 식이 `min` 에서 `+` 로 바뀐다냥. 4번 코드를 그대로 내면
+    당연히 틀린다냥.
+  </Callout>
+
+  <StepCard step="뼈대" title="동전을 바깥 반복문에 둔다냥">
+    ```python
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for c in coins:              # 동전이 바깥이라냥
+        for a in range(c, k + 1):
+            dp[a] += dp[a - c]
+    ```
+
+    `dp[0] = 1` 이라냥 (0원을 만드는 방법은 아무것도 안 쓰는 한 가지).
+  </StepCard>
+
+  <Callout type="important">
+    **반복문 순서가 이 문제의 전부라냥.**
+
+    동전을 **바깥**에 두면 각 동전을 한 번씩만 고려해서 **조합**을 센다냥.
+    두 반복문을 뒤집으면 **순서까지 세서** 답이 커진다냥.
+
+    공개된 첫 예시가 `1, 2` 로 `3` 을 만드는 거라냥. 조합은 `1+1+1`, `1+2`
+    두 가지라 답이 `2` 라냥. 순서를 세면 `2+1` 이 따로 세져서 `3` 이 나온다냥.
+
+    답이 `3` 으로 나오면 반복문 순서를 뒤집은 거라냥.
+  </Callout>
+
+  <Callout type="tip">
+    이 문제는 `k` 가 100까지라 방법의 수가 아주 크지는 않다냥. `1, 2` 로
+    `100` 을 만드는 방법이 `51` 가지인 걸로 표가 맞는지 확인해봐도 좋다냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 오늘로 **완전탐색 · 그리디 · DP** 세 가지가 다 모였다냥.
+  다 해보기(11장)가 느릴 때, 그리디(12장)가 틀릴 때, 그 사이를 메우는 게
+  DP 라냥.
+
+  DP 는 처음이 제일 어렵다냥. 상태를 한 문장으로 적는 연습만 계속하면
+  점점 보인다냥.
+
+  다음은 **누적합과 투 포인터**라냥. 이중 반복문이 시간 초과 날 때, 미리
+  더해두거나 두 손가락으로 훑어서 한 번에 끝내는 방법이라냥. 정말 수고했다냥~
+</NyangSpeech>

@@ -1,0 +1,190 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 트라이 5문제',
+  description: '접두사 개수, 완전 일치, 전화번호 목록, 서로 다른 접두사 수, 가장 긴 사전 접두사를 풀어보자냥!',
+  session: 21,
+}
+
+# 직접 풀어보자! 트라이 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 다섯 문제는 **트라이 삽입 한 뼈대**의 변주라냥.
+  중첩 딕셔너리로 트라이를 만들고, 내려가며 무엇을 보느냐만 바꾼다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **트라이 기본기 (중첩 딕셔너리)**
+
+  ```python
+  root = {}
+
+  def insert(word):
+      node = root
+      for ch in word:
+          node = node.setdefault(ch, {})   # 없으면 만들고 내려간다냥
+      node["$"] = True                     # 단어 끝 표시
+
+  def walk(s):                             # s 를 따라 내려간다냥
+      node = root
+      for ch in s:
+          if ch not in node:
+              return None
+          node = node[ch]
+      return node
+  ```
+</Callout>
+
+---
+
+<MissionCard number={1} title="이 접두사로 시작하는 단어" time="20분">
+  각 질의 접두사로 시작하는 단어가 몇 개인지 센다냥.
+
+  [문제 풀러 가기](/problems/s-trie-count-prefix)
+
+  <StepCard step="뼈대" title="지나가는 노드마다 개수를 센다냥">
+    ```python
+    def insert(word):
+        node = root
+        for ch in word:
+            node = node.setdefault(ch, {"#": 0})
+            node["#"] += 1     # 이 노드를 지나간 단어 수
+
+    # 질의: 접두사 끝 노드의 "#" 를 읽는다
+    ```
+
+    접두사 질의는 그 접두사 끝 노드의 `"#"` 를 **읽기만** 하면 된다냥.
+    길이 없으면(내려가다 끊기면) `0` 이라냥.
+  </StepCard>
+
+  <Callout type="tip">
+    같은 단어가 여러 번 들어올 수 있다냥. 그때도 카운트가 그만큼 올라가니
+    자연스럽게 처리된다냥. 공개된 예시에 `ab` 가 두 번 들어와 `a` 질의가
+    `2` 인 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="이 단어가 사전에 있나" time="15분">
+  질의 단어가 사전에 정확히 있으면 `1`, 아니면 `0` 이라냥.
+
+  [문제 풀러 가기](/problems/s-trie-word-exists)
+
+  <Callout type="important">
+    **끝 표시를 꼭 확인한다냥.**
+
+    글자를 다 따라간 것만으로는 부족하다냥. 그 자리에 **끝 표시(`"$"`)가
+    있어야** 진짜 단어라냥.
+
+    ```python
+    node = walk(s)
+    print(1 if node is not None and "$" in node else 0)
+    ```
+
+    끝 표시를 안 보면 `appl` 같은 **접두사를 단어로 착각**한다냥. 공개된
+    예시에 `appl` 이 `0` 인 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="전화번호 목록" time="25분">
+  어떤 번호가 다른 번호의 접두사면 `NO`, 아니면 `YES` 라냥.
+
+  [문제 풀러 가기](/problems/s-phone-list)
+
+  <StepCard step="뼈대" title="넣으면서 두 가지를 본다냥">
+    ```python
+    consistent = True
+    for w in numbers:
+        node = root
+        conflict = False
+        for ch in w:
+            if "$" in node:          # 더 짧은 번호가 접두사
+                conflict = True
+            node = node.setdefault(ch, {})
+        if len(node) > 0:            # 내가 더 긴 번호의 접두사
+            conflict = True
+        node["$"] = True
+        if conflict:
+            consistent = False
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **두 검사 모두 필요하다냥.**
+
+    "넣는 도중 끝 표시를 지나침" 은 **짧은 게 내 접두사**인 경우, "다 넣은
+    노드에 자식이 있음" 은 **내가 긴 것의 접두사**인 경우라냥. 순서에
+    상관없이 잡으려면 둘 다 봐야 한다냥. 공개된 예시 `911` 과 `91125426`
+    이 `NO` 인지 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="서로 다른 접두사의 수" time="15분">
+  모든 단어의 접두사 중 서로 다른 것의 수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-count-prefixes)
+
+  <Callout type="tip">
+    **서로 다른 접두사의 수 = 트라이의 노드 수**(루트 제외) 라냥. 삽입 중
+    **새 노드를 만들 때마다** 하나씩 세면 된다냥.
+
+    ```python
+    nodes = 0
+    for word in words:
+        node = root
+        for ch in word:
+            if ch not in node:
+                node[ch] = {}
+                nodes += 1     # 새 접두사가 하나 생겼다냥
+            node = node[ch]
+    print(nodes)
+    ```
+
+    공개된 예시 `ab`, `abc` → `a`, `ab`, `abc` 로 `3` 인 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="가장 긴 사전 접두사" time="20분">
+  각 질의의 접두사가 되는 사전 단어 중 가장 긴 것의 길이를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-longest-match)
+
+  <StepCard step="뼈대" title="내려가며 끝 표시의 깊이를 기억한다냥">
+    ```python
+    node = root
+    depth = 0
+    best = 0
+    for ch in query:
+        if ch not in node:
+            break
+        node = node[ch]
+        depth += 1
+        if "$" in node:      # 여기서 끝나는 사전 단어가 있다냥
+            best = depth
+    print(best)
+    ```
+
+    질의 글자를 따라 내려가며, **끝 표시가 있는 가장 깊은 지점**의 깊이가
+    답이라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **사전 단어가 질의보다 길면 접두사가 아니라냥.**
+
+    질의 `xy` 에 사전 단어 `xyz` 가 있어도, `xyz` 는 `xy` 의 접두사가
+    아니라냥 (더 길다냥). 질의 글자만큼만 내려가니 자연스럽게 걸러진다냥.
+    공개된 예시 `xy` 질의가 `0` 인 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 트라이는 **앞부분이 같은 문자열을 한 길에 모으는**
+  발상이라냥. 접두사 검색이 필요하면 제일 먼저 떠올리자냥.
+
+  다음은 **세그먼트 트리**라냥. 14장의 누적합이 못 하던 "값이 바뀌는 구간
+  질의" 를 갱신과 질의 둘 다 O(log n) 에 해내는 나무라냥. 정말 수고했다냥~
+</NyangSpeech>

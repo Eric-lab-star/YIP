@@ -1,0 +1,171 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+import { CatIcon } from '@/components/mdx/CatIcon'
+
+export const metadata = {
+  title: "세상에 공개하기",
+  description: "Community Cloud 에 배포하고 내 사이트 링크를 친구에게 보내보자냥!",
+  session: 32,
+}
+
+# 세상에 공개하기
+
+<NyangSpeech>
+  드디어 마지막 강, 이 수업의 결승선이다냥! 지금까지 만든 사이트는 **내
+  컴퓨터에서만** 볼 수 있었다냥. 오늘은 그걸 **인터넷에 올려서**, 친구한테
+  링크 하나로 보여줄 수 있게 만든다냥. 진짜 웹 개발자의 마지막 단계라냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **배포(deploy)** 가 무엇인지 이해한다.
+  - `requirements.txt` 로 **필요한 도구 목록**을 적는다.
+  - **Streamlit Community Cloud** 에 사이트를 올린다.
+  - 내 사이트 **링크를 얻는다.**
+</Callout>
+
+---
+
+## 1단계 · 배포가 뭐냥
+
+<NyangSpeech>
+  배포는 내 앱을 **인터넷의 컴퓨터(서버)에 올려서**, 누구나 접속할 수 있게
+  하는 거다냥. 내 노트북은 껐다 켰다 하지만, 서버는 늘 켜져 있어서 언제든
+  접속할 수 있다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **내 방 vs 가게**
+
+  지금까지 만든 앱은 **내 방에만 있는 작품**이었다냥. 배포는 그걸 **길가의
+  가게**에 내놓는 거라냥. 이제 지나가는 누구나 들어와서 볼 수 있다냥!
+
+  다행히 Streamlit 은 **무료 가게 자리**를 준다냥 — Community Cloud 라냥.
+</Callout>
+
+---
+
+## 2단계 · 준비물 — requirements.txt
+
+<NyangSpeech>
+  내 컴퓨터엔 streamlit, pandas 를 깔아뒀지? 그런데 인터넷의 서버는 그걸
+  모른다냥. 그래서 **"이 앱은 이런 도구가 필요해요"** 라는 목록을
+  `requirements.txt` 파일에 적어줘야 한다냥.
+</NyangSpeech>
+
+```text
+# requirements.txt
+
+streamlit
+pandas
+```
+
+<Callout type="important">
+  **내가 쓴 도구를 다 적어야 한다냥**
+
+  `import` 로 불러온 것 중 **직접 설치한 것**(streamlit, pandas 등)을 모두
+  적는다냥. 안 적으면 서버가 그 도구를 못 깔아서 앱이 안 뜬다냥. 이 파일은
+  `app.py` 와 같은 폴더에 둔다냥!
+</Callout>
+
+---
+
+## 3단계 · 깃허브에 올리기
+
+<NyangSpeech>
+  Community Cloud 는 **깃허브(GitHub)** 에 있는 코드를 가져다 배포한다냥.
+  그래서 먼저 내 코드를 깃허브에 올려야 한다냥. 깃허브는 코드를 저장하고
+  공유하는 창고라냥.
+</NyangSpeech>
+
+<StepCard step="1단계" title="깃허브 계정과 저장소">
+  [github.com](https://github.com) 에서 계정을 만들고, 새 저장소
+  (repository)를 하나 만든다냥. 여기에 내 앱 폴더를 통째로 올린다냥.
+</StepCard>
+
+<StepCard step="2단계" title="파일 올리기">
+  `app.py`, `pages/` 폴더, `requirements.txt`, 데이터 파일(CSV)까지 전부
+  올린다냥.
+</StepCard>
+
+<Callout type="important">
+  **비밀 파일은 올리지 않는다냥!**
+
+  28강에서 배운 `secrets.toml` 은 **절대 깃허브에 올리면 안 된다냥.**
+  비밀번호가 통째로 공개되기 때문이라냥. 비밀값은 곧 배포 사이트 설정에
+  따로 넣는다냥 (아래 4단계 참고).
+</Callout>
+
+---
+
+## 4단계 · Community Cloud 에 배포
+
+<StepCard step="1단계" title="사이트 접속">
+  [share.streamlit.io](https://share.streamlit.io) 에 들어가서 깃허브
+  계정으로 로그인한다냥.
+</StepCard>
+
+<StepCard step="2단계" title="앱 만들기">
+  "New app" 을 누르고, 방금 올린 깃허브 저장소와 `app.py` 를 고른다냥.
+  그리고 "Deploy" 를 누르면 된다냥!
+</StepCard>
+
+<StepCard step="3단계" title="비밀값 넣기 (있다면)">
+  API 키 같은 비밀값이 있다면, 앱 설정(Settings)의 **Secrets** 칸에
+  `secrets.toml` 내용을 붙여넣는다냥. 코드에 안 박고도 `st.secrets` 로
+  꺼내 쓸 수 있게 된다냥!
+</StepCard>
+
+<Callout type="tip">
+  **몇 분 기다리면 완성이라냥**
+
+  Deploy 를 누르면 서버가 `requirements.txt` 를 보고 도구를 깔고, 앱을
+  띄운다냥. 잠깐 기다리면 `https://내앱이름.streamlit.app` 같은 **링크**가
+  생긴다냥. 그게 내 사이트 주소라냥!
+</Callout>
+
+---
+
+## 5단계 · 링크 공유하기
+
+<NyangSpeech>
+  이제 그 링크를 친구한테 보내보라냥! 카톡으로, 인스타로, 어디로든 말이다냥.
+  친구가 그 링크를 열면 **네가 만든 사이트**가 그대로 뜬다냥. 상상만 해도
+  뿌듯하지 않냥?
+</NyangSpeech>
+
+<Callout type="note">
+  **코드를 고치면 자동으로 반영된다냥**
+
+  깃허브의 코드를 고쳐서 다시 올리면, Community Cloud 가 **알아서 다시
+  배포**한다냥. 링크는 그대로 유지되니, 언제든 사이트를 개선할 수 있다냥!
+</Callout>
+
+---
+
+## 수업을 마치며
+
+<Callout type="goal">
+  **이 수업에서 배운 것**
+
+  - 1부: 화면에 글자 올리고 배치하기
+  - 2부: 사용자에게 입력받기, 재실행 규칙
+  - 3부: session_state 로 값 기억하기
+  - 4부: 표·CSV·필터·그래프로 데이터 다루기
+  - 5부: 여러 페이지·이미지·캐시·테마·비밀값
+  - 6부: 나만의 사이트 기획부터 배포까지
+
+  파이썬만 알던 네가 이제 **웹사이트를 만들고 세상에 공개**할 수 있게
+  됐다냥!
+</Callout>
+
+<NyangSpeech>
+  <CatIcon src="BIG_SMILE" size={90} /> 축하한다냥! 정말 긴 여정이었다냥.
+  이제 너는 아이디어가 떠오르면 그걸 **진짜 웹사이트로 만들어 남에게
+  보여줄 수 있는** 사람이 됐다냥. 여기서 멈추지 말고, 네 아이디어로 새
+  앱을 계속 만들어보라냥. 코딩냥이는 언제나 응원한다냥. 수고했다냥!
+</NyangSpeech>

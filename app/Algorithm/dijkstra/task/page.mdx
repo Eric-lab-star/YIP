@@ -1,0 +1,174 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 다익스트라 5문제',
+  description: '모든 곳까지 최단 거리, 출발지→목적지, 경유지, 다중 출발, 왕복을 풀어보자냥!',
+  session: 18,
+}
+
+# 직접 풀어보자! 다익스트라 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 다섯 문제는 **다익스트라 한 뼈대**의 변주라냥.
+  그 뼈대를 함수로 만들어두면 나머지는 붙이는 것만 바뀐다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **다익스트라 뼈대**
+
+  ```python
+  import heapq
+
+  def dijkstra(src):
+      INF = float("inf")
+      dist = [INF] * (n + 1)
+      dist[src] = 0
+      pq = [(0, src)]
+      while pq:
+          d, u = heapq.heappop(pq)
+          if d > dist[u]:
+              continue
+          for v, w in adj[u]:
+              if d + w < dist[v]:
+                  dist[v] = d + w
+                  heapq.heappush(pq, (dist[v], v))
+      return dist
+  ```
+
+  이걸 외워두면 오늘 문제는 "어디서 시작하고 무엇을 더하느냐" 만 바뀐다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="모든 곳까지 최단 거리" time="20분">
+  1번에서 각 노드까지의 최단 거리를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-shortest-all)
+
+  <Callout type="important">
+    **BFS 로 풀면 틀린다냥.**
+
+    간선마다 비용이 다르니, 정거장 수만 세는 BFS 는 틀린 거리를 준다냥.
+    반드시 우선순위 큐를 쓰는 다익스트라라냥. 숨겨진 테스트가 이걸 잡는다냥.
+  </Callout>
+
+  <Callout type="tip">
+    갈 수 없는 노드는 `-1` 을 출력한다냥. 거리가 무한대로 남은 노드가 그거라냥.
+    출력이 많으니 리스트에 모아 한 번에 출력하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="출발지에서 목적지까지" time="15분">
+  `s` 에서 `t` 까지의 최단 거리를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-shortest-st)
+
+  <Callout type="tip">
+    1번과 똑같은 다익스트라라냥. 시작을 `s` 로 두고, `dist[t]` 만 출력하면
+    된다냥.
+
+    ```python
+    dist = dijkstra(s)
+    print(dist[t] if dist[t] != INF else -1)
+    ```
+
+    `t` 에 못 가면 `-1` 이라냥. 공개된 예시 `3 1 1 3 → -1` 로 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="꼭 들러야 하는 곳" time="20분">
+  1번에서 `v` 를 거쳐 `n`번까지 가는 최단 거리를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-shortest-via)
+
+  <StepCard step="핵심" title="두 조각으로 나눈다냥">
+    `1 → v` 와 `v → n` 을 따로 구해서 더한다냥.
+
+    ```python
+    d1 = dijkstra(1)      # 1에서 각 노드까지
+    dv = dijkstra(v)      # v에서 각 노드까지
+    a, b = d1[v], dv[n]
+    print(-1 if a == INF or b == INF else a + b)
+    ```
+
+    다익스트라를 **두 번** 돌리는 거라냥. 한 번은 1에서, 한 번은 v에서라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **어느 한쪽이라도 못 가면 `-1` 이라냥.**
+
+    `1 → v` 가 불가능하거나 `v → n` 이 불가능하면 전체가 불가능이라냥.
+    두 거리 중 하나라도 무한대면 `-1` 을 출력하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="가장 가까운 대피소" time="20분">
+  각 노드에서 가장 가까운 대피소까지의 거리를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-multi-source-dist)
+
+  <StepCard step="뼈대" title="대피소를 전부 거리 0으로 넣는다냥">
+    ```python
+    dist = [INF] * (n + 1)
+    pq = []
+    for src in sources:
+        dist[src] = 0
+        heapq.heappush(pq, (0, src))
+    # 이후는 평범한 다익스트라라냥
+    ```
+
+    시작점을 하나가 아니라 **여러 개** 넣는 것만 다르다냥. 그러면 각 노드에
+    "가장 가까운 대피소" 까지의 거리가 저절로 구해진다냥.
+  </StepCard>
+
+  <Callout type="tip">
+    10장의 **다중 시작 BFS** 와 똑같은 요령이라냥. 여러 곳에서 동시에 물결이
+    퍼지는 거라냥. 대피소 자신은 `0`, 못 가면 `-1` 이라냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="왕복 최단 거리" time="25분">
+  1번에서 `n`번까지 갔다가 다시 1번으로 오는 최단 거리를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-round-trip)
+
+  <StepCard step="핵심" title="역방향 그래프를 같이 만든다냥">
+    가는 길은 원래 그래프에서, **오는 길은 화살표를 뒤집은 그래프**에서
+    구한다냥.
+
+    ```python
+    adj = [[] for _ in range(n + 1)]
+    radj = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        u, v, w = map(int, input().split())
+        adj[u].append((v, w))
+        radj[v].append((u, w))   # 뒤집어서 넣는다냥
+
+    go = dijkstra(adj, 1)[n]     # 1 → n
+    back = dijkstra(radj, 1)[n]  # n → 1 (역방향에서 1 → n)
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **왜 역방향에서 1→n 이 원래 n→1 과 같냥?**
+
+    원래 그래프에서 `n` 에서 `1` 로 가는 길의 화살표를 전부 뒤집으면,
+    역방향 그래프에서 `1` 에서 `n` 으로 가는 길이 된다냥. 거리는 그대로라냥.
+
+    그래서 시작을 항상 `1` 로 두고 그래프만 바꾸면 왕복이 풀린다냥.
+    가는 길이나 오는 길이 없으면 `-1` 이라냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 다익스트라는 **"가장 가까운 것부터 확정"** 하나로
+  움직인다냥. 우선순위 큐만 익히면 어렵지 않다냥.
+
+  다음은 **위상 정렬**이라냥. "이걸 하려면 저걸 먼저" 같은 순서 조건이 있는
+  일들을 어떤 차례로 해야 하는지 그래프로 푸는 방법이라냥. 정말 수고했다냥~
+</NyangSpeech>

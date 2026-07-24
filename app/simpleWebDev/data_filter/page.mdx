@@ -1,0 +1,151 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "표를 검색하고 걸러내기",
+  description: "입력 위젯과 표를 연결해서 원하는 행만 골라 보여주자냥!",
+  session: 19,
+}
+
+# 표를 검색하고 걸러내기
+
+<NyangSpeech>
+  데이터가 100줄이면 다 볼 필요 없다냥. "3살 이하만", "참치 좋아하는 애만"
+  처럼 **원하는 것만** 골라 보면 된다냥. 오늘은 2부에서 배운 입력 위젯과
+  4부의 표를 **연결**해서, 살아있는 검색 화면을 만들어보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 조건으로 표의 **행을 걸러낸다(필터).**
+  - 슬라이더·선택 위젯을 표와 **연결**한다.
+  - 위젯을 움직이면 표가 **바로 바뀌는** 앱을 만든다.
+</Callout>
+
+---
+
+## 1단계 · 조건으로 행 걸러내기
+
+<NyangSpeech>
+  pandas 에서 조건을 대괄호 안에 넣으면, 그 조건에 **맞는 행만** 남는다냥.
+  예를 들어 "나이가 3 이하" 인 냥이만 골라보자냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+df = pd.read_csv("cats.csv")
+
+young = df[df["나이"] <= 3]      # 나이가 3 이하인 행만 남긴다냥
+
+st.dataframe(young)
+```
+
+<Callout type="note">
+  **`df[조건]` 의 뜻**
+
+  `df["나이"] <= 3` 은 각 행마다 참/거짓을 만든다냥. 그걸 `df[...]` 에
+  넣으면 **참인 행만** 남는다냥. "조건에 맞는 것만 남겨라" 라고 읽으면
+  된다냥!
+</Callout>
+
+---
+
+## 2단계 · 슬라이더와 표 연결하기
+
+<NyangSpeech>
+  이제 조건의 숫자(3)를 슬라이더로 바꿔보자냥. 9강의 재실행 규칙 덕분에,
+  슬라이더를 움직일 때마다 표가 저절로 다시 걸러진다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+df = pd.read_csv("cats.csv")
+
+max_age = st.slider("최대 나이", 0, 10, 5)
+
+result = df[df["나이"] <= max_age]
+
+st.write("나이 " + str(max_age) + "살 이하 냥이")
+st.dataframe(result)
+```
+
+<Callout type="tip">
+  **이게 바로 대화형 앱이라냥**
+
+  슬라이더를 밀면 → 재실행 → 새 조건으로 표가 걸러짐 → 화면 갱신. 이
+  흐름이 Streamlit 의 진짜 매력이라냥. 코드는 몇 줄인데 진짜 검색 도구처럼
+  동작한다냥!
+</Callout>
+
+---
+
+## 3단계 · 글자로 검색하기
+
+<NyangSpeech>
+  숫자뿐 아니라 **글자로도** 검색할 수 있다냥. 입력한 글자가 들어간 이름만
+  찾아보자냥.
+</NyangSpeech>
+
+```python
+keyword = st.text_input("이름 검색")
+
+if keyword:
+    found = df[df["이름"].str.contains(keyword)]
+    st.dataframe(found)
+else:
+    st.dataframe(df)      # 검색어가 없으면 전체를 보여준다냥
+```
+
+<Callout type="note">
+  **`.str.contains(...)` 는 "포함하니?" 라냥**
+
+  `df["이름"].str.contains("냥")` 은 이름에 "냥" 이 들어간 행을 찾는다냥.
+  검색창이 비었을 땐(`if keyword:` 가 거짓) 전체를 보여주는 게 자연스럽다냥.
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 냥이 검색기**
+
+  - `selectbox` 로 간식 종류를 고르면, 그 간식을 좋아하는 냥이만 표에
+    보여주자냥.
+  - 힌트: `df[df["간식"] == 고른값]`
+
+  선택을 바꿀 때마다 표가 착착 바뀌는 걸 보면 뿌듯하다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "표에서 조건에 맞는 행만 남기는 방법은?",
+    answer: "df[조건] 이다냥. 예: df[df[\"나이\"] <= 3] 은 나이 3 이하만 남긴다냥.",
+  },
+  {
+    question: "슬라이더를 움직이면 표가 저절로 다시 걸러지는 이유는?",
+    answer: "9강의 재실행 규칙 때문이라냥. 위젯을 건드리면 코드 전체가 다시 돌면서 새 조건으로 표를 만든다냥.",
+  },
+  {
+    question: "이름에 특정 글자가 들어간 행을 찾는 방법은?",
+    answer: "df[\"이름\"].str.contains(\"글자\") 를 조건으로 쓴다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  이제 표를 검색하고 걸러낼 수 있다냥! 다음 시간은 **심화** 강이라냥.
+  표를 보기만 하는 게 아니라, 사용자가 **직접 고칠 수 있는** 표를
+  만들어본다냥.
+</NyangSpeech>

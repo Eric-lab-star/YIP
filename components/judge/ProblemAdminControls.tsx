@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { DoodleButton } from "@/components/ui/doodle-button";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteProblemAction } from "@/app/actions/problemAction";
 
@@ -28,22 +28,21 @@ export default function ProblemAdminControls({ slug }: { slug: string }) {
 
 	return (
 		<div className="flex items-center gap-2">
-			<Button asChild variant="outline" size="sm">
+			<DoodleButton asChild size="sm">
 				<Link href={`/problems/${slug}/edit`}>
 					<Pencil className="size-4" />
 					수정
 				</Link>
-			</Button>
-			<Button
-				variant="outline"
+			</DoodleButton>
+			<DoodleButton
+				tone="danger"
 				size="sm"
 				onClick={onDelete}
 				disabled={deleting}
-				className="text-destructive"
 			>
 				<Trash2 className="size-4" />
 				삭제
-			</Button>
+			</DoodleButton>
 		</div>
 	);
 }

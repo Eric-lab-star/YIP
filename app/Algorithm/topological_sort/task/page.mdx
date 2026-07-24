@@ -1,0 +1,178 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 위상 정렬 5문제',
+  description: '사전순 순서, 순서의 유일성, 사이클 판별, 프로젝트 완료 시간, 최소 단계를 풀어보자냥!',
+  session: 19,
+}
+
+# 직접 풀어보자! 위상 정렬 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 다섯 문제는 **칸 알고리즘 한 뼈대**의 변주라냥.
+  진입 차수 배열을 만들고, 큐로 훑으면서 무엇을 기록하느냐만 바뀐다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **칸 알고리즘 뼈대**
+
+  ```python
+  from collections import deque
+
+  q = deque(i for i in range(1, n + 1) if indeg[i] == 0)
+  order = []
+  while q:
+      u = q.popleft()
+      order.append(u)
+      for v in adj[u]:
+          indeg[v] -= 1
+          if indeg[v] == 0:
+              q.append(v)
+  ```
+
+  큐를 최소 힙으로 바꾸면 사전순, 큐 크기를 보면 유일성, 길이를 세면 사이클
+  판별이라냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="사전순으로 가장 빠른 순서" time="20분">
+  선후 관계를 지키는 순서 중 사전순 최소를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-topo-order)
+
+  <Callout type="important">
+    **평범한 큐 대신 최소 힙을 써야 한다냥.**
+
+    ```python
+    import heapq
+    pq = [i for i in range(1, n + 1) if indeg[i] == 0]
+    heapq.heapify(pq)
+    # heappop 으로 가장 작은 번호부터 꺼낸다냥
+    ```
+
+    `deque` 를 쓰면 넣은 순서대로 나와서 사전순이 안 된다냥. 숨겨진 테스트가
+    이걸 잡는다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="순서가 하나뿐일까" time="15분">
+  가능한 순서가 딱 하나면 `YES`, 아니면 `NO` 라냥.
+
+  [문제 풀러 가기](/problems/s-topo-unique)
+
+  <Callout type="tip">
+    **1번과 입력이 똑같다냥.** 이번엔 순서를 뽑는 게 아니라 **갈림길이
+    있는지** 본다냥.
+
+    ```python
+    unique = True
+    while q:
+        if len(q) > 1:      # 지금 할 수 있는 게 둘 이상이면
+            unique = False  # 순서가 여러 가지라냥
+        u = q.popleft()
+        ...
+    ```
+
+    진입 차수 0 인 게 한 번이라도 둘 이상이면, 그 순간 어느 걸 먼저 할지
+    선택지가 생기니 순서가 여러 개라냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="다 끝낼 수 있을까" time="15분">
+  사이클이 있으면 `NO`, 없으면 `YES` 라냥.
+
+  [문제 풀러 가기](/problems/s-topo-possible)
+
+  <Callout type="important">
+    **뽑은 순서의 길이가 `n` 인지 확인한다냥.**
+
+    ```python
+    count = 0
+    while q:
+        u = q.popleft()
+        count += 1
+        ...
+    print("YES" if count == n else "NO")
+    ```
+
+    사이클 안의 일들은 진입 차수가 영영 0 이 안 돼서 큐에 못 들어간다냥.
+    그래서 뽑힌 게 `n`개보다 적으면 사이클이 있는 거라냥. 공개된 예시
+    `1→2→3→1` 이 `NO` 인지 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="프로젝트 완료 시간" time="25분">
+  독립인 작업은 동시에 할 때 전체 완료 시간을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-critical-time)
+
+  <StepCard step="뼈대" title="위상 순서로 끝시각을 채운다냥">
+    ```python
+    finish = [0] * (n + 1)
+    while q:
+        u = q.popleft()
+        finish[u] += time[u]     # 선행 최대 끝시각 + 내 시간
+        for v in adj[u]:
+            finish[v] = max(finish[v], finish[u])
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                q.append(v)
+    print(max(finish[1:]))
+    ```
+
+    `finish[u]` 를 처리할 때 선행이 이미 다 반영돼 있어서, 거기에 내 시간을
+    더하면 내 끝시각이라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **합이 아니라 최댓값이라냥.**
+
+    독립인 작업은 동시에 하니, 전체 시간은 모든 작업 시간의 합이 아니라
+    **가장 긴 선행 사슬**(임계 경로)이라냥. 그래서 `max` 로 이어간다냥.
+    시간이 크니 다른 언어면 `long`/`int64` 를 쓰자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="최소 몇 단계" time="20분">
+  한 단계에 가능한 걸 다 동시에 할 때 최소 단계 수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-min-rounds)
+
+  <StepCard step="뼈대" title="가장 긴 사슬의 길이라냥">
+    ```python
+    level = [1] * (n + 1)
+    while q:
+        u = q.popleft()
+        for v in adj[u]:
+            level[v] = max(level[v], level[u] + 1)
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                q.append(v)
+    print(max(level[1:]))
+    ```
+
+    `level[v]` 는 `v` 를 하려면 몇 단계째여야 하는지라냥. 선행보다 한 단계
+    뒤라, `level[선행] + 1` 의 최댓값이라냥.
+  </StepCard>
+
+  <Callout type="tip">
+    4번과 뼈대가 똑같다냥. 시간을 더하는 대신 **단계를 1씩** 세는 것만
+    다르다냥. 선행이 없는 일은 `1`단계라냥. 공개된 예시 `3 0 → 1` 로
+    확인하자냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 위상 정렬은 **"먼저 할 수 있는 것부터"** 하나로
+  움직인다냥. 진입 차수와 큐만 익히면 어렵지 않다냥.
+
+  다음은 **비트마스킹**이라냥. 집합을 정수 하나로 표현해서, 11장의
+  완전탐색을 더 빠르고 깔끔하게 만들고 비트 DP 까지 여는 방법이라냥.
+  정말 수고했다냥~
+</NyangSpeech>

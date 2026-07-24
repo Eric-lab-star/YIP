@@ -31,4 +31,17 @@ export const Booklist = {
     description:
       "간단한 AI 서비스를 만들어보면서 AI 개발에 필요한 기본적인 지식과 기술을 학습하는 것을 목표로 합니다.",
   },
+  Algorithm: {
+    title: "Algorithm",
+    link: "/Algorithm",
+    imagekey: "algorithm.png",
+    state: "기초 2",
+    description:
+      "문법은 배웠지만 문제 앞에서 막막한 학생을 위한 수업입니다. 자주 쓰이는 풀이 뼈대를 익히고 채점기에 직접 제출해보는 것을 목표로 합니다.",
+  },
 };
+
+/** 교재 선택 드롭다운 옵션. Booklist 에서 파생시켜 두 곳이 어긋나지 않게 한다. */
+export const BOOK_TITLES = (
+  Object.keys(Booklist) as (keyof typeof Booklist)[]
+).map((title) => ({ value: title, label: title }));

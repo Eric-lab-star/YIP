@@ -6,6 +6,50 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Use `rg` (ripgrep) instead of `grep` for searching files.
 
+## Responsive Checks
+
+Any new page or UI must be checked across screen widths before it is called
+done — visitors arrive on whatever device they happen to have.
+
+Check at least 320 / 390 / 768 / 1024 / 1280, and **include the width just past
+a breakpoint**. `app/problems/[slug]` shipped with its 실행 and 제출 buttons off
+screen not only on phones (320–570px) but also at 1024–1250px, where
+`lg:grid-cols-2` halves the column while the toolbar keeps its full width.
+Checking only the narrow end misses that class of bug entirely.
+
+Two notes on measuring it:
+
+- If the browser window is maximized, resizing it does nothing. Loading the page
+  in a fixed-width `iframe` on the same origin works, since media queries follow
+  the iframe's width.
+- `documentElement.scrollWidth > innerWidth` on the page itself is a bug. A wide
+  table or code block extending past the viewport is not, **provided it scrolls
+  inside an `overflow-x: auto` container** — inside `overflow: hidden` the
+  content is simply unreachable.
+
+Numbers alone miss overlap and squeezing, so look at it too.
+
+## Lesson Content
+
+Lesson pages (`app/AIDeveloper`, `app/tourOfPython`, `app/Algorithm`,
+`app/spaceshipCaptain`) and the components that render them
+(`components/mdx/`) must not use emoji — including in 코딩냥이's dialogue,
+headings, and card labels. Use plain text, or `CatIcon` when a character
+image is wanted.
+
+Two exceptions, because there the emoji is content rather than decoration:
+
+- inside code examples (e.g. `print(" ❤️ " * 10)`)
+- when the lesson is *about* emoji (e.g. an exercise that prints ☀️🌧️❄️
+  based on the weather)
+
+This applies only to lesson content. General app UI (landing page, games,
+navigation) is unaffected.
+
+Note that box drawing (`─ ┌ ┐ │ ├ └ ┘`), arrows (`→ ←`), enclosed numbers
+(`① ② ③`), and `○ ■ ▶ ★ ░` are **not** emoji and are used deliberately —
+several appear inside Python examples, where removing them breaks the code.
+
 ## Commands
 
 ```bash
@@ -44,6 +88,10 @@ Optional: `FORMATTER_URL` points the "포맷" button (`app/api/judge/format/`) a
 
 Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware editor completions via the LSP bridge (`lsp/`, pyright for Python). The browser connects directly over WebSocket (`components/judge/lspClient.ts`); without it the editor uses only the static keyword/snippet completions. As a `NEXT_PUBLIC_` var it is inlined at build time.
 
+Optional: `TOKEN_MAX_AGE_HOURS` (default `6`) sets the auth-token lifetime in hours (`app/lib/auth/login.ts`). Shorter bounds how long a leaked or revoked token stays usable; login is low-friction so a short window costs little.
+
+Optional (must be set together to enable): `PHONE_ENC_KEY` + `PHONE_INDEX_KEY` turn on reversible encryption of the student phone number at rest (`app/lib/auth/phoneCrypto.ts`). `PHONE_ENC_KEY` is a 32-byte AES-256 key as base64 or 64 hex chars; `PHONE_INDEX_KEY` is any non-empty HMAC secret used to build the searchable blind index login queries by. **Opt-in and dual-mode**: with the keys unset the number is stored/read as plaintext exactly as before, so deploying changes nothing until you set the keys AND run `scripts/migrate-phone-encryption.mjs` (which encrypts existing rows and adds their blind index). During migration the app reads both legacy-plaintext and encrypted rows, so the safe order is: set keys → deploy → migrate. Losing `PHONE_ENC_KEY` makes stored numbers unrecoverable; losing/rotating `PHONE_INDEX_KEY` breaks login lookups until re-migrated — treat both as durable secrets.
+
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
 ## Architecture
@@ -54,7 +102,12 @@ Optional: `NEXT_PUBLIC_LSP_URL` (e.g. `ws://localhost:2200`) enables type-aware 
 
 All database writes go through **Server Actions** (`app/actions/`) which validate with Zod, then call the MongoDB layer (`app/lib/mongo/`). Client components use **SWR** (`components/SWR/`) for reads, or consume data passed as props from server components.
 
-There is no `middleware.ts`. Auth is handled per-route: `validateToken()` is called server-side in API routes and Server Actions. **Authentication** uses a JWT stored in an `httpOnly` cookie (`logInToken`). Token lifetime is 20 hours.
+**Authentication** uses a JWT stored in an `httpOnly` cookie (`logInToken`). Lifetime defaults to 6 hours (`TOKEN_MAX_AGE_HOURS`). Enforcement has two layers, and both matter — the middleware is a fast redirect, not the boundary:
+
+- `proxy.ts` (Next 16's middleware, Edge runtime) verifies the token **signature** on the gated route matcher using `jose`. It only checks the signature — never merely the cookie's presence — and clears a rejected cookie.
+- Server-side, `validateToken()` (`app/lib/auth/login.ts`) is called in API routes, Server Actions, and via `requireAuth()` (`app/lib/auth/requireAuth.ts`) in the gated section layouts. It verifies the signature with `jsonwebtoken` **and** checks the revocation list (`app/lib/mongo/revocation.ts`): a deleted/disabled user's still-valid token is rejected. `deleteStudentAction` calls `revokeUserTokens`.
+
+Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed.
 
 ### Key Patterns
 

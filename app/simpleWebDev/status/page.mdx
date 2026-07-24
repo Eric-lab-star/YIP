@@ -1,0 +1,148 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "기다림을 보여주기",
+  description: "spinner, progress, toast 로 앱이 일하는 중이라는 걸 알려주자냥!",
+  session: 27,
+}
+
+# 기다림을 보여주기
+
+<NyangSpeech>
+  앱이 무거운 일을 하는 몇 초 동안 화면이 멈춰 있으면, 사용자는 "고장났나?"
+  하고 불안해한다냥. 그럴 때 **"지금 일하는 중이에요"** 를 보여주면 안심이
+  된다냥. 오늘은 그 표시들을 배운다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.spinner` 로 **로딩 표시**를 띄운다.
+  - `st.progress` 로 **진행 막대**를 보여준다.
+  - `st.toast` 로 **잠깐 뜨는 알림**을 띄운다.
+</Callout>
+
+---
+
+## 1단계 · 빙글빙글 로딩 — spinner
+
+<NyangSpeech>
+  `st.spinner` 는 `with` 블록 안의 일이 끝날 때까지 **빙글빙글 도는 로딩
+  표시**를 보여준다냥. 일이 끝나면 저절로 사라진다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+import time
+
+if st.button("데이터 불러오기"):
+    with st.spinner("불러오는 중이라냥..."):
+        time.sleep(2)      # 2초 걸리는 일이라 치자냥
+    st.success("다 됐다냥!")
+```
+
+<Callout type="note">
+  **`time.sleep` 은 잠깐 멈추는 거라냥**
+
+  `time.sleep(2)` 는 2초 동안 멈추는 거라냥. 실제로는 이 자리에 파일 읽기
+  같은 진짜 무거운 일이 들어간다냥. 연습에선 `sleep` 으로 흉내낸 거다냥!
+</Callout>
+
+---
+
+## 2단계 · 진행 막대 — progress
+
+<NyangSpeech>
+  일이 여러 단계로 나뉘어 있으면, **몇 %까지 됐는지** 막대로 보여줄 수
+  있다냥. `st.progress` 라냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+import time
+
+bar = st.progress(0)          # 0% 에서 시작
+
+for percent in range(1, 101):
+    time.sleep(0.02)
+    bar.progress(percent)      # 막대를 조금씩 채운다냥
+
+st.write("완료라냥!")
+```
+
+<Callout type="tip">
+  **막대는 0~100 사이라냥**
+
+  `bar.progress(percent)` 의 숫자는 0부터 100까지라냥. `for` 로 조금씩
+  늘리면 막대가 차오른다냥. 파일 여러 개를 처리할 때 딱이다냥!
+</Callout>
+
+---
+
+## 3단계 · 잠깐 뜨는 알림 — toast
+
+<NyangSpeech>
+  `st.toast` 는 화면 구석에 **잠깐 떴다가 사라지는** 작은 알림이다냥.
+  "저장했어요!", "메일을 보냈어요!" 같은 짧은 소식에 딱이다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+if st.button("저장"):
+    st.toast("저장했다냥!")
+```
+
+<Callout type="analogy">
+  **세 가지, 언제 뭘 쓰냥**
+
+  | 표시 | 어울리는 상황 |
+  |---|---|
+  | `spinner` | 얼마나 걸릴지 모르는 일을 기다릴 때 |
+  | `progress` | 단계가 나뉘어 몇 %인지 보여줄 수 있을 때 |
+  | `toast` | 짧은 소식을 살짝 알릴 때 |
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 가짜 다운로드 앱**
+
+  - "다운로드" 버튼을 만들고
+  - 누르면 `st.spinner` 로 "받는 중..." 을 보여주다가
+  - `st.progress` 로 막대를 0에서 100까지 채우고
+  - 끝나면 `st.toast("완료!")` 를 띄워보자냥.
+
+  진짜 다운로드처럼 보이는 걸 만드는 게 목표라냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "with 블록 안의 일이 끝날 때까지 빙글빙글 로딩을 보여주는 것은?",
+    answer: "st.spinner 다냥. 일이 끝나면 저절로 사라진다냥.",
+  },
+  {
+    question: "몇 % 까지 됐는지 막대로 보여주는 것은?",
+    answer: "st.progress 다냥. 0부터 100까지의 숫자로 채운다냥.",
+  },
+  {
+    question: "화면 구석에 잠깐 떴다 사라지는 짧은 알림은?",
+    answer: "st.toast 다냥. 저장 완료 같은 짧은 소식에 좋다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  기다림을 보여주는 법까지 배웠다냥! 5부의 마지막 시간엔 앱의 **설정과
+  테마**, 그리고 비밀번호 같은 걸 안전하게 숨기는 `st.secrets` 를 배운다냥.
+  진짜 배포를 앞둔 중요한 강이라냥!
+</NyangSpeech>

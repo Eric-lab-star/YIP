@@ -1,0 +1,206 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 실전 종합 5문제',
+  description: 'LIS, 나무 자르기, 최대 부분합, 가중치 격자 최단 비용, 구간 겹침을 풀어보자냥!',
+  session: 23,
+}
+
+# 직접 풀어보자! 실전 종합 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 마지막 다섯 문제라냥. 이번엔 뼈대를 다 주지 않는다냥.
+  각 문제가 **어떤 유형인지 먼저 알아채고**, 배운 걸 꺼내 쓰는 게 오늘의
+  연습이라냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **유형 알아채기**
+
+  - "가장 긴 증가 수열" → 이분 탐색 (6장)
+  - "~하는 최댓값/최솟값" 인데 값 범위가 큼 → 답을 이분 탐색 (6장)
+  - "연속한 부분에서 최대/최소" → DP (13장)
+  - "격자에서 최소 비용" 인데 칸마다 비용이 다름 → 다익스트라 (18장)
+  - "구간이 잔뜩, 겹침" → 정렬·스위핑 (12장)
+</Callout>
+
+---
+
+<MissionCard number={1} title="가장 긴 증가 부분 수열" time="20분">
+  엄격히 증가하는 부분 수열의 최대 길이를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-final-lis)
+
+  <StepCard step="유형" title="이분 탐색으로 O(n log n) 이라냥">
+    `tails` 에 "길이별 마지막 값의 최소" 를 유지하고, 새 원소의 자리를
+    이분 탐색으로 찾는다냥.
+
+    ```python
+    import bisect
+    tails = []
+    for x in a:
+        pos = bisect.bisect_left(tails, x)
+        if pos == len(tails):
+            tails.append(x)
+        else:
+            tails[pos] = x
+    print(len(tails))
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **엄격히 증가라 `bisect_left` 라냥.**
+
+    같은 값은 이어붙이면 안 된다냥. `bisect_left`(같은 값의 왼쪽 자리)를
+    쓰면 같은 값이 기존 자리를 덮어써서 길이가 안 늘어난다냥. `bisect_right`
+    를 쓰면 `1 1 1 1` 같은 입력에서 길이를 부풀려 틀린다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="나무 자르기" time="25분">
+  나무를 잘라 `m` 이상 얻는 절단기 높이의 최댓값을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-final-wood)
+
+  <StepCard step="유형" title="답 자체를 이분 탐색이라냥">
+    높이 `H` 를 이분 탐색하고, 그 `H` 로 얻는 나무 양을 `O(n)` 에 확인한다냥.
+
+    ```python
+    def collected(H):
+        return sum(h - H for h in a if h > H)
+
+    lo, hi, ans = 0, max(a), 0
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if collected(mid) >= m:   # 충분히 얻으면 더 높여본다냥
+            ans = mid
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    print(ans)
+    ```
+
+    `H` 가 클수록 얻는 양이 줄어드는 단조성 덕에 이분 탐색이 된다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **얻는 양이 아주 커진다냥.**
+
+    나무가 8000그루, 각 높이가 10억이면 합이 조 단위라냥. 파이썬은 괜찮지만
+    다른 언어면 `long`/`int64` 를 쓰자냥. `H` 의 범위도 10억이니, `O(n)` 을
+    `log` 번만 하는 이분 탐색이라야 빠르다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="최대 연속 부분합" time="15분">
+  연속한 부분 배열 중 합이 최대인 것을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-final-kadane)
+
+  <StepCard step="유형" title="DP — 여기서 끝나는 최대합이라냥">
+    ```python
+    cur = a[0]
+    best = a[0]
+    for i in range(1, n):
+        cur = max(a[i], cur + a[i])
+        best = max(best, cur)
+    print(best)
+    ```
+
+    `cur` 는 "이 위치에서 끝나는 부분 배열의 최대합" 이라냥. 앞이 손해면
+    새로 시작한다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **`best` 를 `0` 으로 시작하면 틀린다냥.**
+
+    부분 배열은 비어 있을 수 없다냥. 전부 음수인 입력에서 `0` 으로 시작하면
+    빈 배열의 합 `0` 을 답으로 내버린다냥. `best` 와 `cur` 를 **첫 원소**로
+    시작하자냥. 숨겨진 테스트에 전부 음수인 경우가 있다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="가중치 격자 최단 비용" time="25분">
+  격자를 지나 최소 비용으로 도착하는 값을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-final-grid-cost)
+
+  <Callout type="important">
+    **칸마다 비용이 다르니 BFS 가 아니라 다익스트라라냥.**
+
+    10장의 미로는 모든 칸이 한 걸음이라 BFS 로 됐다냥. 여기는 칸마다 밟는
+    비용이 달라서, 우선순위 큐를 쓰는 다익스트라라야 한다냥.
+  </Callout>
+
+  <StepCard step="뼈대" title="격자 + 우선순위 큐라냥">
+    ```python
+    import heapq
+    dist = [[INF] * m for _ in range(n)]
+    dist[0][0] = g[0][0]              # 시작 칸 비용도 포함
+    pq = [(g[0][0], 0, 0)]
+    while pq:
+        d, r, c = heapq.heappop(pq)
+        if d > dist[r][c]:
+            continue
+        for dr, dc in DIRS:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < n and 0 <= nc < m:
+                nd = d + g[nr][nc]
+                if nd < dist[nr][nc]:
+                    dist[nr][nc] = nd
+                    heapq.heappush(pq, (nd, nr, nc))
+    print(dist[n - 1][m - 1])
+    ```
+
+    8장의 방향표에 18장의 다익스트라를 얹은 거라냥. 시작 칸의 비용도
+    포함하는 걸 잊지 말자냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={5} title="가장 많이 겹치는 순간" time="20분">
+  동시에 겹치는 구간의 최대 개수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-final-overlap)
+
+  <StepCard step="유형" title="사건을 정렬해 훑는 스위핑이라냥">
+    ```python
+    events = []
+    for s, e in segs:
+        events.append((s, 1))
+        events.append((e + 1, -1))   # 끝점 포함 → e+1 에서 줄인다냥
+    events.sort()
+    cur = best = 0
+    for _, delta in events:
+        cur += delta
+        best = max(best, cur)
+    print(best)
+    ```
+
+    시작에서 +1, 끝난 직후에 -1 인 사건을 좌표 순으로 훑으며 최댓값을
+    찾는다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **끝점을 포함하니 `e + 1` 에서 줄인다냥.**
+
+    구간이 끝 `e` 를 포함하므로, `e` 에서 바로 줄이면 그 점에서 겹침을
+    놓친다냥. `e + 1` 에서 줄여야 `e` 까지 세어진다냥. 공개된 예시에서
+    구간들이 한 점에서 겹치는 걸 확인하자냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥?! 그럼 이제 너는 **알고리즘 입문 과정을 완주**한 거라냥.
+
+  리스트 훑기에서 시작해서, 정렬·탐색·자료구조·완전탐색·그리디·DP·그래프,
+  그리고 오늘 실전 종합까지 왔다냥. 처음에 "문법은 아는데 어디서부터 시작하지"
+  하던 그 막막함, 이제 없어졌지냥?
+
+  문제를 보면 **어떤 서랍을 열지** 보이기 시작할 거라냥. 그게 진짜 실력이라냥.
+  여기까지 온 너, 정말 대단하다냥. 코딩냥이는 늘 응원한다냥. 또 만나자냥~
+</NyangSpeech>

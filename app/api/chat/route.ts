@@ -12,6 +12,7 @@ import {
   setCachedAnswer,
 } from "@/app/lib/mongo/aiCache";
 import { consumeAiQuota, refundAiQuota } from "@/app/lib/mongo/aiUsage";
+import { CAVEMAN_PERSONA } from "@/app/lib/ai/persona";
 import { pusherServer } from "@/app/lib/pusher/pusher_server";
 
 // Cap on a single chat message: persisted to Mongo and forwarded to Anthropic,
@@ -175,7 +176,8 @@ export async function POST(req: Request) {
 			어떤 분야의 질문이든 친절하게 답변해주세요.
 			답변은 짧고 간결하고 정확하게 작성해주세요.
 			답변에는 이모티콘을 사용하지 마세요.
-			`,
+
+${CAVEMAN_PERSONA}`,
     messages,
   });
 

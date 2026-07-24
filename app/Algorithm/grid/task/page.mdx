@@ -1,0 +1,244 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 2차원 리스트 5문제',
+  description: '행과 열의 합, 전치, 회전, 지뢰찾기, 나선형 순회까지 격자를 손에 익혀보자냥!',
+  session: 8,
+}
+
+# 직접 풀어보자! 2차원 리스트 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 격자 문제는 **작게 그려보는 것**이 거의 전부라냥.
+  `2행 3열` 짜리를 종이에 그리고 칸마다 `(0,0) (0,1) ...` 주소를 적어보자냥.
+  그것만 해도 인덱스 실수가 확 줄어든다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **격자 문제를 풀 때 순서**
+
+  1. **크기를 먼저 확인한다** — 답이 `n행 m열` 이냥, `m행 n열` 이냥?
+  2. **결과 격자를 만든다** — `[[0] * ? for _ in range(?)]` 로 새로 만든다냥
+  3. **한 칸씩 채운다** — 원본의 어느 칸이 결과의 어느 칸으로 가냥?
+
+  1번을 대충 넘기면 `IndexError` 가 난다냥. 항상 먼저 적어두자냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="행과 열의 합" time="10분">
+  각 행의 합과 각 열의 합을 각각 한 줄씩 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-grid-row-col-sum)
+
+  <Callout type="tip">
+    **행 합과 열 합은 난이도가 다르다냥.**
+
+    행 합은 `sum(grid[r])` 한 줄이면 끝이라냥. 안쪽 리스트가 이미 한 행이기
+    때문이라냥.
+
+    열 합은 `grid[c]` 같은 게 없어서 직접 모아야 한다냥. 바깥 반복을 `c` 로,
+    안쪽 반복을 `r` 로 돌리자냥.
+  </Callout>
+
+  ```python
+  n, m = map(int, input().split())
+  grid = [list(map(int, input().split())) for _ in range(n)]
+
+  # 행의 합 n개
+  # 열의 합 m개
+  ```
+
+  <StepCard step="확인" title="출력 개수를 먼저 세어보자냥">
+    첫 줄에는 **`n`개**, 둘째 줄에는 **`m`개**가 나온다냥.
+
+    `2행 3열` 이면 첫 줄에 2개, 둘째 줄에 3개라냥. 개수가 다르다는 걸
+    확인하고 시작하자냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={2} title="전치 행렬" time="12분">
+  행과 열을 뒤바꾼 격자를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-grid-transpose)
+
+  <Callout type="important">
+    **결과의 크기가 뒤바뀐다냥.** `n행 m열` 을 넣으면 `m행 n열` 이 나온다냥.
+
+    그래서 바깥 반복이 `n`번이 아니라 **`m`번**이라냥. 여기서 `IndexError` 가
+    제일 많이 난다냥.
+  </Callout>
+
+  <StepCard step="발상" title="결과의 (c, r) 자리에 원본의 (r, c) 가 간다냥">
+    원본은 `2행 3열` 이라냥.
+
+    ```
+    1 2 3
+    4 5 6
+    ```
+
+    전치하면 `3행 2열` 이 된다냥.
+
+    ```
+    1 4
+    2 5
+    3 6
+    ```
+
+    원본의 `(0, 2)` 인 `3` 이 결과의 `(2, 0)` 으로 갔다냥. **주소를 그대로
+    뒤집으면 된다냥.**
+  </StepCard>
+
+  ```python
+  n, m = map(int, input().split())
+  grid = [list(map(int, input().split())) for _ in range(n)]
+
+  # 결과는 m 줄이라냥
+  for c in range(m):
+      # 이 줄에는 grid[0][c], grid[1][c], ... 가 들어간다냥
+      pass
+  ```
+</MissionCard>
+
+<MissionCard number={3} title="격자 90도 회전" time="15분">
+  격자를 시계 방향으로 90도 돌려서 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-grid-rotate)
+
+  <Callout type="important">
+    2번 문제와 **결과 크기는 같지만 내용이 다르다냥.** 전치를 그대로 내면
+    틀린다냥.
+
+    원본이 이렇다면,
+
+    ```
+    1 2 3
+    4 5 6
+    ```
+
+    전치는 이렇고,
+
+    ```
+    1 4
+    2 5
+    3 6
+    ```
+
+    시계 90도 회전은 이렇다냥.
+
+    ```
+    4 1
+    5 2
+    6 3
+    ```
+
+    **각 줄의 순서가 뒤집혀 있다냥.**
+  </Callout>
+
+  <Callout type="tip">
+    두 가지로 생각할 수 있다냥. 편한 쪽으로 하자냥.
+
+    - **전치한 다음 각 줄을 뒤집기** — 2번 문제를 풀었으면 한 줄만 더하면 된다냥
+    - **바로 채우기** — 결과의 `c`번째 줄은 원본의 `c`열을 **아래에서 위로** 읽은 것이라냥
+
+    시계 방향이니 **맨 아랫줄이 맨 왼쪽으로** 온다냥. 이것만 맞으면 방향은
+    맞는 거라냥.
+  </Callout>
+
+  <StepCard step="확인" title="한 줄짜리로 먼저 시험해보자냥">
+    세로 한 줄 `1 / 2 / 3` (3행 1열)을 시계로 돌리면 `3 2 1` (1행 3열)이라냥.
+
+    `1 2 3` 이 나왔으면 방향이 반대라냥. 뒤집는 걸 빼먹은 거라냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={4} title="지뢰찾기 숫자 채우기" time="20분">
+  빈 칸을 **주변 여덟 칸의 지뢰 개수**로 바꿔서 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-minesweeper)
+
+  <Callout type="important">
+    **오늘의 핵심 문제라냥.** 여기서 배우는 모양이 나중에 지도 탐색에서
+    그대로 나온다냥.
+
+    그리고 **범위 검사를 빼먹으면 파이썬에서는 에러가 안 난다냥.** `nr` 이
+    `-1` 이면 맨 마지막 행을 읽어버려서, 프로그램은 멀쩡히 끝나고 **답만
+    틀린다냥.** 가장자리 칸에서만 틀리니 예시로는 잘 안 걸린다냥.
+  </Callout>
+
+  <StepCard step="뼈대" title="이웃 보기 3종 세트라냥">
+    ```python
+    for dr in (-1, 0, 1):
+        for dc in (-1, 0, 1):
+            if dr == 0 and dc == 0:
+                continue                    # 자기 자신은 빼고
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < n and 0 <= nc < m:  # 범위 검사를 꼭!
+                if grid[nr][nc] == '*':
+                    cnt += 1
+    ```
+
+    지뢰인 칸은 세지 말고 `*` 를 **그대로 출력**한다냥. 지뢰 칸에도 숫자를
+    적으면 틀린다냥.
+  </StepCard>
+
+  ```python
+  n, m = map(int, input().split())
+  grid = [input().strip() for _ in range(n)]
+
+  for r in range(n):
+      line = ""
+      for c in range(m):
+          # 지뢰면 '*', 아니면 주변 지뢰 개수를 line 에 붙인다냥
+          pass
+      print(line)
+  ```
+
+  <Callout type="tip">
+    숫자를 문자열에 붙일 때는 `str(cnt)` 로 바꿔야 한다냥. `line + cnt` 는
+    에러라냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="나선형 순회" time="20분">
+  바깥부터 안쪽으로 **말아 들어가며** 모든 칸을 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-grid-spiral)
+
+  <Callout type="important">
+    어려운 건 방향을 바꾸는 게 아니라 **이미 지난 칸을 다시 밟지 않는 것**이라냥.
+
+    한 바퀴 돌고 나면 훑어야 할 범위가 **사방에서 한 칸씩 좁아진다냥.**
+  </Callout>
+
+  <StepCard step="발상" title="네 개의 경계선을 좁혀간다냥">
+    `top`, `bottom`, `left`, `right` 네 변수로 **남은 사각형**을 표시한다냥.
+
+    1. `top` 줄을 왼쪽에서 오른쪽으로 → `top` 을 한 칸 내린다
+    2. `right` 열을 위에서 아래로 → `right` 를 한 칸 당긴다
+    3. `bottom` 줄을 오른쪽에서 왼쪽으로 → `bottom` 을 한 칸 올린다
+    4. `left` 열을 아래에서 위로 → `left` 를 한 칸 민다
+
+    `top <= bottom` 이고 `left <= right` 인 동안 반복한다냥.
+  </StepCard>
+
+  <Callout type="tip">
+    **3번과 4번 앞에 조건을 하나씩 더 붙여야 한다냥.**
+
+    한 줄짜리나 한 열짜리 격자에서는 1, 2번만으로 이미 다 훑은 상태가 된다냥.
+    그대로 3, 4번을 하면 **같은 칸을 두 번 출력한다냥.**
+
+    `1행 4열` 과 `4행 1열` 로 꼭 시험해보자냥. 숨겨진 테스트에 둘 다 있다냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 오늘 배운 `grid[r][c]` 와 이웃 보기 3종 세트는 앞으로
+  나올 지도 탐색 문제의 **기본 부품**이라냥. 특히 4번의 범위 검사는 통째로
+  외워두면 두고두고 써먹는다냥. 수고했다냥~
+</NyangSpeech>

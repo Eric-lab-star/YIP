@@ -35,6 +35,20 @@ if (process.platform === "win32" && dns.getServers().join() === "127.0.0.1") {
 const nextConfig: NextConfig = {
 	env: {},
 	reactStrictMode: false,
+	// Rewrite barrel-file imports (e.g. `import { X } from "lucide-react"`) to
+	// deep per-module imports so each route only bundles the icons/components it
+	// actually uses instead of pulling the whole package. lucide-react is used
+	// across nearly every page; the Radix primitives and date-fns benefit too.
+	experimental: {
+		optimizePackageImports: [
+			"lucide-react",
+			"radix-ui",
+			"@radix-ui/react-dropdown-menu",
+			"@radix-ui/react-select",
+			"@radix-ui/react-popover",
+			"date-fns",
+		],
+	},
 	// Let .md / .mdx files under app/ be treated as routes (e.g. noteBook/goal/page.mdx)
 	pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
 	images: {

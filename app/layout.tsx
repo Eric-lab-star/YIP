@@ -9,6 +9,8 @@ import Header from "@/components/commons/Header";
 
 const SITE_URL = "https://yipcode.xyz";
 const OG_IMAGE = "https://r2.kimkyungsub.com/YIP_logo_v0.0.1.png";
+const FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Delius+Swash+Caps&family=JetBrains+Mono:wght@400;500;700&display=swap";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -86,8 +88,12 @@ export const metadata: Metadata = {
 };
 
 // WebSite structured data. `alternateName` is the strongest signal that
-// "yipcode" / "yip코드" refer to this site, and `potentialAction` enables the
-// Google sitelinks search box.
+// "yipcode" / "yip코드" refer to this site.
+//
+// There is deliberately no `potentialAction`/SearchAction here: the sitelinks
+// search box requires a real search endpoint, and this site has no /search
+// route. Declaring one that 404s is worse than declaring none. Add it back
+// alongside an actual /search?q= page.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["Organization", "WebSite"],
@@ -98,14 +104,6 @@ const jsonLd = {
   logo: OG_IMAGE,
   description: "기계와 대화하는 언어를 배우는 코딩 아카데미",
   inLanguage: "ko-KR",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
 };
 
 export default async function RootLayout({
@@ -120,16 +118,30 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Doodle design system: handwritten Korean + swashy display + mono */}
+        {/* Doodle design system: handwritten Korean + swashy display + mono.
+            Gaegu carries the Korean body text, so we keep the fonts on Google's
+            CDN to preserve its per-glyph unicode-range subsetting (self-hosting
+            would ship the whole Korean glyph set up front). But we load the
+            stylesheet WITHOUT blocking first paint: preload it as a resource,
+            then a tiny inline script attaches it as `media="print"` (non-render-
+            blocking) and flips to `all` once ready. With display=swap the page
+            paints immediately in fallback fonts and swaps in the real ones. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Delius+Swash+Caps&family=JetBrains+Mono:wght@400;500;700&display=swap"
-          rel="stylesheet"
+        <link rel="preload" as="style" href={FONT_HREF} />
+        <noscript>
+          <link rel="stylesheet" href={FONT_HREF} />
+        </noscript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href=${JSON.stringify(
+              FONT_HREF
+            )};l.media='print';l.onload=function(){this.media='all'};document.head.appendChild(l);})();`,
+          }}
         />
       </head>
       <body className="flex sm:justify-center antialiased">

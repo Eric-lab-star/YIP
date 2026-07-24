@@ -43,7 +43,7 @@ import {
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { redirect } from "next/navigation";
-import { Booklist } from "@/app/dashBoard/books";
+import { Booklist, BOOK_TITLES } from "@/app/dashBoard/books";
 
 type StudentSchema = z.infer<typeof studentSchema>;
 
@@ -75,13 +75,6 @@ const DAYS = [
   { value: "fri", label: "금요일" },
   { value: "sat", label: "토요일" },
   { value: "sun", label: "일요일" },
-] as const;
-
-const BOOK_TITLES = [
-  { value: "Tour of Python", label: "Tour of Python" },
-  { value: "Spaceship Captain", label: "Spaceship Captain" },
-  { value: "Simple Web Dev", label: "Simple Web Dev" },
-  { value: "AI Developer", label: "AI Developer" },
 ] as const;
 
 const DEFAULT_CLASS: StudentSchema["class"][number] = {

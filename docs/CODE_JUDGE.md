@@ -96,7 +96,15 @@ node scripts/seed-simple-problems.mjs   # 간단한 문제 30개
   리전 `ap-northeast-2`. **고정 IP(EIP) `3.39.185.109`**
   (alloc `eipalloc-0339da9ca0b3d2016`). SG `sg-0dc425505ae9c8292`
   (SSH 22는 관리자 IP만, 2000은 미개방). 키페어 `~/.ssh/yip-judge.pem`.
-- **컨테이너(4개)**: Piston(`~/piston/`, `0.0.0.0:2000`, 7개 런타임),
+- **출력 상한**: `PISTON_OUTPUT_MAX_SIZE=1048576`(2026-07-20). Piston 기본값은
+  **스트림당 1024바이트**이고, 넘으면 자르는 게 아니라 프로세스를 죽이면서
+  타임아웃과 똑같이 `SIGKILL`로 보고한다 — 그래서 출력이 1KB를 넘는 문제는
+  정답도 "시간 초과"로 떨어져 사실상 풀 수 없었다. 상한만으로는 천장이 옮겨갈
+  뿐이라, 판정 쪽에서도 오버플로를 `output_limit_exceeded`(출력 초과)로 구분한다
+  (`app/lib/judge0/evaluate.ts`). 값 변경 시 `evaluate.ts`의 `OUTPUT_MAX_BYTES`와
+  시드 스크립트의 `STDOUT_CAP`도 같이 맞출 것.
+- **컨테이너(4개)**: Piston(`~/piston/`, `0.0.0.0:2000`, 런타임 10개 —
+  c, c++, d, fortran, go, java, javascript, python, rust, typescript),
   Caddy `judge_proxy`(`:8080`), Formatter `code_formatter`(`127.0.0.1:2100`,
   `yip-formatter` 이미지), LSP `lsp_bridge`(`127.0.0.1:2200`, `yip-lsp` 이미지,
   pyright). formatter/lsp 빌드 컨텍스트는 `~/build/`.

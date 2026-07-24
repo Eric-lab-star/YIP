@@ -2,6 +2,7 @@
 
 import { tourOfPythonPages } from "@/utils/curriculum/tourOfPython";
 import { spaceshipCaptainPages } from "@/utils/curriculum/spaceshipCaptain";
+import { simpleWebDevPages } from "@/utils/curriculum/simpleWebDev";
 import type { LessonPage } from "@/utils/curriculum/pageSequence";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import { usePathname } from "next/navigation";
 const SECTION_PAGES: Record<string, LessonPage[]> = {
   tourOfPython: tourOfPythonPages,
   spaceshipCaptain: spaceshipCaptainPages,
+  simpleWebDev: simpleWebDevPages,
 };
 
 /**

@@ -1,0 +1,198 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 비트마스킹 5문제',
+  description: '집합 연산, XOR 부분집합, OR 부분집합, 최소 집합 커버, 일 배정을 풀어보자냥!',
+  session: 20,
+}
+
+# 직접 풀어보자! 비트마스킹 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 문제는 **비트 연산**과 **2ⁿ 순회**, 그리고
+  **비트 DP** 세 갈래라냥. 1·2·3번으로 손을 풀고 4·5번으로 DP 를 맛보자냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **비트마스킹 기본기**
+
+  ```python
+  mask |= (1 << i)        # i 번째 비트 켜기 (넣기)
+  mask &= ~(1 << i)       # i 번째 비트 끄기 (빼기)
+  mask & (1 << i)         # i 번째가 켜졌냥? (확인)
+  mask ^= (1 << i)        # 켜짐/꺼짐 뒤집기 (토글)
+  for mask in range(1 << n):   # 모든 부분집합 훑기
+  ```
+</Callout>
+
+---
+
+<MissionCard number={1} title="비트로 만든 집합" time="20분">
+  여섯 가지 집합 연산을 비트마스크로 처리한다냥.
+
+  [문제 풀러 가기](/problems/s-bit-set-ops)
+
+  <StepCard step="뼈대" title="코드마다 비트 연산을 고른다냥">
+    ```python
+    mask = 0
+    FULL = (1 << 20) - 1
+    for _ in range(q):
+        code, x = map(int, input().split())
+        if code == 1: mask |= 1 << (x - 1)
+        elif code == 2: mask &= ~(1 << (x - 1))
+        elif code == 3: out.append("1" if mask & (1 << (x - 1)) else "0")
+        elif code == 4: mask ^= 1 << (x - 1)
+        elif code == 5: mask = FULL
+        elif code == 6: mask = 0
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **전체·비움 연산에서는 `x` 를 쓰지 말자냥.**
+
+    `5`(전체) 와 `6`(비움) 은 `x` 가 `0` 으로 들어온다냥. 그때 `1 << (x-1)`
+    을 계산하면 `1 << -1` 이 되어 **에러가 난다냥.** 그러니 비트 계산은
+    `x` 를 쓰는 코드(1~4) 안에서만 하자냥.
+  </Callout>
+
+  <Callout type="tip">
+    출력이 많으니 `print` 를 매번 부르지 말고 리스트에 모아 한 번에 출력하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="XOR이 목표가 되는 부분집합" time="20분">
+  부분집합의 XOR 이 `k` 가 되는 개수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-subset-xor)
+
+  <StepCard step="뼈대" title="2ⁿ 부분집합을 훑는다냥">
+    ```python
+    cnt = 0
+    for mask in range(1, 1 << n):    # 1 부터: 빈 집합 제외
+        x = 0
+        for i in range(n):
+            if mask & (1 << i):
+                x ^= nums[i]
+        if x == k:
+            cnt += 1
+    ```
+
+    11장의 부분집합 완전탐색을 비트로 옮긴 거라냥. `n` 이 16까지라 `2ⁿ` 이
+    6만 5천쯤이라 넉넉하다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **빈 부분집합을 세면 안 된다냥.**
+
+    `mask` 를 `0` 부터 돌리면 빈 집합(XOR 0)까지 센다냥. 크기 1 이상만 세야
+    하니 `range(1, 1 << n)` 으로 `1` 부터라냥. 특히 `k` 가 `0` 이면 빈 집합의
+    XOR 도 `0` 이라 하나가 더 세진다냥. 공개된 예시 뒤쪽이 이걸 확인해준다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="전부 켜는 부분집합" time="15분">
+  부분집합의 OR 이 전체 OR 과 같아지는 개수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-subset-or-full)
+
+  <Callout type="tip">
+    **2번과 순회가 똑같다냥.** `^=` 를 `|=` 로 바꾸고, 목표를 "전체 OR"
+    로 두면 된다냥.
+
+    ```python
+    full = 0
+    for v in nums:
+        full |= v
+
+    for mask in range(1, 1 << n):
+        x = 0
+        for i in range(n):
+            if mask & (1 << i):
+                x |= nums[i]
+        if x == full:
+            cnt += 1
+    ```
+
+    먼저 전체를 OR 해서 목표 `full` 을 구해두는 게 핵심이라냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={4} title="최소 개수로 전부 덮기" time="25분">
+  원소를 모두 덮는 최소 집합 수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-min-cover)
+
+  <StepCard step="뼈대" title="덮은 원소 집합을 상태로 DP 라냥">
+    각 집합을 비트마스크로 만들고, **덮은 원소들의 마스크**를 상태로 둔다냥.
+
+    ```python
+    FULL = (1 << m) - 1
+    dp = [INF] * (1 << m)
+    dp[0] = 0
+    for state in range(1 << m):
+        if dp[state] == INF: continue
+        for sm in sets:              # 집합 하나를 더 쓰면
+            ns = state | sm
+            dp[ns] = min(dp[ns], dp[state] + 1)
+    print(-1 if dp[FULL] == INF else dp[FULL])
+    ```
+
+    `m` 이 15까지라 상태가 `2¹⁵` 로 3만 개쯤이라 충분하다냥.
+  </StepCard>
+
+  <Callout type="important">
+    **그리디로 풀면 틀린다냥.**
+
+    "매번 새로 덮는 게 가장 많은 집합" 을 고르는 그리디는 그럴듯하지만
+    최소가 아니다냥. 큰 집합을 먼저 집었다가 나머지를 비효율적으로 덮게
+    될 수 있다냥.
+
+    숨겨진 테스트에 그런 경우가 있다냥 — 그리디는 3개, 정답은 2개라냥.
+    반드시 DP 로 최소를 찾자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="일 나눠주기" time="25분">
+  각 사람에게 서로 다른 일을 맡길 때 최소 비용을 구한다냥.
+
+  [문제 풀러 가기](/problems/s-assignment)
+
+  <StepCard step="뼈대" title="맡긴 일 집합을 상태로 DP 라냥">
+    ```python
+    dp = [INF] * (1 << n)
+    dp[0] = 0
+    for mask in range(1 << n):
+        if dp[mask] == INF: continue
+        worker = bin(mask).count("1")   # 켜진 비트 수 = 다음 사람 번호
+        if worker >= n: continue
+        for job in range(n):
+            if mask & (1 << job): continue
+            nxt = mask | (1 << job)
+            dp[nxt] = min(dp[nxt], dp[mask] + cost[worker][job])
+    print(dp[(1 << n) - 1])
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **사람 번호 = 켜진 비트 수라냥.**
+
+    `mask` 에 켜진 비트 수가 곧 "이미 일을 맡은 사람 수" 라, 다음에 일을
+    맡을 사람의 번호라냥. `bin(mask).count("1")` 로 켜진 비트를 센다냥.
+
+    그래서 사람을 따로 추적할 필요 없이 마스크 하나로 다 된다냥. `n` 이
+    15까지라 상태가 3만 개쯤이라 충분하다냥.
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 비트마스킹은 **집합을 정수 하나로** 다루는 발상 전환이라냥.
+  익숙해지면 부분집합 완전탐색과 비트 DP 가 한결 깔끔해진다냥.
+
+  다음은 **트라이**라냥. 문자열을 글자마다 갈라지는 나무에 담아서, 접두사
+  검색을 아주 빠르게 하는 자료구조라냥. 정말 수고했다냥~
+</NyangSpeech>

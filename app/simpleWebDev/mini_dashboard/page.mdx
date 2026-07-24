@@ -1,0 +1,139 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+
+export const metadata = {
+  title: "미니 프로젝트 · 데이터 대시보드",
+  description: "표·필터·그래프를 모아 진짜 대시보드 한 장을 완성해보자냥!",
+  session: 22,
+}
+
+# 미니 프로젝트 · 데이터 대시보드
+
+<NyangSpeech>
+  4부의 결승전이다냥! 표(17강), 파일(18강), 필터(19강), 그래프(21강)를
+  전부 합쳐서 **대시보드** 한 장을 만든다냥. 대시보드는 데이터를 한눈에
+  보여주는 화면이라냥. 회사에서 진짜로 쓰는 그거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘 만들 것
+
+<Callout type="goal">
+  - CSV 데이터를 읽어와서
+  - 지표(`metric`)로 핵심 숫자를 보여주고
+  - 필터로 원하는 부분만 걸러내고
+  - 그래프로 한눈에 보이게 하는 **대시보드**를 완성한다.
+</Callout>
+
+<Callout type="note">
+  **데이터 준비**
+
+  `app.py` 와 같은 폴더에 `sales.csv` 를 만들어두자냥.
+
+  ```text
+  월,매출,방문자
+  1월,120,300
+  2월,150,340
+  3월,90,280
+  4월,200,420
+  5월,170,390
+  ```
+</Callout>
+
+---
+
+<MissionCard number={1} title="데이터 읽고 지표 보여주기" time="8분">
+
+먼저 파일을 읽고, 핵심 숫자를 `metric` 으로 큼직하게 보여주자냥.
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.title("월별 매출 대시보드다냥")
+
+df = pd.read_csv("sales.csv")
+
+col1, col2 = st.columns(2)
+col1.metric("총 매출", str(df["매출"].sum()) + "만원")
+col2.metric("평균 방문자", str(round(df["방문자"].mean())) + "명")
+```
+
+<Callout type="tip">
+  `col1.metric(...)` 처럼 칸에 바로 붙여 쓸 수 있다냥. `with` 없이도 된다냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={2} title="필터 붙이기" time="8분">
+
+사이드바에 슬라이더를 놓고, 매출이 일정 값 이상인 달만 걸러보자냥.
+
+```python
+with st.sidebar:
+    min_sales = st.slider("최소 매출(만원)", 0, 200, 0)
+
+filtered = df[df["매출"] >= min_sales]
+
+st.subheader("걸러진 데이터")
+st.dataframe(filtered)
+```
+
+<Callout type="note">
+  필터를 **사이드바**에 두는 건 대시보드의 흔한 관습이라냥. 설정은 옆에,
+  결과는 본문에 — 5강에서 배운 사이드바가 여기서 빛난다냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={3} title="그래프로 마무리" time="8분">
+
+걸러진 데이터를 그래프 두 개로 보여주자냥. 탭으로 나누면 깔끔하다냥.
+
+```python
+tab1, tab2 = st.tabs(["매출 그래프", "방문자 그래프"])
+
+with tab1:
+    st.bar_chart(filtered, x="월", y="매출")
+
+with tab2:
+    st.line_chart(filtered, x="월", y="방문자")
+```
+
+</MissionCard>
+
+---
+
+## 전체 흐름 정리
+
+<Callout type="important">
+  **대시보드의 3단 구조**
+
+  1. **위**: 핵심 지표(`metric`) — 한눈에 보는 요약
+  2. **옆(사이드바)**: 필터 — 무엇을 볼지 고르기
+  3. **본문**: 표 + 그래프 — 자세한 내용
+
+  이 구조는 어떤 데이터로 바꿔도 그대로 쓸 수 있다냥. 학교 성적, 유튜브
+  조회수, 용돈 기입장… 데이터만 바꾸면 다 대시보드가 된다냥!
+</Callout>
+
+---
+
+## 더 해보기
+
+<Callout type="analogy">
+  **도전 과제 (선택)**
+
+  - `selectbox` 로 "매출" 또는 "방문자" 를 고르면, 고른 것의 그래프만
+    보여주게 해보자냥.
+  - `metric` 의 세 번째 값(증감)을 넣어, 지난달 대비 변화를 표시해보자냥.
+  - `st.data_editor` 로 데이터를 직접 고치면 그래프가 바뀌게 해보자냥(심화).
+</Callout>
+
+<NyangSpeech>
+  대시보드를 완성했다냥! 이걸로 웹사이트의 네 기둥 **화면·입력·상태·데이터**
+  를 전부 배웠다냥. 진짜 대단하다냥! 5부에서는 이걸 **진짜 앱처럼** 다듬는
+  법 — 여러 페이지, 이미지, 캐시, 테마 — 을 배운다냥. 조금만 더 가보자냥!
+</NyangSpeech>

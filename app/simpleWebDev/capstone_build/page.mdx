@@ -1,0 +1,142 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+
+export const metadata = {
+  title: "기능 붙이기",
+  description: "뼈대 위에 입력·상태·데이터를 붙여 실제로 동작하게 만들어보자냥!",
+  session: 30,
+}
+
+# 기능 붙이기
+
+<NyangSpeech>
+  뼈대가 섰으니 이제 **살을 붙일** 차례다냥! 빈 페이지 세 개에 사진, 표,
+  그래프, 방명록을 하나씩 채운다냥. 새로 배우는 건 없다냥 — 지금까지 배운
+  걸 꺼내 쓰기만 하면 된다냥. 자신감을 가지자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 목표
+
+<Callout type="goal">
+  - 홈 페이지에 **사진과 인사**를 넣는다.
+  - 소개 페이지에 **표와 그래프**를 넣는다.
+  - 방명록 페이지에 **폼과 상태 저장**을 넣는다.
+</Callout>
+
+---
+
+<MissionCard number={1} title="홈 페이지 채우기" time="8분">
+
+`app.py` 에 사진과 인사를 넣자냥. 4강의 `columns` 로 좌우로 나눈다냥.
+
+```python
+import streamlit as st
+
+st.set_page_config(page_title="코딩냥이 소개", page_icon="🐱")
+st.title("어서 오라냥")
+
+left, right = st.columns(2)
+with left:
+    st.image("https://placekitten.com/300/300")
+with right:
+    st.subheader("코딩냥이라냥")
+    st.write("파이썬을 사랑하는 고양이라냥.")
+    st.write("왼쪽 메뉴에서 소개와 방명록을 볼 수 있다냥!")
+```
+
+</MissionCard>
+
+<MissionCard number={2} title="소개 페이지 채우기" time="12분">
+
+`pages/1_소개.py` 에 나를 소개하는 표와 취미 그래프를 넣자냥. 17강과
+21강의 기술이다냥.
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.title("나를 소개한다냥")
+
+# 기본 정보 표
+info = pd.DataFrame({
+    "항목": ["이름", "나이", "좋아하는 것"],
+    "내용": ["코딩냥", "3살", "참치와 파이썬"],
+})
+st.table(info)
+
+# 취미에 쓰는 시간 그래프
+st.subheader("일주일 취미 시간")
+hobby = pd.DataFrame({
+    "시간": [5, 3, 2, 4],
+}, index=["코딩", "낮잠", "사냥", "간식"])
+st.bar_chart(hobby)
+```
+
+<Callout type="tip">
+  표는 얌전히 보여주기만 하면 되니 `st.table`, 그래프는 `st.bar_chart` 라냥.
+  4부에서 배운 그대로다냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={3} title="방명록 페이지 채우기" time="12분">
+
+`pages/2_방명록.py` 에 방문자가 글을 남기는 방명록을 넣자냥. 13·14강의
+`session_state` 와 `form` 이다냥.
+
+```python
+import streamlit as st
+
+st.title("방명록이다냥")
+
+if "guestbook" not in st.session_state:
+    st.session_state["guestbook"] = []
+
+with st.form("gb"):
+    name = st.text_input("이름")
+    message = st.text_area("남길 말")
+    submitted = st.form_submit_button("남기기")
+
+if submitted and message:
+    st.session_state["guestbook"].append(name + ": " + message)
+
+st.subheader("남겨진 글")
+for line in st.session_state["guestbook"]:
+    st.write("- " + line)
+```
+
+</MissionCard>
+
+---
+
+## 중간 점검
+
+<Callout type="important">
+  **세 페이지가 다 동작하냥?**
+
+  - 홈: 사진과 인사가 좌우로 보이냥?
+  - 소개: 표와 그래프가 나오냥?
+  - 방명록: 글을 남기면 아래에 쌓이냥?
+
+  셋 다 되면 **완성된 사이트**의 뼈와 살이 다 붙은 거다냥! 물론 아직
+  투박하다냥 — 다음 시간에 예쁘게 다듬는다냥.
+</Callout>
+
+<Callout type="note">
+  **막히면 돌아갈 곳**
+
+  - 사진·좌우 배치 → 23강·4강
+  - 표·그래프 → 17강·21강
+  - 방명록 → 13강·14강
+
+  기획서(29강)의 "기능 → 배운 강" 지도가 여기서 빛을 발한다냥!
+</Callout>
+
+<NyangSpeech>
+  나만의 사이트가 실제로 동작하기 시작했다냥! 정말 대단하다냥. 다음
+  시간엔 이걸 **남에게 보여줄 만하게** 다듬는다냥 — 테마, 빈 화면 처리,
+  캐시까지 챙기면 진짜 완성이라냥!
+</NyangSpeech>

@@ -1,0 +1,142 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "여러 페이지로 나누기",
+  description: "pages 폴더로 앱을 여러 장으로 나눠 진짜 웹사이트 모양을 만들어보자냥!",
+  session: 24,
+}
+
+# 여러 페이지로 나누기
+
+<NyangSpeech>
+  지금까지 만든 앱은 전부 **한 화면**이었다냥. 그런데 진짜 웹사이트는
+  "소개", "메뉴", "연락처" 처럼 **여러 페이지**로 되어 있지? 오늘은 앱을
+  여러 장으로 나누는 법을 배운다냥. 이거 하나로 앱이 확 커진다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `pages` 폴더로 앱을 **여러 페이지로 나눈다.**
+  - 각 페이지가 **자동으로 사이드바 메뉴**가 되는 걸 이해한다.
+  - 페이지 이름을 **보기 좋게** 짓는다.
+</Callout>
+
+---
+
+## 1단계 · 폴더 구조가 곧 메뉴다냥
+
+<NyangSpeech>
+  Streamlit 은 아주 편한 규칙이 있다냥. `pages` 라는 폴더를 만들고 그
+  안에 `.py` 파일을 넣으면, **각 파일이 자동으로 페이지가 되고 사이드바에
+  메뉴로 나타난다냥!** 코드로 메뉴를 안 짜도 된다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **이런 폴더 구조를 만든다냥**
+
+  ```text
+  내앱폴더/
+    app.py            ← 메인 페이지 (첫 화면)
+    pages/
+      1_소개.py        ← 두 번째 페이지
+      2_메뉴.py        ← 세 번째 페이지
+      3_연락처.py       ← 네 번째 페이지
+  ```
+
+  `app.py` 를 `streamlit run app.py` 로 실행하면, 왼쪽 사이드바에 소개·
+  메뉴·연락처 메뉴가 자동으로 생긴다냥!
+</Callout>
+
+---
+
+## 2단계 · 각 페이지는 그냥 평범한 파일이라냥
+
+<NyangSpeech>
+  겁먹을 것 없다냥. `pages` 안의 파일도 지금까지 만든 `app.py` 랑 똑같이
+  쓰면 된다냥. 각각 독립된 화면이라냥.
+</NyangSpeech>
+
+```python
+# pages/1_소개.py
+import streamlit as st
+
+st.title("소개 페이지다냥")
+st.write("코딩냥이의 홈페이지에 온 걸 환영한다냥!")
+```
+
+```python
+# pages/2_메뉴.py
+import streamlit as st
+
+st.title("메뉴 페이지다냥")
+st.write("참치캔, 닭가슴살, 츄르를 판다냥")
+```
+
+<Callout type="important">
+  **`streamlit run` 은 `app.py` 에만 한다냥**
+
+  실행은 언제나 메인 파일 하나(`streamlit run app.py`)로만 한다냥. 나머지
+  페이지는 사이드바 메뉴로 저절로 나타나니, 따로 실행할 필요 없다냥!
+</Callout>
+
+---
+
+## 3단계 · 파일 이름 규칙
+
+<NyangSpeech>
+  파일 이름을 `1_소개.py` 처럼 지은 이유가 있다냥. 앞의 **숫자는 순서**를
+  정하고, 화면 메뉴에는 **숫자와 밑줄이 빠진** "소개" 만 예쁘게 나온다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **이름 짓기 요령**
+
+  - 앞의 숫자(`1_`, `2_`)로 **메뉴 순서**를 정한다냥.
+  - 밑줄 `_` 은 메뉴에서 **띄어쓰기**로 바뀐다냥.
+  - 예: `2_우리_가게.py` → 메뉴엔 "우리 가게" 로 나온다냥.
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 3페이지 홈페이지**
+
+  - `app.py` : 환영 메시지가 있는 첫 화면
+  - `pages/1_소개.py` : 나를 소개하는 페이지
+  - `pages/2_취미.py` : 취미를 리스트로 보여주는 페이지
+
+  폴더를 만들고 파일 세 개를 넣은 뒤 `streamlit run app.py` 를 해보자냥.
+  사이드바에 메뉴가 자동으로 생기는 마법을 직접 확인한다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "앱을 여러 페이지로 나누려면 어떤 폴더를 만드냥?",
+    answer: "pages 폴더다냥. 그 안의 .py 파일이 각각 페이지가 되고 사이드바 메뉴로 나온다냥.",
+  },
+  {
+    question: "streamlit run 은 어느 파일에 하냥?",
+    answer: "메인 파일 하나(app.py)에만 한다냥. 나머지 페이지는 저절로 메뉴가 된다냥.",
+  },
+  {
+    question: "파일 이름 앞의 숫자(1_, 2_)는 무슨 역할이냥?",
+    answer: "메뉴에 나타나는 순서를 정한다냥. 숫자와 밑줄은 메뉴에서 빠지거나 띄어쓰기로 바뀐다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  여러 페이지 앱을 만들 수 있게 됐다냥! 다음 시간엔 페이지 사이를 **버튼과
+  링크로 오가게** 하는 법과, 조금 더 세밀하게 메뉴를 다루는 `st.navigation`
+  을 배워보자냥.
+</NyangSpeech>

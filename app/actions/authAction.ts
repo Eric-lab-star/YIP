@@ -1,10 +1,31 @@
 "use server";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import * as z from "zod";
 
 import { loginSchema } from "../lib/zod/loginSchema";
 import { findStudent } from "../lib/mongo/students";
 import { setLoginToken, validateToken } from "../lib/auth/login";
+import {
+  isLoginBlocked,
+  recordLoginFailure,
+  clearLoginAttempts,
+} from "../lib/mongo/authRateLimit";
+
+/**
+ * Caller IP for rate-limiting. Behind Vercel's proxy `x-forwarded-for` is set
+ * by the platform and cannot be spoofed by the client; the first entry is the
+ * originating address. Falls back to a constant so a missing header degrades to
+ * a shared bucket rather than to no limit at all.
+ */
+async function clientIp(): Promise<string> {
+  const h = await headers();
+  const forwarded = h.get("x-forwarded-for");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return h.get("x-real-ip")?.trim() || "unknown";
+}
 
 export async function logoutAction() {
   const cookiesStore = await cookies();
@@ -28,6 +49,9 @@ interface LoginSuccess {
 
 interface LoginFail {
   success: false;
+  /** Set when the attempt was refused by the brute-force limiter, not by bad credentials. */
+  rateLimited?: true;
+  retryAfterSec?: number;
 }
 
 export async function loginVerfyAction() {
@@ -49,12 +73,26 @@ export async function loginAction(
       };
     }
 
+    // Credentials are a name + phone number with no password, so this endpoint
+    // must be throttled or the phone-number space is walkable. Checked before
+    // touching the DB; only failures are counted, and a success clears them.
+    const ip = await clientIp();
+    const gate = await isLoginBlocked(ip, data.name);
+    if (gate.blocked) {
+      return {
+        success: false,
+        rateLimited: true,
+        retryAfterSec: gate.retryAfterSec,
+      };
+    }
+
     const student = await findStudent(
       data.name,
       data.phoneNumber.replace(/-/g, ""),
     );
 
     if (!student) {
+      await recordLoginFailure(ip, data.name);
       return {
         success: false,
       };
@@ -67,6 +105,7 @@ export async function loginAction(
       role: student.role,
     };
 
+    await clearLoginAttempts(ip, data.name);
     await setLoginToken(userInfo);
 
     return {

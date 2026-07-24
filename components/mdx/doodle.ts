@@ -32,6 +32,14 @@ export const doodleBox: CSSProperties = {
   borderRadius: "36px 14px 30px 14px / 14px 30px 14px 36px",
 };
 
+/* ── 버튼용 반지름 ────────────────────────────────────────────────────
+   doodleBox 값은 버튼에 못 쓴다. 한 변의 반지름 합이 그 변의 길이를 넘으면
+   브라우저가 비율을 맞춰 찌그러뜨리는데(clamping), doodleBox는 세로 합이
+   14+36=50px 이라 높이 24~36px 인 버튼에서 무조건 걸린다.
+   아래 값은 세로 합이 최대 19px 이라 가장 작은 버튼(size="xs", h-6=24px)
+   에서도 안전하고, 손그림 비대칭은 그대로 남는다. */
+export const doodleButtonRadius = "14px 5px 11px 5px / 5px 11px 5px 14px";
+
 /* ── 방식 B: border-image (크기 무관, 절대 안 깨짐) ──────────────────────
    살짝 흔들리는(wobbly) 둥근 사각형을 SVG로 그려서 테두리에 입힘.
    박스가 늘어나거나 납작해져도 모양만 스트레치될 뿐 clamping이 없음. */

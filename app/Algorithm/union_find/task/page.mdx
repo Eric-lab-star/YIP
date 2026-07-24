@@ -1,0 +1,187 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 유니온 파인드 5문제',
+  description: '집합 표현, 그룹 개수, 가장 큰 그룹, 친구 네트워크, 사이클 판별을 풀어보자냥!',
+  session: 16,
+}
+
+# 직접 풀어보자! 유니온 파인드 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘은 `find` 와 `union` 을 한 번 제대로 짜두면
+  다섯 문제가 **거의 같은 뼈대**로 풀린다냥. 그러니 1번에 공을 들이자냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **유니온 파인드 뼈대**
+
+  ```python
+  parent = list(range(n + 1))
+  size = [1] * (n + 1)
+
+  def find(x):
+      while parent[x] != x:
+          parent[x] = parent[parent[x]]   # 경로 압축이라냥
+          x = parent[x]
+      return x
+
+  def union(a, b):
+      ra, rb = find(a), find(b)
+      if ra == rb:
+          return
+      if size[ra] < size[rb]:
+          ra, rb = rb, ra
+      parent[rb] = ra
+      size[ra] += size[rb]
+  ```
+
+  이걸 외워두면 오늘 문제는 붙이는 것만 바뀐다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="집합 표현" time="20분">
+  합치기와 "같은 집합이냥?" 질의를 처리한다냥.
+
+  [문제 풀러 가기](/problems/s-disjoint-set)
+
+  <StepCard step="뼈대" title="op 로 갈라서 처리한다냥">
+    ```python
+    for _ in range(m):
+        op, a, b = map(int, input().split())
+        if op == 0:
+            union(a, b)
+        else:
+            print("YES" if find(a) == find(b) else "NO")
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **`find(a) == find(b)` 로 비교해야 한다냥.**
+
+    `parent[a] == parent[b]` 로 비교하면 틀린다냥. `parent[a]` 는 바로 위
+    부모일 뿐 대표가 아니라서, 같은 집합이어도 다를 수 있다냥.
+
+    숨겨진 테스트가 이 실수를 잡는다냥. 반드시 **대표(find)** 로 비교하자냥.
+  </Callout>
+
+  <Callout type="tip">
+    질의가 많으니 `print` 를 매번 부르면 느리다냥. 답을 리스트에 모아
+    한 번에 출력하자냥.
+
+    ```python
+    import sys
+    sys.stdout.write("\n".join(out) + "\n")
+    ```
+  </Callout>
+</MissionCard>
+
+<MissionCard number={2} title="그룹의 개수" time="10분">
+  모든 간선을 처리한 뒤 그룹의 개수를 센다냥.
+
+  [문제 풀러 가기](/problems/s-count-groups)
+
+  <Callout type="tip">
+    다 합친 뒤, **대표가 자기 자신인 원소의 수**가 곧 그룹의 개수라냥.
+
+    ```python
+    print(sum(1 for i in range(1, n + 1) if find(i) == i))
+    ```
+
+    합칠 때마다 세지 말고, 다 합친 다음에 한 번 세는 게 깔끔하다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="가장 큰 그룹" time="15분">
+  가장 큰 그룹에 속한 원소의 수를 구한다냥.
+
+  [문제 풀러 가기](/problems/s-largest-group)
+
+  <Callout type="tip">
+    `union` 이 크기를 관리하고 있으니, 다 합친 뒤 **대표들의 크기 중
+    최댓값**이 답이라냥.
+
+    ```python
+    print(max(size[i] for i in range(1, n + 1) if find(i) == i))
+    ```
+  </Callout>
+
+  <StepCard step="확인" title="간선이 하나도 없을 수 있다냥">
+    `m` 이 `0` 이면 다들 혼자라, 가장 큰 그룹의 크기는 `1` 이라냥. 공개된
+    예시 `4 0 → 1` 로 확인하자냥.
+  </StepCard>
+</MissionCard>
+
+<MissionCard number={4} title="친구 네트워크" time="20분">
+  친구 관계가 생길 때마다 그 그룹의 크기를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-friend-chain)
+
+  <StepCard step="뼈대" title="합치고, 바로 크기를 읽는다냥">
+    ```python
+    out = []
+    for _ in range(m):
+        a, b = map(int, input().split())
+        union(a, b)
+        out.append(str(size[find(a)]))
+    ```
+
+    합친 **직후** `size[find(a)]` 를 읽으면 그게 두 사람이 속한 그룹의
+    크기라냥. `find(a)` 로 대표를 찾아 크기를 읽는 게 핵심이라냥.
+  </StepCard>
+
+  <Callout type="important">
+    **이미 친구인 두 사람이 또 들어올 수 있다냥.**
+
+    그때 `union` 은 아무것도 안 하고, 그 그룹의 크기를 그대로 출력하면 된다냥.
+    `size[find(a)]` 는 그 경우에도 올바른 크기를 준다냥. 공개된 예시 뒤쪽에
+    같은 관계가 반복되는 경우가 있다냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={5} title="사이클을 만드는 간선" time="20분">
+  처음으로 사이클이 생기는 간선의 번호를 찾는다냥.
+
+  [문제 풀러 가기](/problems/s-cycle-edge)
+
+  <StepCard step="뼈대" title="합치기 전에 대표를 비교한다냥">
+    ```python
+    ans = 0
+    for i in range(1, m + 1):
+        a, b = map(int, input().split())
+        ra, rb = find(a), find(b)
+        if ra == rb:        # 이미 이어져 있다냥 → 사이클
+            ans = i
+            break
+        parent[rb] = ra     # 아니면 합친다냥
+    print(ans)
+    ```
+  </StepCard>
+
+  <Callout type="important">
+    **합치기 전에 물어봐야 한다냥.**
+
+    먼저 합쳐버리면 항상 같은 대표가 되어 사이클을 못 잡는다냥. `find(a)` 와
+    `find(b)` 를 **먼저 비교하고**, 다를 때만 합치는 순서를 지키자냥.
+  </Callout>
+
+  <StepCard step="확인" title="끝까지 사이클이 없으면 0 이라냥">
+    모든 간선이 서로 다른 무리를 이으면 사이클이 안 생긴다냥. 그때는 `0`
+    이라냥. 공개된 예시 `4 2 / 1 2 / 3 4 → 0` 으로 확인하자냥.
+  </StepCard>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 유니온 파인드는 코드가 짧아서 한 번 익히면 평생 쓴다냥.
+  특히 5번의 사이클 판별은 **다음 장 최소 신장 트리**의 핵심 부품이라냥.
+
+  거기서는 오늘 배운 걸 그대로 가져다가, "사이클을 만들지 않는 간선만 골라
+  잇기" 로 최소 비용 연결을 만든다냥. 바로 다음 장 **최소 신장 트리**라냥.
+  정말 수고했다냥~
+</NyangSpeech>

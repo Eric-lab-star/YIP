@@ -1,0 +1,217 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '직접 풀어보자! 스택과 큐 5문제',
+  description: '괄호 검사, 여러 종류 괄호, 후위 표기식, 요세푸스, 오큰수까지 스택과 큐를 손에 익혀보자냥!',
+  session: 9,
+}
+
+# 직접 풀어보자! 스택과 큐 5문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 문제는 **무엇을 쌓을지 정하는 게 절반**이라냥.
+  숫자를 쌓을 때도 있고, 괄호를 쌓을 때도 있고, 5번처럼 **아직 답을 못 찾은
+  인덱스**를 쌓을 때도 있다냥.
+</NyangSpeech>
+
+<Callout type="tip">
+  **스택 문제를 풀 때 순서**
+
+  1. **무엇을 쌓을지** 정한다 — 값이냥, 인덱스냥, 괄호 종류냥?
+  2. **언제 꺼낼지** 정한다 — 어떤 조건에서 꺼내냥?
+  3. **끝나고 남은 것**을 어떻게 할지 정한다
+
+  3번을 빼먹는 실수가 제일 많다냥. 다 훑고 났는데 스택에 남은 게 있으면
+  그건 보통 특별한 뜻이 있다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="괄호 검사" time="12분">
+  `(` 와 `)` 로 된 문자열이 올바른지 `YES` / `NO` 로 답한다냥.
+
+  [문제 풀러 가기](/problems/s-bracket-match)
+
+  <Callout type="important">
+    **개수만 세면 틀린다냥.** `)(` 가 반례라냥.
+
+    여는 괄호와 닫는 괄호가 하나씩이라 개수는 맞지만, 닫을 게 없는데 먼저
+    닫았으니 올바르지 않다냥. 공개된 예시에 이게 들어 있다냥.
+  </Callout>
+
+  <StepCard step="확인" title="두 가지를 다 봐야 한다냥">
+    - 닫으려는데 **스택이 비어 있으면** → `NO`
+    - 다 봤는데 **스택에 남아 있으면** → `NO`
+
+    하나만 확인하면 `)(` 나 `(()` 중 한쪽을 놓친다냥.
+  </StepCard>
+
+  ```python
+  s = input().strip()
+  st = []
+
+  for ch in s:
+      # 여는 괄호면 쌓고, 닫는 괄호면 꺼낸다냥
+      pass
+  ```
+</MissionCard>
+
+<MissionCard number={2} title="여러 종류의 괄호 검사" time="15분">
+  `()`, `[]`, `{}` 세 종류가 섞인 문자열을 검사한다냥.
+
+  [문제 풀러 가기](/problems/s-bracket-multi)
+
+  <Callout type="important">
+    1번을 그대로 가져오면 **`([)]` 를 통과시킨다냥.**
+
+    개수도 맞고 짝도 맞는 것처럼 보이지만 **엇갈려 있다냥.** 꺼낼 때 스택
+    맨 위가 **같은 종류인지** 대조해야 잡아낸다냥.
+  </Callout>
+
+  <Callout type="tip">
+    딕셔너리로 짝을 적어두면 편하다냥. 5장에서 배운 거라냥.
+
+    ```python
+    pair = {')': '(', ']': '[', '}': '{'}
+    ```
+
+    닫는 괄호 `ch` 를 만났을 때 `st[-1]` 이 `pair[ch]` 와 같은지 보면
+    된다냥. 스택이 비었는지도 **먼저** 확인하자냥.
+  </Callout>
+</MissionCard>
+
+<MissionCard number={3} title="후위 표기식 계산" time="15분">
+  공백으로 구분된 후위 표기식의 값을 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-postfix-eval)
+
+  <Callout type="important">
+    **빼기의 피연산자 순서를 조심하자냥.**
+
+    먼저 꺼낸 값이 **오른쪽**이라냥. `10 3 -` 는 `10 - 3` 이니 `7` 이라냥.
+
+    더하기와 곱하기는 순서를 바꿔도 답이 같아서 **빼기가 있는 테스트에서만
+    틀린다냥.** 첫 번째 예시는 더하기라 통과해버리니 방심하지 말자냥.
+  </Callout>
+
+  <StepCard step="확인" title="10 3 - 로 먼저 시험하자냥">
+    `7` 이 나와야 한다냥. `-7` 이 나왔으면 순서가 뒤집힌 거라냥.
+
+    이것만 맞추면 나머지는 그냥 반복이라냥.
+  </StepCard>
+
+  ```python
+  tokens = input().split()
+  st = []
+
+  for t in tokens:
+      if t in ('+', '-', '*'):
+          # 두 개 꺼내서 계산하고 다시 넣는다냥
+          pass
+      else:
+          st.append(int(t))
+
+  print(st[-1])
+  ```
+</MissionCard>
+
+<MissionCard number={4} title="요세푸스 순열" time="18분">
+  원을 이룬 `n`명에서 `k`번째 사람을 차례로 빼낸 순서를 출력한다냥.
+
+  [문제 풀러 가기](/problems/s-josephus)
+
+  <Callout type="important">
+    **여기서 자료구조 선택이 통과와 실패를 가른다냥.** 숨겨진 테스트에
+    `n = 4000`, `k = 4000` 이 있다냥.
+
+    채점기에서 직접 재본 시간이라냥.
+
+    - `deque.rotate()` — 약 0.03초
+    - `deque.popleft()` — 약 1.6초
+    - `list.pop(0)` — **시간 초과**
+
+    알고리즘은 셋 다 똑같다냥. 앞에서 빼는 게 느린 자료구조를 골랐냐 아니냐의
+    차이일 뿐이라냥.
+  </Callout>
+
+  <StepCard step="발상" title="k-1 명을 뒤로 보내고 한 명을 꺼낸다냥">
+    원을 도는 걸 직접 흉내낼 필요 없다냥.
+
+    1. 앞에서 `k-1` 명을 꺼내서 **뒤에 다시 넣는다** (줄을 회전시킨다냥)
+    2. 이제 맨 앞이 빼낼 사람이라냥. **꺼내서 답에 적는다**
+    3. 큐가 빌 때까지 반복한다
+
+    `deque.rotate(-(k-1))` 를 쓰면 1번이 한 줄로 끝난다냥.
+  </StepCard>
+
+  ```python
+  from collections import deque
+
+  n, k = map(int, input().split())
+  q = deque(range(1, n + 1))
+  out = []
+
+  while q:
+      # k-1 명을 뒤로 보내고 한 명을 꺼낸다냥
+      pass
+
+  print(' '.join(map(str, out)))
+  ```
+</MissionCard>
+
+<MissionCard number={5} title="오큰수" time="25분">
+  각 수의 오른쪽에서 자기보다 큰 첫 번째 수를 찾는다냥. 없으면 `-1` 이라냥.
+
+  [문제 풀러 가기](/problems/s-next-greater)
+
+  <Callout type="important">
+    **오른쪽으로 하나씩 훑는 풀이는 시간 초과가 난다냥.** 숨겨진 테스트에
+    수가 12000개 들어 있고, 거의 내림차순이라 그 풀이는 매번 끝까지
+    훑게 된다냥.
+
+    공개된 예시는 작아서 통과한다냥. 통과했다고 안심하면 안 된다냥.
+  </Callout>
+
+  <StepCard step="발상" title="스택에 값이 아니라 인덱스를 쌓는다냥">
+    쌓아두는 건 **"아직 오큰수를 못 찾은 자리"** 라냥.
+
+    새 수를 볼 때마다, 스택에 기다리던 것 중 **새 수보다 작은 것들**은 전부
+    답을 찾은 거라냥. 꺼내면서 답을 적는다냥.
+
+    ```python
+    while st and arr[st[-1]] < arr[i]:
+        ans[st.pop()] = arr[i]
+    st.append(i)
+    ```
+
+    답을 적을 자리를 알아야 하니 **값이 아니라 인덱스**를 쌓는 게 핵심이라냥.
+  </StepCard>
+
+  <Callout type="tip">
+    끝까지 다 훑고도 스택에 남아 있는 것들이 있다냥. 그것들은 **오른쪽에 더 큰
+    수가 없었다**는 뜻이니 답이 `-1` 이라냥.
+
+    처음부터 답 배열을 `-1` 로 채워두면 따로 처리할 필요가 없다냥.
+  </Callout>
+
+  <Callout type="important">
+    입력이 크니 파이썬은 `input()` 대신 아래를 쓰자냥. 시작 코드에 이미
+    들어 있다냥.
+
+    ```python
+    import sys
+    input = sys.stdin.readline
+    ```
+  </Callout>
+</MissionCard>
+
+---
+
+<NyangSpeech>
+  다섯 개 다 풀었냥? 오늘 배운 것 중에 제일 오래 써먹을 건 **5번의 사고방식**
+  이라냥. "아직 처리 못 한 걸 쌓아둔다"는 발상은 앞으로도 여러 번 만난다냥.
+  수고했다냥~
+</NyangSpeech>

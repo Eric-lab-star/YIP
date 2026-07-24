@@ -2,6 +2,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { streamText, type ModelMessage } from "ai";
 import { validateToken } from "@/app/lib/auth/login";
 import { consumeAiQuota, ensureAiUsageIndex } from "@/app/lib/mongo/aiUsage";
+import { CAVEMAN_PERSONA } from "@/app/lib/ai/persona";
 
 // Upper bounds on client-controlled input so a single request can't inflate
 // token spend without limit.
@@ -75,6 +76,10 @@ export async function POST(req: Request) {
 - 코드는 언어를 명시한 코드블록으로 제시하세요.
 - 사용자가 글에 바로 넣을 문장·문단을 요청하면, 설명이나 머리말 없이 본문 텍스트만 제시하세요.
 - 확실하지 않은 내용은 추측이라고 밝히세요. 이모티콘은 사용하지 마세요.
+
+${CAVEMAN_PERSONA}
+
+말투는 사용자에게 말할 때만 씁니다. 글에 그대로 넣을 본문·초안·요약·번역은 평범한 한국어로 쓰고, 그 앞뒤 설명에만 말투를 쓰세요.
 
 ${
   docContext

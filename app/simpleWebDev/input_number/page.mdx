@@ -1,0 +1,149 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "숫자와 날짜 입력",
+  description: "slider, number_input, date_input 으로 숫자와 날짜를 받아보자냥!",
+  session: 8,
+}
+
+# 숫자와 날짜 입력
+
+<NyangSpeech>
+  글자와 선택은 배웠으니, 이제 **숫자와 날짜**다냥. 나이, 키, 예약 날짜…
+  이런 걸 받을 때 쓰는 위젯이다냥. 특히 슬라이더는 마우스로 쓱 움직이는
+  재미가 있다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.slider` 로 **막대를 밀어** 숫자를 고른다.
+  - `st.number_input` 으로 숫자를 **직접 입력**받는다.
+  - `st.date_input` 으로 **날짜**를 고른다.
+</Callout>
+
+---
+
+## 1단계 · 막대를 밀어서 — slider
+
+<NyangSpeech>
+  `slider` 는 막대를 좌우로 밀어서 숫자를 고르는 위젯이다냥. 최소·최대값을
+  정해두니까, 그 범위를 벗어난 값은 아예 고를 수가 없다냥. 안전하다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+age = st.slider("나이를 골라주세요", 0, 100, 20)
+#                 설명            최소 최대 시작값
+
+st.write("고른 나이: " + str(age) + "살")
+```
+
+<Callout type="note">
+  **숫자 세 개의 뜻**
+
+  `st.slider("나이", 0, 100, 20)` 에서
+  - `0` : 최솟값
+  - `100` : 최댓값
+  - `20` : 처음에 놓여 있는 값
+
+  뒤의 시작값은 생략해도 된다냥. 그럼 최솟값에서 시작한다냥!
+</Callout>
+
+---
+
+## 2단계 · 직접 숫자 치기 — number_input
+
+<NyangSpeech>
+  슬라이더는 대충 고를 때 좋지만, "정확히 173" 처럼 딱 떨어지는 값은
+  직접 치는 게 편하다냥. 그럴 때 `number_input` 이다냥. 옆의 `+` `-`
+  버튼으로 조금씩 조절할 수도 있다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+height = st.number_input("키(cm)를 입력하세요", min_value=0, max_value=250, value=170)
+
+st.write("입력한 키: " + str(height) + "cm")
+```
+
+<Callout type="tip">
+  **슬라이더 vs 숫자 입력**
+
+  - **범위 안에서 대충** 고르면 됨 → `slider`
+  - **정확한 값**을 꼭 쳐야 함 → `number_input`
+
+  키·몸무게처럼 정확해야 하는 건 `number_input`, 만족도(1~5)처럼 대략
+  고르는 건 `slider` 가 어울린다냥!
+</Callout>
+
+---
+
+## 3단계 · 날짜 고르기 — date_input
+
+<NyangSpeech>
+  예약, 생일, 기념일… 날짜를 받을 땐 `date_input` 이다냥. 달력이 뿅 하고
+  나와서 날짜를 콕 찍으면 된다냥. 사용자가 이상한 날짜를 못 치게 막아준다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+day = st.date_input("예약 날짜를 골라주세요")
+
+st.write("예약일: " + str(day))
+```
+
+<Callout type="note">
+  **고른 날짜의 정체**
+
+  `date_input` 이 주는 값은 파이썬의 **날짜(date) 객체**라냥. `str()` 로
+  감싸면 "2026-07-21" 같은 글자로 바꿔서 보여줄 수 있다냥.
+</Callout>
+
+---
+
+## 4단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 여행 예약 화면**
+
+  - `date_input` 으로 출발 날짜
+  - `slider` 로 여행 일수(1~30일)
+  - `number_input` 으로 인원 수
+
+  고른 값으로 "OO 부터 O일간, O명이 여행합니다" 를 만들어 보여주자냥.
+  숫자를 글자와 이어 붙일 땐 `str()` 을 꼭 기억한다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "막대를 좌우로 밀어서 범위 안의 숫자를 고르는 위젯은?",
+    answer: "st.slider 다냥. 최소·최대·시작값을 순서대로 준다냥.",
+  },
+  {
+    question: "키처럼 정확한 숫자를 직접 쳐야 할 때 쓰는 위젯은?",
+    answer: "st.number_input 이다냥. +/- 버튼으로도 조절된다냥.",
+  },
+  {
+    question: "달력에서 날짜를 고르는 위젯은?",
+    answer: "st.date_input 이다냥. 날짜(date) 객체를 돌려준다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  이제 글자·선택·숫자·날짜까지 다 받을 수 있다냥! 그런데 여기서 아주
+  중요한 질문이 하나 있다냥 — **버튼을 누르면 도대체 무슨 일이 일어나는
+  걸까냥?** 다음 시간은 이 수업에서 제일 중요한 강이다냥. 꼭 집중해서
+  듣자냥!
+</NyangSpeech>

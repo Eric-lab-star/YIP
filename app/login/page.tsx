@@ -80,7 +80,15 @@ export default function Page() {
 		userMutate() // revalidate user data
 		if (!result.success) {
 			form.reset()
-			toast.error("로그인 정보가 없습니다.", { position: "top-center" })
+			if (result.rateLimited) {
+				const mins = Math.ceil((result.retryAfterSec ?? 60) / 60)
+				toast.error(
+					`로그인 시도가 너무 많습니다. ${mins}분 후에 다시 시도해주세요.`,
+					{ position: "top-center" },
+				)
+			} else {
+				toast.error("로그인 정보가 없습니다.", { position: "top-center" })
+			}
 		} else {
 			redirect(`/students/${result.userInfo.id}`)
 		}

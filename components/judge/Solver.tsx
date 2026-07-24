@@ -12,6 +12,7 @@ import type { editor as MonacoEditorNS } from "monaco-editor";
 loader.config({ paths: { vs: "/monaco/vs" } });
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { DoodleButton } from "@/components/ui/doodle-button";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -22,9 +23,12 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { LANGUAGES } from "@/app/lib/judge0/languages";
+import { doodleBox, doodleButtonRadius, ink } from "@/components/mdx/doodle";
 import ResultPanel, {
 	type SubmissionResult,
+	VERDICT_LABEL,
 } from "@/components/judge/ResultPanel";
+import HintPanel from "@/components/judge/HintPanel";
 import { registerCompletions } from "@/components/judge/editorCompletions";
 import {
 	LspSession,
@@ -107,7 +111,14 @@ function registerFallbackFormatters(monaco: MonacoNamespace) {
 	}
 }
 
-export default function Solver({ problem }: { problem: SolverProblem }) {
+export default function Solver({
+	problem,
+	isLoggedIn,
+}: {
+	problem: SolverProblem;
+	/** Gates the AI hint UI — guests are prompted to sign up instead. */
+	isLoggedIn: boolean;
+}) {
 	const langOptions = useMemo(
 		() =>
 			LANGUAGES.filter((l) => problem.languages.includes(l.slug)),
@@ -235,6 +246,28 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 		}
 	}, [runningRun, code, language, stdin]);
 
+	// Summarize the last failing submission for the AI "오답 진단" action. Null
+	// while pending, accepted, or before any submission. Only non-hidden case
+	// details are included — hidden judging data must never reach the model.
+	const failureSummary = useMemo(() => {
+		if (!result || result.verdict === "pending" || result.verdict === "accepted") {
+			return null;
+		}
+		const label = VERDICT_LABEL[result.verdict] ?? result.verdict;
+		const lines = [`판정: ${label} (${result.passed}/${result.total} 통과)`];
+		const firstFail = result.results.find((r) => r.statusId !== 3 && !r.hidden);
+		if (firstFail) {
+			lines.push(`실패한 예시 테스트 ${firstFail.index + 1}`);
+			if (firstFail.compileOutput) lines.push(`컴파일 출력: ${firstFail.compileOutput}`);
+			if (firstFail.expected != null) lines.push(`기대 출력: ${firstFail.expected}`);
+			if (firstFail.stdout != null) lines.push(`실제 출력: ${firstFail.stdout}`);
+			if (firstFail.stderr) lines.push(`에러: ${firstFail.stderr}`);
+		} else {
+			lines.push("숨김 테스트에서 실패했습니다 (구체적 입출력은 공개되지 않음).");
+		}
+		return lines.join("\n");
+	}, [result]);
+
 	const monacoLang =
 		LANGUAGES.find((l) => l.slug === language)?.monaco ?? "plaintext";
 
@@ -305,54 +338,65 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="flex items-center justify-between gap-2">
-				<div className="flex items-center gap-2">
+			{/* Wraps rather than overflowing: the full row needs ~590px, which the
+			    solver column only has above ~1280px wide (it is half the grid from
+			    the lg breakpoint up). Without wrapping, 실행/제출 fall off-screen on
+			    phones and on tablet/small-laptop widths alike. */}
+			<div className="flex flex-wrap items-center justify-between gap-2">
+				<div className="flex flex-wrap items-center gap-2">
+					{/* Border colour already resolves to ink through --input/--border, so
+					    matching the doodle look only needs the heavier stroke and the
+					    hand-drawn corners. The button radius is used rather than
+					    doodleBox: a dropdown listing one or two languages is shorter
+					    than doodleBox's 50px vertical radius sum and would clamp. */}
 					<Select value={language} onValueChange={onLanguageChange}>
-						<SelectTrigger className="w-48">
+						<SelectTrigger
+							className="w-48 border-[2.5px] font-bold"
+							style={{ borderRadius: doodleButtonRadius }}
+						>
 							<SelectValue />
 						</SelectTrigger>
-						<SelectContent>
+						<SelectContent
+							className="border-[2.5px]"
+							style={{ borderRadius: doodleButtonRadius }}
+						>
 							{langOptions.map((l) => (
-								<SelectItem key={l.slug} value={l.slug}>
+								<SelectItem
+									key={l.slug}
+									value={l.slug}
+									className="rounded-lg font-bold"
+								>
 									{l.label}
 								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>
 
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onFormat}
-						title="코드 정렬"
-					>
+					<DoodleButton type="button" onClick={onFormat} title="코드 정렬">
 						<Wand2 className="size-4" />
 						포맷
-					</Button>
+					</DoodleButton>
 				</div>
 
-				<div className="flex items-center gap-2">
-					<Button asChild variant="ghost">
+				<div className="flex flex-wrap items-center gap-2">
+					<Button asChild variant="ghost" className="font-bold">
 						<Link href={`/problems/${problem.slug}/submissions`}>제출 기록</Link>
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={onRun}
-						disabled={runningRun}
-					>
+					<DoodleButton type="button" onClick={onRun} disabled={runningRun}>
 						{runningRun && <Spinner />}
 						<Play className="size-4" />
 						실행
-					</Button>
-					<Button onClick={onSubmit} disabled={running}>
+					</DoodleButton>
+					<DoodleButton tone="primary" onClick={onSubmit} disabled={running}>
 						{running && <Spinner />}
 						제출
-					</Button>
+					</DoodleButton>
 				</div>
 			</div>
 
-			<div className="overflow-hidden rounded-md border">
+			{/* Hand-drawn frame around the dark editor, matching how lesson pages
+			    present code (CopyCodeBlock puts the same border on its highlighter). */}
+			<div className="overflow-hidden" style={doodleBox}>
 				<Editor
 					height="52vh"
 					language={monacoLang}
@@ -385,17 +429,24 @@ export default function Solver({ problem }: { problem: SolverProblem }) {
 			</div>
 
 			<div>
-				<label className="mb-1 block text-sm font-medium text-muted-foreground">
-					입력 (stdin)
-				</label>
+				<label className="mb-2 block text-base font-bold">입력 (stdin)</label>
 				<Textarea
 					value={stdin}
 					onChange={(e) => setStdin(e.target.value)}
 					rows={3}
 					placeholder="실행 시 프로그램에 전달할 입력을 여기에 넣으세요."
-					className="font-mono text-sm"
+					className="bg-muted px-4 py-3 font-mono text-sm"
+					style={doodleBox}
 				/>
 			</div>
+
+			<HintPanel
+				problemSlug={problem.slug}
+				language={language}
+				code={code}
+				failureSummary={failureSummary}
+				isLoggedIn={isLoggedIn}
+			/>
 
 			{runOutput && <RunResultPanel output={runOutput} />}
 
@@ -411,16 +462,28 @@ function RunResultPanel({ output }: { output: RunOutput }) {
 		!!output.signal;
 
 	return (
-		<div className="rounded-md border p-3">
-			<div className="mb-2 flex items-center gap-2 text-sm">
-				<span className="font-medium">실행 결과</span>
-				<span className={failed ? "text-red-600" : "text-green-600"}>
+		<div
+			className="px-6 py-5"
+			style={{ ...doodleBox, backgroundColor: failed ? "#FDECEC" : "#EAF7EF" }}
+		>
+			<div className="mb-3 flex flex-wrap items-center gap-2">
+				<span
+					className="rounded-full px-3 py-1 text-sm font-bold text-white"
+					style={{ backgroundColor: ink }}
+				>
+					실행 결과
+				</span>
+				<span
+					className={`font-bold ${failed ? "text-red-600" : "text-green-600"}`}
+				>
 					{output.signal
 						? `종료 신호 ${output.signal}`
 						: `종료 코드 ${output.exitCode ?? 0}`}
 				</span>
 				{output.timeMs !== null && (
-					<span className="text-muted-foreground">· {output.timeMs}ms</span>
+					<span className="text-sm text-muted-foreground">
+						· {output.timeMs}ms
+					</span>
 				)}
 			</div>
 

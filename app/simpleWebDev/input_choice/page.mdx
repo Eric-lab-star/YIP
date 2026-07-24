@@ -1,0 +1,170 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "선택하게 하기",
+  description: "selectbox, radio, checkbox, multiselect 로 고르게 만들어보자냥!",
+  session: 7,
+}
+
+# 선택하게 하기
+
+<NyangSpeech>
+  글자를 직접 치게 하는 건 자유롭지만, 오타가 나기 쉽다냥. "서울" 을
+  "서을" 이라고 치면 큰일이다냥. 그래서 **정해진 것 중에 고르게** 하는
+  위젯들이 있다냥. 오늘은 네 가지 선택 위젯을 배워보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.selectbox` 로 **하나를 고르는 드롭다운**을 만든다.
+  - `st.radio` 로 **하나를 고르는 라디오 버튼**을 만든다.
+  - `st.checkbox` 로 **켰다 껐다** 하는 스위치를 만든다.
+  - `st.multiselect` 로 **여러 개를 동시에** 고르게 한다.
+</Callout>
+
+---
+
+## 1단계 · 하나만 고르기 — selectbox
+
+<NyangSpeech>
+  `selectbox` 는 눌러서 목록이 펼쳐지는 **드롭다운**이다냥. 후보가 많을 때
+  깔끔하다냥. 고른 값이 변수에 담긴다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+city = st.selectbox("사는 도시는?", ["서울", "부산", "대구", "광주"])
+
+st.write("선택한 도시는 " + city + " 라냥!")
+```
+
+<Callout type="note">
+  **후보는 리스트로 준다냥**
+
+  `["서울", "부산", ...]` 처럼 고를 수 있는 후보를 **리스트**로 넘긴다냥.
+  사용자는 그 안에서만 고를 수 있으니 오타가 날 일이 없다냥!
+</Callout>
+
+---
+
+## 2단계 · 라디오 버튼 — radio
+
+<NyangSpeech>
+  `radio` 도 하나만 고르는 건 똑같지만, 후보가 **처음부터 다 보인다냥.**
+  후보가 두세 개로 적을 때는 라디오가 더 편하다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+size = st.radio("사이즈를 고르세요", ["소", "중", "대"])
+
+st.write("고른 사이즈: " + size)
+```
+
+<Callout type="tip">
+  **selectbox 와 radio, 언제 뭘 쓰냥**
+
+  - 후보가 **많다** → `selectbox` (펼쳐서 고르게)
+  - 후보가 **적다**(2~4개) → `radio` (한눈에 보이게)
+</Callout>
+
+---
+
+## 3단계 · 켰다 껐다 — checkbox
+
+<NyangSpeech>
+  `checkbox` 는 **True 냐 False 냐** 딱 두 가지다냥. 체크하면 True,
+  안 하면 False 를 돌려준다냥. "동의합니다", "알림 받기" 같은 데 쓴다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+agree = st.checkbox("이용약관에 동의합니다")
+
+if agree:
+    st.write("동의해줘서 고맙다냥!")
+else:
+    st.write("동의해야 다음으로 넘어간다냥")
+```
+
+<Callout type="note">
+  **체크박스는 조건문과 짝꿍이다냥**
+
+  `checkbox` 가 True/False 를 주니까, 파이썬 탐험하기에서 배운 `if` 와
+  함께 쓰기 딱 좋다냥. 체크됐을 때만 뭔가 보여주는 식이라냥!
+</Callout>
+
+---
+
+## 4단계 · 여러 개 고르기 — multiselect
+
+<NyangSpeech>
+  지금까지는 하나만 골랐지? `multiselect` 는 **여러 개를 한꺼번에** 고를
+  수 있다냥. 고른 것들이 **리스트**로 담긴다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+toppings = st.multiselect(
+    "토핑을 고르세요 (여러 개 가능)",
+    ["치즈", "베이컨", "버섯", "올리브"],
+)
+
+st.write("고른 토핑 개수: " + str(len(toppings)))
+st.write(toppings)
+```
+
+<Callout type="tip">
+  **결과는 리스트라 len() 이 통한다냥**
+
+  `multiselect` 는 고른 것들을 리스트로 주니까, `len()` 으로 몇 개
+  골랐는지 셀 수 있다냥. 리스트라서 `for` 로 하나씩 훑을 수도 있다냥!
+</Callout>
+
+---
+
+## 5단계 · 직접 해보기
+
+<Callout type="analogy">
+  **미션 · 나만의 주문서**
+
+  - `selectbox` 로 음료 하나
+  - `radio` 로 사이즈(소/중/대)
+  - `multiselect` 로 토핑 여러 개
+  - `checkbox` 로 "포장하기"
+
+  고른 걸 아래에 "주문 내역" 으로 정리해서 보여주면 진짜 주문서가 된다냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "후보가 많을 때 펼쳐서 하나를 고르는 드롭다운 위젯은?",
+    answer: "st.selectbox 다냥. 후보는 리스트로 준다냥.",
+  },
+  {
+    question: "체크하면 True, 안 하면 False 를 주는 위젯은?",
+    answer: "st.checkbox 다냥. if 와 함께 쓰기 딱 좋다냥.",
+  },
+  {
+    question: "여러 개를 동시에 고르고, 결과를 리스트로 주는 위젯은?",
+    answer: "st.multiselect 다냥. len() 으로 개수도 셀 수 있다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  선택 위젯 네 가지를 다 배웠다냥! 다음 시간엔 **숫자와 날짜**를 받는
+  위젯을 배워보자냥. 슬라이더를 쓰면 아주 재밌다냥!
+</NyangSpeech>

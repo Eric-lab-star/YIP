@@ -1,0 +1,244 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '글자도 하나씩! 문자열 다루기',
+  description: '문자열을 리스트처럼 훑는 법과 슬라이싱으로 뒤집는 법을 배우고, 회문 판별까지 만들어보자냥!',
+  session: 2,
+}
+
+# 글자도 하나씩! 문자열 다루기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 리스트를 하나씩 훑는 법을 배웠지? 오늘은
+  좋은 소식이 있다냥. **문자열도 똑같이 훑을 수 있다냥.** 지난 시간에 만든
+  뼈대를 거의 그대로 쓴다냥. 새로 배울 건 딱 하나, **잘라내기(슬라이싱)** 라냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 문자열이 **글자들이 순서대로 늘어선 것**임을 이해하고 `for` 로 훑는다.
+  - **인덱싱**과 **슬라이싱**으로 원하는 위치의 글자를 꺼낸다.
+  - 문자열은 **한번 만들면 못 바꾼다**는 성질을 알고 그에 맞게 코드를 쓴다.
+  - 배운 것을 엮어 **회문 판별**을 직접 만든다.
+</Callout>
+
+---
+
+## 1단계 · 문자열은 글자들의 줄이라냥 (5분)
+
+<NyangSpeech>
+  `"cat"` 은 그냥 덩어리 하나로 보이지? 컴퓨터한테는 아니다냥. **글자 세 개가
+  줄을 선 것**이라냥. 리스트랑 똑같다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **비유로 이해하기 — 기차 칸**
+
+  | 리스트 `[3, 9, 1]` | 문자열 `"cat"` |
+  |---|---|
+  | 칸마다 숫자가 하나 | 칸마다 글자가 하나 |
+  | `numbers[0]` 은 `3` | `word[0]` 은 `"c"` |
+  | `len(numbers)` 는 3 | `len(word)` 는 3 |
+  | `for n in numbers` | `for ch in word` |
+
+  칸에 실린 게 숫자냐 글자냐만 다르다냥. 다루는 방법은 같다냥.
+</Callout>
+
+```python
+word = "cat"
+
+print(len(word))     # 3
+print(word[0])       # c
+print(word[2])       # t
+
+for ch in word:
+    print(ch)        # c, a, t 가 한 줄씩
+```
+
+<Callout type="tip">
+  자리 번호는 **0부터** 센다냥. 첫 글자가 `word[0]`, 세 번째 글자가 `word[2]`
+  라냥. 리스트에서 배운 그대로라서 따로 외울 게 없다냥.
+</Callout>
+
+---
+
+## 2단계 · 뒤에서부터 세기 (3분)
+
+<NyangSpeech>
+  파이썬에는 편한 게 하나 더 있다냥. **음수 번호**라냥.
+</NyangSpeech>
+
+```python
+word = "python"
+
+print(word[-1])      # n   맨 뒤 글자
+print(word[-2])      # o   뒤에서 두 번째
+```
+
+<StepCard step="핵심" title="마지막 글자를 꺼낼 때">
+  `word[len(word) - 1]` 이라고 길게 쓸 필요 없다냥. `word[-1]` 이면 끝이라냥.
+  뒤에서 세는 번호는 `-1` 부터 시작한다냥. `-0` 은 없다냥.
+</StepCard>
+
+---
+
+## 3단계 · 잘라내기 — 슬라이싱 (10분)
+
+<NyangSpeech>
+  오늘의 새 무기다냥. 글자 하나가 아니라 **여러 글자를 한 번에** 꺼내는 법이라냥.
+</NyangSpeech>
+
+```python
+word = "algorithm"
+
+print(word[0:4])     # algo    0번부터 4번 "직전"까지
+print(word[4:])      # rithm   4번부터 끝까지
+print(word[:4])      # algo    처음부터 4번 직전까지
+```
+
+<Callout type="important">
+  `word[0:4]` 는 0, 1, 2, 3번 글자를 가져온다냥. **4번은 포함 안 된다냥.**
+
+  헷갈리면 이렇게 기억하자냥 — 뒤 숫자는 "여기까지"가 아니라 **"여기 직전까지"**
+  라냥. 그래서 개수를 세면 딱 `4 - 0 = 4` 글자라냥.
+</Callout>
+
+### 통째로 뒤집기
+
+슬라이싱에는 숫자를 하나 더 넣을 수 있다냥. **몇 칸씩 건너뛸지**라냥.
+
+```python
+word = "algorithm"
+
+print(word[::2])     # agrtm    두 칸씩 건너뛰며
+print(word[::-1])    # mhtirogla  거꾸로!
+```
+
+<StepCard step="암기" title="뒤집기는 [::-1]">
+  `[::-1]` 은 "처음부터 끝까지, 뒤로 한 칸씩" 이라는 뜻이라냥. 문자열을 뒤집는
+  가장 짧은 방법이고, 리스트에도 똑같이 쓸 수 있다냥.
+</StepCard>
+
+---
+
+## 4단계 · 문자열은 못 바꾼다냥 (7분)
+
+<NyangSpeech>
+  여기서 학생들이 제일 많이 넘어진다냥. 잘 보라냥.
+</NyangSpeech>
+
+```python
+word = "cat"
+word[0] = "b"        # TypeError 발생!
+```
+
+<Callout type="important">
+  리스트는 `lst[0] = 99` 로 바꿀 수 있지만, **문자열은 안 된다냥.**
+
+  문자열은 한번 만들면 고칠 수 없다냥. 이걸 어려운 말로 "불변(immutable)"
+  이라고 한다냥.
+</Callout>
+
+그럼 바꾸고 싶을 땐 어떻게 하냥? **새로 만들면 된다냥.**
+
+```python
+word = "cat"
+
+new_word = "b" + word[1:]    # "b" + "at"
+print(new_word)              # bat
+print(word)                  # cat   원본은 그대로라냥
+```
+
+### 훑으면서 새로 쌓기
+
+지난 시간 "상자에 모으기"를 문자열로도 쓸 수 있다냥.
+
+```python
+word = "hello"
+result = ""                  # 빈 문자열 상자
+
+for ch in word:
+    result = ch + result     # 앞에 붙이면 뒤집힌다냥
+
+print(result)                # olleh
+```
+
+<Callout type="tip">
+  `result = result + ch` 는 순서대로 쌓고, `result = ch + result` 는 거꾸로
+  쌓인다냥. 붙이는 순서만 바꿨을 뿐인데 결과가 뒤집힌다냥. 종이를 위에 쌓느냐
+  아래에 끼우느냐의 차이라냥.
+</Callout>
+
+---
+
+## 5단계 · 회문 판별 만들기 (5분)
+
+<NyangSpeech>
+  배운 걸 다 엮어보자냥. **회문**은 거꾸로 읽어도 똑같은 말이라냥.
+  "기러기", "level", "토마토" 같은 것들이라냥.
+</NyangSpeech>
+
+거꾸로 읽어도 같다는 건, **뒤집은 것과 원본이 같다**는 뜻이라냥. 뒤집는 법은 이미 배웠다냥.
+
+```python
+word = "level"
+
+if word == word[::-1]:
+    print("회문이다")
+else:
+    print("회문이 아니다")
+```
+
+<StepCard step="정리" title="오늘의 무기 네 개">
+  1. `len(word)` — 길이
+  2. `word[i]`, `word[-1]` — 한 글자 꺼내기
+  3. `word[a:b]`, `word[::-1]` — 여러 글자 꺼내기, 뒤집기
+  4. `for ch in word` — 하나씩 훑기
+
+  이 네 개로 오늘 실습 다섯 문제가 전부 풀린다냥.
+</StepCard>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  먼저 스스로 답해보고, "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'word = "python" 일 때 word[1:4] 는 뭐가 나오냥?',
+      answer: '"yth" 라냥. 1번, 2번, 3번 글자를 가져오고 4번은 포함하지 않는다냥. 뒤 숫자는 "여기 직전까지"라는 뜻이라냥.',
+    },
+    {
+      question: '문자열을 뒤집는 가장 짧은 방법은 뭐냥?',
+      answer: 'word[::-1] 이라냥. "처음부터 끝까지, 뒤로 한 칸씩"이라는 뜻이라냥. 리스트에도 똑같이 쓸 수 있다냥.',
+    },
+    {
+      question: 'word[0] = "b" 가 왜 에러가 나냥? 그럼 어떻게 해야 하냥?',
+      answer: '문자열은 한번 만들면 못 바꾸기 때문이라냥(불변). 바꾸고 싶으면 "b" + word[1:] 처럼 새 문자열을 만들면 된다냥. 원본은 그대로 남는다냥.',
+    },
+    {
+      question: '회문인지 어떻게 확인하냥?',
+      answer: '뒤집은 것과 원본을 비교하면 된다냥. word == word[::-1] 이 True 면 회문이라냥.',
+    },
+  ]}
+/>
+
+---
+
+## 이제 직접 풀어볼 차례다냥
+
+<NyangSpeech>
+  오늘은 문제가 다섯 개라냥. 길이 재기부터 시작해서 마지막엔 회문 판별까지
+  간다냥. 순서대로 풀면 점점 어려워지니까 위에서부터 차례로 가보자냥. 막히면
+  AI 힌트를 눌러도 된다냥. 가보자냥~
+</NyangSpeech>

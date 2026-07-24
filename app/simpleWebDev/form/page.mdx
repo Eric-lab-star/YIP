@@ -1,0 +1,145 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "한 번에 제출하기",
+  description: "st.form 으로 여러 입력을 모아 버튼 한 번에 제출해보자냥!",
+  session: 14,
+}
+
+# 한 번에 제출하기
+
+<NyangSpeech>
+  방명록에 이름·내용·별점을 다 받으려니 좀 불편하지 않았냥? 글자 하나
+  칠 때마다 재실행되니까 말이다냥. 오늘은 여러 입력을 **다 채운 다음 한
+  번에** 제출하는 `st.form` 을 배워보자냥. 재실행 규칙을 잠깐 멈추는
+  기술이라냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.form` 이 **왜 필요한지** 이해한다.
+  - 폼 안에 여러 입력을 넣고 **한 번에 제출**받는다.
+  - `st.form_submit_button` 으로 제출을 처리한다.
+</Callout>
+
+---
+
+## 1단계 · 폼이 없으면 생기는 불편
+
+<NyangSpeech>
+  9강에서 배웠지? 위젯을 하나라도 건드리면 코드 전체가 다시 돈다냥. 입력이
+  세 개면, 하나 칠 때마다 재실행되니까 화면이 계속 깜빡인다냥. 게다가 아직
+  다 안 채웠는데 중간 값으로 처리돼버릴 수도 있다냥.
+</NyangSpeech>
+
+<Callout type="analogy">
+  **주문을 언제 넣냥**
+
+  식당에서 메뉴를 고를 때마다 주방에 주문이 들어가면 큰일이다냥. "김밥…
+  (주문!) 아니 라면도… (주문!)" 이러면 엉망이라냥.
+
+  보통은 **다 고른 다음 "주문이요!"** 한 번 외친다냥. `st.form` 이 바로
+  그 "다 고른 다음 한 번에" 를 만들어주는 도구라냥!
+</Callout>
+
+---
+
+## 2단계 · 폼 만들기
+
+<NyangSpeech>
+  `with st.form(...)` 안에 입력들을 넣고, 맨 아래에 `st.form_submit_button`
+  을 둔다냥. 폼 안의 위젯은 **제출 버튼을 누르기 전까지는** 재실행을 일으키지
+  않는다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+with st.form("guestbook_form"):
+    name = st.text_input("이름")
+    message = st.text_area("남길 말")
+    stars = st.slider("별점", 1, 5, 5)
+
+    submitted = st.form_submit_button("남기기")
+
+if submitted:
+    st.write(name + " 님이 별 " + str(stars) + "개와 함께 남김:")
+    st.write(message)
+```
+
+<Callout type="important">
+  **폼의 규칙 세 가지**
+
+  1. `with st.form("이름")` 으로 감싼다냥. 따옴표 안 이름은 폼마다 달라야
+     한다냥.
+  2. 폼 안에는 **반드시** `st.form_submit_button` 이 하나 있어야 한다냥.
+  3. 폼 안의 입력들은 **제출 버튼을 눌러야** 값이 한꺼번에 반영된다냥.
+</Callout>
+
+---
+
+## 3단계 · session_state 와 함께 쓰기
+
+<NyangSpeech>
+  13강 방명록을 폼으로 업그레이드해보자냥. 이름·내용·별점을 한 번에 받아서
+  리스트에 쌓는 거다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+if "guestbook" not in st.session_state:
+    st.session_state["guestbook"] = []
+
+with st.form("gb"):
+    name = st.text_input("이름")
+    message = st.text_area("남길 말")
+    stars = st.slider("별점", 1, 5, 5)
+    submitted = st.form_submit_button("남기기")
+
+if submitted and message:
+    st.session_state["guestbook"].append(
+        name + " (별 " + str(stars) + "개): " + message
+    )
+
+st.subheader("방명록")
+for line in st.session_state["guestbook"]:
+    st.write("- " + line)
+```
+
+<Callout type="tip">
+  **제출 버튼을 눌러야 깔끔하다냥**
+
+  폼을 쓰면 이름·내용·별점을 다 채우는 동안에는 조용하다가, "남기기" 를
+  누르는 순간 한꺼번에 처리된다냥. 화면이 훨씬 안정적이라냥!
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "여러 입력을 다 채운 뒤 한 번에 제출하게 묶는 것은?",
+    answer: "st.form 이다냥. with st.form(\"이름\") 으로 감싼다냥.",
+  },
+  {
+    question: "폼 안에 반드시 하나 있어야 하는 버튼은?",
+    answer: "st.form_submit_button 이다냥. 이게 없으면 폼이 동작하지 않는다냥.",
+  },
+  {
+    question: "폼 안의 입력들은 언제 값이 반영되냥?",
+    answer: "제출 버튼을 눌렀을 때 한꺼번에 반영된다냥. 그 전까지는 재실행을 일으키지 않는다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  폼으로 입력을 깔끔하게 받게 됐다냥! 다음 시간은 **심화** 강이라냥.
+  위젯이 바뀌는 순간 자동으로 함수를 실행하는 **콜백**을 배워본다냥.
+  조금 어려우니, 지금 당장 다 이해 못 해도 괜찮다냥!
+</NyangSpeech>

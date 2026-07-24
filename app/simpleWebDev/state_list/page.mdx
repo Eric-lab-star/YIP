@@ -1,0 +1,172 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: "목록을 쌓기 · 방명록 만들기",
+  description: "session_state 에 리스트를 담아 남긴 글이 아래로 쌓이는 방명록을 만들어보자냥!",
+  session: 13,
+}
+
+# 목록을 쌓기 · 방명록 만들기
+
+<NyangSpeech>
+  지난 시간엔 숫자 하나를 기억했지? 오늘은 **여러 개를 차곡차곡** 기억하게
+  해본다냥. 서랍 안에 숫자 대신 **리스트**를 넣는 거다냥. 이걸로 방명록을
+  만들면, 사람들이 남긴 글이 아래로 계속 쌓인다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `session_state` 에 **리스트**를 저장한다.
+  - 새 글을 리스트에 **`append`** 로 추가한다.
+  - 쌓인 글을 **`for` 로 훑어서** 화면에 보여준다.
+</Callout>
+
+---
+
+## 1단계 · 서랍에 리스트를 넣는다냥
+
+<NyangSpeech>
+  카운터에선 서랍에 숫자(`0`)를 넣었지? 방명록에선 서랍에 **빈 리스트
+  (`[]`)** 를 넣는다냥. 그리고 글이 들어올 때마다 그 리스트에 하나씩
+  추가하는 거다냥.
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+# 처음 한 번만 빈 리스트로 초기화
+if "guestbook" not in st.session_state:
+    st.session_state["guestbook"] = []
+```
+
+<Callout type="note">
+  **카운터와 판박이라냥**
+
+  구조가 12강 카운터랑 똑같다냥. 다른 건 서랍에 넣는 게 `0`(숫자)이 아니라
+  `[]`(빈 리스트)라는 것뿐이다냥!
+</Callout>
+
+---
+
+## 2단계 · append 로 쌓기
+
+<NyangSpeech>
+  리스트에 새 항목을 넣는 함수, 파이썬 탐험하기에서 배웠지? 그렇다냥,
+  `append` 다냥. 입력받은 글을 서랍 속 리스트에 `append` 하면 된다냥.
+</NyangSpeech>
+
+```python
+message = st.text_input("방명록에 남길 말")
+
+if st.button("남기기"):
+    st.session_state["guestbook"].append(message)
+```
+
+<Callout type="tip">
+  **글이 안 사라지는 이유**
+
+  리스트가 `session_state` 서랍 안에 있으니, 재실행이 일어나도 그동안
+  쌓은 글이 그대로 남아 있다냥. 그래서 `append` 할 때마다 리스트가 점점
+  길어진다냥!
+</Callout>
+
+---
+
+## 3단계 · for 로 펼쳐 보여주기
+
+<NyangSpeech>
+  이제 쌓인 글들을 화면에 보여줄 차례다냥. 리스트를 `for` 로 하나씩 훑으면서
+  화면에 뿌리면 된다냥.
+</NyangSpeech>
+
+```python
+st.subheader("남겨진 방명록")
+
+for msg in st.session_state["guestbook"]:
+    st.write("- " + msg)
+```
+
+---
+
+<MissionCard number={1} title="방명록 완성하기" time="12분">
+
+위 조각들을 하나로 합치면 방명록이 완성된다냥. 전체 코드는 이렇다냥.
+
+```python
+import streamlit as st
+
+st.title("코딩냥이 방명록이다냥")
+
+if "guestbook" not in st.session_state:
+    st.session_state["guestbook"] = []
+
+message = st.text_input("방명록에 남길 말")
+
+if st.button("남기기"):
+    st.session_state["guestbook"].append(message)
+
+st.subheader("남겨진 방명록")
+for msg in st.session_state["guestbook"]:
+    st.write("- " + msg)
+```
+
+<Callout type="important">
+  **직접 해보면**
+
+  글을 쓰고 "남기기" 를 누르면 아래 목록에 하나씩 추가된다냥. 여러 번
+  누르면 계속 쌓인다냥. 12강의 카운터가 "숫자 쌓기" 였다면, 이건 "글 쌓기"
+  라냥!
+</Callout>
+
+</MissionCard>
+
+<MissionCard number={2} title="빈 글 막기 (도전)" time="6분">
+
+지금은 아무것도 안 쓰고 "남기기" 를 눌러도 빈 줄이 추가된다냥. 이걸
+막아보자냥.
+
+```python
+if st.button("남기기"):
+    if message:                 # 빈 문자열이 아닐 때만
+        st.session_state["guestbook"].append(message)
+    else:
+        st.warning("한 글자라도 써야 남길 수 있다냥!")
+```
+
+<Callout type="tip">
+  `if message:` 는 "message 가 빈 문자열이 아니면" 이라는 뜻이라냥. 6강에서
+  빈 입력이 `""` 라고 배운 게 여기서 쓰인다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard items={[
+  {
+    question: "방명록처럼 여러 개를 기억하려면 session_state 에 무엇을 넣냥?",
+    answer: "리스트를 넣는다냥. 처음엔 빈 리스트 [] 로 초기화한다냥.",
+  },
+  {
+    question: "새 글을 리스트에 추가하는 함수는?",
+    answer: "append 다냥. session_state 속 리스트에 append 하면 계속 쌓인다냥.",
+  },
+  {
+    question: "쌓인 글을 전부 화면에 보여줄 때 쓰는 반복문은?",
+    answer: "for 다냥. 리스트를 하나씩 훑으면서 st.write 로 뿌린다냥.",
+  },
+]} />
+
+<NyangSpeech>
+  방명록을 만들었다냥! 그런데 입력이 여러 개(이름 + 내용 + 별점)면 매번
+  글자 칠 때마다 재실행돼서 좀 정신없다냥. 다음 시간엔 여러 입력을 **한
+  번에 제출**하는 `st.form` 을 배워보자냥.
+</NyangSpeech>
