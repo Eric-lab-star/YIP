@@ -6,7 +6,7 @@ const slides: Slide[] = [
   {
     title: "",
     bg: "from-purple-50 to-indigo-50",
-    script: "안녕하세요, 여러분. 오늘은 지난 세 시간 동안 만들어온 임베딩, 청킹, 벡터DB를 하나로 합쳐서 진짜 RAG 챗봇을 완성하는 시간입니다. RAG는 Retrieval-Augmented Generation, 즉 검색 증강 생성의 약자입니다. 자료를 찾기만 하고 끝내는 것이 아니라, 찾은 자료를 바탕으로 자연스러운 답변까지 만들어내는 완성된 시스템을 구축하겠습니다.",
+    script: "안녕하세요, 여러분. 오늘은 지난 세 시간 동안 만들어온 임베딩, 청킹, 벡터DB를 하나로 합쳐서 진짜 RAG 챗봇을 완성하는 시간입니다. RAG는 Retrieval-Augmented Generation, 즉 검색 증강 생성의 약자입니다. 특히 오늘은 지금까지처럼 코드에 적어둔 예시 문장이 아니라, 실제 문서 파일을 통째로 AI에게 전달하는 방법까지 배웁니다. 자료를 찾기만 하고 끝내는 것이 아니라, 찾은 자료를 바탕으로 자연스러운 답변까지 만들어내는 완성된 시스템을 구축하겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
         <span className="text-8xl">📚</span>
@@ -20,13 +20,14 @@ const slides: Slide[] = [
   {
     title: "오늘의 학습 목표",
     bg: "from-yellow-50 to-amber-50",
-    script: "오늘의 학습 목표입니다. 첫째, 검색(Retrieval)과 생성(Generation)을 연결하는 전체 RAG 흐름을 이해합니다. 둘째, 지난 3차시 동안 만든 임베딩, 청킹, 벡터DB를 하나의 앱으로 통합합니다. 셋째, 검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 파악합니다.",
+    script: "오늘의 학습 목표입니다. 첫째, 검색(Retrieval)과 생성(Generation)을 연결하는 전체 RAG 흐름을 이해합니다. 둘째, 실제 문서 파일을 읽어 청킹하고 벡터DB에 저장하는 인덱싱 과정을 배웁니다. 셋째, 지난 3차시 동안 만든 임베딩, 청킹, 벡터DB를 하나의 앱으로 통합합니다. 넷째, 검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 파악합니다.",
     content: (
       <div className="flex flex-col gap-6">
         {[
           { num: "1", text: "검색(Retrieval)과 생성(Generation)을 연결하는 전체 RAG 흐름을 이해한다" },
-          { num: "2", text: "임베딩 · 청킹 · 벡터DB를 하나의 앱으로 통합한다" },
-          { num: "3", text: "검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 안다" },
+          { num: "2", text: "실제 문서 파일을 읽어 청킹하고 벡터DB에 저장하는 인덱싱 과정을 안다" },
+          { num: "3", text: "임베딩 · 청킹 · 벡터DB를 하나의 앱으로 통합한다" },
+          { num: "4", text: "검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 점을 안다" },
         ].map((item) => (
           <div key={item.num} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
             <span className="bg-purple-500 text-white rounded-full w-9 h-9 flex items-center justify-center shrink-0 font-bold">{item.num}</span>
@@ -118,6 +119,40 @@ const slides: Slide[] = [
     ),
   },
   {
+    title: "실제 문서는 어떻게 넣을까: 인덱싱",
+    bg: "from-lime-50 to-green-50",
+    script: "방금 본 네 단계는 모두 질문이 들어온 다음의 이야기입니다. 그 전에 꼭 필요한 준비가 있습니다. 바로 내 문서를 벡터DB에 넣어두는 인덱싱입니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 세 걸음으로 이루어집니다. 첫째, open 함수로 실제 문서 파일을 통째로 읽습니다. 둘째, 2차시에 만든 split_into_chunks 함수로 잘게 나눕니다. 셋째, 청크들을 벡터DB에 add로 저장합니다. 중요한 점은, 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복된다는 것입니다. 학교 안내문이든 개인 노트든, 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.",
+    content: (
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {[
+            { num: "1", title: "파일 읽기", desc: 'open("school_guide.txt")', color: "bg-blue-500" },
+            { num: "2", title: "청킹", desc: "split_into_chunks(document)", color: "bg-green-500" },
+            { num: "3", title: "저장", desc: "collection.add(...)", color: "bg-purple-500" },
+          ].map((item) => (
+            <div key={item.num} className="bg-white/70 rounded-xl p-5 flex-1 flex flex-col items-center gap-2 text-center">
+              <span className={`${item.color} text-white rounded-full w-10 h-10 flex items-center justify-center font-bold`}>{item.num}</span>
+              <p className="text-lg font-semibold text-gray-800">{item.title}</p>
+              <p className="text-sm text-gray-500 font-mono">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+        <CodeBlock>
+          {`with open("school_guide.txt", "r", encoding="utf-8") as f:
+    document = f.read()
+
+chunks = split_into_chunks(document, chunk_size=200)
+
+ids = [f"chunk_{i}" for i in range(len(chunks))]
+collection.add(documents=chunks, ids=ids)`}
+        </CodeBlock>
+        <div className="bg-white/60 rounded-xl p-4 text-center">
+          <p className="text-lg text-gray-800">인덱싱은 <strong>한 번</strong>, 질문은 <strong>여러 번</strong></p>
+        </div>
+      </div>
+    ),
+  },
+  {
     title: "RAG의 핵심 한 문장",
     bg: "from-emerald-50 to-green-50",
     script: "RAG의 핵심을 한 문장으로 정리하겠습니다. 'AI가 원래 모르는 내용도, 검색해온 자료를 참고하면 답할 수 있다.' 이것이 RAG의 본질입니다. 제미나이는 우리 학교 자료나 개인 문서를 학습한 적이 없습니다. 하지만 그 자료를 검색해서 prompt에 넣어주면, 마치 아는 것처럼 답할 수 있게 됩니다. 이것이 RAG가 실무에서 널리 사용되는 이유입니다.",
@@ -174,7 +209,7 @@ const slides: Slide[] = [
   {
     title: "오늘 배운 내용 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. R은 Retrieval(검색)으로 벡터DB에서 관련 자료를 찾아오는 단계이고, G는 Generation(생성)으로 제미나이가 답변을 만드는 단계입니다. RAG의 핵심은 AI가 모르는 내용도 검색한 자료를 참고하면 답할 수 있다는 것입니다. 검색 결과를 prompt에 어떻게 넣느냐가 답변 품질을 크게 좌우합니다. 좋은 프롬프트 작성법이 여기서 빛을 발합니다.",
+    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. R은 Retrieval(검색)으로 벡터DB에서 관련 자료를 찾아오는 단계이고, G는 Generation(생성)으로 제미나이가 답변을 만드는 단계입니다. RAG의 핵심은 AI가 모르는 내용도 검색한 자료를 참고하면 답할 수 있다는 것입니다. 실제 문서는 읽기, 청킹, 저장의 인덱싱 과정으로 벡터DB에 넣으며, 인덱싱은 한 번만 해두면 됩니다. 그리고 검색 결과를 prompt에 어떻게 넣느냐가 답변 품질을 크게 좌우합니다. 좋은 프롬프트 작성법이 여기서 빛을 발합니다.",
     content: (
       <div className="flex flex-col gap-4">
         <div className="bg-green-50 rounded-xl p-4">
@@ -182,6 +217,9 @@ const slides: Slide[] = [
         </div>
         <div className="bg-purple-50 rounded-xl p-4">
           <p className="text-lg text-gray-700">✅ <strong>G</strong>eneration = 제미나이가 자료 기반 답변 생성</p>
+        </div>
+        <div className="bg-lime-50 rounded-xl p-4">
+          <p className="text-lg text-gray-700">✅ 실제 문서는 읽기 → 청킹 → 저장의 <strong>인덱싱</strong>으로 넣는다 (한 번만!)</p>
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-lg text-gray-700">✅ 핵심: AI가 모르는 내용도 검색한 자료를 참고하면 답할 수 있다</p>
@@ -195,12 +233,12 @@ const slides: Slide[] = [
   {
     title: "",
     bg: "from-purple-50 to-indigo-50",
-    script: "오늘 강의를 마치겠습니다. 드디어 검색과 생성을 합쳐서 진짜 AI 사서를 완성할 준비가 끝났습니다. 이제 실습에서 직접 RAG 함수를 만들고 Streamlit 챗봇까지 완성해보겠습니다. 수고하셨습니다.",
+    script: "오늘 강의를 마치겠습니다. 드디어 검색과 생성을 합쳐서 진짜 AI 사서를 완성할 준비가 끝났습니다. 이제 실습에서 실제 문서 파일을 직접 인덱싱하고, RAG 함수를 만들고, Streamlit 챗봇까지 완성해보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
         <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
-        <p className="text-xl text-gray-600 mt-4">다음: RAG 함수 만들기 + Streamlit 챗봇 실습</p>
+        <p className="text-xl text-gray-600 mt-4">다음: 실제 문서 인덱싱 + RAG 함수 + Streamlit 챗봇 실습</p>
         <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
       </div>
     ),
