@@ -157,27 +157,38 @@ const slides: Slide[] = [
   {
     title: "코드 예시: 서랍장 만들고 문서 넣기",
     bg: "from-blue-50 to-indigo-50",
-    script: "기본 코드 구조를 살펴보겠습니다. 먼저 chromadb를 import하고 클라이언트를 생성합니다. 그다음 create_collection으로 컬렉션, 즉 서랍장을 만듭니다. collection.add()로 문서를 저장하는데, 이때 documents에 문서 내용을, ids에 고유한 식별자를 넣어줍니다. 중요한 점은 id가 절대 중복되어서는 안 된다는 것입니다. 같은 id로 다시 add하면 에러가 발생할 수 있습니다. chunk_0, chunk_1처럼 서로 다른 이름을 붙여주어야 합니다.",
+    script: "기본 코드 구조를 살펴보겠습니다. 먼저 코드 맨 위의 GeminiEmbedding 클래스를 봐주세요. 이것은 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드입니다. Chroma에 내장된 기본 임베딩 모델은 영어 위주로 학습되어 있어 한국어 문서 검색이 부정확하기 때문에, 지난 시간부터 써온 제미나이 임베딩을 연결해서 사용합니다. 이 클래스는 그대로 복사해서 쓰면 됩니다. 그다음 create_collection으로 컬렉션, 즉 서랍장을 만드는데, 이때 embedding_function에 GeminiEmbedding을 넣어 연결합니다. collection.add()로 문서를 저장할 때는 documents에 문서 내용을, ids에 고유한 식별자를 넣어줍니다. 중요한 점은 id가 절대 중복되어서는 안 된다는 것입니다. chunk_0, chunk_1처럼 서로 다른 이름을 붙여주어야 합니다.",
     content: (
       <div className="flex flex-col gap-5">
         <CodeBlock>
           {`import chromadb
+from chromadb import EmbeddingFunction
+from google import genai
 
-# Chroma 클라이언트 생성
+genai_client = genai.Client(api_key="본인의 API 키")
+
+# 제미나이 임베딩을 Chroma에 연결 (그대로 복사)
+class GeminiEmbedding(EmbeddingFunction):
+    def __call__(self, input):
+        result = genai_client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=list(input),
+        )
+        return [e.values for e in result.embeddings]
+
 client = chromadb.Client()
 
-# 컬렉션(서랍장) 만들기
+# 컬렉션(서랍장) 만들기 — 제미나이 임베딩 연결
 collection = client.create_collection(
-    name="my_documents"
+    name="my_documents",
+    embedding_function=GeminiEmbedding(),
 )
 
 # 문서를 id와 함께 저장
 collection.add(
     documents=["고양이는 귀엽다", "강아지는 충성스럽다"],
     ids=["doc_0", "doc_1"]
-)
-
-print(f"{collection.count()}개의 문서가 저장되었습니다.")`}
+)`}
         </CodeBlock>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
           <p className="text-lg text-gray-700"><strong>주의:</strong> id는 절대 중복되면 안 됩니다. 같은 id로 다시 add하면 에러가 발생할 수 있습니다.</p>
@@ -188,7 +199,7 @@ print(f"{collection.count()}개의 문서가 저장되었습니다.")`}
   {
     title: "코드 예시: 질문으로 검색하기",
     bg: "from-teal-50 to-cyan-50",
-    script: "저장한 문서를 검색하는 코드는 더욱 간단합니다. collection.query()에 query_texts로 질문을 전달하고, n_results로 가져올 문서 개수를 지정합니다. 여기서 주목할 점은, 우리가 직접 임베딩을 생성하거나 유사도를 계산하지 않았다는 것입니다. Chroma가 내부적으로 자체 임베딩 방식을 사용하여 자동으로 처리해줍니다. 오늘은 벡터DB의 저장과 검색 동작 방식을 체험하는 것이 목표이므로, 기본 임베딩으로 충분합니다.",
+    script: "저장한 문서를 검색하는 코드는 더욱 간단합니다. collection.query()에 query_texts로 질문을 전달하고, n_results로 가져올 문서 개수를 지정합니다. 여기서 주목할 점은, 우리가 직접 임베딩을 생성하거나 유사도를 계산하지 않았다는 것입니다. Chroma가 질문을 우리가 연결해둔 제미나이 임베딩으로 변환한 다음, 저장된 문서들과의 유사도 계산까지 자동으로 처리해줍니다.",
     content: (
       <div className="flex flex-col gap-5">
         <CodeBlock>
@@ -205,7 +216,7 @@ print(results["documents"][0])`}
             <strong>핵심:</strong> 임베딩 생성과 유사도 계산을 직접 하지 않아도 됩니다.
           </p>
           <p className="text-base text-gray-600">
-            Chroma가 내부적으로 자체 임베딩 방식을 사용하여 자동 처리합니다.
+            Chroma가 연결해둔 제미나이 임베딩으로 질문을 변환해 자동 처리합니다.
           </p>
         </div>
       </div>
@@ -246,7 +257,7 @@ print(results["documents"][0])`}
   {
     title: "오늘 배운 내용 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. 첫째, 지난 시간의 방식은 매번 전체를 다시 임베딩해야 하는 비효율이 있었습니다. 둘째, 벡터DB는 임베딩을 한 번 저장해두고 계속 재사용할 수 있게 해주는 전용 데이터베이스입니다. 셋째, Chroma의 핵심 동작은 세 가지로 컬렉션 생성, add로 저장, query로 검색입니다. 넷째, id는 문서마다 고유해야 하며 중복되면 안 됩니다. 다음 시간에는 이 벡터DB에서 검색한 결과를 제미나이에게 전달하여 답변을 생성하는 RAG 파이프라인을 완성하겠습니다.",
+    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. 첫째, 지난 시간의 방식은 매번 전체를 다시 임베딩해야 하는 비효율이 있었습니다. 둘째, 벡터DB는 임베딩을 한 번 저장해두고 계속 재사용할 수 있게 해주는 전용 데이터베이스입니다. 셋째, Chroma의 핵심 동작은 세 가지로 컬렉션 생성, add로 저장, query로 검색입니다. 넷째, 컬렉션을 만들 때는 한국어 검색이 정확하도록 제미나이 임베딩을 embedding_function으로 연결합니다. 다섯째, id는 문서마다 고유해야 하며 중복되면 안 됩니다. 다음 시간에는 이 벡터DB에서 검색한 결과를 제미나이에게 전달하여 답변을 생성하는 RAG 파이프라인을 완성하겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
@@ -258,6 +269,9 @@ print(results["documents"][0])`}
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
             <p className="text-lg text-gray-700">✅ Chroma 핵심: create_collection → add → query</p>
+          </div>
+          <div className="bg-purple-50 rounded-xl p-4">
+            <p className="text-lg text-gray-700">✅ 한국어 검색은 제미나이 임베딩 연결 (embedding_function)</p>
           </div>
           <div className="bg-red-50 rounded-xl p-4">
             <p className="text-lg text-gray-700">✅ id는 문서마다 고유해야 함 (중복 불가)</p>

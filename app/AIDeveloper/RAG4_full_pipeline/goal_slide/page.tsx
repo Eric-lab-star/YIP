@@ -121,13 +121,13 @@ const slides: Slide[] = [
   {
     title: "실제 문서는 어떻게 넣을까: 인덱싱",
     bg: "from-lime-50 to-green-50",
-    script: "방금 본 네 단계는 모두 질문이 들어온 다음의 이야기입니다. 그 전에 꼭 필요한 준비가 있습니다. 바로 내 문서를 벡터DB에 넣어두는 인덱싱입니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 세 걸음으로 이루어집니다. 첫째, open 함수로 실제 문서 파일을 통째로 읽습니다. 둘째, 2차시에 만든 split_into_chunks 함수로 잘게 나눕니다. 셋째, 청크들을 벡터DB에 add로 저장합니다. 중요한 점은, 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복된다는 것입니다. 학교 안내문이든 개인 노트든, 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.",
+    script: "방금 본 네 단계는 모두 질문이 들어온 다음의 이야기입니다. 그 전에 꼭 필요한 준비가 있습니다. 바로 내 문서를 벡터DB에 넣어두는 인덱싱입니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 세 걸음으로 이루어집니다. 첫째, open 함수로 실제 문서 파일을 통째로 읽습니다. 둘째, 빈 줄, 즉 문단 기준으로 잘게 나눕니다. 200자씩 기계적으로 자르면 문장이 중간에 끊기지만, 문단 기준으로 자르면 의미가 이어져서 검색이 잘 됩니다. 셋째, 청크들을 벡터DB에 add로 저장합니다. 이때 한 가지 중요한 점이 있습니다. Chroma의 기본 임베딩 모델은 영어 위주로 학습되어 있어 한국어 검색이 부정확하기 때문에, 우리는 1차시부터 써온 제미나이 임베딩을 Chroma에 연결해서 사용합니다. 그리고 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복됩니다. 학교 안내문이든 개인 노트든, 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row gap-4">
           {[
             { num: "1", title: "파일 읽기", desc: 'open("school_guide.txt")', color: "bg-blue-500" },
-            { num: "2", title: "청킹", desc: "split_into_chunks(document)", color: "bg-green-500" },
+            { num: "2", title: "청킹 (문단 기준)", desc: 'document.split("\\n\\n")', color: "bg-green-500" },
             { num: "3", title: "저장", desc: "collection.add(...)", color: "bg-purple-500" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-5 flex-1 flex flex-col items-center gap-2 text-center">
@@ -141,13 +141,17 @@ const slides: Slide[] = [
           {`with open("school_guide.txt", "r", encoding="utf-8") as f:
     document = f.read()
 
-chunks = split_into_chunks(document, chunk_size=200)
+# 빈 줄(문단) 기준으로 청킹
+paragraphs = document.split("\\n\\n")
+chunks = [p.strip() for p in paragraphs if p.strip()]
 
+# 제미나이 임베딩을 연결한 collection에 저장
 ids = [f"chunk_{i}" for i in range(len(chunks))]
 collection.add(documents=chunks, ids=ids)`}
         </CodeBlock>
         <div className="bg-white/60 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-800">인덱싱은 <strong>한 번</strong>, 질문은 <strong>여러 번</strong></p>
+          <p className="text-base text-gray-600 mt-1">한국어 검색은 <strong>제미나이 임베딩</strong>으로 — Chroma 기본 임베딩은 영어 위주라 부정확</p>
         </div>
       </div>
     ),

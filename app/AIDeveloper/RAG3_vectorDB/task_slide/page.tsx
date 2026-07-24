@@ -24,15 +24,15 @@ const slides: Slide[] = [
   {
     title: "실습 전 준비 사항",
     bg: "from-yellow-50 to-amber-50",
-    script: "미션을 시작하기 전에 준비물을 확인하겠습니다. chromadb 패키지가 설치되어 있어야 합니다. 지난 시간에 만든 청크 데이터가 있으면 좋지만, 없으면 예시로 직접 만들어도 됩니다. 빈칸이 포함된 코드 템플릿과 검색 테스트용 질문 한두 개를 미리 생각해두시기 바랍니다.",
+    script: "미션을 시작하기 전에 준비물을 확인하겠습니다. chromadb와 google-genai 패키지가 설치되어 있어야 합니다. 오늘은 Chroma에 제미나이 임베딩을 연결해서 사용하므로, 지난 시간 쓰던 제미나이 API 키도 준비해주세요. 지난 시간에 만든 청크 데이터가 있으면 좋지만, 없으면 예시로 직접 만들어도 됩니다. 빈칸이 포함된 코드 템플릿과 검색 테스트용 질문 한두 개를 미리 생각해두시기 바랍니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-xl text-gray-700">미션 시작 전 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "chromadb 패키지 설치 (pip install chromadb)" },
+            { icon: "📦", text: "chromadb, google-genai 패키지 설치" },
+            { icon: "🔑", text: "제미나이 API 키 확인 (제미나이 임베딩 연결에 필요)" },
             { icon: "📄", text: "지난 시간 청크 데이터 (없으면 예시로 직접 작성)" },
-            { icon: "💻", text: "빈칸이 포함된 코드 템플릿 (.py 또는 .ipynb)" },
             { icon: "❓", text: "검색 테스트용 질문 한두 개 미리 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
@@ -47,7 +47,7 @@ const slides: Slide[] = [
   {
     title: "미션 1: 환경 준비 (5분)",
     bg: "from-rose-50 to-orange-50",
-    script: "첫 번째 미션입니다. chromadb가 잘 설치되었는지 확인합니다. 터미널에서 pip install chromadb를 실행한 후, 파이썬에서 import chromadb를 실행하여 에러 없이 '준비 완료!'가 출력되는지 확인하시기 바랍니다. 참고로, Chroma는 컬렉션을 처음 만들 때 내부 임베딩 모델을 한 번 다운로드합니다. 첫 실행이 조금 느릴 수 있지만 한 번만 받으면 이후에는 빨라집니다. 5분 드리겠습니다.",
+    script: "첫 번째 미션입니다. chromadb가 잘 설치되었는지 확인합니다. 터미널에서 pip install chromadb를 실행한 후, 파이썬에서 import chromadb를 실행하여 에러 없이 '준비 완료!'가 출력되는지 확인하시기 바랍니다. 오늘은 Chroma에 제미나이 임베딩을 연결해서 사용하므로, google-genai 패키지와 제미나이 API 키도 함께 준비되어 있는지 확인해주세요. 5분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-6">
         <div className="bg-white/60 rounded-xl p-4">
@@ -60,7 +60,7 @@ print("chromadb 준비 완료!")`}</CodeBlock>
           <p className="text-lg text-gray-600 mt-2">에러 없이 &ldquo;chromadb 준비 완료!&rdquo;가 출력되는가?</p>
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 첫 실행 시 임베딩 모델 다운로드로 잠시 느릴 수 있습니다.</p>
+          <p className="text-base text-gray-600">💡 오늘은 제미나이 임베딩을 연결해서 쓰므로 google-genai 패키지와 API 키도 확인해두세요.</p>
         </div>
       </div>
     ),
@@ -68,7 +68,7 @@ print("chromadb 준비 완료!")`}</CodeBlock>
   {
     title: "미션 1 해설",
     bg: "from-rose-50 to-pink-50",
-    script: "미션 1의 핵심 포인트입니다. chromadb는 순수 파이썬 패키지로, 별도의 서버 설치 없이 로컬에서 바로 사용할 수 있습니다. 첫 실행 시 내부 임베딩 모델을 자동으로 다운로드하기 때문에 시간이 걸릴 수 있지만, 이후에는 빠르게 동작합니다. 설치가 정상적으로 완료되었다면, 이제 벡터DB를 만들 준비가 된 것입니다.",
+    script: "미션 1의 핵심 포인트입니다. chromadb는 순수 파이썬 패키지로, 별도의 서버 설치 없이 로컬에서 바로 사용할 수 있습니다. 그리고 오늘은 Chroma에 내장된 기본 임베딩 모델 대신 제미나이 임베딩을 연결해서 사용합니다. 기본 모델은 영어 위주로 학습되어 있어서 한국어 문서 검색이 부정확하기 때문입니다. 설치와 API 키 확인이 완료되었다면, 이제 벡터DB를 만들 준비가 된 것입니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
@@ -76,7 +76,7 @@ print("chromadb 준비 완료!")`}</CodeBlock>
           <p className="text-xl text-gray-700">chromadb는 별도 서버 설치 없이 <strong>로컬에서 바로 사용</strong> 가능합니다.</p>
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
-          <p className="text-lg text-gray-600">첫 실행 시 임베딩 모델 자동 다운로드 → 이후에는 빠르게 동작</p>
+          <p className="text-lg text-gray-600">기본 임베딩 모델은 영어 위주 → 한국어 검색을 위해 <strong>제미나이 임베딩을 연결</strong>해서 사용</p>
         </div>
       </div>
     ),
@@ -84,25 +84,35 @@ print("chromadb 준비 완료!")`}</CodeBlock>
   {
     title: "미션 2: DB 만들고 데이터 저장하기 (8~10분)",
     bg: "from-violet-50 to-purple-50",
-    script: "두 번째 미션입니다. 서랍장(컬렉션)을 만들고 청크들을 저장합니다. 빈칸을 채워야 하는 부분은 ids를 생성하는 부분입니다. 각 청크에 고유한 id를 부여해야 하는데, f-string과 반복 변수 i를 활용하여 chunk_0, chunk_1과 같은 형태로 만들면 됩니다. 마지막 줄에서 저장된 청크 개수가 올바르게 출력되는지 확인하시기 바랍니다. 8~10분 드리겠습니다.",
+    script: "두 번째 미션입니다. 서랍장(컬렉션)을 만들고 청크들을 저장합니다. 코드 맨 위의 GeminiEmbedding 클래스는 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드로, 그대로 복사해서 쓰면 됩니다. 컬렉션을 만들 때 embedding_function에 이 클래스를 연결하는 부분을 눈여겨봐 주세요. 빈칸을 채워야 하는 부분은 ids를 생성하는 부분입니다. 각 청크에 고유한 id를 부여해야 하는데, f-string과 반복 변수 i를 활용하여 chunk_0, chunk_1과 같은 형태로 만들면 됩니다. 마지막 줄에서 저장된 청크 개수가 올바르게 출력되는지 확인하시기 바랍니다. 8~10분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
-          <p className="text-lg text-gray-600"><strong>목표:</strong> 컬렉션을 만들고 청크 데이터를 저장합니다.</p>
+          <p className="text-lg text-gray-600"><strong>목표:</strong> 제미나이 임베딩을 연결한 컬렉션을 만들고 청크를 저장합니다.</p>
         </div>
         <CodeBlock>
           {`import chromadb
+from chromadb import EmbeddingFunction
+from google import genai
+
+genai_client = genai.Client(api_key="본인의 API 키")
+
+# 제미나이 임베딩을 Chroma에 연결 (그대로 복사)
+class GeminiEmbedding(EmbeddingFunction):
+    def __call__(self, input):
+        result = genai_client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=list(input),
+        )
+        return [e.values for e in result.embeddings]
 
 client = chromadb.Client()
 collection = client.create_collection(
-    name="my_documents"
+    name="my_documents",
+    embedding_function=GeminiEmbedding(),
 )
 
-chunks = [
-    "여기에 문서 청크 1 내용",
-    "여기에 문서 청크 2 내용",
-    "여기에 문서 청크 3 내용",
-]
+chunks = ["청크 1 내용", "청크 2 내용", "청크 3 내용"]
 
 # 빈칸: 각 청크에 고유 id 부여
 ids = [____ for i in range(len(chunks))]
@@ -119,14 +129,14 @@ print(f"{collection.count()}개 저장 완료")`}
   {
     title: "미션 2 해설",
     bg: "from-violet-50 to-indigo-50",
-    script: "미션 2의 핵심 포인트입니다. collection.add()를 호출하면 Chroma가 내부적으로 각 문서를 자동으로 임베딩하여 저장합니다. 지난 시간에 우리가 직접 수행했던 임베딩 변환 과정을 Chroma가 대신 처리해주는 것입니다. id는 문서를 구별하는 고유 식별자이므로, 반드시 중복되지 않도록 주의해야 합니다. 정답은 f-string을 활용한 f 따옴표 chunk 언더바 중괄호 i 중괄호 닫기 따옴표 형태입니다.",
+    script: "미션 2의 핵심 포인트입니다. collection.add()를 호출하면 Chroma가 우리가 연결해준 제미나이 임베딩으로 각 문서를 자동 변환하여 저장합니다. 지난 시간에 우리가 직접 수행했던 임베딩 변환 과정을 Chroma가 대신 처리해주는 것입니다. 제미나이 임베딩을 연결하는 이유는, Chroma의 기본 임베딩 모델이 영어 위주로 학습되어 한국어 검색이 부정확하기 때문입니다. id는 문서를 구별하는 고유 식별자이므로, 반드시 중복되지 않도록 주의해야 합니다. 정답은 f-string을 활용한 f 따옴표 chunk 언더바 중괄호 i 중괄호 닫기 따옴표 형태입니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5">
             <p className="text-xl text-gray-700">
-              collection.add() 호출 → Chroma가 <strong>자동으로 임베딩</strong> 생성 및 저장
+              collection.add() 호출 → 연결해둔 <strong>제미나이 임베딩으로 자동 변환</strong>하여 저장
             </p>
           </div>
           <div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
@@ -169,7 +179,7 @@ for doc in results["documents"][0]:
   {
     title: "미션 3 해설",
     bg: "from-teal-50 to-emerald-50",
-    script: "미션 3의 핵심 포인트입니다. collection.query()를 호출하면 Chroma가 내부적으로 질문을 임베딩으로 변환하고, 저장된 문서들과의 유사도를 계산하여 가장 가까운 문서를 반환합니다. 이 전체 과정이 한 줄의 코드로 처리됩니다. n_results 값을 변경하면 가져오는 결과의 개수를 조절할 수 있습니다. 시간이 남는 분들은 n_results를 2에서 3, 4로 바꿔보며 결과를 비교해보시기 바랍니다.",
+    script: "미션 3의 핵심 포인트입니다. collection.query()를 호출하면 Chroma가 질문을 연결해둔 제미나이 임베딩으로 변환하고, 저장된 문서들과의 유사도를 계산하여 가장 가까운 문서를 반환합니다. 이 전체 과정이 한 줄의 코드로 처리됩니다. n_results 값을 변경하면 가져오는 결과의 개수를 조절할 수 있습니다. 시간이 남는 분들은 n_results를 2에서 3, 4로 바꿔보며 결과를 비교해보시기 바랍니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>

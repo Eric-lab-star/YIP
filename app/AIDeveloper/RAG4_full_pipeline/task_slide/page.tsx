@@ -5,21 +5,30 @@ import SlideShell, { CodeBlock, type Slide } from "@/components/slide/SlideShell
 const slides: Slide[] = [
   { title: "", bg: "from-purple-50 to-indigo-50", script: "안녕하세요, 여러분. 오늘은 벡터DB와 제미나이를 하나로 합쳐 RAG 챗봇을 직접 만들어보는 실습을 진행하겠습니다. 먼저 실제 문서 파일을 통째로 읽어 벡터DB에 넣는 인덱싱부터 시작해서, RAG 함수를 완성하고, 다양한 질문으로 테스트한 뒤, Streamlit으로 챗봇까지 만들어보겠습니다. 총 4가지 미션을 약 35~40분에 걸쳐 수행합니다.", content: (<div className="flex flex-col items-center justify-center h-full gap-6 text-center"><span className="text-8xl">🔗</span><h1 className="text-5xl sm:text-6xl font-bold text-gray-800">RAG 챗봇 실습 미션</h1><p className="text-2xl text-gray-500 mt-2">나만의 AI 사서 챗봇 만들기</p><p className="text-lg text-gray-400">총 소요 시간: 약 35~40분</p></div>) },
   { title: "실습 전 준비 사항", bg: "from-yellow-50 to-amber-50", script: "준비물을 확인하겠습니다. chromadb, google-genai, streamlit 패키지가 설치되어 있어야 합니다. 그리고 오늘은 실습용 문서 파일이 필요합니다. 실습 페이지에 있는 예시 안내문을 school_guide.txt라는 이름으로 저장해도 되고, 학교 가정통신문이나 동아리 소개글처럼 직접 가진 문서를 사용해도 좋습니다. 비교 테스트용 질문 목록도 미리 준비해주시기 바랍니다.", content: (<div className="flex flex-col gap-6"><p className="text-xl text-gray-700">미션 시작 전 아래 사항을 확인합니다.</p><div className="space-y-4">{[{ icon: "📦", text: "chromadb, google-genai, streamlit 패키지 설치" }, { icon: "📄", text: "실습용 문서 파일(.txt) — 예시 안내문 또는 내가 가진 문서" }, { icon: "🔑", text: "제미나이 API 키 확인" }, { icon: "❓", text: "비교 테스트용 질문 목록 준비" }].map((item, i) => (<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4"><span className="text-3xl">{item.icon}</span><p className="text-xl text-gray-700">{item.text}</p></div>))}</div></div>) },
-  { title: "미션 1: 실제 문서를 벡터DB에 넣기 (8~10분)", bg: "from-lime-50 to-green-50", script: "첫 번째 미션입니다. 지금까지는 코드에 직접 적어둔 짧은 예시 문장으로 연습했지만, 오늘은 진짜 문서 파일을 통째로 읽어서 벡터DB에 넣어봅니다. 먼저 실습 페이지의 예시 안내문을 복사해서 school_guide.txt라는 이름으로, 코드 파일과 같은 폴더에 저장합니다. 직접 가진 문서를 사용해도 좋습니다. 빈칸은 두 군데입니다. 첫째, open 함수에는 방금 저장한 파일 이름을 문자열로 넣습니다. 둘째, split_into_chunks에는 파일에서 읽어온 텍스트가 담긴 변수를 넣습니다. 실행하면 문서 길이, 청크 개수, 저장 개수가 차례대로 출력되어야 합니다. 파일을 찾을 수 없다는 FileNotFoundError가 나면 txt 파일이 코드 파일과 같은 폴더에 있는지 확인하고, 코랩을 쓴다면 왼쪽 폴더 아이콘을 눌러 파일을 업로드하면 됩니다. 8~10분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 실제 문서 파일을 읽고 → 청킹하고 → 벡터DB에 저장 (인덱싱)</p></div><CodeBlock>{`# school_guide.txt를 코드 파일과 같은 폴더에 저장해두기
+  { title: "미션 1: 실제 문서를 벡터DB에 넣기 (8~10분)", bg: "from-lime-50 to-green-50", script: "첫 번째 미션입니다. 지금까지는 코드에 직접 적어둔 짧은 예시 문장으로 연습했지만, 오늘은 진짜 문서 파일을 통째로 읽어서 벡터DB에 넣어봅니다. 먼저 실습 페이지의 예시 안내문을 복사해서 school_guide.txt라는 이름으로, 코드 파일과 같은 폴더에 저장합니다. 직접 가진 문서를 사용해도 좋습니다. 코드 맨 위의 GeminiEmbedding 클래스는 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드입니다. Chroma의 기본 임베딩 모델은 영어 위주로 학습되어 한국어 검색이 부정확하기 때문입니다. 이 부분은 그대로 복사해서 쓰면 됩니다. 빈칸은 두 군데입니다. 첫째, open 함수에는 방금 저장한 파일 이름을 문자열로 넣습니다. 둘째, split 앞에는 파일에서 읽어온 텍스트가 담긴 변수를 넣습니다. 청킹은 빈 줄, 즉 문단 기준으로 자릅니다. 200자씩 기계적으로 자르면 문장이 중간에 끊겨서 검색이 잘 안 되기 때문입니다. 파일을 찾을 수 없다는 FileNotFoundError가 나면 txt 파일이 코드 파일과 같은 폴더에 있는지 확인하고, 코랩을 쓴다면 왼쪽 폴더 아이콘을 눌러 파일을 업로드하면 됩니다. 8~10분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 실제 문서 파일을 읽고 → 청킹하고 → 제미나이 임베딩으로 벡터DB에 저장 (인덱싱)</p></div><CodeBlock>{`# 제미나이 임베딩을 Chroma에 연결 (그대로 복사)
+class GeminiEmbedding(EmbeddingFunction):
+    def __call__(self, input):
+        result = genai_client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=list(input),
+        )
+        return [e.values for e in result.embeddings]
+
 with open(____, "r", encoding="utf-8") as f:
     document = f.read()
 
-chunks = split_into_chunks(____, chunk_size=200)
+# 빈 줄(문단) 기준으로 청킹
+paragraphs = ____.split("\\n\\n")
+chunks = [p.strip() for p in paragraphs if p.strip()]
 
 client = chromadb.Client()
 collection = client.get_or_create_collection(
-    name="my_documents"
+    name="my_documents",
+    embedding_function=GeminiEmbedding(),
 )
 ids = [f"chunk_{i}" for i in range(len(chunks))]
-collection.add(documents=chunks, ids=ids)
-
-print(f"{collection.count()}개의 청크가 저장되었습니다.")`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">힌트: open에는 파일 이름 &quot;school_guide.txt&quot;, split_into_chunks에는 읽어온 텍스트 변수 document</p></div></div>) },
-  { title: "미션 1 해설", bg: "from-lime-50 to-emerald-50", script: "미션 1의 핵심 포인트입니다. 문서를 읽고, 청킹으로 잘게 나누고, 벡터DB에 저장하는 준비 과정을 인덱싱이라고 부릅니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 중요한 점은, 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복된다는 것입니다. 학교 안내문이든 동아리 소개글이든 내가 정리한 노트든, 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.", content: (<div className="flex flex-col gap-6"><p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p><div className="space-y-4"><div className="bg-white/70 rounded-xl p-5"><p className="text-xl text-gray-700">인덱싱 = <strong>파일 읽기 → 청킹 → 벡터DB 저장</strong></p></div><div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400"><p className="text-lg text-gray-700"><strong>인덱싱은 한 번, 질문은 여러 번!</strong> 문서가 바뀌지 않는 한 다시 할 필요가 없습니다.</p></div><div className="bg-white/70 rounded-xl p-5"><p className="text-lg text-gray-700">어떤 문서라도 넣어주면 AI가 그 문서의 <strong>전문가</strong>가 됩니다.</p></div></div></div>) },
+collection.add(documents=chunks, ids=ids)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">힌트: open에는 파일 이름 &quot;school_guide.txt&quot;, split 앞에는 읽어온 텍스트 변수 document</p></div></div>) },
+  { title: "미션 1 해설", bg: "from-lime-50 to-emerald-50", script: "미션 1의 핵심 포인트입니다. 문서를 읽고, 청킹으로 잘게 나누고, 벡터DB에 저장하는 준비 과정을 인덱싱이라고 부릅니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 두 가지 선택이 검색 품질을 좌우합니다. 첫째, 청킹은 빈 줄, 즉 문단 기준으로 잘라서 문장이 중간에 끊기지 않게 합니다. 둘째, 임베딩은 한국어를 잘 이해하는 제미나이 임베딩을 연결합니다. Chroma 기본 임베딩은 영어 위주라 한국어 질문에 엉뚱한 청크를 꺼내오기도 합니다. 그리고 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복됩니다. 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.", content: (<div className="flex flex-col gap-6"><p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p><div className="space-y-4"><div className="bg-white/70 rounded-xl p-5"><p className="text-xl text-gray-700">인덱싱 = <strong>파일 읽기 → 청킹 → 벡터DB 저장</strong></p></div><div className="bg-white/70 rounded-xl p-5"><p className="text-lg text-gray-700">청킹은 <strong>문단 기준</strong>으로, 임베딩은 <strong>제미나이</strong>로 — 한국어 검색 품질을 지키는 두 가지 선택입니다.</p></div><div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400"><p className="text-lg text-gray-700"><strong>인덱싱은 한 번, 질문은 여러 번!</strong> 문서가 바뀌지 않는 한 다시 할 필요가 없습니다.</p></div></div></div>) },
   { title: "미션 2: RAG 함수 만들기 (8~10분)", bg: "from-rose-50 to-orange-50", script: "두 번째 미션입니다. 검색과 생성을 한 함수 안에서 합쳐봅니다. 빈칸이 두 군데 있습니다. 첫째, prompt 안의 역할 빈칸입니다. 어떤 도우미인지 적으면 됩니다. 예를 들어 '친절한 도서관 사서'와 같이 작성합니다. 둘째, question 변수에 테스트할 질문을 문자열로 넣으면 됩니다. 특히 prompt에 '참고 자료에 없는 내용이면 자료에서 찾을 수 없습니다라고 답해줘'라는 조건을 넣어야 합니다. 이것이 AI의 환각을 방지하는 핵심 장치입니다. 8~10분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 검색(벡터DB) + 생성(제미나이)을 합친 RAG 함수 완성</p></div><CodeBlock>{`def rag_answer(question):
     results = collection.query(
         query_texts=[question], n_results=2

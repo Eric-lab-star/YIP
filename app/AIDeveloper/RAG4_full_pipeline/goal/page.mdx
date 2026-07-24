@@ -156,7 +156,7 @@ export const metadata = {
 <StepCard step="준비" title="문서 인덱싱 세 걸음">
 
 1. **파일 읽기** — `open()`으로 문서 파일(`.txt`)을 통째로 읽어온다냥.
-2. **청킹** — 2차시에 만든 `split_into_chunks()`로 잘게 나눈다냥.
+2. **청킹** — **빈 줄(문단) 기준**으로 나눈다냥. 문장이 중간에 끊기지 않아 검색이 잘 된다냥.
 3. **저장** — 청크들을 벡터DB에 `add()` 한다냥.
 
 </StepCard>
@@ -168,13 +168,23 @@ export const metadata = {
 with open("school_guide.txt", "r", encoding="utf-8") as f:
     document = f.read()
 
-# 2) 2차시에 만든 청킹 함수로 나누기
-chunks = split_into_chunks(document, chunk_size=200)
+# 2) 빈 줄(문단) 기준으로 청킹하기
+paragraphs = document.split("\n\n")
+chunks = [p.strip() for p in paragraphs if p.strip()]
 
 # 3) 벡터DB에 저장하기
 ids = [f"chunk_{i}" for i in range(len(chunks))]
 collection.add(documents=chunks, ids=ids)
 ```
+
+<Callout type="note">
+  **여기서 `collection`은 제미나이 임베딩으로 만든 서랍장이라냥!**
+
+  Chroma의 기본 임베딩 모델은 **영어 위주로 학습**되어 있어서, 한국어 문서를
+  검색하면 엉뚱한 청크를 꺼내오기도 한다냥. 그래서 우리는 1차시부터 써온
+  **제미나이 임베딩**을 Chroma에 연결해서 쓴다냥. 연결하는 코드는 실습
+  페이지에서 직접 만나볼 거다냥!
+</Callout>
 
 <Callout type="important">
   **인덱싱은 한 번, 질문은 여러 번!**
@@ -196,14 +206,11 @@ collection.add(documents=chunks, ids=ids)
 </NyangSpeech>
 
 ```python
-import chromadb
 from google import genai
 
 genai_client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
-# 지난 시간 만든 Chroma DB와 collection을 그대로 사용
-client = chromadb.Client()
-collection = client.get_or_create_collection(name="my_documents")
+# 인덱싱 때 제미나이 임베딩으로 만들어둔 collection을 그대로 사용
 
 def rag_answer(question):
     # 1) 벡터DB에서 관련 청크 검색 (Retrieval)
@@ -265,6 +272,10 @@ def rag_answer(question):
     {
       question: '실제 문서 파일을 RAG에 넣으려면 어떤 준비 과정을 거치냥? 그 과정의 이름은 뭐냥?',
       answer: '파일을 읽고(open) → 청킹으로 잘게 나누고 → 벡터DB에 저장(add)한다냥. 이 준비 과정을 인덱싱(indexing)이라고 부른다냥. 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문할 때마다 검색과 생성만 반복된다냥!',
+    },
+    {
+      question: '우리는 Chroma의 기본 임베딩 대신 제미나이 임베딩을 연결해서 쓴다냥. 왜일까냥?',
+      answer: 'Chroma의 기본 임베딩 모델은 영어 위주로 학습되어 있어서, 한국어 문서를 검색하면 질문과 상관없는 엉뚱한 청크를 꺼내오기도 한다냥. 한국어를 잘 이해하는 제미나이 임베딩을 연결하면 질문에 맞는 청크를 정확하게 찾아온다냥!',
     },
   ]}
 />
