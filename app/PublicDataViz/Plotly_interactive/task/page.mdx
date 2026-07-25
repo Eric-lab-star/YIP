@@ -1,0 +1,140 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'plotly 실습 — 인터랙티브 그래프 직접 만들기',
+  description: '막대 그래프와 선 그래프를 plotly로 그리고, hover_data로 정보를 추가해보자냥!',
+  session: 12,
+}
+
+# plotly 실습 — 인터랙티브 그래프 직접 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, plotly로 인터랙티브
+  그래프를 직접 그려볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `plotly`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="인터랙티브 막대 그래프 그리기" time="10~12분">
+
+구별 미세먼지 데이터를 plotly 막대 그래프로 그려보자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import plotly.express as px
+import pandas as pd
+
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+fig = px.____(df, x="구", y="미세먼지", title="구별 미세먼지 농도")
+fig.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 막대 그래프를 그리는 함수 이름을 넣으면 된다냥. (`bar`)
+> - 막대에 마우스를 올리면 정확한 값이 뜨냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="인터랙티브 선 그래프 그리기" time="8~10분">
+
+이번엔 요일별 승차인원을 선 그래프로 그려보자냥.
+
+```python
+data2 = {
+    "요일": ["월", "화", "수", "목", "금"],
+    "승차인원": [12000, 11500, 13000, 12800, 15200],
+}
+df2 = pd.DataFrame(data2)
+
+fig2 = px.____(df2, x="요일", y="승차인원", title="요일별 지하철 승차인원")
+fig2.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 선 그래프를 그리는 함수 이름을 넣으면 된다냥. (`line`)
+> - 그래프를 마우스로 드래그해서 확대해볼 수 있냥?
+
+<StepCard step="확인" title="px.bar()와 px.line(), 사용법이 똑같다냥!">
+
+두 함수 모두 `data, x="열", y="열", title="제목"` 형태로 똑같이
+쓸 수 있다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="hover_data로 정보 추가하기" time="8~10분">
+
+마우스를 올렸을 때 초미세먼지 값도 함께 보여주도록 해보자냥.
+
+```python
+data3 = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+    "초미세먼지": [15, 21, 12, 18],
+}
+df3 = pd.DataFrame(data3)
+
+fig3 = px.bar(
+    df3, x="구", y="미세먼지",
+    hover_data=[____],
+    title="구별 미세먼지 농도",
+)
+fig3.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 함께 보여주고 싶은 열 이름을 문자열로 넣으면 된다냥. (`"초미세먼지"`)
+> - 마우스를 올렸을 때 미세먼지와 초미세먼지가 함께 뜨냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `px.pie(df, names="구", values="미세먼지")`로 원 그래프도 그려보기
+- [ ] `hover_data`에 열을 하나 더 추가해서 여러 정보를 동시에 보여주기
+- [ ] `fig.update_layout(title_font_size=24)`를 추가해서 제목 크기를 키워보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. px.bar()로 인터랙티브 막대 그래프 그리기
+  2. px.line()으로 인터랙티브 선 그래프 그리기
+  3. hover_data로 마우스 오버 정보 추가하기
+
+  까지 해냈다냥! 이제 마우스로 직접 만질 수 있는 그래프를 만들 수
+  있게 됐다냥. 다음 시간에는 지도 위에 데이터를 그려보는 **지도
+  시각화**를 배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

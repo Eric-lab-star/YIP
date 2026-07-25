@@ -1,0 +1,177 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'plotly — 마우스로 만지는 인터랙티브 그래프',
+  description: 'plotly로 마우스를 올리면 값이 보이고, 확대·축소도 되는 인터랙티브 그래프를 그려보자냥!',
+  session: 12,
+}
+
+# plotly — 마우스로 만지는 인터랙티브 그래프
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지 matplotlib과 seaborn으로 그래프를
+  그려봤지냥? 그런데 그 그래프들은 **그림 파일**처럼 고정되어
+  있다냥. 오늘 배울 `plotly`는 마우스를 올리면 값이 뜨고, 확대도
+  되는 **살아있는 그래프**를 만들어준다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `plotly.express`로 인터랙티브 막대 그래프를 그릴 수 있다.
+  - `plotly.express`로 인터랙티브 선 그래프를 그릴 수 있다.
+  - `hover_data`로 마우스를 올렸을 때 보이는 정보를 추가할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · plotly로 막대 그래프 그리기 (10분)
+
+<NyangSpeech>
+  plotly는 보통 `plotly.express`를 `px`라는 이름으로 줄여서
+  불러온다냥. 사용법은 seaborn과 비슷하다냥!
+</NyangSpeech>
+
+```python
+import plotly.express as px
+import pandas as pd
+
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+fig = px.bar(df, x="구", y="미세먼지", title="구별 미세먼지 농도")
+fig.show()
+```
+
+<Callout type="important">
+  `fig.show()`로 그래프를 열면, matplotlib과 달리 **마우스를
+  올렸을 때 정확한 값이 말풍선으로 뜨고**, 마우스 휠로 확대/축소도
+  할 수 있다냥! 이게 바로 인터랙티브(interactive) 그래프다냥.
+</Callout>
+
+---
+
+## 2단계 · plotly로 선 그래프 그리기 (8분)
+
+<NyangSpeech>
+  선 그래프도 마찬가지로 `px.line()`을 쓰면 된다냥.
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📷',
+    label: 'matplotlib / seaborn',
+    color: 'blue',
+    items: [
+      '고정된 이미지처럼 보여줌',
+      '값을 정확히 보려면 코드를 다시 봐야 함',
+    ],
+  }}
+  right={{
+    emoji: '🖱️',
+    label: 'plotly',
+    color: 'purple',
+    items: [
+      '마우스를 올리면 값이 바로 뜸',
+      '확대·축소, 특정 항목 숨기기 가능',
+    ],
+  }}
+/>
+
+```python
+data2 = {
+    "요일": ["월", "화", "수", "목", "금"],
+    "승차인원": [12000, 11500, 13000, 12800, 15200],
+}
+df2 = pd.DataFrame(data2)
+
+fig2 = px.line(df2, x="요일", y="승차인원", title="요일별 지하철 승차인원")
+fig2.show()
+```
+
+<Callout type="tip">
+  `px.bar()`와 `px.line()` 모두 `data, x="열", y="열", title="제목"`
+  형태로 똑같이 쓸 수 있다냥! seaborn과 정말 비슷하다냥.
+</Callout>
+
+---
+
+## 3단계 · hover_data로 정보 추가하기 (7분)
+
+<NyangSpeech>
+  마우스를 올렸을 때, 기본으로 보이는 값 말고 **다른 열의 정보도
+  함께** 보여주고 싶을 땐 `hover_data`를 쓴다냥!
+</NyangSpeech>
+
+```python
+data3 = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+    "초미세먼지": [15, 21, 12, 18],
+}
+df3 = pd.DataFrame(data3)
+
+fig3 = px.bar(
+    df3, x="구", y="미세먼지",
+    hover_data=["초미세먼지"],
+    title="구별 미세먼지 농도",
+)
+fig3.show()
+```
+
+<StepCard step="핵심" title="hover_data는 리스트로 넣는다냥!">
+
+| 코드 | 하는 일 |
+|---|---|
+| `hover_data=["초미세먼지"]` | 마우스를 올렸을 때 초미세먼지 값도 함께 보여줌 |
+| `hover_data=["초미세먼지", "습도"]` | 여러 열을 콤마로 나열하면 모두 함께 보여줌 |
+
+</StepCard>
+
+<Callout type="note">
+  공공데이터는 열이 많은 경우가 흔한데, `hover_data`를 잘 활용하면
+  그래프를 복잡하게 만들지 않으면서도 **필요한 정보를 마우스
+  한 번으로** 확인할 수 있다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'plotly를 불러올 때 보통 어떤 이름으로 줄여 쓰냥?',
+      answer: 'plotly.express를 px로 줄여서 불러온다냥! import plotly.express as px 처럼 쓴다냥.',
+    },
+    {
+      question: 'plotly 그래프가 matplotlib 그래프와 다른 가장 큰 특징은 뭐냥?',
+      answer: '마우스를 올리면 값이 말풍선으로 뜨고, 확대·축소가 가능한 인터랙티브 그래프라는 점이다냥!',
+    },
+    {
+      question: '마우스를 올렸을 때 다른 열의 정보도 함께 보여주려면 어떤 옵션을 쓰냥?',
+      answer: 'hover_data다냥! hover_data=["열이름"]처럼 리스트로 넣으면 된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 plotly로 마우스로 만지는 인터랙티브 그래프를 그려봤다냥!
+  이제 실습 페이지에서 직접 그려보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

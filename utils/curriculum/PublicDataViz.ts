@@ -77,6 +77,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"seaborn으로 matplotlib보다 더 예쁘고 편리한 그래프를 그려보자냥!",
 	},
+	{
+		name: "plotly — 마우스로 만지는 인터랙티브 그래프",
+		slug: "Plotly_interactive",
+		description:
+			"plotly로 마우스를 올리면 값이 보이고, 확대·축소도 되는 인터랙티브 그래프를 그려보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
