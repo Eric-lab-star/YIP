@@ -12,11 +12,17 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    // Leading `**/` matters: a root-anchored `.next/**` misses build output
+    // inside git worktrees (`.claude/worktrees/*/.next`), which produced ~1000
+    // warnings about generated chunks that nobody can act on.
     ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/out/**",
+      "**/build/**",
+      ".claude/**",
+      // Monaco runtime copied in by scripts/copy-monaco.mjs — vendored, minified.
+      "public/monaco/**",
       "next-env.d.ts",
     ],
   },
