@@ -137,6 +137,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"아파트 실거래가 데이터를 살펴보고, 히스토그램으로 가격 분포를 파악해보자냥!",
 	},
+	{
+		name: "프로젝트 3 — 아파트 평형·지역별 분석",
+		slug: "Apart_sizearea",
+		description:
+			"전용면적을 평형대로 나누고, 지역과 평형에 따라 가격이 어떻게 다른지 표로 정리해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

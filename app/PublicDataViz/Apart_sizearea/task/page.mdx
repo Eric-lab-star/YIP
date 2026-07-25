@@ -1,0 +1,135 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 3 실습 — 평형·지역별 표 직접 만들기',
+  description: '평형대를 나누고, 지역×평형 피벗 테이블을 직접 만들어보자냥!',
+  session: 22,
+}
+
+# 프로젝트 3 실습 — 평형·지역별 표 직접 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 평형대를 나누고
+  지역별 표를 직접 만들어볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="평형대 나누기" time="10~12분">
+
+전용면적을 소형/중형/대형으로 나눠보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+data = {
+    "단지명": ["행복아파트", "은빛아파트", "달빛아파트", "구름아파트"],
+    "지역": ["강남구", "강남구", "마포구", "마포구"],
+    "전용면적": [59.9, 114.8, 59.9, 84.3],
+    "거래금액": [92000, 155000, 68000, 78000],
+}
+df = pd.DataFrame(data)
+
+df["평형대"] = pd.____(
+    df["전용면적"],
+    bins=[0, 60, 85, 200],
+    labels=["소형", "중형", "대형"],
+)
+print(df)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 숫자를 구간별로 나누는 함수 이름을 넣으면 된다냥. (`cut`)
+> - 59.9는 "소형", 114.8은 "대형"으로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="두 기준으로 그룹 묶기" time="7~8분">
+
+지역과 평형대, 두 기준으로 평균 가격을 구해보자냥.
+
+```python
+지역평형평균 = df.groupby(____, observed=True)["거래금액"].mean()
+print(지역평형평균)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 지역과 평형대를 리스트로 묶어 넣으면 된다냥. (`["지역", "평형대"]`)
+> - 강남구-대형의 평균이 가장 높게 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="피벗 테이블 만들기" time="8~10분">
+
+지역을 행, 평형대를 열로 하는 표를 만들어보자냥.
+
+```python
+표 = pd.pivot_table(
+    df,
+    values="거래금액",
+    index="지역",
+    columns=____,
+    aggfunc="mean",
+    observed=True,
+)
+print(표)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 표의 가로(열) 기준이 될 열 이름을 문자열로 넣으면 된다냥. (`"평형대"`)
+> - 지역이 행, 평형대가 열로 나온 표가 보이냥?
+
+<StepCard step="확인" title="index=행, columns=열, 헷갈리지 말자냥!">
+
+`index`는 표의 **세로(왼쪽)**에 나열될 기준이고, `columns`는
+표의 **가로(위쪽)**에 나열될 기준이다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `aggfunc="mean"`을 `"count"`로 바꿔서, 지역×평형대별 "건수" 표도 만들어보기
+- [ ] 아파트 데이터를 2개 더 추가해서, 표에 새 조합이 늘어나는지 확인해보기
+- [ ] `bins`을 `[0, 50, 70, 200]`으로 바꿔서, 평형대 구간을 다시 나눠보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. pd.cut()으로 평형대 나누기
+  2. groupby(["지역", "평형대"])로 두 기준 그룹 묶기
+  3. pivot_table()로 지역×평형 표 만들기
+
+  까지 해냈다냥! 이제 여러 기준을 조합해서 데이터를 분석할 수 있게
+  됐다냥. 다음 시간에는 이 분석 결과를 **그래프로 시각화**해볼
+  거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
