@@ -167,6 +167,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"마커 대신 히트맵으로, 상가가 몰려있는 곳을 색깔로 한눈에 보여줘보자냥!",
 	},
+	{
+		name: "프로젝트 5 — 인구 통계 비교 그래프",
+		slug: "Population_compare",
+		description:
+			"연령대별 남녀 인구 데이터를 정리하고, 그룹 막대 그래프로 비교해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

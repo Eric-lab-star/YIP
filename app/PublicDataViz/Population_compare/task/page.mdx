@@ -1,0 +1,136 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 5 실습 — 연령대별 남녀 인구 비교하기',
+  description: 'melt로 성별 열을 만들고, hue로 그룹 막대 그래프를 직접 그려보자냥!',
+  session: 27,
+}
+
+# 프로젝트 5 실습 — 연령대별 남녀 인구 비교하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 연령대별 남녀
+  인구를 직접 비교해볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `seaborn`, `matplotlib` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 데이터 출처: 행정안전부 주민등록인구현황(예시), 공공누리 제1유형
+</Callout>
+
+---
+
+<MissionCard number={1} title="melt로 성별 열 만들기" time="10~12분">
+
+남자, 여자 열을 하나의 성별 열로 모아보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+data = {
+    "연령대": ["10대", "20대", "30대"],
+    "남자": [4200, 5100, 4800],
+    "여자": [4000, 5300, 4900],
+}
+df = pd.DataFrame(data)
+
+길게 = pd.melt(
+    df,
+    id_vars=["연령대"],
+    value_vars=____,
+    var_name="성별",
+    value_name="인구수",
+)
+print(길게)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 모으고 싶은 열들을 리스트로 넣으면 된다냥. (`["남자", "여자"]`)
+> - 결과가 6행(연령대 3개 × 성별 2개)으로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="그룹 막대 그래프 그리기" time="10~12분">
+
+hue를 활용해서 연령대별 남녀 인구를 비교해보자냥.
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+sns.barplot(data=길게, x="연령대", y="인구수", hue=____)
+plt.title("연령대별 남녀 인구 비교")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 그룹을 나눌 기준 열 이름을 문자열로 넣으면 된다냥. (`"성별"`)
+> - 각 연령대마다 막대가 2개씩(남/여) 나란히 나오냥?
+
+<StepCard step="확인" title="x와 hue를 헷갈리지 말자냥!">
+
+`x`는 가로축에 늘어설 큰 그룹(연령대)이고, `hue`는 그 안에서
+다시 나뉘는 작은 그룹(성별)이다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="연령대별 남녀 차이 계산하기" time="5~7분">
+
+20대의 남녀 인구 차이를 계산해보자냥.
+
+```python
+남자20대 = df[df["연령대"] == "20대"]["남자"].values[0]
+여자20대 = df[df["연령대"] == "20대"]["여자"].____[0]
+print(f"20대 남녀 차이: {abs(남자20대 - 여자20대)}명")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 Series를 순수 숫자 배열로 바꾸는 속성 이름을 넣으면 된다냥. (`values`)
+> - 200명 차이가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 연령대를 "40대"까지 추가해서, 그래프에 막대가 늘어나는지 확인해보기
+- [ ] `sns.barplot(...)`에서 `x`와 `hue`를 서로 바꿔서 그려보고 어떻게 달라지는지 비교해보기
+- [ ] 모든 연령대의 남녀 차이를 반복문으로 한 번에 계산해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. melt()로 성별 열 만들기
+  2. hue로 그룹 막대 그래프 그리기
+  3. 조건 필터링으로 남녀 차이 계산하기
+
+  까지 해냈다냥! 이제 연령대별 남녀 인구를 한눈에 비교할 수 있게
+  됐다냥. 다음 시간에는 인구 구조를 한눈에 보여주는 **인구
+  피라미드**를 그려볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

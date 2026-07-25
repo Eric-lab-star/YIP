@@ -1,0 +1,176 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 5 — 인구 통계 비교 그래프',
+  description: '연령대별 남녀 인구 데이터를 정리하고, 그룹 막대 그래프로 비교해보자냥!',
+  session: 27,
+}
+
+# 프로젝트 5 — 인구 통계 비교 그래프
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 상가 정보 프로젝트를 완주한 걸 축하한다냥!
+  마지막 다섯 번째 프로젝트는 **인구 통계 데이터**다냥. 오늘은
+  연령대별로 남녀 인구가 어떻게 다른지 비교해볼 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 인구 통계 데이터의 출처와 라이선스를 확인할 수 있다.
+  - 남녀로 나뉜 열을 `melt()`로 하나의 열로 모을 수 있다.
+  - `hue` 옵션으로 연령대별 남녀 인구를 그룹 막대 그래프로 비교할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 인구 데이터 출처와 형태 (7분)
+
+<Callout type="note">
+  ** 이번 프로젝트 데이터 출처**
+
+  - 제공처: 행정안전부 주민등록인구현황(jumin.mois.go.kr) (예시)
+  - 라이선스: 공공누리 제1유형 (출처 표시 시 자유 이용 가능)
+  - 이 수업에서는 실제 파일 대신, **같은 구조를 가진 작은 예시 데이터**로 연습한다냥.
+</Callout>
+
+```python
+import pandas as pd
+
+data = {
+    "연령대": ["10대", "20대", "30대"],
+    "남자": [4200, 5100, 4800],
+    "여자": [4000, 5300, 4900],
+}
+df = pd.DataFrame(data)
+print(df)
+```
+
+<Callout type="important">
+  이 데이터는 "남자"와 "여자"가 **각각 다른 열**로 나뉘어 있다냥.
+  남녀를 그래프에서 나란히 비교하려면, 두 번째 프로젝트에서 배운
+  `melt()`로 형태를 바꿔줘야 한다냥!
+</Callout>
+
+---
+
+## 2단계 · melt로 성별 열 만들기 (9분)
+
+<NyangSpeech>
+  프로젝트 1에서 시간대 열을 세로로 펼쳤던 것 기억나냥? 이번엔
+  "남자", "여자" 열을 "성별"이라는 하나의 열로 모아보자냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '↔️',
+    label: '펼치기 전',
+    color: 'blue',
+    items: [
+      '연령대 | 남자 | 여자',
+      '10대   | 4200 | 4000',
+    ],
+  }}
+  right={{
+    emoji: '↕️',
+    label: '펼친 후',
+    color: 'purple',
+    items: [
+      '연령대 | 성별 | 인구수',
+      '10대   | 남자 | 4200',
+    ],
+  }}
+/>
+
+```python
+길게 = pd.melt(
+    df,
+    id_vars=["연령대"],
+    value_vars=["남자", "여자"],
+    var_name="성별",
+    value_name="인구수",
+)
+print(길게)
+```
+
+<Callout type="tip">
+  `melt()`는 매번 같은 패턴으로 쓴다냥: `id_vars`(유지할 열),
+  `value_vars`(모을 열), `var_name`/`value_name`(새로 생길 열
+  이름). 프로젝트 1에서 배운 것과 똑같은 도구다냥!
+</Callout>
+
+---
+
+## 3단계 · hue로 그룹 막대 그래프 그리기 (9분)
+
+<NyangSpeech>
+  이제 연령대별로 남녀 인구를 나란히 비교하는 그래프를 그려보자냥.
+  `hue` 옵션 하나만 추가하면 된다냥!
+</NyangSpeech>
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+sns.set_theme(style="whitegrid")
+
+sns.barplot(data=길게, x="연령대", y="인구수", hue="성별")
+plt.title("연령대별 남녀 인구 비교")
+plt.show()
+```
+
+<StepCard step="핵심" title="hue가 하는 일">
+
+| 옵션 | 하는 일 |
+|---|---|
+| `x="연령대"` | 가로축에 연령대를 나열 |
+| `hue="성별"` | 같은 연령대 안에서 성별별로 막대를 나란히 나눔 |
+
+</StepCard>
+
+<Callout type="note">
+  `hue`는 "색조"라는 뜻인데, 여기서는 **같은 x축 값 안에서 그룹을
+  나눠 색깔을 다르게** 그려준다냥. 연령대 하나에 남자, 여자 막대가
+  나란히 붙어서 비교하기 쉬워진다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '"남자", "여자"처럼 나뉜 열을 하나의 "성별" 열로 모으려면 어떤 함수를 쓰냥?',
+      answer: 'melt()다냥! id_vars, value_vars, var_name, value_name을 지정한다냥.',
+    },
+    {
+      question: '같은 x축 값 안에서 그룹별로 막대를 나란히 그리려면 어떤 옵션을 쓰냥?',
+      answer: 'hue다냥! sns.barplot(x=, y=, hue=)처럼 쓰면, hue로 지정한 열의 값마다 막대가 나뉘어 그려진다냥.',
+    },
+    {
+      question: '남녀 인구를 비교하는 그래프를 그리기 전에 왜 melt를 먼저 해야 하냥?',
+      answer: '남자, 여자가 각각 다른 열로 나뉘어 있으면 hue로 묶을 수 없기 때문이다냥! 하나의 "성별" 열로 모아야 hue에 넣을 수 있다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 남녀 인구 데이터를 melt로 정리하고, hue로 그룹 막대
+  그래프까지 그려봤다냥! 이제 실습 페이지에서 직접 비교해보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>
