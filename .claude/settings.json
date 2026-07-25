@@ -1,11 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run lint)",
-      "Bash(kling who_am_i)",
-      "mcp__claude-in-chrome__tabs_context_mcp",
-      "mcp__plugin_pixel-plugin_aseprite__get_pixels",
-      "mcp__claude_ai_Figma__get_screenshot"
+      "Bash(npm run lint)"
     ]
   },
   "hooks": {
