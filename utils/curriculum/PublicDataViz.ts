@@ -59,6 +59,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"구별, 노선별로 데이터를 그룹으로 묶어서 평균과 합계를 한눈에 요약해보자냥!",
 	},
+	{
+		name: "데이터 클리닝 — 빈 값과 중복 정리하기",
+		slug: "DataCleaning",
+		description:
+			"공공데이터에 흔히 숨어있는 빈 값과 중복된 행을 찾아서 깨끗하게 정리해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

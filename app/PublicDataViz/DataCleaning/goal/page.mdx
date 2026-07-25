@@ -1,0 +1,193 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '데이터 클리닝 — 빈 값과 중복 정리하기',
+  description: '공공데이터에 흔히 숨어있는 빈 값과 중복된 행을 찾아서 깨끗하게 정리해보자냥!',
+  session: 9,
+}
+
+# 데이터 클리닝 — 빈 값과 중복 정리하기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 groupby로 데이터를 그룹으로
+  묶어서 요약했지냥? 그런데 실제 공공데이터에는 **빈 값**이나
+  **중복된 행**이 숨어있는 경우가 정말 많다냥. 오늘은 그런 지저분한
+  데이터를 깨끗하게 청소하는 법을 배워볼 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `isna()`로 빈 값(결측치)이 어디에 있는지 찾을 수 있다.
+  - `dropna()`와 `fillna()`로 빈 값을 처리할 수 있다.
+  - `drop_duplicates()`로 중복된 행을 제거할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 빈 값 찾아내기 (10분)
+
+<NyangSpeech>
+  공공데이터를 받아보면, 측정 장비 고장이나 입력 누락으로 값이
+  비어있는 경우가 흔하다냥. pandas에서 빈 값은 `NaN`(Not a Number)
+  으로 표시된다냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+import numpy as np
+
+data = {
+    "측정소": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, np.nan, 25, np.nan],
+}
+df = pd.DataFrame(data)
+
+print(df.isna())
+print(df["미세먼지"].isna().sum())
+```
+
+```text
+   측정소   미세먼지
+0  False  False
+1  False   True
+2  False  False
+3  False   True
+2
+```
+
+<Callout type="important">
+  `isna()`는 각 칸이 빈 값이면 `True`, 아니면 `False`를 돌려준다냥.
+  여기에 `.sum()`을 붙이면 `True`(빈 값)가 몇 개인지 셀 수 있다냥!
+  (True는 1, False는 0으로 계산되기 때문이다냥.)
+</Callout>
+
+---
+
+## 2단계 · 빈 값 처리하기 (10분)
+
+<NyangSpeech>
+  빈 값을 발견했다면, **버릴지** 아니면 **다른 값으로 채울지**
+  결정해야 한다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '🗑️',
+    label: 'dropna() — 버리기',
+    color: 'blue',
+    items: [
+      '빈 값이 있는 행을 통째로 삭제',
+      '데이터가 충분히 많을 때 적합',
+    ],
+  }}
+  right={{
+    emoji: '🩹',
+    label: 'fillna() — 채우기',
+    color: 'purple',
+    items: [
+      '빈 값을 원하는 값으로 대체',
+      '평균값, 0, "정보없음" 등으로 채움',
+    ],
+  }}
+/>
+
+```python
+# 빈 값이 있는 행을 통째로 삭제
+정리된_df = df.dropna()
+print(정리된_df)
+
+# 빈 값을 평균으로 채우기
+평균값 = df["미세먼지"].mean()
+채워진_df = df.fillna({"미세먼지": 평균값})
+print(채워진_df)
+```
+
+<Callout type="tip">
+  어떤 방법이 정답이라고 정해져 있진 않다냥! 빈 값이 적으면
+  `dropna()`로 버려도 되지만, 데이터가 귀하거나 빈 값이 많다면
+  `fillna()`로 평균이나 0 등을 채우는 게 낫다냥.
+</Callout>
+
+---
+
+## 3단계 · 중복된 행 제거하기 (7분)
+
+<NyangSpeech>
+  같은 데이터를 두 번 내려받아 합치다 보면, **완전히 똑같은 행**이
+  중복으로 들어가는 경우가 있다냥. 이럴 땐 `drop_duplicates()`를
+  쓴다냥!
+</NyangSpeech>
+
+```python
+data = {
+    "측정소": ["중구", "강남구", "중구"],
+    "미세먼지": [30, 42, 30],
+}
+df2 = pd.DataFrame(data)
+
+중복확인 = df2.duplicated()
+print(중복확인)
+
+중복제거 = df2.drop_duplicates()
+print(중복제거)
+```
+
+<StepCard step="핵심" title="duplicated vs drop_duplicates">
+
+| 코드 | 하는 일 |
+|---|---|
+| `df.duplicated()` | 각 행이 이전에 나온 행과 **완전히 같은지** True/False로 표시 |
+| `df.drop_duplicates()` | 중복된 행을 **처음 것만 남기고** 나머지를 제거 |
+
+</StepCard>
+
+<Callout type="note">
+  `drop_duplicates()`도 `dropna()`와 마찬가지로, 원본 `df2`는 그대로
+  두고 **정리된 새 결과**를 돌려준다냥. 원본을 바꾸고 싶다면
+  `df2 = df2.drop_duplicates()`처럼 다시 담아줘야 한다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '데이터에 빈 값이 몇 개 있는지 세려면 어떻게 하냥?',
+      answer: 'df["열"].isna().sum()을 쓴다냥! isna()로 True/False를 만들고, sum()으로 True의 개수를 센다냥.',
+    },
+    {
+      question: '빈 값이 있는 행을 통째로 지우고 싶다면 어떤 함수를 쓰냥?',
+      answer: 'dropna()다냥! df.dropna()라고 쓰면 빈 값이 하나라도 있는 행이 모두 삭제된다냥.',
+    },
+    {
+      question: '빈 값을 지우지 않고 특정 값으로 채우고 싶다면?',
+      answer: 'fillna()를 쓴다냥! 예를 들어 df.fillna({"열": 평균값})처럼 쓰면 빈 값이 평균값으로 채워진다냥.',
+    },
+    {
+      question: '완전히 똑같은 행이 중복으로 들어있을 때, 어떻게 제거하냥?',
+      answer: 'drop_duplicates()를 쓴다냥! 처음 나온 행만 남기고 나머지 중복 행을 제거한다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 빈 값을 찾아서 버리거나 채우고, 중복된 행을 제거하는 법을
+  배웠다냥! 지저분한 공공데이터도 이제 두렵지 않다냥. 실습 페이지에서
+  직접 데이터를 청소해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

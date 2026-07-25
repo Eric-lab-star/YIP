@@ -1,0 +1,138 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '데이터 클리닝 실습 — 지저분한 데이터 청소하기',
+  description: '빈 값을 찾아서 채우고, 중복된 행을 제거하며 깨끗한 데이터를 만들어보자냥!',
+  session: 9,
+}
+
+# 데이터 클리닝 실습 — 지저분한 데이터 청소하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 빈 값과 중복을
+  직접 청소하는 연습을 해볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `numpy` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="빈 값 개수 세어보기" time="10~12분">
+
+미세먼지 측정 데이터에서, 빈 값이 몇 개인지 세어보자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+import numpy as np
+
+data = {
+    "측정소": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, np.nan, 25, np.nan],
+}
+df = pd.DataFrame(data)
+
+# 미세먼지 열의 빈 값 개수를 세어보세요
+빈값개수 = df["미세먼지"].____().sum()
+print(빈값개수)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 빈 값을 True/False로 표시하는 함수 이름을 넣으면 된다냥. (`isna`)
+> - 결과가 2로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="빈 값을 평균으로 채우기" time="8~10분">
+
+이번엔 빈 값을 버리지 않고, 평균값으로 채워보자냥.
+
+```python
+평균값 = df["미세먼지"].mean()
+채워진_df = df.____({"미세먼지": 평균값})
+print(채워진_df)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 빈 값을 다른 값으로 채우는 함수 이름을 넣으면 된다냥. (`fillna`)
+> - NaN이었던 자리에 평균값(27.5)이 채워지냥?
+
+<Callout type="important">
+  `df.fillna(...)`는 원본 `df`를 바꾸지 않고 **새로운 결과**를
+  돌려준다냥! 원본까지 바꾸고 싶다면 `df = df.fillna(...)`처럼 다시
+  담아줘야 한다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="중복된 행 제거하기" time="8~10분">
+
+이번엔 중복으로 들어간 측정소 데이터를 정리해보자냥.
+
+```python
+data2 = {
+    "측정소": ["중구", "강남구", "중구"],
+    "미세먼지": [30, 42, 30],
+}
+df2 = pd.DataFrame(data2)
+
+정리됨 = df2.____()
+print(정리됨)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 중복된 행을 제거하는 함수 이름을 넣으면 된다냥. (`drop_duplicates`)
+> - 결과에 행이 3개가 아니라 2개만 남냥?
+
+<StepCard step="관찰" title="완전히 같은 행만 중복으로 인식">
+
+`drop_duplicates()`는 **모든 열의 값이 전부 같은** 행만 중복으로
+본다냥. 측정소는 같아도 미세먼지 값이 다르면 중복으로 취급하지
+않는다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `df.dropna()`를 실행해서, 빈 값이 있는 행을 통째로 지워보기
+- [ ] `df.fillna({"미세먼지": 0})`을 실행해서, 평균 대신 0으로 채워보고 결과 비교하기
+- [ ] 측정소를 2개 더 추가하되 하나는 완전히 중복되게 만들어서, drop_duplicates 결과 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. isna()로 빈 값 개수 세어보기
+  2. fillna()로 빈 값을 평균으로 채우기
+  3. drop_duplicates()로 중복된 행 제거하기
+
+  까지 해냈다냥! 이제 지저분한 공공데이터도 깨끗하게 정리할 수
+  있게 됐다냥. 다음 시간에는 정리한 데이터를 **그래프로 그려보는
+  법**을 배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
