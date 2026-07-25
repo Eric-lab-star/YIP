@@ -58,7 +58,7 @@ const slides: Slide[] = [
 		script: "두 번째 미션입니다. 카페 데이터 중 좌표가 빠진 곳이 있는지 확인합니다. 빈 값을 표시하는 함수 이름을 빈칸에 넣습니다. 7~8분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`빈좌표 = 카페만[____().any(axis=1)]  # isna`}</CodeBlock>
+				<CodeBlock>{`빈좌표 = 카페만[카페만.____().any(axis=1)]  # isna`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 빈칸: isna</p>
 				</div>

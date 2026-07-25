@@ -6,14 +6,14 @@ import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: '프로젝트 4 — 상가 정보 folium 마커 시각화',
-  description: '정리한 카페 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!',
+  description: '정리한 상가 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!',
   session: 25,
 }
 
 # 프로젝트 4 — 상가 정보 folium 마커 시각화
 
 <NyangSpeech>
-  안녕, 나 코딩냥이다냥! 지난 시간에 카페 데이터를 깨끗하게
+  안녕, 나 코딩냥이다냥! 지난 시간에 상가 데이터를 깨끗하게
   정리했지냥? 오늘은 그 데이터를 진짜 **지도 위에 마커로**
   찍어볼 거다냥! 기초 과정에서 배운 folium을 다시 활용한다냥.
 </NyangSpeech>
@@ -30,7 +30,7 @@ export const metadata = {
 
 ---
 
-## 1단계 · 카페 마커 찍기 (8분)
+## 1단계 · 상가 마커 찍기 (8분)
 
 <NyangSpeech>
   기초 과정에서 배운 `iterrows()`와 `Marker`를 다시 써보자냥!
@@ -41,9 +41,10 @@ import folium
 import pandas as pd
 
 data = {
-    "상호명": ["코딩냥카페", "달빛카페", "은빛카페"],
-    "위도": [37.4979, 37.5665, 37.5636],
-    "경도": [127.0276, 126.9784, 126.9975],
+    "상호명": ["코딩냥카페", "행복분식", "은빛치킨"],
+    "업종": ["카페", "분식", "치킨"],
+    "위도": [37.4979, 37.5636, 37.5172],
+    "경도": [127.0276, 126.9975, 127.0473],
 }
 df = pd.DataFrame(data)
 
@@ -98,12 +99,16 @@ m.save("cafe_map.html")
 ```python
 색상표 = {"카페": "blue", "치킨": "red", "분식": "green"}
 
+m = folium.Map(location=[37.55, 127.0], zoom_start=12)  # 지도를 새로 만든다냥
+
 for i, row in df.iterrows():
     folium.Marker(
         location=[row["위도"], row["경도"]],
         popup=row["상호명"],
         icon=folium.Icon(color=색상표.get(row["업종"], "gray")),
     ).add_to(m)
+
+m.save("store_color_map.html")
 ```
 
 <Callout type="tip">
@@ -180,7 +185,7 @@ m2.save("cafe_cluster_map.html")
 ---
 
 <NyangSpeech>
-  오늘은 카페 마커를 찍고, 업종별로 색을 다르게 하고, 클러스터로
+  오늘은 상가 마커를 찍고, 업종별로 색을 다르게 하고, 클러스터로
   묶어보는 법까지 배웠다냥! 이제 실습 페이지에서 직접 지도를
   만들어보자냥. 발톱 준비됐냥? 가보자냥~
 </NyangSpeech>

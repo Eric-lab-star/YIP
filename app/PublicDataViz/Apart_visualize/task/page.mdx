@@ -31,9 +31,24 @@ export const metadata = {
 **빈칸(`____`)을 채워보자냥.**
 
 ```python
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Malgun Gothic"
+
+data = {
+    "단지명": ["행복", "은빛", "달빛", "구름", "별빛", "하늘"],
+    "지역": ["강남구", "강남구", "마포구", "마포구", "종로구", "종로구"],
+    "평형대": ["소형", "대형", "소형", "중형", "소형", "중형"],
+    "전용면적": [59.9, 114.8, 59.9, 84.3, 59.9, 84.3],
+    "거래금액": [92000, 155000, 68000, 78000, 60000, 71000],
+}
+df = pd.DataFrame(data)
+
+표 = pd.pivot_table(
+    df, values="거래금액", index="지역", columns="평형대",
+    aggfunc="mean", observed=True,
+)
 
 sns.____(표, annot=True, fmt=".0f", cmap="YlOrRd")
 plt.title("지역×평형대 평균 거래금액")
