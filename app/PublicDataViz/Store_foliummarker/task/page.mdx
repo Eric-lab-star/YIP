@@ -1,0 +1,146 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 4 실습 — 상가 지도 직접 만들기',
+  description: '카페 마커를 찍고, 업종별 색을 입히고, 클러스터로 묶어보자냥!',
+  session: 25,
+}
+
+# 프로젝트 4 실습 — 상가 지도 직접 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 상가 지도를 직접
+  만들어볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `folium`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 만든 지도는 `.html`로 저장해서 브라우저로 열어보기
+</Callout>
+
+---
+
+<MissionCard number={1} title="카페 마커 찍기" time="8~10분">
+
+카페 데이터를 지도에 마커로 찍어보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import folium
+import pandas as pd
+
+data = {
+    "상호명": ["코딩냥카페", "달빛카페", "은빛카페"],
+    "위도": [37.4979, 37.5665, 37.5636],
+    "경도": [127.0276, 126.9784, 126.9975],
+}
+df = pd.DataFrame(data)
+
+m = folium.Map(location=[37.55, 127.0], zoom_start=12)
+
+for i, row in df.____():
+    folium.Marker(
+        location=[row["위도"], row["경도"]],
+        popup=row["상호명"],
+    ).add_to(m)
+
+m.save("cafe_map.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 DataFrame을 한 행씩 꺼내는 함수 이름을 넣으면 된다냥. (`iterrows`)
+> - 카페 3곳에 마커가 찍히냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="업종별 아이콘 색 입히기" time="8~10분">
+
+업종에 따라 마커 색을 다르게 지정해보자냥.
+
+```python
+색상표 = {"카페": "blue", "치킨": "red", "분식": "green"}
+
+for i, row in df.iterrows():
+    folium.Marker(
+        location=[row["위도"], row["경도"]],
+        icon=folium.Icon(color=색상표.____(row["업종"], "gray")),
+    ).add_to(m)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 딕셔너리에서 값을 찾되 없으면 기본값을 쓰는 함수 이름을 넣으면 된다냥. (`get`)
+> - 카페는 파란색 마커로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="MarkerCluster로 묶기" time="8~10분">
+
+마커를 클러스터로 묶어서 표시해보자냥.
+
+```python
+from folium.plugins import MarkerCluster
+
+m2 = folium.Map(location=[37.55, 127.0], zoom_start=12)
+클러스터 = MarkerCluster().____(m2)
+
+for i, row in df.iterrows():
+    folium.Marker(
+        location=[row["위도"], row["경도"]],
+    ).add_to(클러스터)
+
+m2.save("cafe_cluster_map.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 클러스터를 지도에 붙이는 함수 이름을 넣으면 된다냥. (`add_to`)
+> - 지도를 축소하면 마커가 숫자로 묶여서 보이냥?
+
+<StepCard step="확인" title="마커는 지도가 아니라 클러스터에!">
+
+이번 미션에서는 `folium.Marker(...).add_to(클러스터)`처럼, 지도
+`m2`가 아니라 `클러스터`에 마커를 붙인다냥. 이 차이를 꼭
+기억하자냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 데이터를 5개로 늘려서, 클러스터 숫자가 어떻게 바뀌는지 확인해보기
+- [ ] `색상표`에 새 업종("제과": "purple")을 추가해보기
+- [ ] `folium.Icon(color=..., icon="coffee")`처럼 icon 옵션도 추가해서 아이콘 모양을 바꿔보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 카페 데이터를 지도에 마커로 찍기
+  2. 업종별로 아이콘 색 다르게 하기
+  3. MarkerCluster로 마커 묶어서 표시하기
+
+  까지 해냈다냥! 이제 진짜 지도 위에 상가 데이터를 예쁘게 시각화할
+  수 있게 됐다냥. 다음 시간에는 **히트맵으로 상가 밀집도**를
+  보여주는 법을 배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

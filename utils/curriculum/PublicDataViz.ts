@@ -155,6 +155,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"상가 정보 데이터에서 원하는 업종만 골라내고, 지도에 꼭 필요한 좌표를 정리해보자냥!",
 	},
+	{
+		name: "프로젝트 4 — 상가 정보 folium 마커 시각화",
+		slug: "Store_foliummarker",
+		description:
+			"정리한 카페 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
