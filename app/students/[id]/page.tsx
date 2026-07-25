@@ -3,6 +3,7 @@ import { failPost, readPosts, successPost } from "@/app/lib/mongo/posts";
 import { readStudent } from "@/app/lib/mongo/students";
 import { getUserProgress } from "@/app/lib/mongo/progress";
 import { CardImage } from "@/components/commons/CardImage";
+import { resolveBook } from "@/app/dashBoard/books";
 import ProgressCard from "@/components/judge/ProgressCard";
 import TILTable from "@/components/commons/table/TILTable";
 import { CatIcon } from "@/components/mdx/CatIcon";
@@ -106,16 +107,20 @@ export default async function Page({
         <SectionHeading icon={BookOpen} label="Books" title="교재" />
         {student.books.length ? (
           <div className="flex flex-col gap-5 space-y-5 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3 xl:grid-cols-4">
-            {student.books.map((v) => (
-              <CardImage
-                key={v.title}
-                link={v.link}
-                imagekey={v.imagekey}
-                title={v.title}
-                state={v.state}
-                description={v.description}
-              />
-            ))}
+            {student.books.map((stored) => {
+              // 저장된 값은 배정 시점의 스냅샷이라 오래됐을 수 있다.
+              const v = resolveBook(stored);
+              return (
+                <CardImage
+                  key={v.title}
+                  link={v.link}
+                  imagekey={v.imagekey}
+                  title={v.title}
+                  state={v.state}
+                  description={v.description}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="doodle-box bg-white px-6 py-12 text-center text-lg text-muted-foreground">
