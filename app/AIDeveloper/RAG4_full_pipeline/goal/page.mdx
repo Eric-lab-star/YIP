@@ -172,18 +172,19 @@ with open("school_guide.txt", "r", encoding="utf-8") as f:
 paragraphs = document.split("\n\n")
 chunks = [p.strip() for p in paragraphs if p.strip()]
 
-# 3) 벡터DB에 저장하기
+# 3) 벡터DB에 저장하기 (upsert = 다시 실행해도 안전하게 덮어쓰기)
 ids = [f"chunk_{i}" for i in range(len(chunks))]
-collection.add(documents=chunks, ids=ids)
+collection.upsert(documents=chunks, ids=ids)
 ```
 
 <Callout type="note">
-  **여기서 `collection`은 제미나이 임베딩으로 만든 서랍장이라냥!**
+  **여기서 `collection`은 제미나이 임베딩으로 만든, 디스크에 저장되는 서랍장이라냥!**
 
   Chroma의 기본 임베딩 모델은 **영어 위주로 학습**되어 있어서, 한국어 문서를
   검색하면 엉뚱한 청크를 꺼내오기도 한다냥. 그래서 우리는 1차시부터 써온
-  **제미나이 임베딩**을 Chroma에 연결해서 쓴다냥. 연결하는 코드는 실습
-  페이지에서 직접 만나볼 거다냥!
+  **제미나이 임베딩**을 Chroma에 연결해서 쓴다냥. 그리고 3차시에서 배운 대로
+  `chromadb.PersistentClient`로 만들어서, 코드를 다시 실행해도 인덱싱한 내용이
+  그대로 남아있게 한다냥. 연결하는 코드는 실습 페이지에서 직접 만나볼 거다냥!
 </Callout>
 
 <Callout type="important">
@@ -194,6 +195,11 @@ collection.add(documents=chunks, ids=ids)
   그 뒤로는 질문이 들어올 때마다 **검색 → 생성**만 반복된다냥.
   학교 안내문이든, 동아리 소개글이든, 내가 정리한 노트든 —
   **어떤 문서라도** 이렇게 넣어주면 AI가 그 문서의 전문가가 된다냥!
+
+  단, **Streamlit처럼 화면과 연결된 앱**은 버튼을 누를 때마다 코드 전체가
+  처음부터 다시 실행된다냥. 그래서 인덱싱 코드를 그대로 두면 질문할 때마다
+  또 인덱싱을 반복하게 된다냥 — 이 문제를 실습 페이지에서
+  `@st.cache_resource`로 깔끔하게 해결해볼 거다냥!
 </Callout>
 
 ---

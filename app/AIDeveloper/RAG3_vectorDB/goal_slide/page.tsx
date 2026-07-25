@@ -133,13 +133,13 @@ const slides: Slide[] = [
   {
     title: "Chroma 핵심 세 가지 동작",
     bg: "from-cyan-50 to-blue-50",
-    script: "Chroma의 사용법은 매우 간단합니다. 딱 세 가지 동작만 기억하시면 됩니다. 첫째, 컬렉션 만들기입니다. client.create_collection()으로 문서를 담을 서랍장을 생성합니다. 둘째, 저장하기입니다. collection.add()를 호출하면 문서를 넣으면서 자동으로 임베딩까지 해서 저장합니다. 지난 시간에 우리가 직접 했던 임베딩 변환을 Chroma가 알아서 처리해주는 것입니다. 셋째, 검색하기입니다. collection.query()로 질문에 가장 비슷한 문서를 꺼내줍니다.",
+    script: "Chroma의 사용법은 매우 간단합니다. 딱 세 가지 동작만 기억하시면 됩니다. 첫째, 컬렉션 만들기입니다. client.get_or_create_collection()으로 문서를 담을 서랍장을 생성합니다. 둘째, 저장하기입니다. collection.upsert()를 호출하면 문서를 넣으면서 자동으로 임베딩까지 해서 저장합니다. 지난 시간에 우리가 직접 했던 임베딩 변환을 Chroma가 알아서 처리해주는 것입니다. 셋째, 검색하기입니다. collection.query()로 질문에 가장 비슷한 문서를 꺼내줍니다.",
     content: (
       <div className="flex flex-col gap-5">
         <p className="text-xl text-gray-700">Chroma는 세 가지 동작만 기억하면 됩니다.</p>
         {[
-          { num: "1", title: "컬렉션 만들기", code: "client.create_collection()", desc: "문서를 담을 서랍장 생성" },
-          { num: "2", title: "저장하기 (add)", code: "collection.add()", desc: "문서를 넣으면 자동으로 임베딩해서 저장" },
+          { num: "1", title: "컬렉션 만들기", code: "client.get_or_create_collection()", desc: "문서를 담을 서랍장 생성 (이미 있으면 불러오기)" },
+          { num: "2", title: "저장하기 (upsert)", code: "collection.upsert()", desc: "문서를 넣으면 자동으로 임베딩해서 저장 (재실행해도 안전)" },
           { num: "3", title: "검색하기 (query)", code: "collection.query()", desc: "질문에 가장 비슷한 문서를 꺼내줌" },
         ].map((item) => (
           <div key={item.num} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
@@ -157,7 +157,7 @@ const slides: Slide[] = [
   {
     title: "코드 예시: 서랍장 만들고 문서 넣기",
     bg: "from-blue-50 to-indigo-50",
-    script: "기본 코드 구조를 살펴보겠습니다. 먼저 코드 맨 위의 GeminiEmbedding 클래스를 봐주세요. 이것은 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드입니다. Chroma에 내장된 기본 임베딩 모델은 영어 위주로 학습되어 있어 한국어 문서 검색이 부정확하기 때문에, 지난 시간부터 써온 제미나이 임베딩을 연결해서 사용합니다. 이 클래스는 그대로 복사해서 쓰면 됩니다. 그다음 create_collection으로 컬렉션, 즉 서랍장을 만드는데, 이때 embedding_function에 GeminiEmbedding을 넣어 연결합니다. collection.add()로 문서를 저장할 때는 documents에 문서 내용을, ids에 고유한 식별자를 넣어줍니다. 중요한 점은 id가 절대 중복되어서는 안 된다는 것입니다. chunk_0, chunk_1처럼 서로 다른 이름을 붙여주어야 합니다.",
+    script: "기본 코드 구조를 살펴보겠습니다. 먼저 코드 맨 위의 GeminiEmbedding 클래스를 봐주세요. 이것은 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드입니다. Chroma에 내장된 기본 임베딩 모델은 영어 위주로 학습되어 있어 한국어 문서 검색이 부정확하기 때문에, 지난 시간부터 써온 제미나이 임베딩을 연결해서 사용합니다. 이 클래스는 그대로 복사해서 쓰면 됩니다. 이번엔 서랍장을 디스크에 진짜로 저장합니다. PersistentClient로 클라이언트를 만들고, get_or_create_collection으로 컬렉션, 즉 서랍장을 만드는데, 이때 embedding_function에 GeminiEmbedding을 넣어 연결합니다. collection.upsert()로 문서를 저장할 때는 documents에 문서 내용을, ids에 고유한 식별자를 넣어줍니다. upsert는 같은 id로 다시 저장해도 에러 없이 내용만 덮어쓰기 때문에, 코드를 다시 실행해도 안전합니다.",
     content: (
       <div className="flex flex-col gap-5">
         <CodeBlock>
@@ -169,6 +169,9 @@ genai_client = genai.Client(api_key="본인의 API 키")
 
 # 제미나이 임베딩을 Chroma에 연결 (그대로 복사)
 class GeminiEmbedding(EmbeddingFunction):
+    def __init__(self):
+        pass
+
     def __call__(self, input):
         result = genai_client.models.embed_content(
             model="gemini-embedding-001",
@@ -176,22 +179,34 @@ class GeminiEmbedding(EmbeddingFunction):
         )
         return [e.values for e in result.embeddings]
 
-client = chromadb.Client()
+    @staticmethod
+    def name():
+        return "gemini_embedding"
 
-# 컬렉션(서랍장) 만들기 — 제미나이 임베딩 연결
-collection = client.create_collection(
+    def get_config(self):
+        return {}
+
+    @staticmethod
+    def build_from_config(config):
+        return GeminiEmbedding()
+
+# 디스크의 chroma_db 폴더에 저장 — 다시 실행해도 남아있다
+client = chromadb.PersistentClient(path="./chroma_db")
+
+# 컬렉션(서랍장) 만들기 — 이미 있으면 불러오고, 없으면 새로 만듦
+collection = client.get_or_create_collection(
     name="my_documents",
     embedding_function=GeminiEmbedding(),
 )
 
-# 문서를 id와 함께 저장
-collection.add(
+# 문서를 id와 함께 저장 (upsert = 없으면 추가, 있으면 덮어쓰기)
+collection.upsert(
     documents=["고양이는 귀엽다", "강아지는 충성스럽다"],
     ids=["doc_0", "doc_1"]
 )`}
         </CodeBlock>
-        <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-          <p className="text-lg text-gray-700"><strong>주의:</strong> id는 절대 중복되면 안 됩니다. 같은 id로 다시 add하면 에러가 발생할 수 있습니다.</p>
+        <div className="bg-blue-50 rounded-xl p-4 border-l-4 border-blue-400">
+          <p className="text-lg text-gray-700"><strong>안전장치:</strong> 같은 id로 다시 upsert해도 에러 없이 내용만 덮어써집니다. 그래서 코드를 다시 실행해도 안전합니다.</p>
         </div>
       </div>
     ),
@@ -225,7 +240,7 @@ print(results["documents"][0])`}
   {
     title: "벡터DB의 핵심 원리",
     bg: "from-emerald-50 to-green-50",
-    script: "벡터DB의 핵심을 한 문장으로 정리하겠습니다. 벡터DB는 '저장과 검색을 함께' 담당합니다. 임베딩 결과를 DB에 한 번만 넣어두면 계속 재사용할 수 있다는 것이 핵심입니다. add()를 호출하면 임베딩이 자동으로 생성되고, query()를 호출하면 가장 가까운 문서를 자동으로 찾아줍니다. 그리고 중요한 예고를 하겠습니다. 오늘 만든 이 벡터DB는 다음 시간에 제미나이와 연결하여 진짜 RAG 앱으로 완성될 것입니다.",
+    script: "벡터DB의 핵심을 한 문장으로 정리하겠습니다. 벡터DB는 '저장과 검색을 함께' 담당합니다. 임베딩 결과를 DB에 한 번만 넣어두면 계속 재사용할 수 있다는 것이 핵심입니다. upsert()를 호출하면 임베딩이 자동으로 생성되고, query()를 호출하면 가장 가까운 문서를 자동으로 찾아줍니다. 그리고 중요한 예고를 하겠습니다. 오늘 만든 이 벡터DB는 다음 시간에 제미나이와 연결하여 진짜 RAG 앱으로 완성될 것입니다.",
     content: (
       <div className="flex flex-col gap-6">
         <div className="bg-white/60 rounded-xl p-6 text-center">
@@ -239,7 +254,7 @@ print(results["documents"][0])`}
         <div className="space-y-3">
           <div className="bg-blue-50 rounded-xl p-4 flex items-center gap-3">
             <span className="text-green-500 text-xl">✅</span>
-            <p className="text-lg text-gray-700">add() 호출 → 임베딩 자동 생성 및 저장</p>
+            <p className="text-lg text-gray-700">upsert() 호출 → 임베딩 자동 생성 및 저장 (재실행해도 안전)</p>
           </div>
           <div className="bg-blue-50 rounded-xl p-4 flex items-center gap-3">
             <span className="text-green-500 text-xl">✅</span>
@@ -257,7 +272,7 @@ print(results["documents"][0])`}
   {
     title: "오늘 배운 내용 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. 첫째, 지난 시간의 방식은 매번 전체를 다시 임베딩해야 하는 비효율이 있었습니다. 둘째, 벡터DB는 임베딩을 한 번 저장해두고 계속 재사용할 수 있게 해주는 전용 데이터베이스입니다. 셋째, Chroma의 핵심 동작은 세 가지로 컬렉션 생성, add로 저장, query로 검색입니다. 넷째, 컬렉션을 만들 때는 한국어 검색이 정확하도록 제미나이 임베딩을 embedding_function으로 연결합니다. 다섯째, id는 문서마다 고유해야 하며 중복되면 안 됩니다. 다음 시간에는 이 벡터DB에서 검색한 결과를 제미나이에게 전달하여 답변을 생성하는 RAG 파이프라인을 완성하겠습니다.",
+    script: "오늘 강의에서 다룬 내용을 정리하겠습니다. 첫째, 지난 시간의 방식은 매번 전체를 다시 임베딩해야 하는 비효율이 있었습니다. 둘째, 벡터DB는 임베딩을 한 번 저장해두고 계속 재사용할 수 있게 해주는 전용 데이터베이스입니다. 셋째, Chroma의 핵심 동작은 세 가지로 컬렉션 생성, upsert로 저장, query로 검색입니다. 넷째, 컬렉션을 만들 때는 한국어 검색이 정확하도록 제미나이 임베딩을 embedding_function으로 연결합니다. 다섯째, PersistentClient로 만들면 디스크에 저장되어 다시 실행해도 남아있고, upsert를 쓰면 같은 id로 다시 저장해도 에러 없이 안전하게 덮어씁니다. 다음 시간에는 이 벡터DB에서 검색한 결과를 제미나이에게 전달하여 답변을 생성하는 RAG 파이프라인을 완성하겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
@@ -265,16 +280,16 @@ print(results["documents"][0])`}
             <p className="text-lg text-gray-700">✅ 지난 방식: 매번 전체를 다시 임베딩 → 비효율</p>
           </div>
           <div className="bg-green-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ 벡터DB: 한 번 저장하고 계속 재사용</p>
+            <p className="text-lg text-gray-700">✅ 벡터DB: 한 번 저장하고 계속 재사용 (PersistentClient)</p>
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ Chroma 핵심: create_collection → add → query</p>
+            <p className="text-lg text-gray-700">✅ Chroma 핵심: get_or_create_collection → upsert → query</p>
           </div>
           <div className="bg-purple-50 rounded-xl p-4">
             <p className="text-lg text-gray-700">✅ 한국어 검색은 제미나이 임베딩 연결 (embedding_function)</p>
           </div>
           <div className="bg-red-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ id는 문서마다 고유해야 함 (중복 불가)</p>
+            <p className="text-lg text-gray-700">✅ upsert는 같은 id를 다시 넣어도 안전하게 덮어씀 (에러 없음)</p>
           </div>
         </div>
       </div>

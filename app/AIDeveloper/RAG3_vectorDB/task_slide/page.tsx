@@ -84,11 +84,11 @@ print("chromadb 준비 완료!")`}</CodeBlock>
   {
     title: "미션 2: DB 만들고 데이터 저장하기 (8~10분)",
     bg: "from-violet-50 to-purple-50",
-    script: "두 번째 미션입니다. 서랍장(컬렉션)을 만들고 청크들을 저장합니다. 코드 맨 위의 GeminiEmbedding 클래스는 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드로, 그대로 복사해서 쓰면 됩니다. 컬렉션을 만들 때 embedding_function에 이 클래스를 연결하는 부분을 눈여겨봐 주세요. 빈칸을 채워야 하는 부분은 ids를 생성하는 부분입니다. 각 청크에 고유한 id를 부여해야 하는데, f-string과 반복 변수 i를 활용하여 chunk_0, chunk_1과 같은 형태로 만들면 됩니다. 마지막 줄에서 저장된 청크 개수가 올바르게 출력되는지 확인하시기 바랍니다. 8~10분 드리겠습니다.",
+    script: "두 번째 미션입니다. 서랍장(컬렉션)을 만들고 청크들을 저장합니다. 이번엔 서랍장을 디스크에 진짜로 저장해서, 다음에 다시 실행해도 남아있게 만들 것입니다. 코드 맨 위의 GeminiEmbedding 클래스는 Chroma에게 임베딩을 제미나이에게 맡기라고 알려주는 연결 코드로, 그대로 복사해서 쓰면 됩니다. PersistentClient로 클라이언트를 만들고, get_or_create_collection으로 컬렉션을 만들면서 embedding_function에 이 클래스를 연결하는 부분을 눈여겨봐 주세요. 빈칸을 채워야 하는 부분은 ids를 생성하는 부분입니다. 각 청크에 고유한 id를 부여해야 하는데, f-string과 반복 변수 i를 활용하여 chunk_0, chunk_1과 같은 형태로 만들면 됩니다. 마지막 줄에서 저장된 청크 개수가 올바르게 출력되는지 확인하시기 바랍니다. 8~10분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
-          <p className="text-lg text-gray-600"><strong>목표:</strong> 제미나이 임베딩을 연결한 컬렉션을 만들고 청크를 저장합니다.</p>
+          <p className="text-lg text-gray-600"><strong>목표:</strong> 제미나이 임베딩을 연결한 컬렉션을 만들고 청크를 디스크에 저장합니다.</p>
         </div>
         <CodeBlock>
           {`import chromadb
@@ -99,6 +99,9 @@ genai_client = genai.Client(api_key="본인의 API 키")
 
 # 제미나이 임베딩을 Chroma에 연결 (그대로 복사)
 class GeminiEmbedding(EmbeddingFunction):
+    def __init__(self):
+        pass
+
     def __call__(self, input):
         result = genai_client.models.embed_content(
             model="gemini-embedding-001",
@@ -106,8 +109,20 @@ class GeminiEmbedding(EmbeddingFunction):
         )
         return [e.values for e in result.embeddings]
 
-client = chromadb.Client()
-collection = client.create_collection(
+    @staticmethod
+    def name():
+        return "gemini_embedding"
+
+    def get_config(self):
+        return {}
+
+    @staticmethod
+    def build_from_config(config):
+        return GeminiEmbedding()
+
+# 디스크의 chroma_db 폴더에 저장된다
+client = chromadb.PersistentClient(path="./chroma_db")
+collection = client.get_or_create_collection(
     name="my_documents",
     embedding_function=GeminiEmbedding(),
 )
@@ -117,7 +132,8 @@ chunks = ["청크 1 내용", "청크 2 내용", "청크 3 내용"]
 # 빈칸: 각 청크에 고유 id 부여
 ids = [____ for i in range(len(chunks))]
 
-collection.add(documents=chunks, ids=ids)
+# upsert = 없으면 추가, 있으면 덮어쓰기 (다시 실행해도 안전)
+collection.upsert(documents=chunks, ids=ids)
 print(f"{collection.count()}개 저장 완료")`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4">
@@ -129,19 +145,19 @@ print(f"{collection.count()}개 저장 완료")`}
   {
     title: "미션 2 해설",
     bg: "from-violet-50 to-indigo-50",
-    script: "미션 2의 핵심 포인트입니다. collection.add()를 호출하면 Chroma가 우리가 연결해준 제미나이 임베딩으로 각 문서를 자동 변환하여 저장합니다. 지난 시간에 우리가 직접 수행했던 임베딩 변환 과정을 Chroma가 대신 처리해주는 것입니다. 제미나이 임베딩을 연결하는 이유는, Chroma의 기본 임베딩 모델이 영어 위주로 학습되어 한국어 검색이 부정확하기 때문입니다. id는 문서를 구별하는 고유 식별자이므로, 반드시 중복되지 않도록 주의해야 합니다. 정답은 f-string을 활용한 f 따옴표 chunk 언더바 중괄호 i 중괄호 닫기 따옴표 형태입니다.",
+    script: "미션 2의 핵심 포인트입니다. collection.upsert()를 호출하면 Chroma가 우리가 연결해준 제미나이 임베딩으로 각 문서를 자동 변환하여 저장합니다. 지난 시간에 우리가 직접 수행했던 임베딩 변환 과정을 Chroma가 대신 처리해주는 것입니다. 제미나이 임베딩을 연결하는 이유는, Chroma의 기본 임베딩 모델이 영어 위주로 학습되어 한국어 검색이 부정확하기 때문입니다. id가 같으면 upsert는 에러 없이 내용만 덮어쓰기 때문에, 코드를 다시 실행해도 안전합니다. 정답은 f-string을 활용한 f 따옴표 chunk 언더바 중괄호 i 중괄호 닫기 따옴표 형태입니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5">
             <p className="text-xl text-gray-700">
-              collection.add() 호출 → 연결해둔 <strong>제미나이 임베딩으로 자동 변환</strong>하여 저장
+              collection.upsert() 호출 → 연결해둔 <strong>제미나이 임베딩으로 자동 변환</strong>하여 저장
             </p>
           </div>
-          <div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
+          <div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
             <p className="text-lg text-gray-700">
-              <strong>id는 고유해야 합니다.</strong> 중복 id로 add하면 에러가 발생할 수 있습니다.
+              <strong>같은 id로 다시 upsert해도 안전합니다.</strong> 에러 없이 내용만 덮어써집니다.
             </p>
           </div>
         </div>
@@ -208,7 +224,7 @@ for doc in results["documents"][0]:
 new_chunks = [____, ____]
 new_ids = ["chunk_new_1", "chunk_new_2"]
 
-collection.add(
+collection.upsert(
     documents=new_chunks, ids=new_ids
 )
 print(f"총 {collection.count()}개 저장")
@@ -255,13 +271,13 @@ for doc in results["documents"][0]:
   {
     title: "오늘의 실습 정리",
     bg: "from-orange-50 to-red-50",
-    script: "오늘 4가지 미션을 모두 수행하셨습니다. chromadb 설치 확인, 서랍장(컬렉션) 만들기, 청크 저장(add), 질문으로 검색(query), 새 문서 추가 및 재검색까지 해보았습니다. 한 번 정리해두면 두고두고 빠르게 꺼내 쓸 수 있는 자동 도서관을 직접 만든 것입니다. 다음 시간에는 이 도서관에 친절한 AI 사서(제미나이)를 연결해서 진짜 RAG 앱을 완성하겠습니다.",
+    script: "오늘 4가지 미션을 모두 수행하셨습니다. chromadb 설치 확인, 서랍장(컬렉션) 만들기, 청크 저장(upsert), 질문으로 검색(query), 새 문서 추가 및 재검색까지 해보았습니다. 한 번 정리해두면 두고두고 빠르게 꺼내 쓸 수 있는 자동 도서관을 직접 만든 것입니다. 다음 시간에는 이 도서관에 친절한 AI 사서(제미나이)를 연결해서 진짜 RAG 앱을 완성하겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
           {[
             { num: "1", text: "chromadb 설치 및 환경 확인", color: "bg-rose-100" },
-            { num: "2", text: "서랍장(컬렉션) 만들고 청크 저장 (add)", color: "bg-violet-100" },
+            { num: "2", text: "서랍장(컬렉션) 만들고 청크 저장 (upsert)", color: "bg-violet-100" },
             { num: "3", text: "질문으로 유사 문서 검색 (query)", color: "bg-teal-100" },
             { num: "4", text: "새 문서 추가 후 재검색으로 결과 변화 확인", color: "bg-amber-100" },
           ].map((item) => (

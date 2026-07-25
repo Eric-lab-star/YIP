@@ -59,7 +59,7 @@ export const metadata = {
 신입 부원을 모집합니다.
 ```
 
-이제 이 파일을 **읽고 → 청킹으로 자르고 → 벡터DB에 저장**까지 한 번에 해보자냥. 이번 청킹은 200자씩 기계적으로 자르는 대신 **빈 줄(문단) 기준**으로 자를 거다냥 — 문장이 중간에 뚝 끊기지 않아서 검색이 훨씬 잘 된다냥! 그리고 저장할 때는 **1차시부터 써온 제미나이 임베딩**을 Chroma에 연결해서 쓴다냥. 아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
+이제 이 파일을 **읽고 → 청킹으로 자르고 → 벡터DB에 저장**까지 한 번에 해보자냥. 이번 청킹은 200자씩 기계적으로 자르는 대신 **빈 줄(문단) 기준**으로 자를 거다냥 — 문장이 중간에 뚝 끊기지 않아서 검색이 훨씬 잘 된다냥! 그리고 저장할 때는 **1차시부터 써온 제미나이 임베딩**을 Chroma에 연결해서 쓴다냥. 3차시에서 배운 대로 **디스크에 저장되는 `PersistentClient`**를 써서, 다시 실행해도 인덱싱한 내용이 남아있게 만들 거다냥. 아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
 
 ```python
 import chromadb
@@ -69,13 +69,29 @@ from google import genai
 genai_client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
 
 # Chroma에게 "임베딩은 제미나이에게 맡겨라"라고 알려주는 연결 코드다냥 (그대로 복사!)
+# name·get_config·build_from_config는 Chroma가 요구하는 "자기소개" 형식일
+# 뿐이니 지금은 몰라도 된다냥.
 class GeminiEmbedding(EmbeddingFunction):
+    def __init__(self):
+        pass
+
     def __call__(self, input: Documents) -> Embeddings:
         result = genai_client.models.embed_content(
             model="gemini-embedding-001",
             contents=list(input),
         )
         return [e.values for e in result.embeddings]
+
+    @staticmethod
+    def name() -> str:
+        return "gemini_embedding"
+
+    def get_config(self) -> dict:
+        return {}
+
+    @staticmethod
+    def build_from_config(config: dict) -> "GeminiEmbedding":
+        return GeminiEmbedding()
 
 # 1) 문서 파일을 열어서 통째로 읽기
 with open(____, "r", encoding="utf-8") as f:
@@ -88,15 +104,17 @@ paragraphs = ____.split("\n\n")
 chunks = [p.strip() for p in paragraphs if p.strip()]
 print(f"총 {len(chunks)}개의 청크로 나뉘었습니다.")
 
-# 3) 벡터DB(서랍장)에 저장하기 — 제미나이 임베딩을 연결한다냥
-client = chromadb.Client()
+# 3) 벡터DB(서랍장)에 저장하기 — 디스크에 저장되니 다음에 또 실행해도 남아있다냥.
+# (3차시의 my_documents 서랍장과 헷갈리지 않도록 이번엔 school_guide로 이름 붙인다냥)
+client = chromadb.PersistentClient(path="./chroma_db")
 collection = client.get_or_create_collection(
-    name="my_documents",
+    name="school_guide",
     embedding_function=GeminiEmbedding(),
 )
 
 ids = [f"chunk_{i}" for i in range(len(chunks))]
-collection.add(documents=chunks, ids=ids)
+# upsert = 없으면 추가, 있으면 내용을 덮어쓰기 (그래서 다시 실행해도 안전하다냥)
+collection.upsert(documents=chunks, ids=ids)
 
 print(f"{collection.count()}개의 청크가 저장되었습니다.")
 ```
@@ -125,7 +143,10 @@ print(f"{collection.count()}개의 청크가 저장되었습니다.")
 
 <Callout type="tip">
   이렇게 문서를 **읽고 → 자르고 → 저장하는** 준비 과정을 **인덱싱(indexing)**이라고 부른다냥.
-  문서가 바뀌지 않는 한 **한 번만** 해두면 되고, 그 다음부터는 질문할 때마다 벡터DB에서 바로바로 꺼내 쓸 수 있다냥!
+  `PersistentClient`로 저장했으니, 문서가 바뀌지 않는 한 **한 번만** 해두면 되고,
+  그 다음부터는(코드를 다시 실행해도!) 질문할 때마다 벡터DB에서 바로바로 꺼내
+  쓸 수 있다냥! 실제로 잘 저장됐는지 궁금하면, 코드 파일 옆에 `chroma_db`라는
+  폴더가 새로 생겼는지 확인해보자냥.
 </Callout>
 
 </MissionCard>
@@ -209,13 +230,51 @@ print(rag_answer(question))
 
 마지막이다냥! 미션 2에서 만든 `rag_answer` 함수를 Streamlit 화면에 연결해서, 입력창에 질문을 받아 답을 보여주는 **진짜 RAG 챗봇**을 완성해보자냥!
 
-아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
+<Callout type="important">
+  **잠깐! Streamlit은 버튼을 누를 때마다 스크립트를 처음부터 다시 실행한다냥.**
+
+  미션 1의 인덱싱 코드를 그냥 그대로 두면, 질문을 던질 때마다 문서를 또
+  통째로 다시 읽고 다시 임베딩하게 된다냥 — 느리기도 하고, 제미나이 API도
+  쓸데없이 계속 호출하게 된다냥! 그래서 인덱싱 코드는 `@st.cache_resource`로
+  감싸서, **앱이 켜져 있는 동안 딱 한 번만** 실행되게 만들어야 한다냥.
+</Callout>
+
+아래 템플릿은 미션 1의 `GeminiEmbedding`/인덱싱 코드와 미션 2의 `rag_answer` 함수를 그대로 가져와 하나의 `app.py`로 합친 것이다냥. 인덱싱 부분만 `get_collection()` 함수로 감싸고 `@st.cache_resource`를 붙인 게 달라진 점이라냥. 나머지 빈칸(`____`)을 채워보자냥.
 
 ```python
 import streamlit as st
+import chromadb
+from chromadb import Documents, EmbeddingFunction, Embeddings
+from google import genai
 
 st.title("나만의 RAG 챗봇")
 st.write("문서 자료를 바탕으로 질문에 답하는 AI입니다.")
+
+genai_client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+
+# 미션 1의 GeminiEmbedding 클래스를 그대로 가져온다냥 (생략 — 위에서 만든 걸 그대로 복사)
+
+# 미션 1의 인덱싱 코드를 함수로 감싸고 @st.cache_resource를 붙였다냥.
+# 이렇게 하면 화면이 다시 그려져도 이 함수는 앱이 켜져 있는 동안 딱 한
+# 번만 실행된다냥 — 질문할 때마다 문서를 또 임베딩하지 않는다냥!
+@st.cache_resource
+def get_collection():
+    client = chromadb.PersistentClient(path="./chroma_db")
+    collection = client.get_or_create_collection(
+        name="school_guide",
+        embedding_function=GeminiEmbedding(),
+    )
+    with open("school_guide.txt", "r", encoding="utf-8") as f:
+        document = f.read()
+    paragraphs = document.split("\n\n")
+    chunks = [p.strip() for p in paragraphs if p.strip()]
+    ids = [f"chunk_{i}" for i in range(len(chunks))]
+    collection.upsert(documents=chunks, ids=ids)
+    return collection
+
+collection = get_collection()
+
+# 미션 2에서 만든 rag_answer 함수도 여기에 그대로 붙여넣는다냥 (생략)
 
 user_question = st.text_input("질문을 입력하세요")
 
@@ -234,10 +293,11 @@ if st.button("질문하기"):
 > **확인해보자냥 (빈칸 힌트)**
 > - `answer = ____` 자리에는 미션 2에서 만든 함수를 호출하면 된다냥. 입력창의 값 `user_question`을 넘겨주면 된다냥!
 > - 정답이 떠오르냥? `rag_answer(user_question)` 처럼 쓰면 된다냥.
+> - `get_collection()`은 `@st.cache_resource` 덕분에 앱을 켜고 첫 질문을 할 때 딱 한 번만 인덱싱한다냥. 두 번째 질문부터는 바로 저장된 서랍장을 재사용한다냥 — 답변 속도가 훨씬 빨라지는 걸 느껴보자냥!
 
 **직접 해보기**
 
-터미널에서 `streamlit run app.py`로 실행하고, 입력창에 여러 질문을 넣어보자냥. "참고한 자료 보기"를 펼쳐서, AI가 어떤 자료를 보고 답했는지도 구경해보자냥!
+터미널에서 `streamlit run app.py`로 실행하고, 입력창에 여러 질문을 넣어보자냥. 첫 질문은 인덱싱 때문에 조금 걸릴 수 있지만, 두 번째 질문부터는 훨씬 빨라지는 걸 확인해보자냥! "참고한 자료 보기"를 펼쳐서, AI가 어떤 자료를 보고 답했는지도 구경해보자냥!
 
 <Callout type="important">
   **Streamlit 연결이 어렵다면?**
