@@ -52,3 +52,6 @@ test-mongo.mjs
 
 # 로컬 임시 작업 디렉터리 (dev 로그 등)
 scratchpad/
+
+# local-only review doc (not meant to be committed)
+AI_COURSE_REVIEW.md
