@@ -1,0 +1,172 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 2 — 미세먼지 추이 분석',
+  description: '날짜별 미세먼지 데이터를 시간 순서로 정리하고, 추이를 선 그래프로 살펴보자냥!',
+  session: 18,
+}
+
+# 프로젝트 2 — 미세먼지 추이 분석
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지하철 프로젝트를 완주한 걸 축하한다냥!
+  두 번째 프로젝트는 우리 모두에게 익숙한 **미세먼지 데이터**다냥.
+  오늘은 날짜별 미세먼지 값을 시간 순서로 정리하고, **시간에 따른
+  변화(추이)**를 살펴볼 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 미세먼지 데이터의 출처와 라이선스를 확인할 수 있다.
+  - 문자열로 된 날짜를 `datetime` 타입으로 바꿀 수 있다.
+  - 날짜순으로 정렬해서 미세먼지 추이를 선 그래프로 그릴 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 미세먼지 데이터 출처 확인하기 (5분)
+
+<Callout type="note">
+  ** 이번 프로젝트 데이터 출처**
+
+  - 제공처: 에어코리아(airkorea.or.kr) / 서울열린데이터광장 (예시)
+  - 라이선스: 공공누리 제1유형 (출처 표시 시 자유 이용 가능)
+  - 이 수업에서는 실제 파일 대신, **같은 구조를 가진 작은 예시 데이터**로 연습한다냥.
+</Callout>
+
+<NyangSpeech>
+  미세먼지 데이터는 보통 **날짜**와 **측정소별 수치**가 함께
+  들어있다냥. 날짜 데이터를 다루는 법부터 배워보자냥!
+</NyangSpeech>
+
+---
+
+## 2단계 · 날짜를 진짜 날짜로 바꾸기 (10분)
+
+<NyangSpeech>
+  CSV에서 날짜를 읽으면, 파이썬은 그걸 그냥 **문자열**로 취급한다냥.
+  "2025-01-15"라는 문자열은 크기 비교나 정렬이 이상하게 될 수
+  있어서, `datetime` 타입으로 바꿔줘야 한다냥!
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+data = {
+    "날짜": ["2025-01-03", "2025-01-01", "2025-01-02"],
+    "미세먼지": [45, 30, 38],
+}
+df = pd.DataFrame(data)
+
+print(df["날짜"].dtype)  # object (문자열)
+
+df["날짜"] = pd.to_datetime(df["날짜"])
+print(df["날짜"].dtype)  # datetime64
+```
+
+<Callout type="important">
+  `pd.to_datetime()`은 문자열을 진짜 **날짜/시간 타입**으로
+  바꿔준다냥. 이렇게 바꾸고 나면, 날짜순 정렬이나 "이번 달만
+  보기" 같은 작업이 훨씬 쉬워진다냥!
+</Callout>
+
+---
+
+## 3단계 · 날짜순 정렬하고 추이 그리기 (10분)
+
+<NyangSpeech>
+  날짜 타입으로 바꿨다면, `sort_values()`로 날짜순 정렬을 하고
+  선 그래프로 추이를 그려보자냥.
+</NyangSpeche>
+
+<CompareBubble
+  left={{
+    emoji: '📄',
+    label: '문자열 날짜',
+    color: 'blue',
+    items: [
+      '"2025-01-10" > "2025-01-9" → False!',
+      '글자 순서로 비교되어 틀린 결과',
+    ],
+  }}
+  right={{
+    emoji: '📅',
+    label: 'datetime 날짜',
+    color: 'purple',
+    items: [
+      '진짜 날짜로 비교/정렬됨',
+      '2025-01-10 > 2025-01-09 → True',
+    ],
+  }}
+/>
+
+```python
+정렬됨 = df.sort_values("날짜")
+print(정렬됨)
+
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+plt.plot(정렬됨["날짜"], 정렬됨["미세먼지"])
+plt.title("날짜별 미세먼지 추이")
+plt.xlabel("날짜")
+plt.ylabel("미세먼지(㎍/㎥)")
+plt.show()
+```
+
+<StepCard step="핵심" title="날짜 데이터, 이 순서로 다루자냥!">
+
+| 순서 | 코드 |
+|---|---|
+| 1. 날짜 타입 변환 | `df["날짜"] = pd.to_datetime(df["날짜"])` |
+| 2. 날짜순 정렬 | `df.sort_values("날짜")` |
+| 3. 추이 그리기 | `plt.plot(날짜, 값)` |
+
+</StepCard>
+
+<Callout type="tip">
+  선 그래프는 x축이 **순서대로 늘어서 있을 때** 의미가 있다냥.
+  날짜 데이터는 정렬을 꼭 먼저 해줘야, 선이 오락가락하지 않고
+  깔끔한 추이를 보여준다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'CSV에서 읽은 날짜 열은 처음에 어떤 타입으로 되어있냥?',
+      answer: '문자열(object) 타입이다냥! 진짜 날짜로 다루려면 pd.to_datetime()으로 바꿔줘야 한다냥.',
+    },
+    {
+      question: '문자열 날짜를 datetime 타입으로 바꾸는 함수는 뭐냥?',
+      answer: 'pd.to_datetime()이다냥! df["날짜"] = pd.to_datetime(df["날짜"])처럼 쓴다냥.',
+    },
+    {
+      question: '추이를 선 그래프로 그리기 전에 왜 날짜순 정렬을 해야 하냥?',
+      answer: '선 그래프는 x축이 순서대로 있어야 의미가 있기 때문이다냥! 정렬을 안 하면 선이 오락가락하게 그려진다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 미세먼지 데이터의 날짜를 진짜 날짜 타입으로 바꾸고, 정렬해서
+  추이를 그려봤다냥! 이제 실습 페이지에서 직접 그려보자냥. 발톱
+  준비됐냥? 가보자냥~
+</NyangSpeech>

@@ -1,0 +1,128 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 2 실습 — 미세먼지 추이 직접 그리기',
+  description: '날짜를 datetime으로 바꾸고, 정렬해서 미세먼지 추이 그래프를 완성해보자냥!',
+  session: 18,
+}
+
+# 프로젝트 2 실습 — 미세먼지 추이 직접 그리기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 미세먼지 날짜
+  데이터를 정리하고 추이를 그려볼 거다냥. 빈칸(`____`)을 채워가며
+  하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `matplotlib` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 데이터 출처: 에어코리아(예시), 공공누리 제1유형
+</Callout>
+
+---
+
+<MissionCard number={1} title="날짜를 datetime으로 바꾸기" time="8~10분">
+
+문자열 날짜를 진짜 날짜 타입으로 바꿔보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+data = {
+    "날짜": ["2025-01-03", "2025-01-01", "2025-01-02"],
+    "미세먼지": [45, 30, 38],
+}
+df = pd.DataFrame(data)
+
+df["날짜"] = pd.____(df["날짜"])
+print(df["날짜"].dtype)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 문자열을 날짜 타입으로 바꾸는 함수 이름을 넣으면 된다냥. (`to_datetime`)
+> - dtype이 datetime64로 바뀌냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="날짜순으로 정렬하기" time="7~8분">
+
+날짜 순서대로 데이터를 정렬해보자냥.
+
+```python
+정렬됨 = df.____("날짜")
+print(정렬됨)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 값을 기준으로 정렬하는 함수 이름을 넣으면 된다냥. (`sort_values`)
+> - 1월 1일, 2일, 3일 순서로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="추이 선 그래프 그리기" time="10~12분">
+
+정렬한 데이터로 미세먼지 추이를 그려보자냥.
+
+```python
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+plt.____(정렬됨["날짜"], 정렬됨["미세먼지"])
+plt.title("날짜별 미세먼지 추이")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 선 그래프를 그리는 함수 이름을 넣으면 된다냥. (`plot`)
+> - 1일 → 2일 → 3일로 갈수록 선이 어떻게 움직이냥?
+
+<StepCard step="관찰" title="정렬을 빼먹으면 어떻게 될까냥?">
+
+`sort_values("날짜")`를 빼고 원본 `df`로 바로 그래프를 그려보면,
+선이 순서 없이 오락가락하는 걸 볼 수 있다냥! 꼭 정렬 후에
+그래프를 그리는 습관을 들이자냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 날짜를 5일치로 늘려서, 더 긴 추이 그래프를 그려보기
+- [ ] `plt.plot(...)`에 `marker="o"`를 추가해서 각 날짜에 점을 표시해보기
+- [ ] 정렬을 빼먹고 그래프를 그려서, 정렬 전/후 차이를 직접 비교해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 문자열 날짜를 datetime으로 바꾸기
+  2. sort_values()로 날짜순 정렬하기
+  3. plt.plot()으로 추이 그래프 그리기
+
+  까지 해냈다냥! 이제 날짜가 있는 데이터도 자신 있게 다룰 수 있게
+  됐다냥. 다음 시간에는 여러 **지역의 미세먼지를 비교**해볼 거다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

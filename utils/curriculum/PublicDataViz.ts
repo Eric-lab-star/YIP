@@ -113,6 +113,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"분석한 시간대별 승차인원을 그래프로 그리고, 여러 역을 한 그래프에서 비교해보자냥!",
 	},
+	{
+		name: "프로젝트 2 — 미세먼지 추이 분석",
+		slug: "Dust_trend",
+		description:
+			"날짜별 미세먼지 데이터를 시간 순서로 정리하고, 추이를 선 그래프로 살펴보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
