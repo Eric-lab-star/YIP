@@ -149,6 +149,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"피벗 테이블을 히트맵으로, 면적과 가격의 관계를 산점도로 그려 결론을 내려보자냥!",
 	},
+	{
+		name: "프로젝트 4 — 상가 정보 정제",
+		slug: "Store_clean",
+		description:
+			"상가 정보 데이터에서 원하는 업종만 골라내고, 지도에 꼭 필요한 좌표를 정리해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
