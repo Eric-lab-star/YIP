@@ -119,6 +119,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"날짜별 미세먼지 데이터를 시간 순서로 정리하고, 추이를 선 그래프로 살펴보자냥!",
 	},
+	{
+		name: "프로젝트 2 — 미세먼지 지역 비교",
+		slug: "Dust_compare",
+		description:
+			"여러 지역의 미세먼지를 평균과 상자그림으로 비교하고, 기준치를 넘는 지역을 찾아보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

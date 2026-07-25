@@ -1,0 +1,128 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 2 실습 — 지역별 미세먼지 비교하기',
+  description: '지역별 평균과 분포를 비교하고, 기준치를 넘는 위험 지역을 직접 찾아보자냥!',
+  session: 19,
+}
+
+# 프로젝트 2 실습 — 지역별 미세먼지 비교하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지역별 미세먼지를
+  직접 비교해볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `seaborn`, `matplotlib` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="지역별 평균 막대 그래프 그리기" time="8~10분">
+
+지역별 평균 미세먼지를 막대 그래프로 비교해보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+data = {
+    "지역": ["중구", "중구", "강남구", "강남구", "마포구", "마포구"],
+    "미세먼지": [30, 34, 42, 38, 25, 29],
+}
+df = pd.DataFrame(data)
+
+지역평균 = df.groupby("지역")["미세먼지"].mean().reset_index()
+sns.____(data=지역평균, x="지역", y="미세먼지")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 막대 그래프를 그리는 seaborn 함수 이름을 넣으면 된다냥. (`barplot`)
+> - 강남구 막대가 가장 높게 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="상자그림으로 분포 비교하기" time="10~12분">
+
+이번엔 상자그림으로 지역별 분포를 살펴보자냥.
+
+```python
+sns.____(data=df, x="지역", y="미세먼지")
+plt.title("지역별 미세먼지 분포")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 상자그림을 그리는 함수 이름을 넣으면 된다냥. (`boxplot`)
+> - 지역마다 상자의 길이가 다르게 나오냥?
+
+<StepCard step="확인" title="상자가 길수록 들쭉날쭉!">
+
+상자가 길게 늘어진 지역은 날마다 미세먼지 값의 차이가 크다는
+뜻이고, 상자가 짧은 지역은 값이 비교적 일정하다는 뜻이다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="기준치를 넘는 지역 찾기" time="7~8분">
+
+평균이 35를 넘는 위험 지역만 골라보자냥.
+
+```python
+기준치 = 35
+위험지역 = 지역평균[지역평균["미세먼지"] > ____]
+print(위험지역)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 방금 정한 기준치 변수 이름을 넣으면 된다냥. (`기준치`)
+> - 강남구만 결과에 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 지역을 2개 더 추가해서, 막대 그래프와 상자그림이 어떻게 달라지는지 확인해보기
+- [ ] `sns.boxplot(...)`에 `hue="지역"`을 추가해서 색을 다르게 칠해보기
+- [ ] 기준치를 30으로 낮춰서, 위험 지역이 몇 개로 늘어나는지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 지역별 평균 막대 그래프 그리기
+  2. 상자그림으로 분포 비교하기
+  3. 조건 필터링으로 위험 지역 찾기
+
+  까지 해냈다냥! 이제 여러 지역을 다양한 방법으로 비교할 수 있게
+  됐다냥. 다음 시간에는 지금까지 만든 그래프들을 모아서 **미세먼지
+  대시보드**를 만들어볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
