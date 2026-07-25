@@ -72,7 +72,7 @@ import requests
 url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
 
 params = {
-    "serviceKey": "여기에 본인의 인증키(Decoding) 입력",
+    "serviceKey": "여기에 본인의 인증키 입력",  # 발급받은 그대로
     "returnType": "json",   # 결과를 JSON 형식으로 받겠다는 뜻
     "numOfRows": 10,        # 몇 개의 측정소 데이터를 받을지
     "pageNo": 1,
@@ -104,7 +104,7 @@ print(response.text[:300])  # 응답 앞부분만 미리 보기
   "response": {
     "header": {
       "resultCode": "00",
-      "resultMsg": "NORMAL SERVICE."
+      "resultMsg": "NORMAL_CODE"
     },
     "body": {
       "totalCount": 25,
@@ -163,7 +163,7 @@ for item in items:
     label: '자주 만나는 에러',
     color: 'red',
     items: [
-      'SERVICE_KEY_IS_NOT_REGISTERED_ERROR (등록 안 된 키)',
+      'status_code가 401 (인증키가 잘못됨)',
       'status_code가 200이 아님',
       'resultCode가 "00"이 아님',
     ],
@@ -172,9 +172,9 @@ for item in items:
     label: '확인할 것',
     color: 'blue',
     items: [
-      '인증키를 정확히 복사했는지 (앞뒤 공백 주의!)',
+      '인증키를 그대로 복사했는지 (앞뒤 공백이 섞이면 401이다냥)',
       '활용신청이 승인됐는지 마이페이지에서 확인',
-      'Decoding 키를 썼는지 (Encoding 키를 넣으면 오류가 날 수 있음)',
+      'sidoName 같은 값에 오타가 없는지',
     ],
   }}
 />

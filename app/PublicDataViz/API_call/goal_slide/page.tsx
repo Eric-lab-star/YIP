@@ -61,7 +61,7 @@ const slides: Slide[] = [
 
 url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
 params = {
-    "serviceKey": "본인의 인증키(Decoding)",
+    "serviceKey": "본인의 인증키",
     "returnType": "json",
     "numOfRows": 10,
     "pageNo": 1,
@@ -126,7 +126,7 @@ for item in items:
 	{
 		title: "요청이 실패했다면?",
 		bg: "from-red-50 to-orange-50",
-		script: "API를 부르다 보면 실패할 때도 있습니다. 흔한 원인은 등록 안 된 인증키, 승인 대기 중, Encoding과 Decoding 키 혼동입니다. 인증키를 정확히 복사했는지, 앞뒤 공백은 없는지, 활용신청이 승인됐는지 확인해보세요.",
+		script: "API를 부르다 보면 실패할 때도 있습니다. 흔한 원인은 등록 안 된 인증키, 승인 대기 중, 복사 실수입니다. 인증키를 정확히 복사했는지, 앞뒤 공백은 없는지, 활용신청이 승인됐는지 확인해보세요.",
 		content: (
 			<div className="flex flex-col gap-6">
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -138,7 +138,7 @@ for item in items:
 					<div className="bg-green-50 rounded-xl p-5">
 						<p className="font-semibold text-green-700 mb-2">확인할 것</p>
 						<p className="text-gray-600">인증키 오타·공백 확인</p>
-						<p className="text-gray-600">Decoding 키를 썼는지 확인</p>
+						<p className="text-gray-600">앞뒤 공백 없이 정확히 복사했는지 확인</p>
 					</div>
 				</div>
 			</div>

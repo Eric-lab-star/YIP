@@ -69,7 +69,7 @@ const slides: Slide[] = [
 	{
 		title: "미션 3: 인증키 확인하고 보관하기 (8~10분)",
 		bg: "from-teal-50 to-cyan-50",
-		script: "세 번째 미션입니다. 마이페이지의 개발계정 또는 오픈API 메뉴에서 발급된 인증키를 확인합니다. Decoding과 Encoding, 두 가지 형태를 모두 찾아서 안전한 곳에 옮겨 적습니다. 인증키는 절대 다른 사람과 공유하거나 인터넷에 올리면 안 됩니다. 8~10분 드리겠습니다.",
+		script: "세 번째 미션입니다. 마이페이지의 개발계정 또는 오픈API 메뉴에서 발급된 인증키를 확인합니다. 발급된 키를 안전한 곳에 옮겨 적습니다. 인증키는 절대 다른 사람과 공유하거나 인터넷에 올리면 안 됩니다. 8~10분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/60 rounded-xl p-4">
