@@ -77,7 +77,7 @@ HeatMap(좌표목록).add_to(m)`}</CodeBlock>
 	{
 		title: "결론 정리하기",
 		bg: "from-purple-50 to-pink-50",
-		script: "groupby를 다시 활용해서 어느 동네에 상가가 가장 많은지 숫자로도 확인하고 결론을 내립니다.",
+		script: "value_counts()를 활용해서 어느 동네에 상가가 가장 많은지 숫자로도 확인하고 결론을 내립니다.",
 		content: (
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`동별개수 = df2["동"].value_counts()

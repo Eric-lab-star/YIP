@@ -75,8 +75,9 @@ const slides: Slide[] = [
 		script: "당장 필요 없는 열은 빼두고, 다루기 쉬운 이름으로 바꿉니다. df 대괄호 대괄호로 먼저 필요한 열만 고른 뒤, rename으로 이름을 바꿉니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`정리 = df[["호선명", "역명", "승차총승객수", "하차총승객수"]]
-    .rename(columns={"승차총승객수": "승차", "하차총승객수": "하차"})`}</CodeBlock>
+				<CodeBlock>{`정리 = df[["호선명", "역명", "승차총승객수", "하차총승객수"]].rename(
+    columns={"승차총승객수": "승차", "하차총승객수": "하차"}
+)`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">💡 rename(columns={`{"기존이름": "새이름"}`})</p>
 				</div>

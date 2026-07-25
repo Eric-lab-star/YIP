@@ -71,7 +71,9 @@ const slides: Slide[] = [
 		script: "세 번째 미션입니다. 정렬한 데이터로 미세먼지 추이를 그립니다. 선 그래프를 그리는 함수 이름을 빈칸에 넣습니다. 10~12분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`plt.____(정렬됨["날짜"], 정렬됨["미세먼지"])  # plot`}</CodeBlock>
+				<CodeBlock>{`plt.rcParams["font.family"] = "Malgun Gothic"
+
+plt.____(정렬됨["날짜"], 정렬됨["미세먼지"])  # plot`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 빈칸: plot</p>
 				</div>

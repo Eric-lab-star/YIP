@@ -17,7 +17,7 @@ export const metadata = {
 </NyangSpeech>
 
 <Callout type="note">
-  ** 준비물 체크리스트**
+  **준비물 체크리스트**
 
   - `folium`, `pandas` 패키지 설치 확인
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
@@ -79,7 +79,11 @@ m.save("heatmap.html")
 어느 동에 상가가 가장 많은지 숫자로 확인해보자냥.
 
 ```python
-data2 = {"동": ["역삼동", "역삼동", "역삼동", "성수동"]}
+# 미션 1의 상가 3곳이 어느 동에 있는지 붙여준다냥
+data2 = {
+    "상호명": ["코딩냥카페", "달빛카페", "은빛카페"],
+    "동": ["역삼동", "역삼동", "성수동"],
+}
 df2 = pd.DataFrame(data2)
 
 동별개수 = df2["동"].value_counts()

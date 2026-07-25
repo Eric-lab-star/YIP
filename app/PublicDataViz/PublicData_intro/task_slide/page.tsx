@@ -64,7 +64,7 @@ const slides: Slide[] = [
 					<p className="text-xl text-gray-700">회원가입 → 이메일 인증 → 로그인 성공까지 확인!</p>
 				</div>
 				<div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-					<p className="text-lg text-gray-700">⚠️ 비밀번호를 안전한 곳에 적어두세요. 다음 시간에 바로 로그인해야 합니다.</p>
+					<p className="text-lg text-gray-700">⚠️ 비밀번호를 안전한 곳에 적어두세요. 3차시에 로그인해서 인증키를 신청합니다.</p>
 				</div>
 			</div>
 		),

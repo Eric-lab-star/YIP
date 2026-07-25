@@ -44,7 +44,8 @@ const slides: Slide[] = [
 		script: "첫 번째 미션입니다. 그래프를 그리기 전에 seaborn 테마부터 설정합니다. 테마를 설정하는 함수 이름을 빈칸에 넣습니다. 5~7분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`sns.____(style="whitegrid")  # set_theme`}</CodeBlock>
+				<CodeBlock>{`sns.____(style="whitegrid")  # set_theme
+plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 빈칸: set_theme</p>
 				</div>

@@ -34,7 +34,7 @@ export const metadata = {
 ## 1단계 · 미세먼지 데이터 출처 확인하기 (5분)
 
 <Callout type="note">
-  ** 이번 프로젝트 데이터 출처**
+  **이번 프로젝트 데이터 출처**
 
   - 제공처: 에어코리아(airkorea.or.kr) / 서울열린데이터광장 (예시)
   - 라이선스: 공공누리 제1유형 (출처 표시 시 자유 이용 가능)
@@ -65,7 +65,7 @@ data = {
 }
 df = pd.DataFrame(data)
 
-print(df["날짜"].dtype)  # object (문자열)
+print(df["날짜"].dtype)  # object 또는 str — 둘 다 "문자열"이라는 뜻이다냥
 
 df["날짜"] = pd.to_datetime(df["날짜"])
 print(df["날짜"].dtype)  # datetime64
@@ -84,7 +84,7 @@ print(df["날짜"].dtype)  # datetime64
 <NyangSpeech>
   날짜 타입으로 바꿨다면, `sort_values()`로 날짜순 정렬을 하고
   선 그래프로 추이를 그려보자냥.
-</NyangSpeche>
+</NyangSpeech>
 
 <CompareBubble
   left={{
@@ -92,8 +92,8 @@ print(df["날짜"].dtype)  # datetime64
     label: '문자열 날짜',
     color: 'blue',
     items: [
-      '"2025-01-10" > "2025-01-9" → False!',
-      '글자 순서로 비교되어 틀린 결과',
+      '월·요일을 꺼낼 수 없음 (.dt를 못 씀)',
+      '날짜끼리 빼서 며칠 차이인지 계산 불가',
     ],
   }}
   right={{
@@ -101,8 +101,8 @@ print(df["날짜"].dtype)  # datetime64
     label: 'datetime 날짜',
     color: 'purple',
     items: [
-      '진짜 날짜로 비교/정렬됨',
-      '2025-01-10 > 2025-01-09 → True',
+      '.dt.month 로 월만 꺼내기 가능',
+      '날짜 뺄셈으로 기간 계산 가능',
     ],
   }}
 />
@@ -150,7 +150,7 @@ plt.show()
   items={[
     {
       question: 'CSV에서 읽은 날짜 열은 처음에 어떤 타입으로 되어있냥?',
-      answer: '문자열(object) 타입이다냥! 진짜 날짜로 다루려면 pd.to_datetime()으로 바꿔줘야 한다냥.',
+      answer: '문자열 타입이다냥! pandas 버전에 따라 object 또는 str로 보인다냥. 진짜 날짜로 다루려면 pd.to_datetime()으로 바꿔줘야 한다냥.',
     },
     {
       question: '문자열 날짜를 datetime 타입으로 바꾸는 함수는 뭐냥?',

@@ -44,7 +44,11 @@ const slides: Slide[] = [
 		script: "첫 번째 미션입니다. 미세먼지 열의 빈 값이 몇 개인지 세어봅니다. isna로 True/False를 만들고 sum으로 개수를 셉니다. 결과가 2로 나오는지 확인합니다. 10~12분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`빈값개수 = df["미세먼지"].____().sum()  # isna`}</CodeBlock>
+				<CodeBlock>{`data = {"측정소": ["중구", "강남구", "종로구", "마포구"],
+        "미세먼지": [30, np.nan, 25, np.nan]}
+df = pd.DataFrame(data)
+
+빈값개수 = df["미세먼지"].____().sum()  # isna`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 빈칸: isna</p>
 				</div>
@@ -57,7 +61,8 @@ const slides: Slide[] = [
 		script: "두 번째 미션입니다. 빈 값을 버리지 않고 평균값으로 채웁니다. 빈 값을 채우는 함수 이름을 빈칸에 넣습니다. 8~10분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`채워진_df = df.____({"미세먼지": 평균값})  # fillna`}</CodeBlock>
+				<CodeBlock>{`평균값 = df["미세먼지"].mean()
+채워진_df = df.____({"미세먼지": 평균값})  # fillna`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 df.fillna(...)는 원본을 바꾸지 않고 새 결과를 돌려줍니다</p>
 				</div>
@@ -70,7 +75,10 @@ const slides: Slide[] = [
 		script: "세 번째 미션입니다. 중복으로 들어간 측정소 데이터를 정리합니다. 중복 행을 제거하는 함수 이름을 빈칸에 넣습니다. 8~10분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`정리됨 = df2.____()  # drop_duplicates`}</CodeBlock>
+				<CodeBlock>{`df2 = pd.DataFrame({"측정소": ["중구", "강남구", "중구"],
+                    "미세먼지": [30, 42, 30]})
+
+정리됨 = df2.____()  # drop_duplicates`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 모든 열의 값이 전부 같은 행만 중복으로 인식합니다</p>
 				</div>
