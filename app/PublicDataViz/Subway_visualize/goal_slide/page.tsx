@@ -45,7 +45,10 @@ const slides: Slide[] = [
 		script: "지난 시간에 구한 시간대평균을 seaborn 막대 그래프로 그려봅니다. groupby mean 결과는 시간대가 인덱스로 들어간 상태라, reset_index로 다시 평범한 열로 되돌려야 합니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`시간대평균 = 길게.groupby("시간대")["승차인원"].mean().reset_index()
+				<CodeBlock>{`sns.set_theme(style="whitegrid")
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+시간대평균 = 길게.groupby("시간대")["승차인원"].mean().reset_index()
 sns.barplot(data=시간대평균, x="시간대", y="승차인원")`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-700">reset_index()로 인덱스를 다시 열로!</p>

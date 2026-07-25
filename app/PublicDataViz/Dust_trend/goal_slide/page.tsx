@@ -93,7 +93,9 @@ print(df["날짜"].dtype)  # datetime64`}</CodeBlock>
 		script: "날짜 타입으로 바꿨다면 sort_values로 날짜순 정렬을 하고 선 그래프로 추이를 그립니다. 선 그래프는 x축이 순서대로 있을 때 의미가 있습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`정렬됨 = df.sort_values("날짜")
+				<CodeBlock>{`plt.rcParams["font.family"] = "Malgun Gothic"
+
+정렬됨 = df.sort_values("날짜")
 plt.plot(정렬됨["날짜"], 정렬됨["미세먼지"])`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">💡 정렬 → plt.plot() 순서를 꼭 지키기</p>

@@ -63,7 +63,7 @@ print(심한곳)`}</CodeBlock>
 					<p className="text-lg font-bold text-blue-700 mb-2">➕ & (그리고, AND)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>두 조건을 모두 만족해야 함</li>
-						<li>예: 미세먼지 30 초과 AND 40 이하</li>
+						<li>예: 미세먼지 30 초과 AND 45 이하</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
@@ -82,7 +82,7 @@ print(심한곳)`}</CodeBlock>
 		script: "코드로 확인해보겠습니다. 각 조건을 괄호로 감싼 뒤 & 나 | 로 연결합니다. 괄호를 빠뜨리면 에러가 나기 쉬우니 꼭 기억해두세요.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`중간 = df[(df["미세먼지"] > 30) & (df["미세먼지"] <= 40)]
+				<CodeBlock>{`중간 = df[(df["미세먼지"] > 30) & (df["미세먼지"] <= 45)]
 특정지역 = df[(df["측정소"] == "중구") | (df["측정소"] == "마포구")]`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">💡 각 조건은 반드시 괄호로 감싸기!</p>

@@ -59,7 +59,9 @@ print("requests 준비 완료!")`}</CodeBlock>
 				<div className="bg-white/60 rounded-xl p-4">
 					<p className="text-lg text-gray-600"><strong>목표:</strong> 인증키로 진짜 API 요청을 보내고 상태 코드를 확인합니다.</p>
 				</div>
-				<CodeBlock>{`params = {
+				<CodeBlock>{`url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
+
+params = {
     "serviceKey": ____,  # 본인의 인증키(Decoding)
     "returnType": "json",
     "numOfRows": 10,

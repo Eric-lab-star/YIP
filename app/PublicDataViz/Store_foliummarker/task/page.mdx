@@ -17,7 +17,7 @@ export const metadata = {
 </NyangSpeech>
 
 <Callout type="note">
-  ** 준비물 체크리스트**
+  **준비물 체크리스트**
 
   - `folium`, `pandas` 패키지 설치 확인
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
@@ -69,16 +69,21 @@ m.save("cafe_map.html")
 ```python
 색상표 = {"카페": "blue", "치킨": "red", "분식": "green"}
 
+m = folium.Map(location=[37.55, 127.0], zoom_start=12)  # 지도를 새로 만든다냥
+
 for i, row in df.iterrows():
     folium.Marker(
         location=[row["위도"], row["경도"]],
         icon=folium.Icon(color=색상표.____(row["업종"], "gray")),
     ).add_to(m)
+
+m.save("store_color_map.html")
 ```
 
 > **확인해보자냥 (빈칸 힌트)**
 > - `____` 자리에는 딕셔너리에서 값을 찾되 없으면 기본값을 쓰는 함수 이름을 넣으면 된다냥. (`get`)
-> - 카페는 파란색, 분식은 초록색, 치킨은 빨간색 마커로 나오냥?
+> - 지도를 **새로 만들지 않으면** 미션 1의 마커에 덧붙어서 6개가 겹친다냥!
+> - `store_color_map.html`을 열면 카페는 파란색, 분식은 초록색, 치킨은 빨간색으로 나오냥?
 
 </MissionCard>
 

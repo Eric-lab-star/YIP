@@ -80,7 +80,9 @@ print(df["미세먼지"].isna().sum())`}</CodeBlock>
 		script: "코드로 확인해보겠습니다. dropna로 통째로 지우거나, fillna로 평균값을 채울 수 있습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`정리된_df = df.dropna()
+				<CodeBlock>{`평균값 = df["미세먼지"].mean()
+
+정리된_df = df.dropna()
 채워진_df = df.fillna({"미세먼지": 평균값})`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">💡 빈 값이 적으면 dropna, 데이터가 귀하면 fillna</p>

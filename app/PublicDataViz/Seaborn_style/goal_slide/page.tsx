@@ -46,8 +46,10 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`import seaborn as sns
+import matplotlib.pyplot as plt
 
-sns.set_theme(style="whitegrid")`}</CodeBlock>
+sns.set_theme(style="whitegrid")
+plt.rcParams["font.family"] = "Malgun Gothic"  # set_theme 다음!`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-700">set_theme() 한 줄로 이후 모든 그래프에 적용</p>
 				</div>
