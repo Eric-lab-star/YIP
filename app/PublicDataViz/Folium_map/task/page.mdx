@@ -1,0 +1,143 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'folium 실습 — 나만의 지도 만들기',
+  description: '서울 지도를 만들고, 미세먼지 측정소 위치에 마커를 직접 찍어보자냥!',
+  session: 13,
+}
+
+# folium 실습 — 나만의 지도 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, folium으로 지도를
+  만들고 마커를 찍어볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `folium`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 만든 지도는 `map.html`로 저장해서 브라우저로 열어보기
+</Callout>
+
+---
+
+<MissionCard number={1} title="서울 지도 만들기" time="8~10분">
+
+서울시청을 중심으로 지도를 만들어보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import folium
+
+m = folium.____(location=[37.5665, 126.9780], zoom_start=12)
+m.save("map.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 지도를 만드는 클래스 이름을 넣으면 된다냥. (`Map`)
+> - `map.html` 파일이 생기고, 브라우저로 열면 서울 지도가 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="마커 하나 찍어보기" time="8~10분">
+
+서울시청 위치에 마커를 찍어보자냥.
+
+```python
+folium.Marker(
+    location=[37.5665, 126.9780],
+    popup=____,
+    tooltip="클릭해보세요!",
+).add_to(m)
+
+m.save("map.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 클릭했을 때 보일 설명을 문자열로 넣으면 된다냥. (`"서울시청"`)
+> - 지도에서 마커를 클릭하면 설명이 뜨냥?
+
+<Callout type="important">
+  마커를 만든 뒤 `.add_to(m)`을 빠뜨리면, 마커가 지도에 나타나지
+  않는다냥! 꼭 붙여주자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="반복문으로 여러 마커 찍기" time="10~12분">
+
+미세먼지 측정소 3곳에 마커를 한 번에 찍어보자냥.
+
+```python
+import pandas as pd
+
+data = {
+    "측정소": ["중구", "강남구", "종로구"],
+    "위도": [37.5636, 37.4979, 37.5735],
+    "경도": [126.9975, 127.0276, 126.9788],
+    "미세먼지": [30, 42, 25],
+}
+df = pd.DataFrame(data)
+
+for i, row in df.____():
+    folium.Marker(
+        location=[row["위도"], row["경도"]],
+        popup=f"{row['측정소']} (미세먼지 {row['미세먼지']})",
+    ).add_to(m)
+
+m.save("map.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 DataFrame을 한 행씩 꺼내는 함수 이름을 넣으면 된다냥. (`iterrows`)
+> - 지도에 마커가 3개 찍히냥?
+
+<StepCard step="관찰" title="같은 지도 m에 계속 마커 추가하기">
+
+`m`은 미션 1에서 만든 지도 그대로다냥! 새 지도를 또 만드는 게
+아니라, 같은 `m`에 마커를 계속 `.add_to(m)`으로 덧붙이는 것이다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 우리 동네 위도, 경도를 찾아서 마커를 하나 더 추가해보기
+- [ ] `folium.Marker(..., icon=folium.Icon(color="red"))`로 마커 색을 바꿔보기
+- [ ] `zoom_start`를 15로 바꿔서 지도가 더 확대되는지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. folium.Map()으로 서울 지도 만들기
+  2. folium.Marker()로 마커 하나 찍기
+  3. iterrows()로 여러 마커 한 번에 찍기
+
+  까지 해냈다냥! 이제 위치 데이터를 진짜 지도 위에 그릴 수 있게
+  됐다냥. 다음 시간은 지금까지 배운 걸 모두 모아서, **누구나 쓸
+  수 있는 데이터 앱**을 만들어보는 마지막 시간이다냥. 다들 정말
+  멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

@@ -1,0 +1,176 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'folium — 지도 위에 데이터 그리기',
+  description: 'folium으로 진짜 지도 위에 마커를 찍어서, 위치 데이터를 한눈에 살펴보자냥!',
+  session: 13,
+}
+
+# folium — 지도 위에 데이터 그리기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지 표와 그래프로 데이터를 봤지냥?
+  그런데 "우리 동네 미세먼지가 심하다"처럼 **위치 정보**가 있는
+  데이터는, 진짜 지도 위에 그려보면 훨씬 더 잘 와닿는다냥! 오늘
+  배울 `folium`으로 지도를 그려보자냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `folium.Map()`으로 기본 지도를 만들 수 있다.
+  - `folium.Marker()`로 지도에 위치 표시를 찍을 수 있다.
+  - 여러 개의 마커를 반복문으로 한 번에 찍을 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 지도 만들기 (8분)
+
+<NyangSpeech>
+  folium 지도를 만들려면, 지도의 **중심 위치**와 **확대 정도**를
+  정해줘야 한다냥. 위치는 위도(latitude), 경도(longitude) 숫자
+  쌍으로 표현한다냥.
+</NyangSpeech>
+
+```python
+import folium
+
+# 서울시청 근처를 중심으로 지도 만들기
+m = folium.Map(location=[37.5665, 126.9780], zoom_start=12)
+m.save("map.html")
+```
+
+<Callout type="important">
+  `location=[위도, 경도]`는 지도의 **중심점**을 정한다냥.
+  `zoom_start`는 처음 지도가 열릴 때의 확대 정도로, **숫자가
+  클수록 더 확대**된다냥. `m.save("map.html")`로 저장하면 웹
+  브라우저에서 지도를 열어볼 수 있다냥!
+</Callout>
+
+---
+
+## 2단계 · 마커 찍기 (10분)
+
+<NyangSpeech>
+  지도를 만들었으니, 이제 특정 위치에 **핀(마커)**을 꽂아보자냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '🗺️',
+    label: 'folium.Map()',
+    color: 'blue',
+    items: [
+      '지도의 바탕을 만듦',
+      'location과 zoom_start로 중심/확대 설정',
+    ],
+  }}
+  right={{
+    emoji: '📍',
+    label: 'folium.Marker()',
+    color: 'purple',
+    items: [
+      '지도 위 특정 위치에 핀을 꽂음',
+      'popup으로 클릭 시 보일 설명을 넣음',
+    ],
+  }}
+/>
+
+```python
+folium.Marker(
+    location=[37.5665, 126.9780],
+    popup="서울시청",
+    tooltip="클릭해보세요!",
+).add_to(m)
+
+m.save("map.html")
+```
+
+<Callout type="tip">
+  `popup`은 마커를 **클릭했을 때** 뜨는 설명이고, `tooltip`은
+  마우스를 **올렸을 때** 미리 보이는 짧은 안내문이다냥. 마지막에
+  꼭 `.add_to(m)`을 붙여서, 만든 마커를 지도 `m`에 붙여줘야 한다냥!
+</Callout>
+
+---
+
+## 3단계 · 여러 마커 한 번에 찍기 (7분)
+
+<NyangSpeech>
+  미세먼지 측정소가 10개, 100개라면 하나하나 마커 코드를 쓰긴
+  힘들다냥! 이럴 땐 **반복문**으로 한 번에 찍으면 된다냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+data = {
+    "측정소": ["중구", "강남구", "종로구"],
+    "위도": [37.5636, 37.4979, 37.5735],
+    "경도": [126.9975, 127.0276, 126.9788],
+    "미세먼지": [30, 42, 25],
+}
+df = pd.DataFrame(data)
+
+for i, row in df.iterrows():
+    folium.Marker(
+        location=[row["위도"], row["경도"]],
+        popup=f"{row['측정소']} (미세먼지 {row['미세먼지']})",
+    ).add_to(m)
+
+m.save("map.html")
+```
+
+<StepCard step="핵심" title="df.iterrows()로 한 행씩 꺼내기">
+
+`for i, row in df.iterrows():`는 DataFrame을 **한 행씩** 순서대로
+꺼내주는 반복문이다냥. `row["열이름"]`으로 그 행의 값을 꺼낼 수
+있다냥!
+
+</StepCard>
+
+<Callout type="note">
+  `f"{row['측정소']} (미세먼지 {row['미세먼지']})"`처럼 f-string을
+  쓰면, 문자열 안에 변수 값을 쉽게 끼워넣을 수 있다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '지도를 만들 때 지도의 중심 위치는 어떤 형태로 지정하냥?',
+      answer: 'location=[위도, 경도]로 지정한다냥! folium.Map(location=[37.5665, 126.9780])처럼 쓴다냥.',
+    },
+    {
+      question: '지도에 위치 표시(핀)를 찍으려면 어떤 함수를 쓰냥?',
+      answer: 'folium.Marker()다냥! 마지막에 .add_to(m)을 붙여서 지도에 연결해야 한다냥.',
+    },
+    {
+      question: 'DataFrame의 여러 행을 하나씩 꺼내서 반복하려면 어떤 코드를 쓰냥?',
+      answer: 'for i, row in df.iterrows(): 를 쓴다냥! row["열이름"]으로 각 행의 값을 꺼낼 수 있다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 folium으로 지도를 만들고, 마커를 찍고, 반복문으로 여러
+  마커를 한 번에 찍는 법을 배웠다냥! 이제 실습 페이지에서 직접
+  지도를 만들어보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

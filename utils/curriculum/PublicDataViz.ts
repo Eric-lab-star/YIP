@@ -83,6 +83,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"plotly로 마우스를 올리면 값이 보이고, 확대·축소도 되는 인터랙티브 그래프를 그려보자냥!",
 	},
+	{
+		name: "folium — 지도 위에 데이터 그리기",
+		slug: "Folium_map",
+		description:
+			"folium으로 진짜 지도 위에 마커를 찍어서, 위치 데이터를 한눈에 살펴보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
