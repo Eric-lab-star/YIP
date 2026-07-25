@@ -1,0 +1,169 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'streamlit — 나만의 데이터 앱 만들기',
+  description: '지금까지 배운 걸 모두 모아서, 누구나 브라우저에서 써볼 수 있는 데이터 앱을 만들어보자냥!',
+  session: 14,
+}
+
+# streamlit — 나만의 데이터 앱 만들기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 드디어 기초 과정의 **마지막 시간**이다냥!
+  지금까지 데이터를 표로 다루고, 정리하고, 그래프와 지도로
+  그려봤지냥? 오늘은 그걸 전부 모아서, **버튼과 목록을 눌러가며
+  쓸 수 있는 진짜 웹 앱**을 만들어볼 거다냥. `streamlit`이면
+  충분하다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `streamlit`이 무엇이고 어떻게 실행하는지 안다.
+  - `st.dataframe()`과 `st.bar_chart()`로 표와 그래프를 앱에 보여줄 수 있다.
+  - `st.selectbox()`로 사용자가 직접 고를 수 있는 필터를 만들 수 있다.
+</Callout>
+
+---
+
+## 1단계 · streamlit이란? (7분)
+
+<NyangSpeech>
+  지금까지는 코드를 실행하면 그래프가 한 장 나오는 식이었지냥?
+  `streamlit`은 파이썬 코드만으로 **버튼, 목록, 슬라이더가 있는
+  웹페이지**를 뚝딱 만들어주는 도구다냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+
+st.title("나의 첫 데이터 앱")
+st.write("공공데이터를 브라우저에서 바로 살펴보자냥!")
+```
+
+<Callout type="important">
+  streamlit 코드는 다른 파이썬 코드처럼 `python 파일이름.py`로
+  실행하지 않는다냥! 터미널에서 `streamlit run 파일이름.py`라고
+  입력해야, 자동으로 웹 브라우저가 열리면서 앱이 실행된다냥.
+</Callout>
+
+---
+
+## 2단계 · 표와 그래프 보여주기 (10분)
+
+<NyangSpeech>
+  지금까지 배운 DataFrame과 그래프를, streamlit 함수 한 줄이면
+  그대로 웹페이지에 띄울 수 있다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📋',
+    label: 'st.dataframe(df)',
+    color: 'blue',
+    items: [
+      'DataFrame을 표로 보여줌',
+      '열 이름을 클릭하면 정렬도 가능',
+    ],
+  }}
+  right={{
+    emoji: '📊',
+    label: 'st.bar_chart(df)',
+    color: 'purple',
+    items: [
+      'DataFrame을 막대 그래프로 바로 그려줌',
+      '별도 plt.show() 없이 바로 보임',
+    ],
+  }}
+/>
+
+```python
+import pandas as pd
+
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+st.dataframe(df)
+st.bar_chart(df, x="구", y="미세먼지")
+```
+
+<Callout type="tip">
+  `st.bar_chart()`는 matplotlib이나 seaborn 없이도, DataFrame만
+  넣으면 바로 그래프를 그려준다냥! 빠르게 확인하고 싶을 때
+  아주 편하다냥.
+</Callout>
+
+---
+
+## 3단계 · 사용자가 고를 수 있게 만들기 (8분)
+
+<NyangSpeech>
+  진짜 "앱"답게, 사용자가 **직접 구를 골라서** 그 구의 데이터만
+  보게 만들어보자냥! `st.selectbox()`를 쓰면 된다냥.
+</NyangSpeech>
+
+```python
+선택한구 = st.selectbox("구를 선택하세요", df["구"])
+
+필터된_df = df[df["구"] == 선택한구]
+st.write(f"{선택한구}의 미세먼지: {필터된_df['미세먼지'].values[0]}")
+```
+
+<StepCard step="핵심" title="selectbox의 두 가지 재료">
+
+| 코드 | 하는 일 |
+|---|---|
+| `st.selectbox("안내문구", 목록)` | 목록에서 하나를 고를 수 있는 선택창을 만듦 |
+| 반환값 (`선택한구`) | 사용자가 **지금 고른 값**이 담김 |
+
+</StepCard>
+
+<Callout type="note">
+  `st.selectbox()`가 돌려주는 값은, 사용자가 화면에서 무엇을
+  선택했느냐에 따라 **실시간으로 바뀐다**냥! 이 값을 조건 필터링에
+  그대로 쓰면, 사용자가 고를 때마다 화면이 자동으로 업데이트된다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'streamlit 앱은 어떻게 실행하냥?',
+      answer: '터미널에서 streamlit run 파일이름.py 라고 입력한다냥! python으로 직접 실행하지 않는다냥.',
+    },
+    {
+      question: 'DataFrame을 표로 보여주는 함수와, 막대 그래프로 보여주는 함수는 각각 뭐냥?',
+      answer: 'st.dataframe(df)는 표로, st.bar_chart(df)는 막대 그래프로 보여준다냥!',
+    },
+    {
+      question: '사용자가 목록에서 하나를 직접 고를 수 있게 하려면 어떤 함수를 쓰냥?',
+      answer: 'st.selectbox("안내문구", 목록)을 쓴다냥! 사용자가 고른 값이 반환된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 streamlit으로 표, 그래프, 선택창이 있는 진짜 데이터 앱을
+  만들어봤다냥! 축하한다냥, 이제 공공데이터 분석·시각화 기초 과정을
+  전부 마쳤다냥! 실습 페이지에서 나만의 데이터 앱을 완성해보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

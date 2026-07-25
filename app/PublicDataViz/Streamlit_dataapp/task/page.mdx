@@ -1,0 +1,128 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'streamlit 실습 — 나만의 데이터 앱 완성하기',
+  description: '표와 그래프를 보여주고, 선택창으로 원하는 구만 골라볼 수 있는 앱을 완성해보자냥!',
+  session: 14,
+}
+
+# streamlit 실습 — 나만의 데이터 앱 완성하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 기초 과정의 마지막
+  실습으로 나만의 데이터 앱을 완성해볼 거다냥. 빈칸(`____`)을
+  채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `streamlit`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`app.py` 파일로 저장)
+  - 터미널에서 `streamlit run app.py`로 실행하기
+</Callout>
+
+---
+
+<MissionCard number={1} title="앱 제목과 표 보여주기" time="8~10분">
+
+앱의 제목을 달고, 미세먼지 데이터를 표로 보여주자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.____("우리 동네 미세먼지 앱")
+
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+st.dataframe(df)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 앱의 제목을 크게 보여주는 함수 이름을 넣으면 된다냥. (`title`)
+> - 터미널에서 `streamlit run app.py`를 입력했을 때 브라우저가 자동으로 열리냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="막대 그래프 보여주기" time="7~8분">
+
+표 아래에 막대 그래프도 함께 보여주자냥.
+
+```python
+st.____(df, x="구", y="미세먼지")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 DataFrame을 막대 그래프로 바로 그려주는 함수 이름을 넣으면 된다냥. (`bar_chart`)
+> - 표 아래에 막대 그래프가 나타나냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="선택창으로 필터링하기" time="10~12분">
+
+사용자가 구를 골라서, 그 구의 미세먼지만 볼 수 있게 만들어보자냥.
+
+```python
+선택한구 = st.____("구를 선택하세요", df["구"])
+
+필터된_df = df[df["구"] == 선택한구]
+st.write(f"{선택한구}의 미세먼지: {필터된_df['미세먼지'].values[0]}")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 목록에서 하나를 고를 수 있는 선택창을 만드는 함수 이름을 넣으면 된다냥. (`selectbox`)
+> - 다른 구를 선택할 때마다 아래 문장이 바뀌냥?
+
+<StepCard step="확인" title="화면이 자동으로 업데이트된다냥!">
+
+streamlit은 사용자가 선택창을 바꿀 때마다 **코드 전체를 다시
+실행**해서 화면을 새로 그린다냥. 그래서 별도의 새로고침 버튼 없이도
+바로바로 반영되는 것이다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `st.slider("미세먼지 기준", 0, 100, 30)`을 추가해서, 기준값보다 높은 구만 걸러보기
+- [ ] `st.line_chart(df, x="구", y="미세먼지")`로 바꿔서 선 그래프로도 보여주기
+- [ ] `st.metric("선택한 구의 미세먼지", 필터된_df["미세먼지"].values[0])`로 숫자를 크게 강조해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 기초 과정을 모두 마쳤다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. streamlit으로 앱 제목과 표 보여주기
+  2. st.bar_chart()로 그래프 보여주기
+  3. st.selectbox()로 사용자가 고를 수 있는 필터 만들기
+
+  까지 해냈다냥! 그리고 이걸로 **공공데이터 분석·시각화 기초
+  14차시**를 모두 완주했다냥! 공공데이터를 불러오고, 정리하고,
+  그래프와 지도로 그리고, 이제 진짜 앱까지 만들 수 있게 됐다냥.
+  정말 대단하다냥, 냐옹~ 다음 단계인 프로젝트 과정에서 또 만나자냥!
+</NyangSpeech>

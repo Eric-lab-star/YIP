@@ -89,6 +89,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"folium으로 진짜 지도 위에 마커를 찍어서, 위치 데이터를 한눈에 살펴보자냥!",
 	},
+	{
+		name: "streamlit — 나만의 데이터 앱 만들기",
+		slug: "Streamlit_dataapp",
+		description:
+			"지금까지 배운 걸 모두 모아서, 누구나 브라우저에서 써볼 수 있는 데이터 앱을 만들어보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
