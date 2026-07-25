@@ -95,6 +95,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"지금까지 배운 걸 모두 모아서, 누구나 브라우저에서 써볼 수 있는 데이터 앱을 만들어보자냥!",
 	},
+	{
+		name: "프로젝트 1 — 지하철 승하차 데이터 수집·정제",
+		slug: "Subway_collect",
+		description:
+			"진짜 서울시 지하철 승하차 데이터를 살펴보고, 필요한 열만 골라 깨끗하게 정리해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
