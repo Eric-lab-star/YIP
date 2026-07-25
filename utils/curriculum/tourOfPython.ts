@@ -1,429 +1,127 @@
-import { SideBarTreeItem } from "@/components/commons/SideBarItems";
-import { buildLessonPages } from "./pageSequence";
+/**
+ * Tour of Python 커리큘럼.
+ *
+ * AIDeveloper / PublicDataViz 와 같은 평면 `Lesson[]` 구조를 쓴다. 챕터 하나는
+ * `goal`(개념) · `goal_slide` · `task`(실습) · `task_slide` 네 개 라우트로
+ * 이루어지고, 사이드바 트리는 `utils/sideBarTree/tourOfPythonTree.ts` 에서
+ * 이 배열로부터 기계적으로 만들어진다.
+ *
+ * 원래는 챕터마다 `page.mdx` 한 장이었고 사이드바에는 페이지 안 앵커까지 손으로
+ * 나열돼 있었다. 그 32개 페이지를 개념/연습 짝을 기준으로 15챕터로 묶었고,
+ * 옛 페이지들은 모두 제거했다 (git 이력에 남아 있다).
+ */
+export interface Lesson {
+	/** Sidebar display name */
+	name: string;
+	/** Folder name under app/tourOfPython/ */
+	slug: string;
+	/** Short description shown in metadata */
+	description: string;
+	/**
+	 * 아직 4종 구조를 갖추지 못한 챕터가 임시로 가리킬 페이지들. 지금은 쓰는
+	 * 챕터가 없다 — 15챕터 전환이 모두 끝났기 때문이다. 새 챕터를 단계적으로
+	 * 추가할 때 다시 쓸 수 있도록 남겨둔다. 채워두면 사이드바가 4종 링크 대신
+	 * 이 페이지들을 보여주므로, 없는 라우트로 링크해 404가 나는 일을 막는다.
+	 *
+	 *   legacyPages: [{ name: "함수 연습하기", url: "/tourOfPython/functionExcercise" }]
+	 */
+	legacyPages?: { name: string; url: string }[];
+}
 
-export const tourOfPythonCurriculum: SideBarTreeItem[] = [
-  {
-    kind: "folder",
-    name: "편집기",
-    files: [
-      { kind: "file", name: "편집기 소개", url: "/tourOfPython/helloworld" },
-      {
-        kind: "file",
-        name: "대표편집기",
-        url: "/tourOfPython/helloworld#editor",
-      },
-      {
-        kind: "file",
-        name: "vscode 실행하기",
-        url: "/tourOfPython/helloworld#vscode",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "변수, 문자열, 불리언",
-    files: [
-      {
-        kind: "file",
-        name: "시작하기",
-        url: "/tourOfPython/variable_string_boolean#title",
-      },
-      {
-        kind: "file",
-        name: "변수",
-        url: "/tourOfPython/variable_string_boolean#variable",
-      },
-      {
-        kind: "file",
-        name: "문자열",
-        url: "/tourOfPython/variable_string_boolean#string",
-      },
-      {
-        kind: "file",
-        name: "불리언",
-        url: "/tourOfPython/variable_string_boolean#boolean",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "파이썬 함수",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/functions#title" },
-      {
-        kind: "file",
-        name: "함수를 만들자",
-        url: "/tourOfPython/functions#create",
-      },
-      {
-        kind: "file",
-        name: "간단한 함수",
-        url: "/tourOfPython/functions#simple_create",
-      },
-      {
-        kind: "file",
-        name: "왜 만들까?",
-        url: "/tourOfPython/functions#why_create",
-      },
-      {
-        kind: "file",
-        name: "함수의 몸체",
-        url: "/tourOfPython/functions#function_body",
-      },
-      {
-        kind: "file",
-        name: "매개변수와 인수",
-        url: "/tourOfPython/functions#parameter",
-      },
-      { kind: "file", name: "퀴즈", url: "/tourOfPython/functions#quizz" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "함수 연습하기",
-    files: [
-      { kind: "file", name: "Level 1", url: "/tourOfPython/functionExcercise" },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/tourOfPython/functionExcerciseLevel2",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "input, type, int, try..except",
-    files: [
-      {
-        kind: "file",
-        name: "입력받기  input()",
-        url: "/tourOfPython/input_type_int#input",
-      },
-      {
-        kind: "file",
-        name: "형태 type()",
-        url: "/tourOfPython/input_type_int#type",
-      },
-      { kind: "file", name: "정수형", url: "/tourOfPython/input_type_int#int" },
-      {
-        kind: "file",
-        name: "예외처리",
-        url: "/tourOfPython/input_type_int#try_except",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "if, else, elif",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/if#title" },
-      { kind: "file", name: "왜 사용할까?", url: "/tourOfPython/if#why" },
-      { kind: "file", name: "else", url: "/tourOfPython/if#else" },
-      { kind: "file", name: "elif", url: "/tourOfPython/if#elif" },
-      { kind: "file", name: "퀴즈", url: "/tourOfPython/if#quizz" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "and or not",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/and_or_not#title" },
-      { kind: "file", name: "and", url: "/tourOfPython/and_or_not#and" },
-      { kind: "file", name: "or", url: "/tourOfPython/and_or_not#or" },
-      { kind: "file", name: "not", url: "/tourOfPython/and_or_not#not" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "조건문과 타입 연습하기",
-    files: [
-      {
-        kind: "file",
-        name: "Level 1",
-        url: "/tourOfPython/condition_and_type_level1",
-      },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/tourOfPython/condition_and_type_level2",
-      },
-      {
-        kind: "file",
-        name: "Level 3",
-        url: "/tourOfPython/condition_and_type_level3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "강아지와 고양이 1",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/cat_or_dog#title" },
-      { kind: "file", name: "start()", url: "/tourOfPython/cat_or_dog#start" },
-      {
-        kind: "file",
-        name: "cat_or_dog()",
-        url: "/tourOfPython/cat_or_dog#cat_or_dog",
-      },
-      {
-        kind: "file",
-        name: "에러 만들기",
-        url: "/tourOfPython/cat_or_dog#raise_error",
-      },
-      {
-        kind: "file",
-        name: "중간점검",
-        url: "/tourOfPython/cat_or_dog#checkpoint",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "강아지와 고양이 2",
-    files: [
-      {
-        kind: "file",
-        name: "시작하기",
-        url: "/tourOfPython/cat_or_dog2#title",
-      },
-      {
-        kind: "file",
-        name: "suggest()",
-        url: "/tourOfPython/cat_or_dog2#suggest",
-      },
-      {
-        kind: "file",
-        name: "모든 코드",
-        url: "/tourOfPython/cat_or_dog2#birdEyeView",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "반복문 loop",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/loop" },
-      { kind: "file", name: "while", url: "/tourOfPython/loop#while" },
-      { kind: "file", name: "for...in", url: "/tourOfPython/loop#for_in" },
-      { kind: "file", name: "break", url: "/tourOfPython/loop#break" },
-      { kind: "file", name: "continue", url: "/tourOfPython/loop#continue" },
-      {
-        kind: "file",
-        name: "무한 루프",
-        url: "/tourOfPython/loop#infinite_loop",
-      },
-      { kind: "file", name: "퀴즈", url: "/tourOfPython/loop#quiz" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "파이썬 표준 라이브러리",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/library" },
-      { kind: "file", name: "input()", url: "/tourOfPython/library#input" },
-      {
-        kind: "file",
-        name: "int(), float()",
-        url: "/tourOfPython/library#int_float",
-      },
-      { kind: "file", name: "len()", url: "/tourOfPython/library#len" },
-      { kind: "file", name: "range()", url: "/tourOfPython/library#range" },
-      {
-        kind: "file",
-        name: "min(), max()",
-        url: "/tourOfPython/library#min_max",
-      },
-      {
-        kind: "file",
-        name: "표준 라이브러리",
-        url: "/tourOfPython/library#standard_library",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "숫자 맞추기 게임 만들기",
-    files: [
-      {
-        kind: "file",
-        name: "시작하기",
-        url: "/tourOfPython/numberGuessingGame",
-      },
-      {
-        kind: "file",
-        name: "타이틀 만들기",
-        url: "/tourOfPython/numberGuessingGame#title",
-      },
-      {
-        kind: "file",
-        name: "while 루프",
-        url: "/tourOfPython/numberGuessingGame#while",
-      },
-      {
-        kind: "file",
-        name: "랜덤숫자 생성하기",
-        url: "/tourOfPython/numberGuessingGame#rand_number",
-      },
-      {
-        kind: "file",
-        name: "예외 처리하기",
-        url: "/tourOfPython/numberGuessingGame#exception",
-      },
-      {
-        kind: "file",
-        name: "정답인가요?",
-        url: "/tourOfPython/numberGuessingGame#answer_checker",
-      },
-      {
-        kind: "file",
-        name: "isCorrect() 함수 만들기",
-        url: "/tourOfPython/numberGuessingGame#isCorrect",
-      },
-      {
-        kind: "file",
-        name: "전체 코드 확인하기",
-        url: "/tourOfPython/numberGuessingGame#full_code",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: `리스트 ['a', 'b']`,
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/list#title" },
-      {
-        kind: "file",
-        name: "만드는 방법",
-        url: "/tourOfPython/list#how_to_make",
-      },
-      { kind: "file", name: "특징", url: "/tourOfPython/list#features" },
-      { kind: "file", name: "연산", url: "/tourOfPython/list#plus_repeat" },
-      { kind: "file", name: "수정과 삭제", url: "/tourOfPython/list#edit" },
-      { kind: "file", name: "append()", url: "/tourOfPython/list#append" },
-      { kind: "file", name: "sort()", url: "/tourOfPython/list#sort" },
-      { kind: "file", name: "reverse()", url: "/tourOfPython/list#reverse" },
-      { kind: "file", name: "index()", url: "/tourOfPython/list#index" },
-      { kind: "file", name: "insert()", url: "/tourOfPython/list#insert" },
-      { kind: "file", name: "remove()", url: "/tourOfPython/list#remove" },
-      { kind: "file", name: "pop()", url: "/tourOfPython/list#pop" },
-      { kind: "file", name: "count()", url: "/tourOfPython/list#count" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "리스트 연습하기",
-    files: [
-      {
-        kind: "file",
-        name: "Level 1",
-        url: "/tourOfPython/listExcerciseLevel1",
-      },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/tourOfPython/listExcerciseLevel2",
-      },
-      {
-        kind: "file",
-        name: "Level 3",
-        url: "/tourOfPython/listExcerciseLevel3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: `튜플 ('a', 'b')`,
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/tuple" },
-      {
-        kind: "file",
-        name: "자료를 읽는 방법",
-        url: "/tourOfPython/tuple#indexing",
-      },
-      { kind: "file", name: "더하기", url: "/tourOfPython/tuple#plus" },
-      { kind: "file", name: "곱하기", url: "/tourOfPython/tuple#repeat" },
-      { kind: "file", name: "길이 구하기", url: "/tourOfPython/tuple#len" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "튜플 연습하기",
-    files: [
-      {
-        kind: "file",
-        name: "Level 1",
-        url: "/tourOfPython/tupleExcerciseLevel1",
-      },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/tourOfPython/tupleExcerciseLevel2",
-      },
-      {
-        kind: "file",
-        name: "Level 3",
-        url: "/tourOfPython/tupleExcerciseLevel3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: `딕셔너리 {"age": 12}`,
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/dictionary#title" },
-      { kind: "file", name: "만들기", url: "/tourOfPython/dictionary#create" },
-      { kind: "file", name: "추가하기", url: "/tourOfPython/dictionary#add" },
-      {
-        kind: "file",
-        name: "삭제하기",
-        url: "/tourOfPython/dictionary#delete",
-      },
-      { kind: "file", name: "keys()", url: "/tourOfPython/dictionary#keys" },
-      {
-        kind: "file",
-        name: "values()",
-        url: "/tourOfPython/dictionary#values",
-      },
-      { kind: "file", name: "items()", url: "/tourOfPython/dictionary#items" },
-      { kind: "file", name: "clear()", url: "/tourOfPython/dictionary#clear" },
-      { kind: "file", name: "get()", url: "/tourOfPython/dictionary#get" },
-      { kind: "file", name: "x in y", url: "/tourOfPython/dictionary#in" },
-      { kind: "file", name: "pop()", url: "/tourOfPython/dictionary#pop" },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "딕셔너리 연습하기",
-    files: [
-      {
-        kind: "file",
-        name: "Level 1",
-        url: "/tourOfPython/dictExcerciseLevel1",
-      },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/tourOfPython/dictExcerciseLevel2",
-      },
-      {
-        kind: "file",
-        name: "Level 3",
-        url: "/tourOfPython/dictExcerciseLevel3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "Todo App 만들기",
-    files: [
-      { kind: "file", name: "시작하기", url: "/tourOfPython/todo/#title" },
-      { kind: "file", name: "결과확인", url: "/tourOfPython/todo/#result" },
-    ],
-  },
+export const tourOfPythonCurriculum: Lesson[] = [
+	{
+		name: "편집기",
+		slug: "helloworld",
+		description:
+			"파이썬 코드를 어디에 쓰고 어떻게 실행하는지, 편집기 사용법부터 익혀보자냥!",
+	},
+	{
+		name: "변수, 문자열, 불리언",
+		slug: "variable_string_boolean",
+		description:
+			"값을 담아두는 변수와, 가장 많이 쓰는 자료형인 문자열·불리언을 익혀보자냥!",
+	},
+	{
+		name: "파이썬 함수",
+		slug: "functions",
+		description:
+			"반복되는 코드를 함수로 묶어서, 이름 하나로 불러 쓰는 법을 배워보자냥!",
+	},
+	{
+		name: "input, type, int, try..except",
+		slug: "input_type_int",
+		description:
+			"사용자에게 입력을 받고, 자료형을 확인하고, 잘못된 입력을 안전하게 넘겨보자냥!",
+	},
+	{
+		name: "if, else, elif",
+		slug: "if",
+		description:
+			"조건에 따라 다른 코드를 실행하는 if·else·elif를 익히고 직접 연습해보자냥!",
+	},
+	{
+		name: "and, or, not",
+		slug: "and_or_not",
+		description:
+			"조건 여러 개를 and·or·not으로 엮어서 더 똑똑한 판단을 만들어보자냥!",
+	},
+	{
+		name: "강아지와 고양이 1",
+		slug: "cat_or_dog",
+		description:
+			"배운 조건문으로, 질문에 답하면 반려동물을 추천해주는 CLI 앱을 만들어보자냥!",
+	},
+	{
+		name: "강아지와 고양이 2",
+		slug: "cat_or_dog2",
+		description:
+			"추천 앱을 더 다듬으면서, 코드를 정리하고 기능을 넓히는 법을 배워보자냥!",
+	},
+	{
+		name: "반복문 loop",
+		slug: "loop",
+		description:
+			"같은 일을 여러 번 시키는 for·while 반복문으로 코드를 짧게 만들어보자냥!",
+	},
+	{
+		name: "파이썬 표준 라이브러리",
+		slug: "library",
+		description:
+			"파이썬이 기본으로 주는 내장 함수와 표준 라이브러리를 꺼내 써보자냥!",
+	},
+	{
+		name: "숫자 맞추기 게임 만들기",
+		slug: "numberGuessingGame",
+		description:
+			"반복문과 조건문을 합쳐서, 정답을 맞힐 때까지 물어보는 게임을 만들어보자냥!",
+	},
+	{
+		name: "리스트 list",
+		slug: "list",
+		description:
+			"여러 값을 순서대로 담는 리스트를 익히고, 단계별 문제로 손에 붙여보자냥!",
+	},
+	{
+		name: "튜플 tuple",
+		slug: "tuple",
+		description:
+			"한 번 만들면 바뀌지 않는 튜플이 왜 필요한지 알아보고 직접 다뤄보자냥!",
+	},
+	{
+		name: "딕셔너리 dictionary",
+		slug: "dictionary",
+		description:
+			"이름표(키)로 값을 꺼내는 딕셔너리를 익히고, 단계별 문제로 연습해보자냥!",
+	},
+	{
+		name: "Todo App 만들기",
+		slug: "todo",
+		description:
+			"지금까지 배운 걸 모두 모아서, 할 일을 관리하는 To-Do 앱을 완성해보자냥!",
+	},
 ];
 
-/** Flat prev/next sequence for the Tour of Python lessons (see buildLessonPages). */
-export const tourOfPythonPages = buildLessonPages(tourOfPythonCurriculum, {
-  url: "/tourOfPython",
-  label: "소개",
-});
+/** Look up a lesson by slug. Useful in MDX metadata. */
+export function getLesson(slug: string): Lesson | undefined {
+	return tourOfPythonCurriculum.find((l) => l.slug === slug);
+}

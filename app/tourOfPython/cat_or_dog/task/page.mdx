@@ -1,0 +1,182 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '추천 앱 실습 1 — 묻고, 받고, 걸러내기',
+  description: 'start() 부터 잘못된 입력을 막는 raise 까지, 추천 앱의 뼈대를 직접 만들어보자냥!',
+  session: 7,
+}
+
+# 추천 앱 실습 1 — 묻고, 받고, 걸러내기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 40분 동안 반려동물 추천 앱의
+  **뼈대**를 직접 만들어볼 거다냥. 오늘 만든 코드는 다음 시간에
+  이어서 쓸 거니까 **꼭 저장해두자냥!**
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기 (웹이라면 codesandbox.io)
+  - 개념 강의에서 본 `.strip()` · `not (A or B)` · `raise ValueError()`
+  - 오늘 코드를 저장할 파일 하나 (다음 시간에 이어서 쓴다냥!)
+</Callout>
+
+---
+
+<MissionCard number={1} title="start() 만들고 실행하기" time="8~10분">
+
+우리 프로그램의 모든 코드는 `start()` 가 실행될 때 실행된다냥. 먼저
+뼈대부터 세워보자냥.
+
+```python
+____ start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+
+____
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 함수를 만들 때 맨 앞에 쓰는 세 글자가 있다냥.
+> - 함수는 **만들기만 하면 실행되지 않는다냥.** 마지막 줄에서 불러줘야 한다냥.
+> - 출력창에 "반려견 또는 반려묘를 추천해 드려요." 가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="cat_or_dog() 로 분리하기" time="10~12분">
+
+사용자가 원하는 게 고양이인지 강아지인지 물어보고, 그 답을
+`start()` 로 돌려주자냥.
+
+```python
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    animal = ____()
+    print(animal)          # 잘 받아왔는지 확인용
+
+def cat_or_dog():
+    cat_dog = ____("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ")
+    ____ cat_dog.strip()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 사용자에게 물어볼 때 쓰는 함수는 `input()` 이다냥.
+> - 값을 돌려주는 명령어는 `return` 이다냥. 안 쓰면 `None` 이 나온다냥!
+> - `\n` 은 줄바꿈이다냥. 물음이 두 줄로 나오냥?
+> - "고양이" 를 입력하면 그대로 출력되냥? 앞에 공백을 넣고 입력해도 공백 없이 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="잘못된 입력 막기" time="10~12분">
+
+지금은 사용자가 "코끼리" 를 입력해도 그대로 통과된다냥. 지난 시간에
+배운 `or` 와 `not` 으로 막아보자냥.
+
+```python
+def cat_or_dog():
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ").____()
+    if ____ (cat_dog == "고양이" ____ cat_dog == "강아지"):
+        ____ ValueError("오류!!!!!")
+    return cat_dog
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 앞뒤 공백을 지우는 메소드는 `.strip()` 이다냥.
+> - 고양이일 때도 참, 강아지일 때도 참 → `or` 로 묶는다냥.
+> - 묶은 조건을 뒤집어야 "둘 다 아닐 때" 가 된다냥. `not` 을 어디에 붙이냥?
+> - 일부러 에러를 내는 명령어는 `raise` 다냥.
+
+<StepCard step="실험" title="일부러 틀려보자냥">
+
+"코끼리" 를 입력해보자냥. 프로그램이 **멈추면서** 빨간 에러 메시지에
+`ValueError: 오류!!!!!` 가 보이냥? 그럼 성공이다냥! 이제 이 함수는
+"고양이" 나 "강아지" 만 돌려준다냥.
+
+`not` 을 빼면 어떻게 되냥? 고양이를 입력했는데 에러가 나는지 직접
+확인해보자냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="색과 크기 함수 직접 만들기" time="12~15분">
+
+이번엔 힌트를 조금만 주겠다냥. `cat_or_dog()` 를 만든 **똑같은
+방식**으로 두 함수를 직접 만들어보자냥.
+
+**통과 조건**
+
+1. `black_or_white()` — "검정색" 또는 "흰색" 만 받는다
+2. `small_medium_large()` — "소형", "중형", "대형" 만 받는다
+3. 둘 다 `.strip()` 을 쓰고, 그 밖의 값이면 `raise ValueError()` 로 막는다
+4. `start()` 에서 세 함수를 차례로 부른다
+
+```python
+def black_or_white():
+    color = input("검정색과 흰색중 하나를 입력하세요\n 검정색 또는 흰색 입력: ").strip()
+    if not (____):
+        raise ValueError("오류!!!!!")
+    return color
+
+def small_medium_large():
+    size = input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    if not (____):
+        raise ValueError("오류!!!!")
+    return size
+
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    animal = cat_or_dog()
+    color = ____
+    size = ____
+    print(animal, color, size)   # 세 값이 잘 모였는지 확인용
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 크기는 선택지가 **셋**이다냥. `or` 를 하나 더 이어붙이면 된다냥.
+> - 함수를 부를 때는 이름 뒤에 괄호 `()` 를 꼭 붙여야 한다냥.
+> - "고양이 · 검정색 · 소형" 을 차례로 넣으면 세 값이 한 줄로 출력되냥?
+> - 중간에 "노란색" 을 넣으면 거기서 멈추냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 에러 메시지를 "고양이 또는 강아지만 입력해주세요" 처럼 친절하게 바꿔보기
+- [ ] 크기 선택지에 "초소형" 을 하나 더 넣어보기
+- [ ] `start()` 맨 앞에 이름을 물어보고 "OO님, 안녕하세요!" 를 출력해보기
+
+> 오늘 만든 코드는 다음 시간에 그대로 이어서 쓴다냥. **꼭 저장하자냥!**
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥. 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. start() 로 프로그램의 뼈대 세우기
+  2. cat_or_dog() 로 입력 분리하기
+  3. not 과 or, raise 로 잘못된 입력 막기
+  4. 색과 크기 함수 직접 만들기
+
+  까지 해냈다냥! 이제 사용자에게서 **세 가지 정보**를 안전하게 모을
+  수 있게 됐다냥. 다음 시간에는 이 정보로 진짜 품종을 추천해주는
+  `suggest()` 를 만들어볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

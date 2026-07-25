@@ -1,0 +1,219 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '함수 Function',
+  description: '반복되는 코드를 함수로 묶어서, 이름 하나로 불러 쓰는 법을 배워보자냥!',
+  session: 3,
+}
+
+# 함수 Function
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘은 **함수**를 배워볼 거다냥. 함수는
+  **믹서기**라고 생각하면 쉽다냥. 사과를 넣으면 사과주스가 나오지냥?
+  함수도 무언가를 넣으면 어떤 결과를 만들어준다냥. 사실 지금까지 쓴
+  `print()`도 함수였다냥!
+</NyangSpeech>
+
+![함수를 믹서기에 비유한 그림](https://r2.kimkyungsub.com/pythonFunctionJuice.png)
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `def` 로 함수를 정의하고 이름으로 실행할 수 있다.
+  - 공백(들여쓰기)으로 함수의 안과 밖을 구분할 수 있다.
+  - 매개변수로 값을 받고 `return` 으로 값을 돌려줄 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 함수 만들기 (8분)
+
+```python
+def game_over():
+    print("You are dead. Game over")
+
+game_over()
+```
+
+<StepCard step="핵심" title="함수를 만드는 순서">
+
+| 순서 | 하는 일 |
+|---|---|
+| 1 | `def` 를 쓴다 (define, "정의하다") |
+| 2 | 한 칸 띄우고 함수 이름을 쓴다 |
+| 3 | `():` 를 쓴다 |
+| 4 | 다음 줄에서 **탭을 한 번** 누른다 |
+| 5 | 실행될 코드를 쓴다 |
+
+</StepCard>
+
+<Callout type="important">
+  함수를 **실행**하려면 이름 뒤에 괄호 `()` 가 반드시 있어야 한다냥.
+  `game_over` 라고만 쓰면 실행되지 않는다냥 — 믹서기를 쳐다보기만
+  한 셈이다냥!
+</Callout>
+
+자주 하는 실수 세 가지다냥.
+
+```python
+get_time():          # 1. def 로 시작하지 않음
+    print(14)
+
+def say_name()       # 2. 콜론이 없음
+    print("rina")
+
+def say_hello():     # 3. 바디에 공백이 없음
+print("hello")
+```
+
+---
+
+## 2단계 · 함수는 왜 만드냥? (7분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '함수 없이',
+    color: 'blue',
+    items: [
+      '긴 코드를 필요할 때마다 다시 씀',
+      '고칠 일이 생기면 전부 다 고쳐야 함',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '함수로 묶으면',
+    color: 'purple',
+    items: [
+      '이름 하나로 몇 번이든 부름',
+      '고칠 때는 함수 한 곳만 고치면 됨',
+    ],
+  }}
+/>
+
+```python
+def paint_text():
+    print("아주 긴 문단이 여기에 출력된다")
+
+paint_text()
+paint_text()
+paint_text()
+```
+
+<Callout type="note">
+  이걸 어려운 말로 **추상화(abstraction)** 라고 한다냥. 복잡한 걸
+  안쪽에 숨기고, 바깥에서는 이름만 불러 쓰는 거다냥. 주스 300잔을
+  손으로 짜는 대신 믹서기 버튼을 누르는 것과 같다냥!
+</Callout>
+
+---
+
+## 3단계 · 함수의 몸체 (8분)
+
+<NyangSpeech>
+  믹서기의 안과 밖은 플라스틱으로 나뉘지냥? 파이썬에서 함수의 안과
+  밖은 **공백**으로 나뉜다냥. 파이썬은 공백에 아주 민감한 언어다냥!
+</NyangSpeech>
+
+```python
+def mixer():
+    print("start")   # 공백이 있으니 함수 안
+
+print("end")         # 공백이 없으니 함수 밖
+```
+
+<Callout type="tip">
+  함수 바디에 아무것도 넣고 싶지 않을 때는 `pass` 를 넣으면 된다냥.
+  "지금은 비워둘게" 라고 알려주는 표시다냥 — 비워두면 오류가 나기
+  때문이다냥.
+</Callout>
+
+![함수의 몸체를 설명하는 그림](https://r2.kimkyungsub.com/pythonFunctionBody.png)
+
+---
+
+## 4단계 · 매개변수와 인수 (9분)
+
+```python
+def plus_one(number):   # number = 매개변수 (parameter)
+    print(number + 1)
+
+plus_one(5)             # 5 = 인수 (argument)
+```
+
+<StepCard step="비교" title="매개변수 vs 인수">
+
+| 용어 | 어디에 있냥 | 무엇이냥 |
+|---|---|---|
+| 매개변수 parameter | 함수를 **만들 때** 괄호 안 | 값을 받을 빈 자리 |
+| 인수 argument | 함수를 **부를 때** 괄호 안 | 실제로 넣는 값 |
+
+</StepCard>
+
+<Callout type="note">
+  매개변수 이름은 자유롭게 지어도 된다냥. `number` 대신 `num`, `x`,
+  `y` 무엇이든 좋다냥. 믹서기에 "넣는 구멍" 이름을 뭐라고 부르든
+  상관없는 것과 같다냥!
+</Callout>
+
+---
+
+## 5단계 · return — 값을 돌려주기 (8분)
+
+```python
+def add_two(x):
+    return x + 2
+
+결과 = add_two(5)
+print(결과)   # 7
+```
+
+<Callout type="important">
+  `print` 는 화면에 **보여주기만** 하고, `return` 은 값을 **돌려줘서
+  다시 쓸 수 있게** 한다냥. 믹서기가 주스를 컵에 담아주는 게
+  `return` 이다냥!
+
+  그리고 `return` 은 함수를 **끝내는** 역할도 한다냥. `return` 뒤에
+  오는 코드는 실행되지 않는다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '함수를 정의할 때 맨 앞에 쓰는 단어는 뭐냥?',
+      answer: 'def 다냥! define(정의하다)의 줄임말이다냥. 이름 뒤에 ():를 쓰고 다음 줄은 탭으로 들여쓴다냥.',
+    },
+    {
+      question: '매개변수와 인수는 어떻게 다르냥?',
+      answer: '매개변수는 함수를 만들 때 괄호 안에 두는 빈 자리이고, 인수는 함수를 부를 때 실제로 넣는 값이다냥!',
+    },
+    {
+      question: 'print와 return의 가장 큰 차이는 뭐냥?',
+      answer: 'print는 화면에 보여주기만 하고, return은 값을 돌려줘서 변수에 담아 다시 쓸 수 있다냥. return은 함수를 끝내기도 한다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 함수를 만들고, 값을 받고, 값을 돌려주는 것까지 배웠다냥!
+  함수는 앞으로 계속 쓰게 되니까 꼭 손에 익혀두자냥. 이제 실습
+  페이지로 가보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

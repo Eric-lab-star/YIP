@@ -1,0 +1,183 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'input() type() int()',
+  description: '사용자에게 입력을 받고, 자료형을 확인하고, 잘못된 입력을 안전하게 넘겨보자냥!',
+  session: 4,
+}
+
+# input() type() int()
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지는 값을 우리가 직접 코드에 써넣었지냥?
+  오늘은 **사용자에게 물어보고 답을 받는** 법을 배운다냥. 그런데 여기엔
+  꼭 알아야 할 함정이 하나 숨어 있다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `input()` 으로 사용자에게 값을 받을 수 있다.
+  - `type()` 으로 자료형을 확인하고, `input()` 이 항상 문자열을 준다는 걸 안다.
+  - `int()` 로 형을 바꾸고, `try..except` 로 오류를 잡을 수 있다.
+</Callout>
+
+---
+
+## 1단계 · input() — 물어보기 (6분)
+
+```python
+age = input("몇 살이에요")
+phonenumber = input("전화번호 뭐에요")
+```
+
+<Callout type="note">
+  `input()` 은 질문을 보여주고 **사용자가 답할 때까지 기다린다냥.**
+  그리고 답을 변수에 저장해준다냥. `print()` 처럼 파이썬에 미리
+  들어 있는 `built-in` 함수다냥!
+</Callout>
+
+---
+
+## 2단계 · type() — 모양 확인하기 (8분)
+
+<NyangSpeech>
+  자료형은 **동그라미, 세모, 네모 같은 모양**이라고 생각하면 쉽다냥.
+  동그라미 구멍에는 동그라미만 들어간다냥. 모양이 안 맞으면 오류가
+  난다냥!
+</NyangSpeech>
+
+![파이썬의 자료형](https://r2.kimkyungsub.com/types.jpg)
+
+```python
+age = type(20)
+print(age)      # <class 'int'>
+```
+
+<Callout type="tip">
+  `<class 'int'>` 라고 나와도 겁먹지 말자냥. `class` 는 나중에 배우고,
+  지금은 **그 다음 단어만** 보면 된다냥 — `int` 는 정수라는 뜻이다냥!
+</Callout>
+
+여기서 오늘의 핵심이 나온다냥.
+
+```python
+age = input("age?: ")
+print(type(age))     # <class 'str'>  ← 숫자를 입력했는데도!
+```
+
+<Callout type="important">
+  **`input()` 은 무엇을 입력하든 항상 문자열(`str`)을 돌려준다냥.**
+
+  숫자 20을 입력해도 파이썬은 `"20"` 이라는 글자로 받는다냥. 그래서
+  바로 계산에 쓰면 원하는 결과가 안 나온다냥!
+</Callout>
+
+---
+
+## 3단계 · int() — 모양 바꾸기 (8분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: 'input() 그대로',
+    color: 'blue',
+    items: [
+      '"20" — 문자열',
+      '+ 를 하면 이어붙여짐',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: 'int() 로 감싸면',
+    color: 'purple',
+    items: [
+      '20 — 정수',
+      '+ 를 하면 계산됨',
+    ],
+  }}
+/>
+
+```python
+age = int(input("age? :"))
+print(type(age))     # <class 'int'>
+```
+
+하지만 바꿀 수 없는 값도 있다냥.
+
+```python
+ValueError: invalid literal for int() with base 10: 'asfasfa'
+```
+
+<Callout type="important">
+  사용자가 "hello" 같은 글자를 입력하면 `int()` 가 바꿀 수 없어서
+  **오류를 내고 프로그램이 그냥 종료된다냥.** 이건 프로그램에
+  아주 치명적이다냥!
+</Callout>
+
+---
+
+## 4단계 · try..except — 오류 잡기 (9분)
+
+```python
+try:
+    age = int(input("age? :"))
+    print(type(age))
+except ValueError:
+    print("숫자를 입력하세요")
+```
+
+<StepCard step="핵심" title="try 와 except 의 역할">
+
+| 블록 | 무엇을 넣냥 |
+|---|---|
+| `try` | 오류가 **생길 수도 있는** 코드 |
+| `except` | 오류가 생겼을 때 **대신 실행할** 코드 |
+
+</StepCard>
+
+<Callout type="tip">
+  `except ValueError` 는 "오류 종류가 ValueError 일 때만 실행해라"
+  라는 뜻이다냥. `ValueError` 를 빼고 `except:` 라고만 쓰면 **모든
+  오류**에 반응한다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'input()으로 20을 입력받으면 자료형이 뭐냥?',
+      answer: 'str, 문자열이다냥! input()은 무엇을 입력하든 항상 문자열을 돌려준다냥.',
+    },
+    {
+      question: '입력받은 값으로 계산을 하려면 어떻게 하냥?',
+      answer: 'int()로 감싸면 된다냥! int(input("나이: ")) 처럼 쓴다냥.',
+    },
+    {
+      question: '사용자가 "hello"를 입력했을 때 프로그램이 안 멈추게 하려면?',
+      answer: 'try..except로 감싸면 된다냥! try에 오류가 날 수 있는 코드를 넣고, except에 대신 할 일을 쓴다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 사용자와 대화하는 법을 배웠다냥! 이제 만드는 프로그램이
+  훨씬 살아있게 느껴질 거다냥. 실습 페이지에서 직접 물어보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

@@ -1,0 +1,177 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '딕셔너리 dictionary',
+  description: '이름표(키)로 값을 꺼내는 딕셔너리를 익히고, 단계별 문제로 연습해보자냥!',
+  session: 14,
+}
+
+# 딕셔너리 dictionary
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘 배울 딕셔너리는 **사전**과 똑같다냥.
+  사전에서 "사과"를 찾으면 "apple"이 나오지냥? 딕셔너리도 이름표와
+  값이 짝으로 되어 있다냥. 리스트가 번호로 찾았다면, 딕셔너리는
+  **이름으로 바로** 찾는다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 중괄호로 딕셔너리를 만들고, 키로 값을 꺼낼 수 있다.
+  - 키를 추가·수정·삭제할 수 있다.
+  - `keys`, `values`, `items`, `get` 을 상황에 맞게 골라 쓸 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 번호 대신 이름표로 (7분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '리스트 — 번호로',
+    color: 'blue',
+    items: [
+      'fruits[0]',
+      '몇 번째인지 외우고 있어야 함',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '딕셔너리 — 이름으로',
+    color: 'purple',
+    items: [
+      'fruits["사과"]',
+      '이름만 알면 바로 꺼냄',
+    ],
+  }}
+/>
+
+```python
+person = {"이름": "Alice", "나이": 15}
+print(person["이름"])   # Alice
+```
+
+<Callout type="note">
+  중괄호 `{}` 안에 `키: 값` 을 넣어 만든다냥. 콜론 `:` 왼쪽이
+  이름표(키), 오른쪽이 값이다냥. 빈 `{}` 로 시작해서 나중에 채워도
+  된다냥!
+</Callout>
+
+---
+
+## 2단계 · 추가하고 바꾸고 지우기 (8분)
+
+```python
+person = {"이름": "Alice"}
+
+person["나이"] = 15        # 없던 키 → 추가
+person["이름"] = "Bob"     # 있던 키 → 값이 바뀜
+del person["나이"]         # 키로 삭제
+person.clear()             # 전부 비우기
+```
+
+<Callout type="important">
+  같은 문법인데 결과가 다르다냥! **없던 키**에 넣으면 추가되고,
+  **있던 키**에 넣으면 값이 덮어써진다냥. 실수로 기존 값을 지우지
+  않게 조심하자냥.
+</Callout>
+
+---
+
+## 3단계 · 키, 값, 짝으로 꺼내기 (10분)
+
+<NyangSpeech>
+  딕셔너리 전체를 훑고 싶을 때 쓰는 세 친구다냥. 무엇을 꺼내고
+  싶은지에 따라 골라 쓰면 된다냥!
+</NyangSpeech>
+
+```python
+scores = {"수학": 90, "영어": 85}
+
+print(scores.keys())          # dict_keys(['수학', '영어'])
+print(scores.values())        # dict_values([90, 85])
+print(sum(scores.values()))   # 175
+
+for subject, score in scores.items():
+    print(subject, ":", score)
+```
+
+<StepCard step="핵심" title="셋 중 무엇을 쓸까">
+
+| 하고 싶은 일 | 쓰는 것 |
+|---|---|
+| 과목 이름만 모으기 | `keys()` |
+| 점수만 모아서 합계 내기 | `values()` |
+| 과목과 점수를 함께 출력 | `items()` |
+
+</StepCard>
+
+---
+
+## 4단계 · 없는 키를 안전하게 (8분)
+
+```python
+student = {"name": "Alice"}
+
+print(student["grade"])              # 에러! 없는 키
+print(student.get("grade"))          # None    ← 오류 없음
+print(student.get("grade", "없음"))   # 없음    ← 기본값
+print("name" in student)             # True
+```
+
+<Callout type="tip">
+  대괄호로 꺼내면 없는 키일 때 프로그램이 멈춘다냥. `get()`은 대신
+  `None`이나 정해둔 기본값을 돌려줘서 안전하다냥. 있는지 먼저
+  확인하고 싶으면 `in`을 쓰면 된다냥!
+</Callout>
+
+`pop()`은 리스트에서와 똑같이 **지우면서 그 값을 돌려준다냥.**
+
+```python
+student = {"name": "Alice", "age": 20}
+age = student.pop("age")
+print(age)      # 20
+print(student)  # {'name': 'Alice'}
+```
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '리스트와 딕셔너리는 값을 꺼내는 방법이 어떻게 다르냥?',
+      answer: '리스트는 번호로(fruits[0]), 딕셔너리는 이름표인 키로(fruits["사과"]) 꺼낸다냥!',
+    },
+    {
+      question: '점수 딕셔너리의 합계를 구하려면 어떻게 하냥?',
+      answer: 'sum(scores.values()) 다냥! values()로 값만 모아서 sum()으로 더한다냥.',
+    },
+    {
+      question: '없는 키를 꺼낼 때 프로그램이 멈추지 않게 하려면?',
+      answer: 'get()을 쓰면 된다냥! student.get("grade", "없음")처럼 기본값도 정해줄 수 있다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 딕셔너리를 만들고, 추가·삭제하고, keys·values·items·get까지
+  익혀봤다냥! 이제 실습 페이지에서 직접 만들어보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

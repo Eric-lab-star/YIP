@@ -1,0 +1,212 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '리스트 list [a, b, c]',
+  description: '여러 값을 순서대로 담는 리스트를 익히고, 단계별 문제로 손에 붙여보자냥!',
+  session: 12,
+}
+
+# 리스트 list [a, b, c]
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지는 숫자 하나, 글자 하나만 다뤘지냥?
+  그런데 홀수 1, 3, 5, 7, 9를 한꺼번에 담고 싶으면 어떡하냥? 변수를
+  다섯 개 만들면 너무 번거롭다냥. 오늘은 여러 값을 한 번에 담는
+  **가방**, 리스트를 배워보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 대괄호로 리스트를 만들고, 번호(인덱스)로 값을 꺼낼 수 있다.
+  - 슬라이싱으로 원하는 구간만 잘라낼 수 있다.
+  - `append`, `sort`, `pop` 같은 리스트 메소드를 골라 쓸 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 리스트 만들기 (5분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '변수 여러 개',
+    color: 'blue',
+    items: [
+      'a = 1, b = 3, c = 5 ...',
+      '값이 늘어날 때마다 변수도 늘어남',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '리스트 하나',
+    color: 'purple',
+    items: [
+      'numbers = [1, 3, 5, 7, 9]',
+      '가방 하나에 전부 담김',
+    ],
+  }}
+/>
+
+```python
+numbers = [1, 2, 3, 4, 5]
+```
+
+<Callout type="note">
+  대괄호 `[]`가 가방이고, 그 안에 값을 쉼표 `,`로 구분해서 넣으면
+  끝이다냥. 소풍 가방이라면 `["김밥", "음료수", "과자"]` 처럼
+  쓰면 된다냥!
+</Callout>
+
+---
+
+## 2단계 · 번호로 값 꺼내기 (8분)
+
+<NyangSpeech>
+  리스트에 담긴 값에는 번호가 붙는다냥. 중요한 건 **0번부터**
+  시작한다는 거다냥! 사람은 1부터 세지만 파이썬은 0부터 센다냥.
+</NyangSpeech>
+
+```python
+fruits = ["사과", "바나나", "딸기"]
+print(fruits[0])   # 사과   ← 0번부터 시작
+print(fruits[1])   # 바나나
+print(fruits[-1])  # 딸기   ← 뒤에서 첫 번째
+```
+
+<StepCard step="핵심" title="번호 붙이는 규칙">
+
+| 표기 | 가리키는 값 |
+|---|---|
+| `fruits[0]` | 맨 앞 |
+| `fruits[1]` | 두 번째 |
+| `fruits[-1]` | 맨 뒤 |
+| `fruits[-2]` | 뒤에서 두 번째 |
+
+</StepCard>
+
+번호로 위치를 골라 새 값을 넣으면 값이 바뀐다냥. 칠판 글씨를 지우고
+새로 쓰는 것과 같다냥.
+
+```python
+fruits[0] = "포도"
+print(fruits)  # ['포도', '바나나', '딸기']
+```
+
+---
+
+## 3단계 · 잘라내기, 슬라이싱 (8분)
+
+```python
+numbers = [1, 2, 3, 4, 5]
+print(numbers[1:3])  # [2, 3]
+print(numbers[:3])   # [1, 2, 3]
+print(numbers[2:])   # [3, 4, 5]
+```
+
+<Callout type="important">
+  `리스트[시작:끝]`에서 **끝 번호는 포함하지 않는다냥.**
+  `numbers[1:3]`이 1번과 2번까지만 가져오는 이유다냥. 시작이나 끝을
+  비우면 각각 처음부터, 끝까지라는 뜻이다냥.
+</Callout>
+
+---
+
+## 4단계 · 리스트끼리 계산하기 (5분)
+
+```python
+a = [1, 2, 3]
+b = [4, 5, 6]
+print(a + b)      # [1, 2, 3, 4, 5, 6]   이어붙이기
+print([0] * 5)    # [0, 0, 0, 0, 0]      반복하기
+print(len(a))     # 3                    개수 세기
+```
+
+<Callout type="tip">
+  `+`는 두 리스트를 순서대로 이어붙이고, `*`는 내용을 그만큼
+  반복한다냥. `[0] * 5`처럼 초기값을 한 번에 만들 때 아주 편하다냥!
+</Callout>
+
+---
+
+## 5단계 · 리스트 메소드 (12분)
+
+<NyangSpeech>
+  리스트에는 편리한 기능이 미리 들어 있다냥. 이걸 메소드라고
+  부른다냥. 자주 쓰는 것부터 익혀두자냥!
+</NyangSpeech>
+
+```python
+colors = ['red', 'orange', 'yellow']
+
+colors.append('purple')     # 맨 끝에 추가
+colors.insert(1, 'green')   # 원하는 자리에 끼워넣기
+colors.remove('red')        # 값으로 지우기 (맨 앞 하나만)
+last = colors.pop()         # 지우면서 그 값을 돌려줌
+print(colors.index('green'))  # 몇 번째인지
+print(colors.count('green'))  # 몇 개인지
+```
+
+<StepCard step="비교" title="지우는 방법이 셋이나 되는 이유">
+
+| 코드 | 무엇으로 지우냥 | 돌려주는 값 |
+|---|---|---|
+| `del 리스트[번호]` | 번호 | 없음 |
+| `리스트.remove(값)` | 값 | 없음 |
+| `리스트.pop()` | 맨 뒤(또는 번호) | **지운 값** |
+
+</StepCard>
+
+<Callout type="note">
+  `pop()`만 지운 값을 돌려준다냥. "빼서 쓰고 싶을 때"는 `pop()`,
+  "그냥 없애고 싶을 때"는 `remove()`나 `del`을 쓰면 된다냥.
+</Callout>
+
+정렬과 뒤집기도 자주 쓴다냥.
+
+```python
+numbers = [100, 19, 98, 32, 6, 1]
+numbers.sort()                  # [1, 6, 19, 32, 98, 100]
+numbers.sort(reverse=True)      # [100, 98, 32, 19, 6, 1]
+numbers.reverse()               # 순서만 거꾸로
+```
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '리스트 fruits에서 맨 뒤의 값을 꺼내려면 어떻게 쓰냥?',
+      answer: 'fruits[-1] 이다냥! 음수 번호는 뒤에서부터 센다냥.',
+    },
+    {
+      question: 'numbers = [1, 2, 3, 4, 5] 일 때 numbers[1:3] 의 결과는 뭐냥?',
+      answer: '[2, 3] 이다냥! 끝 번호 3은 포함하지 않기 때문이다냥.',
+    },
+    {
+      question: 'remove()와 pop()의 가장 큰 차이는 뭐냥?',
+      answer: 'pop()은 지우면서 그 값을 돌려주고, remove()는 돌려주지 않는다냥. 또 remove()는 값으로, pop()은 번호로 지운다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 리스트를 만들고, 번호로 꺼내고, 잘라내고, 메소드까지
+  익혀봤다냥! 이제 실습 페이지에서 직접 손으로 풀어보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

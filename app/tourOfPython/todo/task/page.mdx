@@ -1,0 +1,410 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'To-Do App 실습 — 앱 하나를 끝까지 완성하기',
+  description: '배너와 표부터 명령어 처리까지, 터미널 To-Do 앱을 단계별로 직접 완성해보자냥!',
+  session: 15,
+}
+
+# To-Do App 실습 — 앱 하나를 끝까지 완성하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 50분 동안 To-Do 앱을 **처음부터
+  끝까지** 만들어볼 거다냥. 코드가 길어 보이지만 걱정 말라냥. 작은
+  함수를 하나씩 쌓아 올릴 뿐이다냥. 한 미션이 끝날 때마다 꼭
+  실행해보자냥!
+</NyangSpeech>
+
+<Callout type="important">
+  **한 번에 다 이해하지 못해도 괜찮다냥!** 먼저 따라 쓰면서 "이렇게 큰
+  것도 만들 수 있구나"를 느끼는 게 목표다냥. 이해는 천천히 해도
+  된다냥.
+</Callout>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 새 파일 `main.py`
+  - 개념 강의에서 본 함수 구조표 (화면 그리기 / 데이터 바꾸기)
+</Callout>
+
+---
+
+<MissionCard number={1} title="배너와 표 뼈대 만들기" time="12~15분">
+
+먼저 앱의 얼굴인 표부터 만들어보자냥. 빈칸(`____`)을 채워보자냥.
+
+```python
+# main.py
+heading = ["title", "state"]
+todos = []
+WIDTH = 100
+INDEX_ROW_PADDING = 3
+PADDING = (WIDTH - INDEX_ROW_PADDING) // ____(heading)   # heading 의 개수
+
+def banner(message=""):
+    print("=".center(WIDTH, "="))
+    print(f"|{message.center(WIDTH - 2)}|")
+    print("=".center(WIDTH, "="))
+
+def header():
+    banner("____")            # 위쪽 배너 문구
+
+def footer():
+    banner("You are Special")  # 아래쪽 배너 문구
+
+banner("테스트")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 리스트의 개수를 세는 함수는 `len` 이다냥.
+> - 위쪽 배너 문구는 `To-Do List` 로 해보자냥.
+> - 실행하면 등호(`=`) 줄 사이에 문구가 가운데 정렬돼 나오냥?
+> - 마지막 `banner("테스트")` 줄은 확인이 끝나면 지우자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="목록을 표로 보여주기" time="12~15분">
+
+이제 할 일 목록을 표 형태로 찍는 함수를 만들어보자냥.
+
+```python
+def show_list(todos):
+    index = "n".center(INDEX_ROW_PADDING)
+    title = "title".center(PADDING - 2)
+    state = "state".center(PADDING - 1)
+
+    print(f"|{index}|{title}|{state}|")   # 표 제목 줄
+    print("-".center(WIDTH, "-"))
+
+    if len(todos) ____ 0:                  # 할 일이 하나도 없을 때
+        print(f"|{'No items'.center(WIDTH - 2)}|")
+    else:
+        for i, item in ____(todos):        # 번호와 값을 함께 꺼내기
+            format_item(i, item["title"], item["____"])
+
+def format_item(index, title, state):
+    n = str(index + ____).center(INDEX_ROW_PADDING)   # 사람은 1번부터 센다냥
+    t = title[:PADDING - 2].center(PADDING - 2)
+    s = state.center(PADDING - 1)
+    print(f"|{n}|{t}|{s}|")
+
+def body(todos):
+    show_list(todos)
+
+def table(todos):
+    header()
+    body(todos)
+    footer()
+
+table([{"title": "파이썬 복습", "state": "todo"}])
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 목록이 비었다는 건 개수가 0 이하라는 뜻이다냥. `<=` 다냥.
+> - 번호와 값을 함께 꺼내주는 건 `enumerate` 다냥.
+> - 딕셔너리에서 상태를 꺼내는 이름표는 `state` 다냥.
+> - 리스트 번호는 0부터지만 사람에게 보여줄 땐 1부터다냥. 그래서 `+ 1` 이다냥.
+> - 빈 리스트 `[]` 를 넣으면 `No items` 가 나오냥?
+
+<StepCard step="실험" title="WIDTH 를 바꿔보자냥">
+
+`WIDTH = 100` 을 `WIDTH = 60` 으로 바꾸고 실행해보자냥. 표 전체가
+한 번에 좁아진다냥! 숫자를 맨 위 변수로 빼두면 이렇게 한 줄만 고쳐도
+전부 바뀐다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="추가·삭제·완료 표시 만들기" time="12~15분">
+
+이제 데이터를 바꾸는 함수 네 개를 만들어보자냥.
+
+```python
+def create_item(title):
+    return {"title": title, "____": "todo"}   # 처음 상태는 todo
+
+def add_item(todos, item):
+    todos.____(item)                          # 맨 뒤에 추가
+
+def delete_item(todos, title):
+    return [item for item in todos if item["title"] ____ title]
+
+def mark_item(todos, title):
+    for i, item in enumerate(todos):
+        if item["title"] ____ title:
+            todos[i]["state"] = "done" if item["state"] == "todo" else "todo"
+            ____                              # 찾았으면 반복 끝내기
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 상태를 담는 이름표는 `state` 다냥.
+> - 리스트 맨 뒤에 붙이는 메소드는 `append` 다냥.
+> - 삭제는 "제목이 **다른** 것만 남긴다"는 뜻이다냥. `!=` 다냥.
+> - 찾을 때는 "제목이 **같은가**" 니까 `==` 다냥.
+> - 이미 찾았으면 더 볼 필요가 없다냥. `break` 다냥.
+
+<Callout type="tip">
+  네 함수 모두 `print` 를 하나도 쓰지 않는다냥! 데이터를 바꾸는 함수는
+  화면에 아무것도 찍지 않고, 보여주는 일은 `table` 에게 맡긴다냥.
+  이게 역할을 나눈다는 뜻이다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="parser 와 main 루프로 앱 완성하기" time="15~18분">
+
+마지막이다냥! 명령어를 읽어 알맞은 함수를 부르고, 끝없이 반복하게
+만들면 앱이 완성된다냥.
+
+```python
+import os
+
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def parser(todos, prompt):
+    prompt_list = prompt.strip().split(" ", ____)   # 딱 한 번만 쪼개기
+    command = prompt_list[0]
+    title = prompt_list[1] if len(prompt_list) > 1 else ""
+
+    if command == "show":
+        pass
+    elif command == "____" and title != "":
+        new_item = create_item(title)
+        add_item(todos, new_item)
+    elif command == "delete" and title != "":
+        todos = ____(todos, title)      # 결과를 다시 받아야 한다냥
+    elif command == "mark" and title != "":
+        ____(todos, title)
+    return todos
+
+def main():
+    global todos
+    ____:
+        while True:
+            table(todos)
+            prompt = input("""
+todo commands:
+add [todo]   : add new items to list.
+delete [todo]: delete item from list.
+mark [todo]  : mark item as done.
+show         : show todo list items.\n""")
+            todos = parser(todos, prompt)
+            clear()
+    ____ KeyboardInterrupt:
+        print("\rbye".center(WIDTH, " "))
+
+if __name__ == "____":
+    main()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `split(" ", 1)` 의 1은 "한 번만 쪼개라"는 뜻이다냥. 제목에 띄어쓰기가 있어도 안전하다냥.
+> - 추가 명령어는 `add`, 삭제 함수는 `delete_item`, 완료 표시 함수는 `mark_item` 이다냥.
+> - `Ctrl + C` 를 잡으려면 `try` 와 `except` 가 필요하다냥.
+> - 마지막 줄의 빈칸은 `__main__` 이다냥.
+> - `add 파이썬 복습` → `mark 파이썬 복습` → `delete 파이썬 복습` 순서로 넣어보자냥. 표가 매번 바뀌냥?
+
+</MissionCard>
+
+---
+
+## 전체 코드 확인하기
+
+<NyangSpeech>
+  다 만들었으면 아래 완성본과 비교해보자냥. 내 코드와 조금 달라도
+  앱이 잘 돌아간다면 그것도 정답이다냥!
+</NyangSpeech>
+
+```python
+# main.py
+import os
+
+heading = ["title", "state"]
+todos = []
+WIDTH = 100
+INDEX_ROW_PADDING = 3
+PADDING = (WIDTH - INDEX_ROW_PADDING) // len(heading)
+
+def banner(message=""):
+    """
+    앱을 실행할 때 나오는 멋있는 배너를 만드는 함수
+    """
+    print("=".center(WIDTH, "="))
+    print(f"|{message.center(WIDTH - 2)}|")
+    print("=".center(WIDTH, "="))
+
+def show_list(todos):
+    """
+    format_item 함수를 이용해서 todo 리스트를 표 형태로 보여주는 함수
+    """
+    index = "n".center(INDEX_ROW_PADDING)
+    title = "title".center(PADDING - 2)
+    state = "state".center(PADDING - 1)
+
+    print(f"|{index}|{title}|{state}|")  # table heading
+    print("-".center(WIDTH, "-"))
+
+    if len(todos) <= 0:
+        print(f"|{'No items'.center(WIDTH - 2)}|")
+    else:
+        for i, item in enumerate(todos):
+            format_item(i, item["title"], item["state"])
+
+def format_item(index, title, state):
+    """
+    index, title, state를 받아서 표 형태로 보여주는 함수
+    """
+    n = str(index + 1).center(INDEX_ROW_PADDING)
+    t = title[:PADDING - 2].center(PADDING - 2)
+    s = state.center(PADDING - 1)
+    row = f"|{n}|{t}|{s}|"
+    print(row)
+
+def header():
+    """
+    표의 헤더 부분을 보여주는 함수
+    """
+    banner("To-Do List")
+
+def body(todos):
+    """
+    표의 바디 부분을 보여주는 함수
+    """
+    show_list(todos)
+
+def footer():
+    """
+    표의 마지막 부분을 보여주는 함수
+    """
+    banner("You are Special")
+
+def table(todos):
+    header()
+    body(todos)
+    footer()
+
+
+def clear():
+    """
+    터미널 화면을 지우는 함수
+    """
+    os.system("cls" if os.name == "nt" else "clear")
+
+def create_item(title):
+    """
+    아이템을 생성하는 함수, title을 받아서 state는 "todo"로 초기화해서 딕셔너리 형태로 반환
+    """
+    return {"title": title, "state": "todo"}
+
+def add_item(todos, item):
+    """
+    아이템을 리스트에 추가하는 함수
+    """
+    todos.append(item)
+
+def delete_item(todos, title):
+    """
+    title과 일치하는 아이템을 제거하고 새로운 리스트를 반환
+    """
+    return [item for item in todos if item["title"] != title]
+
+def mark_item(todos, title):
+    """
+    title과 일치하는 아이템의 state를 todo <-> done 으로 토글
+    """
+    for i, item in enumerate(todos):
+        if item["title"] == title:
+            todos[i]["state"] = "done" if item["state"] == "todo" else "todo"
+            break
+
+def parser(todos, prompt):
+    """
+    사용자의 입력을 명령어와 제목으로 분리해서 알맞은 함수를 호출하고 todos를 반환
+    """
+    prompt_list = prompt.strip().split(" ", 1)
+    command = prompt_list[0]
+    title = prompt_list[1] if len(prompt_list) > 1 else ""
+
+    if command == "show":
+        pass
+    elif command == "add" and title != "":
+        new_item = create_item(title)
+        add_item(todos, new_item)
+    elif command == "delete" and title != "":
+        todos = delete_item(todos, title)
+    elif command == "mark" and title != "":
+        mark_item(todos, title)
+    return todos
+
+def main():
+    """
+    프로그램의 진입점. 무한 루프를 돌면서 명령어를 입력받아 todo 리스트를 갱신하고
+    표 형태로 보여준다. Ctrl+C 로 종료할 때까지 계속 실행된다.
+    """
+    global todos
+    try:
+        while True:
+            table(todos)
+            prompt = input("""
+todo commands:
+add [todo]   : add new items to list.
+delete [todo]: delete item from list.
+mark [todo]  : mark item as done.
+show         : show todo list items.\n""")
+            todos = parser(todos, prompt)
+            clear()
+    except KeyboardInterrupt:
+        print("\rbye".center(WIDTH, " "))
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+코드를 다 따라 썼다면, 아래 중 하나를 골라 **나만의 앱**으로
+바꿔보자냥. 작은 변화부터 시작하면 된다냥!
+
+- [ ] 배너 문구 `You are Special` 을 내가 좋아하는 말로 바꿔보기
+- [ ] 명령어 안내 문구를 한국어로 바꿔보기 (예: `add` → `추가`)
+- [ ] 할 일을 추가할 때 "할 일이 추가되었어요!" 같은 메시지 출력해보기
+- [ ] 완료된 할 일이 몇 개인지 표 아래에 세어서 보여주기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 배너와 표 뼈대 만들기
+  2. 목록을 표로 보여주기
+  3. 추가·삭제·완료 표시 함수 만들기
+  4. parser 와 main 루프로 앱 완성하기
+
+  까지 해냈다냥! 그리고 이걸로 파이썬 여행 전체가 끝이다냥.
+  처음엔 `print` 한 줄에서 시작했는데, 이제는 함수 열다섯 개짜리
+  프로그램을 손으로 만들어냈다냥. 앞으로 뭘 만들든 오늘처럼 하면
+  된다냥 — 작게 나누고, 하나씩 만들고, 자주 실행해보는 것이다냥.
+
+  여기까지 함께 와줘서 정말 고맙다냥. 다들 진짜 멋졌다냥, 냐옹~
+</NyangSpeech>

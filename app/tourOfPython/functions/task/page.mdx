@@ -1,0 +1,195 @@
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '함수 실습 — 만들고, 받고, 돌려주기',
+  description: '개념 확인 문제부터 매개변수·return 함수 만들기까지, 함수를 직접 손으로 써보자냥!',
+  session: 3,
+}
+
+# 함수 실습 — 만들고, 받고, 돌려주기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 30분 동안 함수를 직접 만들어볼
+  거다냥. 함수는 눈으로 읽는 것보다 **손으로 써봐야** 익는다냥.
+  복사 붙여넣기 말고 한 땀 한 땀 써보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 개념 강의에서 본 매개변수 vs 인수 비교표
+</Callout>
+
+---
+
+<MissionCard number={1} title="개념 확인하기" time="8~10분">
+
+먼저 스스로 답을 생각하고 골라보자냥.
+
+<QuizzWithOptions answer={4} question="1. 아래 코드에서 함수의 이름으로 올바른 것을 고르세요.">
+  <CodeBlock code={`def say_hello():
+    print("hello")`} />
+  <Option value={1}>hello</Option>
+  <Option value={2}>def</Option>
+  <Option value={3}>say</Option>
+  <Option value={4}>say_hello</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="2. 아래 코드에서 함수의 이름으로 올바른 것을 고르세요.">
+  <CodeBlock code={`def main(x, y):
+    print("This is main function")
+    print("body")`} />
+  <Option value={1}>print</Option>
+  <Option value={2}>body</Option>
+  <Option value={3}>main</Option>
+  <Option value={4}>say_hello</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="3. 아래 코드에서 함수를 실행하는 방법으로 올바른 것을 고르세요.">
+  <CodeBlock code={`def title(text):
+    print(text.center(30, "="))`} />
+  <Option value={1}>coffee(20)</Option>
+  <Option value={2}>body([])</Option>
+  <Option value={3}>title("python")</Option>
+  <Option value={4}>title()</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="4. 아래 함수를 실행하는 방법으로 올바른 것을 고르세요.">
+  <CodeBlock code={`def createBox(w, h, c="black"):
+    print(w, h, c)`} />
+  <Option value={1}>createBox(10)</Option>
+  <Option value={2}>createBox()</Option>
+  <Option value={3}>createBox(100, 100)</Option>
+  <Option value={4}>start()</Option>
+</QuizzWithOptions>
+
+<StepCard step="확인" title="3번과 4번이 헷갈렸다면">
+
+매개변수가 **몇 개인지** 세어보면 된다냥. `title(text)` 는 하나를
+받으니 `title("python")` 처럼 하나를 넣어야 한다냥. `createBox(w, h,
+c="black")` 는 `c` 에 기본값이 있으니 **두 개만 넣어도** 실행된다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="매개변수 없는 함수 만들기" time="8~10분">
+
+가장 기본이 되는 함수 세 개를 손으로 써보자냥.
+
+```python
+def say_hello():
+    print("안녕하세요.")
+
+def box():
+    print("""
+┌──────────────────┐
+│                  │
+│                  │
+└──────────────────┘
+    """)
+
+def love_me():
+    print(" ❤️ " * 10)
+
+say_hello()
+box()
+love_me()
+```
+
+> **확인해보자냥**
+> - 세 함수를 다 쓴 뒤, 아래에서 **괄호를 붙여** 하나씩 실행해보자냥.
+> - 괄호를 빼고 `say_hello` 라고만 쓰면 어떻게 되냥? 직접 해보자냥!
+> - 하트가 10개 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="매개변수가 있는 함수" time="10~12분">
+
+빈칸(`____`)을 채워서 값을 받는 함수를 완성해보자냥.
+
+```python
+def add(____, ____):
+    print(x + y)
+
+def greet(name):
+    print(name + "님, 반갑습니다!")
+
+add(3, 5)          # 8
+greet(____)        # 내 이름을 넣어보자냥
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `add` 안에서 `x` 와 `y` 를 쓰고 있으니, 매개변수 이름도 그렇게 맞춰야 한다냥.
+> - `greet` 에 넣는 값은 문자열이니 따옴표를 잊지 말자냥.
+> - `add(3)` 처럼 하나만 넣으면 어떻게 되냥? 에러 메시지를 읽어보자냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="return 으로 값 돌려받기" time="10~12분">
+
+`print` 하는 함수와 `return` 하는 함수의 차이를 직접 확인해보자냥.
+
+```python
+def add_print(x, y):
+    print(x + y)
+
+def add_return(x, y):
+    ____ x + y
+
+a = add_print(3, 5)
+b = add_return(3, 5)
+
+print("a:", a)
+print("b:", b)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 값을 돌려주는 명령은 `return` 이다냥.
+> - `a` 에는 무엇이 담기냥? `None` 이 나올 텐데 왜 그런지 생각해보자냥!
+> - `print` 는 보여주기만 하고 돌려주지 않는다냥. 그래서 담을 값이 없다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 세로·가로 길이를 받아 사각형 넓이를 `return` 하는 함수 만들어보기
+- [ ] 이름과 나이를 받아 자기소개 문장을 `return` 하는 함수 만들어보기
+- [ ] `return` 뒤에 `print("여기도 실행될까?")` 를 넣고 정말 실행되지 않는지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 함수 개념 확인하기
+  2. 매개변수 없는 함수 만들기
+  3. 값을 받는 함수 만들기
+  4. return 으로 값 돌려받기
+
+  까지 해냈다냥! 특히 4번에서 `print` 와 `return` 의 차이를 몸으로
+  느꼈다면 오늘은 대성공이다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

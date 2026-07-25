@@ -1,0 +1,230 @@
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'and, or, not 실습 — 엮고, 넓히고, 뒤집기',
+  description: 'VIP 판별부터 RGB 색 계산기까지, 조건 여러 개를 직접 엮어보자냥!',
+  session: 6,
+}
+
+# and, or, not 실습 — 엮고, 넓히고, 뒤집기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 40분 동안 조건을 직접 엮어볼
+  거다냥. `and` 는 **모두 참**일 때, `or` 는 **하나라도 참**일 때
+  참이 된다는 걸 기억하고 시작하자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 개념 강의에서 본 and / or 비교표와 not 표
+</Callout>
+
+---
+
+<MissionCard number={1} title="개념 확인하기" time="8~10분">
+
+먼저 스스로 답을 생각하고 골라보자냥.
+
+<QuizzWithOptions answer={2} question="1. and 는 언제 참(True)이 되나요?">
+  <Option value={1}>둘 중 하나만 참이어도 참</Option>
+  <Option value={2}>양쪽이 모두 참일 때만 참</Option>
+  <Option value={3}>둘 다 거짓일 때 참</Option>
+  <Option value={4}>항상 참</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`age = 20
+member = True
+if age >= 19 and member:
+    print("입장 가능")
+else:
+    print("입장 불가")`} />
+  <Option value={1}>입장 가능</Option>
+  <Option value={2}>입장 불가</Option>
+  <Option value={3}>아무것도 출력 안 됨</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`rain = False
+snow = True
+if rain or snow:
+    print("우산 챙기기")
+else:
+    print("맑음")`} />
+  <Option value={1}>맑음</Option>
+  <Option value={2}>우산 챙기기</Option>
+  <Option value={3}>아무것도 출력 안 됨</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="4. not True 의 값은 무엇인가요?">
+  <Option value={1}>True</Option>
+  <Option value={2}>None</Option>
+  <Option value={3}>False</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="VIP 손님 판별하기" time="8~10분">
+
+아래 코드를 그대로 실행하면 "welcome!" 이 나온다냥. **값을 고쳐서**
+"you are VIP" 가 나오게 만들어보자냥.
+
+```python
+age = 20             # 만 나이
+visited_number = 20  # 1년 동안 방문한 횟수
+duration = ____      # 회원 기간
+
+if age >= 19 and visited_number >= 12 and duration >= 2:
+    print("you are VIP")
+else:
+    print("welcome!")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `and` 로 이어져 있으니 **세 조건이 전부** 참이어야 한다냥.
+> - 지금 걸리는 조건은 `duration >= 2` 하나다냥. 몇을 넣어야 하냥?
+> - 고친 뒤에 `age` 를 18로 바꿔보자냥. 다시 "welcome!" 이 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="RGB 색 계산기" time="8~10분">
+
+빛의 3원색을 판별하는 함수다냥. 아래 함수를 **실행시켜서** "green" 이
+출력되게 만들어보자냥.
+
+```python
+def rgb(r, g, b):
+    if r == 1 and g == 1 and b == 1:
+        print("white")
+    elif r == 1 and g == 0 and b == 0:
+        print("red")
+    elif r == 0 and g == 1 and b == 0:
+        print("green")
+    elif r == 0 and g == 0 and b == 1:
+        print("blue")
+    else:
+        print("mixed color")
+
+rgb(____, ____, ____)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 초록불만 켜진 상태가 green 이다냥. `r`, `g`, `b` 를 각각 몇으로 둬야 하냥?
+> - `rgb(1, 1, 0)` 도 넣어보자냥. 어떤 결과가 나오냥? 왜 그런지 설명해보자냥.
+> - `rgb(1, 1, 1)` 은 white 가 나오냥?
+
+<StepCard step="실험" title="and 를 빼면 어떻게 되냥">
+
+`elif r == 1 and g == 0 and b == 0:` 를 `elif r == 1:` 로 바꾸고
+`rgb(1, 1, 1)` 을 넣어보자냥. white 대신 무엇이 나오냥? `and` 가
+왜 필요한지 눈으로 확인할 수 있다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="or 와 not 써보기" time="8~10분">
+
+빈칸(`____`)을 채워서 두 함수를 완성해보자냥.
+
+```python
+def rain_or_snow(rain, snow):
+    if rain ____ snow:
+        print("날씨가 좋지 않습니다.")
+    else:
+        print("날씨가 좋습니다.")
+
+def not_loggedIn(loggedIn):
+    if ____ loggedIn:
+        print("please login")
+
+rain_or_snow(False, True)
+not_loggedIn(____)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 비 **또는** 눈이면 안 좋은 날씨다냥. and 냥 or 냥?
+> - `not` 은 값을 뒤집는다냥. 로그인이 **안 된** 상태를 찾아야 한다냥.
+> - `not_loggedIn(True)` 를 넣으면 아무것도 안 나온다냥. "please login" 이 나오게 하려면 뭘 넣어야 하냥?
+> - `rain_or_snow(False, False)` 도 넣어보자냥. "날씨가 좋습니다." 가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="놀이기구 탑승 판별기 만들기" time="10~12분">
+
+이제 배운 걸 모아서 **직접** 만들어보자냥!
+
+**통과 조건**
+
+1. 나이가 14세 이상 **이고(and)** 키가 140 이상이면 "놀이기구 탑승 가능"
+2. 그 밖에는 "탑승 불가"
+3. `input()` 으로 나이와 키를 받을 것
+
+```python
+나이 = ____(input("나이를 입력하세요: "))
+키 = ____(input("키를 입력하세요: "))
+
+if 나이 >= ____ ____ 키 >= ____:
+    print("놀이기구 탑승 가능")
+else:
+    print("탑승 불가")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `input()` 은 언제나 **문자열**을 준다냥. 숫자로 비교하려면 `int()` 로 바꿔야 한다냥.
+> - 두 조건을 **모두** 만족해야 하니까 `and` 다냥.
+> - 나이 14 · 키 140 을 넣으면 탑승 가능이 나오냥? (경계값을 꼭 확인하자냥!)
+> - 나이 20 · 키 130 을 넣으면 탑승 불가가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 놀이기구 판별기에 "보호자 동반이면 키 130 이상도 가능" 조건을 `or` 로 넣어보기
+- [ ] RGB 함수에 노란색(`r == 1 and g == 1 and b == 0`)과 마젠타색을 추가해보기
+- [ ] VIP 조건 중 하나만 만족했을 때 "조금만 더 오시면 VIP!" 를 출력하도록 `or` 로 만들어보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. and / or / not 개념 확인하기
+  2. VIP 손님 판별하기
+  3. RGB 색 계산기 다뤄보기
+  4. or 와 not 직접 써보기
+  5. 놀이기구 탑승 판별기 만들기
+
+  까지 해냈다냥! 다음 시간에는 오늘 배운 `or` 와 `not` 을 그대로
+  써서 **반려동물 추천 앱**을 만들어볼 거다냥. 다들 정말 멋지게
+  해냈다냥, 냐옹~
+</NyangSpeech>

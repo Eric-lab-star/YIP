@@ -1,0 +1,230 @@
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '튜플 실습 — 묶고, 읽고, 풀어보기',
+  description: '개념 확인 문제부터 좌표·영수증 응용까지, 튜플을 직접 다뤄보자냥!',
+  session: 13,
+}
+
+# 튜플 실습 — 묶고, 읽고, 풀어보기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 30분 동안 튜플을 직접 다뤄볼
+  거다냥. 리스트와 뭐가 같고 뭐가 다른지에 집중해서 풀어보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 개념 강의에서 본 리스트와 튜플 비교표
+</Callout>
+
+---
+
+<MissionCard number={1} title="개념 확인하기" time="8~10분">
+
+먼저 스스로 답을 생각하고 골라보자냥.
+
+<QuizzWithOptions answer={2} question="1. 다음 중 튜플을 올바르게 만드는 방법은?">
+  <Option value={1}>a = [1, 2, 3]</Option>
+  <Option value={2}>a = (1, 2, 3)</Option>
+  <Option value={3}>{'a = {1, 2, 3}'}</Option>
+  <Option value={4}>{'a = <1, 2, 3>'}</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="2. 다음 중 요소가 하나인 튜플을 올바르게 만드는 방법은?">
+  <Option value={1}>a = (1)</Option>
+  <Option value={2}>a = tuple[1]</Option>
+  <Option value={3}>a = (1,)</Option>
+  <Option value={4}>a = (,1)</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (10, 20, 30, 40, 50)
+print(t[2])`} />
+  <Option value={1}>20</Option>
+  <Option value={2}>30</Option>
+  <Option value={3}>40</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (10, 20, 30)
+t[0] = 99
+print(t)`} />
+  <Option value={1}>(99, 20, 30)</Option>
+  <Option value={2}>(10, 20, 30)</Option>
+  <Option value={3}>(99, 10, 20, 30)</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="5. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = ("a", "b", "c", "d", "e")
+print(t[1:4])`} />
+  <Option value={1}>("a", "b", "c")</Option>
+  <Option value={2}>("b", "c", "d")</Option>
+  <Option value={3}>("b", "c", "d", "e")</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="6. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`a, b, c = (10, 20, 30)
+print(b)`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>30</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="7. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (1, 2, 3, 2, 4, 2)
+print(t.count(2))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="8. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t = (5, 10, 15, 20)
+print(type(t))`} />
+  <Option value={1}>{"<class 'list'>"}</Option>
+  <Option value={2}>{"<class 'set'>"}</Option>
+  <Option value={3}>{"<class 'tuple'>"}</Option>
+  <Option value={4}>{"<class 'dict'>"}</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="9. 튜플과 리스트의 가장 큰 차이점은?">
+  <Option value={1}>튜플은 수정이 불가능하다</Option>
+  <Option value={2}>튜플은 인덱싱이 안 된다</Option>
+  <Option value={3}>튜플은 반복문에 사용할 수 없다</Option>
+  <Option value={4}>튜플은 숫자만 저장할 수 있다</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="10. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`t1 = (1, 2)
+t2 = (3, 4)
+print(t1 + t2)`} />
+  <Option value={1}>(1, 2, 3, 4)</Option>
+  <Option value={2}>(4, 6)</Option>
+  <Option value={3}>((1, 2), (3, 4))</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<StepCard step="확인" title="2번이 헷갈렸다면">
+
+`(1)` 은 그냥 괄호로 감싼 숫자 1이다냥. 튜플이 되려면 **쉼표**가
+필요하다냥 — `(1,)` 처럼 말이다냥. 쉼표 하나가 튜플을 만든다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="읽고 언패킹하기" time="8~10분">
+
+빈칸(`____`)을 채워서 코드를 완성해보자냥.
+
+```python
+info = ("김철수", 15, "대전")
+
+print(info[____])        # 대전 만 출력하기
+print(len(____))         # 값이 몇 개인지
+
+name, age, city = ____   # 세 변수에 나눠 담기
+print(name, age, city)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 대전은 맨 뒤다냥. `2` 또는 `-1` 둘 다 된다냥.
+> - 개수를 셀 대상은 튜플 자신이다냥.
+> - 언패킹은 오른쪽에 튜플을 그대로 놓으면 된다냥.
+> - 변수 개수와 값 개수가 다르면 에러가 난다냥. 3개씩 맞냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="좌표 거리 계산기" time="10~12분">
+
+좌표처럼 **바뀌면 안 되는 값**이야말로 튜플이 어울린다냥.
+
+```python
+a = (1, 2)
+b = (4, 6)
+
+x1, y1 = ____
+x2, y2 = ____
+
+거리 = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+print("거리:", 거리)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 각각 `a`, `b`를 언패킹하면 된다냥.
+> - `** 0.5` 는 제곱근이라는 뜻이다냥.
+> - 거리가 5.0 으로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="카페 주문 영수증" time="10~12분">
+
+튜플을 리스트에 담아서, 주문 내역을 정리해보자냥.
+
+```python
+주문 = [("아메리카노", 4000), ("케이크", 6500), ("라떼", 4500)]
+
+총액 = 0
+for 이름, 가격 in 주문:
+    print(이름, 가격)
+    총액 = 총액 + ____
+
+print("총액:", 총액)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 반복문이 튜플을 자동으로 언패킹해준다냥. 그래서 `이름`, `가격`을 바로 쓸 수 있다냥!
+> - 더할 값은 `가격` 이다냥.
+> - 총액이 15000 으로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 주문 내역에서 가장 비싼 메뉴의 이름을 찾아 출력해보기
+- [ ] 튜플을 `list()` 로 바꿔서 값을 수정한 뒤, 다시 `tuple()` 로 되돌려보기
+- [ ] 요일 튜플 `("월", "화", "수", "목", "금")` 을 반복문으로 하나씩 출력해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 튜플 개념 확인하기
+  2. 읽고 언패킹하기
+  3. 좌표로 거리 계산하기
+  4. 튜플 리스트로 영수증 만들기
+
+  까지 해냈다냥! 다음 시간에는 이름표로 값을 꺼내는 **딕셔너리**를
+  배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

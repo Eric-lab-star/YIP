@@ -1,0 +1,174 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'if, else, elif',
+  description: '조건에 따라 다른 코드를 실행하는 if·else·elif를 익히고 직접 연습해보자냥!',
+  session: 5,
+}
+
+# if, else, elif
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지 쓴 코드는 위에서 아래로 **무조건**
+  실행됐다냥. 그런데 "신호등이 빨간색이면 멈춰" 처럼 **상황에 따라
+  다르게** 행동해야 할 때가 있다냥. 오늘은 컴퓨터에게 조건을 알려주는
+  `if` 를 배워보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `if` 로 조건이 참일 때만 실행되는 코드를 쓸 수 있다.
+  - `else` 로 조건이 거짓일 때의 코드를 쓸 수 있다.
+  - `elif` 로 여러 갈래를 나누고, 위에서부터 검사된다는 걸 안다.
+</Callout>
+
+---
+
+## 1단계 · if — 참일 때만 (8분)
+
+```python
+if 조건:
+    # 조건이 참일 때 실행될 코드
+```
+
+<StepCard step="핵심" title="if 문 쓰는 순서">
+
+| 순서 | 하는 일 |
+|---|---|
+| 1 | `if` 를 쓴다 |
+| 2 | 한 칸 띄우고 조건을 쓴다 |
+| 3 | 조건 뒤에 `:` 콜론을 쓴다 |
+| 4 | 다음 줄로 이동한다 |
+| 5 | **들여쓰기**를 한다 |
+| 6 | 참일 때 실행할 코드를 쓴다 |
+
+</StepCard>
+
+<Callout type="important">
+  함수에서와 똑같다냥 — **콜론과 들여쓰기**가 핵심이다냥. 들여쓴
+  줄까지가 "조건이 참일 때 실행할 코드"고, 들여쓰기를 풀면 조건과
+  상관없이 항상 실행되는 코드가 된다냥!
+</Callout>
+
+---
+
+## 2단계 · else — 거짓일 때 (8분)
+
+<NyangSpeech>
+  신분증 검사를 한다고 해보자냥. 19세 이상이면 어른, 미만이면
+  미성년자다냥. 두 갈래로 나뉘지냥? 이럴 때 `else` 를 쓴다냥!
+</NyangSpeech>
+
+```python
+if age < 19:
+    print("당신은 미성년자입니다.")
+else:
+    print("당신은 어른입니다.")
+```
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: 'if 만 쓰면',
+    color: 'blue',
+    items: [
+      '조건이 참일 때만 무언가 함',
+      '거짓이면 아무 일도 없음',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: 'if + else 면',
+    color: 'purple',
+    items: [
+      '참이면 이것, 거짓이면 저것',
+      '둘 중 하나는 반드시 실행됨',
+    ],
+  }}
+/>
+
+<Callout type="tip">
+  `else` 뒤에도 콜론을 잊지 말자냥! `else` 에는 조건을 쓰지 않는다냥
+  — "그 밖의 모든 경우"라는 뜻이기 때문이다냥.
+</Callout>
+
+---
+
+## 3단계 · elif — 여러 갈래 (10분)
+
+세상이 늘 두 갈래는 아니다냥. 성적을 A, B, C, D로 나누려면 `elif` 가
+필요하다냥.
+
+```python
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+elif score >= 70:
+    print("C")
+else:
+    print("D")
+```
+
+<Callout type="important">
+  **위에서부터 검사하고, 참을 하나 만나면 거기서 끝난다냥.**
+
+  점수가 95점이면 첫 번째 `if` 가 참이라 "A"를 출력하고, 아래
+  `elif` 들은 **아예 보지도 않는다냥**. 그래서 조건을 쓰는 **순서가
+  아주 중요하다냥!**
+</Callout>
+
+<StepCard step="주의" title="순서를 뒤집으면 어떻게 되냥">
+
+```python
+if score >= 70:
+    print("C")
+elif score >= 90:
+    print("A")
+```
+
+95점을 넣어도 첫 줄이 이미 참이라 **"C"가 나온다냥.** 좁은 조건부터
+넓은 조건 순으로 써야 한다냥!
+
+</StepCard>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'if 문에서 절대 빠뜨리면 안 되는 두 가지는 뭐냥?',
+      answer: '콜론(:)과 들여쓰기다냥! 조건 뒤에 콜론을 쓰고, 실행할 코드는 들여써야 한다냥.',
+    },
+    {
+      question: 'else 에는 왜 조건을 쓰지 않냥?',
+      answer: '"그 밖의 모든 경우"라는 뜻이기 때문이다냥. 앞의 조건이 전부 거짓일 때 실행된다냥.',
+    },
+    {
+      question: 'if score >= 70 을 먼저 쓰고 elif score >= 90 을 나중에 쓰면 95점은 뭐가 나오냥?',
+      answer: 'C가 나온다냥! 위에서부터 검사해서 참을 만나면 거기서 끝나기 때문이다냥. 좁은 조건부터 써야 한다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 if, else, elif로 상황을 나누는 법을 배웠다냥! 조건문은
+  프로그램에 "판단"을 넣어주는 도구다냥. 이제 실습 페이지에서 직접
+  나눠보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

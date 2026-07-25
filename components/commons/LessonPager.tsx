@@ -1,6 +1,6 @@
 "use client";
 
-import { tourOfPythonPages } from "@/utils/curriculum/tourOfPython";
+import { tourOfPythonPages } from "@/utils/sideBarTree/tourOfPythonTree";
 import { spaceshipCaptainPages } from "@/utils/curriculum/spaceshipCaptain";
 import { simpleWebDevPages } from "@/utils/curriculum/simpleWebDev";
 import type { LessonPage } from "@/utils/curriculum/pageSequence";

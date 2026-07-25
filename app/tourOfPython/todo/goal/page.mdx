@@ -1,0 +1,362 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'To-Do App 만들기',
+  description: '지금까지 배운 걸 모두 모아서, 할 일을 관리하는 To-Do 앱을 완성해보자냥!',
+  session: 15,
+}
+
+# To-Do App 만들기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 드디어 마지막 시간이다냥. 오늘 만들 건
+  **할 일 목록 앱**이다냥. 명령어를 입력하면 할 일을 추가하고, 지우고,
+  완료 표시를 하고, 표로 보여주는 진짜 프로그램이다냥. 지금까지 배운
+  걸 전부 모은 **총정리 도전 과제**다냥!
+</NyangSpeech>
+
+<Callout type="important">
+  이 앱은 지금까지 만든 것 중 가장 큰 프로그램이다냥. **한 번에 다
+  이해하지 못해도 괜찮다냥!** 먼저 코드를 그대로 따라 쓰면서 "이렇게
+  큰 것도 만들 수 있구나"를 느끼는 게 오늘의 목표다냥. 이해는 천천히
+  해도 된다냥.
+</Callout>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 큰 프로그램을 "화면을 그리는 함수"와 "데이터를 바꾸는 함수"로 나눠서 설계할 수 있다.
+  - 리스트와 딕셔너리를 겹쳐서 할 일 목록 데이터를 표현할 수 있다.
+  - 사용자의 명령어를 읽어 알맞은 함수를 부르는 반복 루프를 만들 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 우리가 만들 앱 살펴보기 (5분)
+
+앱을 실행하면 이런 표가 뜨고, 아래에서 명령어를 입력하는 방식이다냥.
+
+```text
+====================================================================
+|                            To-Do List                            |
+====================================================================
+| n | title              | state              |
+--------------------------------------------------------------------
+| 1 | 파이썬 복습        | todo               |
+| 2 | 물 주기            | done               |
+====================================================================
+|                          You are Special                         |
+====================================================================
+```
+
+<StepCard step="설계" title="앱이 알아듣는 명령어 네 가지">
+
+| 명령어 | 하는 일 |
+|---|---|
+| `add 할일` | 새 할 일을 목록에 추가한다 |
+| `delete 할일` | 이름이 같은 할 일을 목록에서 지운다 |
+| `mark 할일` | 완료(done)와 미완료(todo)를 번갈아 바꾼다 |
+| `show` | 지금 목록을 그대로 다시 보여준다 |
+
+</StepCard>
+
+<Callout type="note">
+  명령어는 **앞 단어 하나 + 나머지 전부**로 나눈다냥.
+  `add 파이썬 복습` 이라고 치면 명령어는 `add`, 제목은 `파이썬 복습`
+  이 된다냥.
+</Callout>
+
+---
+
+## 2단계 · 할 일 하나를 어떻게 담냥 (8분)
+
+<NyangSpeech>
+  할 일 하나에는 **제목**과 **상태** 두 가지 정보가 필요하다냥. 정보에
+  이름표를 붙여 담는 건 딕셔너리가 제일 잘한다냥!
+</NyangSpeech>
+
+```python
+{"title": "파이썬 복습", "state": "todo"}
+```
+
+그리고 이런 할 일이 여러 개니까, **리스트 안에 딕셔너리를 여러 개**
+담으면 목록이 된다냥.
+
+```python
+todos = [
+    {"title": "파이썬 복습", "state": "todo"},
+    {"title": "물 주기", "state": "done"},
+]
+```
+
+<StepCard step="핵심" title="리스트와 딕셔너리의 역할 분담">
+
+| 자료형 | 맡은 일 |
+|---|---|
+| 리스트 `todos` | 할 일들의 **순서**를 지킨다 (1번, 2번, 3번...) |
+| 딕셔너리 `item` | 할 일 하나의 **내용**을 담는다 (제목, 상태) |
+
+</StepCard>
+
+<Callout type="tip">
+  `item["title"]` 로 제목을, `item["state"]` 로 상태를 꺼낸다냥.
+  상태에 들어가는 값은 `"todo"` 아니면 `"done"` 둘뿐이다냥!
+</Callout>
+
+---
+
+## 3단계 · 처음 보는 문법 다섯 가지 (10분)
+
+오늘 코드에는 아직 배우지 않은 것이 몇 개 나온다냥. 미리 살짝
+알아두자냥.
+
+| 새로 나온 것 | 이게 뭐냐면 |
+|---|---|
+| `enumerate(리스트)` | 반복할 때 **번호와 값**을 함께 꺼내준다냥. |
+| `[x for x in 리스트 if ...]` | 조건에 맞는 것만 골라 **새 리스트**를 만든다냥. |
+| `global todos` | 함수 밖에 있는 변수 `todos` 를 함수 안에서 쓰겠다는 표시다냥. |
+| `"=".center(폭, "=")` | 글자를 가운데 정렬하며 양옆을 채운다냥. (표 모양 만들기) |
+| `if __name__ == "__main__":` | 이 파일을 **직접 실행할 때만** `main()` 을 실행한다냥. |
+
+<Callout type="note">
+  지금은 "아, 이런 게 있구나" 정도만 알면 충분하다냥. 전부 외우려고
+  하지 말고, 코드 안에서 어떤 자리에 쓰이는지만 눈으로 봐두자냥!
+</Callout>
+
+`enumerate` 는 특히 오늘 많이 쓰니까 한 번만 더 보자냥.
+
+```python
+todos = ["파이썬 복습", "물 주기"]
+for i, item in enumerate(todos):
+    print(i, item)
+# 0 파이썬 복습
+# 1 물 주기
+```
+
+---
+
+## 4단계 · 화면을 그리는 함수들 (10분)
+
+<NyangSpeech>
+  큰 프로그램일수록 **함수 이름만 읽어도 무슨 일을 하는지** 알 수
+  있어야 한다냥. 먼저 화면을 그리는 쪽부터 보자냥.
+</NyangSpeech>
+
+```python
+heading = ["title", "state"]
+WIDTH = 100
+INDEX_ROW_PADDING = 3
+PADDING = (WIDTH - INDEX_ROW_PADDING) // len(heading)
+
+def banner(message=""):
+    """앱을 실행할 때 나오는 멋있는 배너를 만드는 함수"""
+    print("=".center(WIDTH, "="))
+    print(f"|{message.center(WIDTH - 2)}|")
+    print("=".center(WIDTH, "="))
+```
+
+<StepCard step="구조" title="표 한 장이 만들어지는 순서">
+
+| 함수 | 하는 일 |
+|---|---|
+| `table(todos)` | 아래 셋을 순서대로 부르는 대장 함수 |
+| `header()` | 위쪽 배너 (`To-Do List`) |
+| `body(todos)` | `show_list` 로 목록을 표로 |
+| `footer()` | 아래쪽 배너 (`You are Special`) |
+| `show_list(todos)` | 표의 제목 줄을 찍고, 항목마다 `format_item` 호출 |
+| `format_item(...)` | 할 일 한 줄을 칸에 맞춰 예쁘게 찍기 |
+
+</StepCard>
+
+<Callout type="important">
+  `WIDTH` 와 `PADDING` 같은 값을 **맨 위에 변수로 빼두는 것**이
+  중요하다냥. 표 폭을 100에서 80으로 바꾸고 싶으면 `WIDTH` 한 줄만
+  고치면 된다냥. 숫자를 코드 여기저기에 흩뿌려두면 나중에 전부 찾아
+  고쳐야 한다냥!
+</Callout>
+
+목록이 비어 있을 때도 잊지 말자냥. `show_list` 는 할 일이 하나도
+없으면 `No items` 를 보여준다냥.
+
+```python
+if len(todos) <= 0:
+    print(f"|{'No items'.center(WIDTH - 2)}|")
+else:
+    for i, item in enumerate(todos):
+        format_item(i, item["title"], item["state"])
+```
+
+---
+
+## 5단계 · 데이터를 바꾸는 함수들 (10분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '화면을 그리는 함수',
+    color: 'blue',
+    items: [
+      'banner, table, show_list, format_item',
+      '데이터를 절대 바꾸지 않는다',
+      '받은 대로 보여주기만 한다',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '데이터를 바꾸는 함수',
+    color: 'purple',
+    items: [
+      'create_item, add_item, delete_item, mark_item',
+      '화면에 아무것도 찍지 않는다',
+      'todos 를 만들거나 고치기만 한다',
+    ],
+  }}
+/>
+
+```python
+def create_item(title):
+    """title 을 받아 state 는 todo 로 초기화한 딕셔너리를 반환"""
+    return {"title": title, "state": "todo"}
+
+def add_item(todos, item):
+    """아이템을 리스트에 추가하는 함수"""
+    todos.append(item)
+
+def delete_item(todos, title):
+    """title 과 일치하는 아이템을 뺀 새 리스트를 반환"""
+    return [item for item in todos if item["title"] != title]
+
+def mark_item(todos, title):
+    """title 과 일치하는 아이템의 state 를 todo 와 done 으로 토글"""
+    for i, item in enumerate(todos):
+        if item["title"] == title:
+            todos[i]["state"] = "done" if item["state"] == "todo" else "todo"
+            break
+```
+
+<Callout type="tip">
+  `delete_item` 만 새 리스트를 **돌려준다냥**. 지우는 대신 "지울 것을
+  뺀 새 목록"을 만드는 방식이라, 부르는 쪽에서 `todos = delete_item(...)`
+  처럼 결과를 다시 받아야 한다냥!
+</Callout>
+
+<StepCard step="주의" title="mark_item 의 break">
+
+찾는 제목을 만나 상태를 바꾼 뒤에는 `break` 로 반복을 끝낸다냥. 이미
+할 일을 찾았는데 남은 목록까지 계속 뒤질 이유가 없다냥.
+
+</StepCard>
+
+---
+
+## 6단계 · 명령어를 읽는 parser 와 main 루프 (10분)
+
+`parser` 는 사용자가 친 한 줄을 **명령어와 제목으로 쪼개서**, 알맞은
+함수를 불러주는 교통정리 담당이다냥.
+
+```python
+def parser(todos, prompt):
+    prompt_list = prompt.strip().split(" ", 1)
+    command = prompt_list[0]
+    title = prompt_list[1] if len(prompt_list) > 1 else ""
+
+    if command == "show":
+        pass
+    elif command == "add" and title != "":
+        new_item = create_item(title)
+        add_item(todos, new_item)
+    elif command == "delete" and title != "":
+        todos = delete_item(todos, title)
+    elif command == "mark" and title != "":
+        mark_item(todos, title)
+    return todos
+```
+
+<Callout type="note">
+  `split(" ", 1)` 의 `1` 은 **딱 한 번만 쪼개라**는 뜻이다냥. 그래서
+  `add 파이썬 복습 하기` 를 쳐도 제목이 `파이썬 복습 하기` 로 통째로
+  남는다냥. 그냥 `split(" ")` 을 쓰면 제목이 조각조각 나버린다냥!
+</Callout>
+
+마지막으로 `main` 은 **끝없이 반복**하면서 표를 그리고, 명령을 받고,
+목록을 갱신한다냥.
+
+```python
+def main():
+    global todos
+    try:
+        while True:
+            table(todos)
+            prompt = input("...명령어 안내...")
+            todos = parser(todos, prompt)
+            clear()
+    except KeyboardInterrupt:
+        print("\rbye".center(WIDTH, " "))
+
+if __name__ == "__main__":
+    main()
+```
+
+<StepCard step="핵심" title="main 루프가 도는 순서">
+
+| 순서 | 하는 일 |
+|---|---|
+| 1 | `table(todos)` 로 지금 목록을 보여준다 |
+| 2 | `input()` 으로 명령어를 받는다 |
+| 3 | `parser` 가 명령을 처리하고 새 `todos` 를 돌려준다 |
+| 4 | `clear()` 로 화면을 지운다 |
+| 5 | 다시 1번으로 |
+
+</StepCard>
+
+<Callout type="important">
+  `while True:` 는 **스스로 멈추지 않는 반복**이다냥. 그래서 종료는
+  키보드로 한다냥 — `Ctrl + C` 를 누르면 `KeyboardInterrupt` 예외가
+  발생하고, `except` 가 그걸 잡아서 `bye` 를 찍고 곱게 끝난다냥.
+  예외 처리를 이렇게도 쓸 수 있다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '할 일 하나를 담는 데 왜 딕셔너리를 쓰냥?',
+      answer: '제목과 상태처럼 이름표가 붙은 정보를 함께 담아야 하기 때문이다냥. item["title"], item["state"] 처럼 이름으로 꺼낼 수 있다냥.',
+    },
+    {
+      question: 'delete_item 은 왜 결과를 돌려주고, add_item 은 안 돌려주냥?',
+      answer: 'add_item 은 append 로 기존 리스트를 직접 바꾸지만, delete_item 은 조건에 맞는 것만 골라 새 리스트를 만들기 때문이다냥. 그래서 todos = delete_item(...) 처럼 받아야 한다냥.',
+    },
+    {
+      question: 'while True 로 도는 앱을 어떻게 끝내냥?',
+      answer: 'Ctrl + C 를 누르면 KeyboardInterrupt 예외가 발생하고, main 의 except 가 그걸 잡아서 bye 를 찍고 종료한다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘로 파이썬 여행이 끝이다냥! 변수에서 시작해서 함수, 조건문,
+  반복문, 예외 처리, 리스트, 튜플, 딕셔너리까지 배운 것들이 오늘 앱
+  하나에 전부 들어 있다냥. 처음엔 `print("Hello")` 한 줄이었는데,
+  이제는 화면을 그리고 데이터를 관리하는 프로그램을 만든다냥.
+  정말 대단하다냥!
+
+  이제 실습 페이지에서 이 앱을 직접 완성해보자냥. 마지막까지
+  발톱 세우고 가보자냥~
+</NyangSpeech>

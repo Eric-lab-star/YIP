@@ -1,0 +1,179 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '튜플 tuple',
+  description: '한 번 만들면 바뀌지 않는 튜플이 왜 필요한지 알아보고 직접 다뤄보자냥!',
+  session: 13,
+}
+
+# 튜플 tuple
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 배운 리스트 기억나냥? 오늘
+  배울 튜플은 리스트와 아주 비슷하다냥. 여러 값을 묶어서 담는 것도
+  똑같다냥. 딱 하나, **한 번 만들면 값을 바꿀 수 없다**는 점이
+  다르다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 소괄호로 튜플을 만들고, 리스트와 무엇이 다른지 설명할 수 있다.
+  - 번호와 슬라이싱으로 튜플의 값을 읽을 수 있다.
+  - 언패킹으로 튜플의 값을 여러 변수에 나눠 담을 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 리스트와 무엇이 다른가 (8분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '리스트 [ ]',
+    color: 'blue',
+    items: [
+      '대괄호로 만든다',
+      '나중에 값을 바꿀 수 있다',
+      '장바구니처럼 계속 담고 뺀다',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '튜플 ( )',
+    color: 'purple',
+    items: [
+      '소괄호로 만든다',
+      '한 번 만들면 못 바꾼다',
+      '봉인한 택배 상자 같다',
+    ],
+  }}
+/>
+
+```python
+student = ("Alice", 15, 95.5)
+print(student[0])  # Alice
+
+student[0] = "Bob"   # 에러! 튜플은 수정할 수 없다
+```
+
+<Callout type="important">
+  못 바꾸는 게 왜 좋냥? **바뀌면 안 되는 값**을 담을 때 안전하기
+  때문이다냥. 생년월일이나 좌표처럼 도중에 실수로 바뀌면 곤란한
+  값은 튜플에 담아두면 파이썬이 대신 지켜준다냥!
+</Callout>
+
+---
+
+## 2단계 · 값 읽기 (7분)
+
+<NyangSpeech>
+  읽는 방법은 리스트와 완전히 똑같다냥. 번호는 0부터, 음수는 뒤에서
+  부터, 슬라이싱도 그대로 된다냥!
+</NyangSpeech>
+
+```python
+movie = ("인터스텔라", 2014, "SF")
+
+print(movie[0])    # 인터스텔라   ← 0번부터
+print(movie[-1])   # SF          ← 뒤에서 첫 번째
+print(movie[0:2])  # ('인터스텔라', 2014)
+```
+
+<StepCard step="핵심" title="리스트에서 되는 것 중 튜플에서 되는 것">
+
+| 하는 일 | 리스트 | 튜플 |
+|---|---|---|
+| 번호로 읽기 | 가능 | 가능 |
+| 슬라이싱 | 가능 | 가능 |
+| `len()` 세기 | 가능 | 가능 |
+| `+`, `*` | 가능 | 가능 |
+| **값 바꾸기** | 가능 | **불가능** |
+| `append`, `remove` | 가능 | **없음** |
+
+</StepCard>
+
+---
+
+## 3단계 · 더하기, 곱하기, 길이 (7분)
+
+```python
+tuple1 = ("사과", "바나나")
+tuple2 = ("딸기", "포도")
+print(tuple1 + tuple2)   # ('사과', '바나나', '딸기', '포도')
+
+stamp = ("안녕", "반가워")
+print(stamp * 3)         # 내용이 3번 반복
+
+drawer = ("양말", "속옷", "티셔츠", "바지")
+print(len(drawer))       # 4
+```
+
+<Callout type="tip">
+  `+`로 이어붙여도 원래 튜플은 그대로 남고 **새 튜플**이 만들어진다냥.
+  튜플은 못 바꾸니까, 바꾸는 대신 새로 만드는 거다냥!
+</Callout>
+
+---
+
+## 4단계 · 언패킹 (8분)
+
+<NyangSpeech>
+  튜플의 진짜 매력은 여기다냥. 값을 한 번에 여러 변수로 나눠 담을
+  수 있다냥. 이걸 **언패킹**이라고 부른다냥 — 상자를 풀어 정리하는
+  느낌이다냥!
+</NyangSpeech>
+
+```python
+student = ("Alice", 15, 95.5)
+
+name, age, score = student
+print(name)   # Alice
+print(age)    # 15
+print(score)  # 95.5
+```
+
+<Callout type="note">
+  왼쪽 변수 개수와 튜플의 값 개수가 **똑같아야** 한다냥. 개수가
+  다르면 에러가 난다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '튜플과 리스트의 가장 큰 차이는 뭐냥?',
+      answer: '튜플은 한 번 만들면 값을 바꿀 수 없다냥! 그래서 append나 remove 같은 메소드도 없다냥.',
+    },
+    {
+      question: 'movie = ("인터스텔라", 2014, "SF") 에서 "SF"를 꺼내려면?',
+      answer: 'movie[2] 또는 movie[-1] 이다냥. 읽는 방법은 리스트와 똑같다냥.',
+    },
+    {
+      question: '언패킹이 뭐냥?',
+      answer: 'name, age, score = student 처럼 튜플의 값을 여러 변수에 한 번에 나눠 담는 거다냥! 변수 개수와 값 개수가 같아야 한다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 튜플을 만들고, 읽고, 언패킹까지 해봤다냥! 리스트와 뭐가
+  같고 뭐가 다른지가 핵심이다냥. 이제 실습 페이지에서 직접
+  확인해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

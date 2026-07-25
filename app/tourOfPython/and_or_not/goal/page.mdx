@@ -1,0 +1,225 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'and, or, not',
+  description: '조건 여러 개를 and·or·not으로 엮어서 더 똑똑한 판단을 만들어보자냥!',
+  session: 6,
+}
+
+# and, or, not
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 `if` 로 조건 **하나**를
+  판단해봤다냥. 그런데 세상은 조건 하나로 끝나지 않는다냥. 호텔에
+  오신 손님이 VIP인지 확인하려면 나이도 보고, 방문 횟수도 보고,
+  회원 기간도 봐야 한다냥. 오늘은 조건을 **여러 개 엮는 법**을
+  배워보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `and` 로 "모두 참일 때만" 실행되는 조건을 쓸 수 있다.
+  - `or` 로 "하나라도 참이면" 실행되는 조건을 쓸 수 있다.
+  - `not` 으로 조건을 뒤집고, 중첩된 `if` 대신 논리 연산자를 골라 쓸 수 있다.
+</Callout>
+
+---
+
+## 1단계 · and — 모두 참일 때 (10분)
+
+<StepCard step="상황" title="호텔 VIP 손님 판별하기">
+
+호텔에 방문한 손님이 일반 손님인지 VIP 손님인지 확인해주는 프로그램을
+만들어야 한다냥. VIP가 되려면 **3가지를 모두** 만족해야 한다냥.
+
+1. 만 19세 이상
+2. 1년에 12번 이상 방문한 손님
+3. 호텔 회원권 등록 후 2년 이상인 손님
+
+</StepCard>
+
+이 3가지를 `if..else` 를 겹겹이 쌓아서 확인할 수도 있다냥. 하지만
+`if..else` 안에 또 `if..else` 가 들어 있으면 코드를 이해하는 데
+시간이 오래 걸리고 금방 복잡해진다냥. 깔끔한 코드를 쓰고 싶다면
+중첩된 `if..else` 는 되도록 쓰지 않는 게 좋다냥.
+
+```python
+age = 20             # 만 나이
+visited_number = 20  # 1년 동안 방문한 횟수
+duration = 1         # 회원 기간
+
+if age >= 19 and visited_number >= 12 and duration >= 2:
+    print("you are VIP")
+else:
+    print("welcome!")
+```
+
+<Callout type="important">
+  `and` 로 이었기 때문에 **3가지 조건 중 하나라도 거짓이면**
+  `print("you are VIP")` 는 실행되지 않고 `print("welcome!")` 가
+  실행된다냥. 위 코드는 `duration` 이 1이라서 "welcome!" 이
+  나온다냥.
+</Callout>
+
+---
+
+## 2단계 · RGB 색 계산기 (10분)
+
+<img
+  src="https://r2.kimkyungsub.com/rgb.svg"
+  alt="빛의 3원색 벤 다이어그램"
+  className="mx-auto my-6 w-2/3"
+/>
+
+위 그림은 빛의 3원색이 어떻게 섞이는지 알려주는 벤 다이어그램이다냥.
+이 그림 속 정보를 파이썬으로 표현하려면 어떻게 해야 하냥? 모든 색을
+다 쓰면 코드가 너무 길어지니까 4개의 색만 코드로 옮겨보자냥.
+
+```python
+def rgb(r, g, b):
+    if r == 1 and g == 1 and b == 1:
+        print("white")
+    elif r == 1 and g == 0 and b == 0:
+        print("red")
+    elif r == 0 and g == 1 and b == 0:
+        print("green")
+    elif r == 0 and g == 0 and b == 1:
+        print("blue")
+    else:
+        print("mixed color")
+```
+
+빨간불이 켜지면 `r` 이 1이 되고, 초록불이 켜지면 `g` 가 1이 되고,
+파란불이 켜지면 `b` 가 1이 되는 함수다냥. `r` 이 1이고 `g` 와 `b` 가
+0이면 빨간불만 켜져 있는 상태를 뜻한다냥.
+
+<Callout type="important">
+  여기서 빨간색을 표현하려고 `r == 1` 만 검사하면 **틀린다냥.**
+  흰색도 빨간불이 켜진 상태고, 노란색과 마젠타색도 빨간불이 켜진
+  상태이기 때문이다냥. 빨간불만 켜진 상태를 정확히 집어내려면
+  `and` 로 `r == 1 and g == 0 and b == 0` 을 검사해야 한다냥.
+</Callout>
+
+---
+
+## 3단계 · or — 하나라도 참이면 (8분)
+
+<NyangSpeech>
+  `A and B` 는 A와 B가 **모두** 참일 때 참이 됐다냥. 반대로 `or` 는
+  둘 중에 **하나라도** 참이면 참이 된다냥!
+</NyangSpeech>
+
+비가 내리거나 눈이 오면 "날씨가 좋지 않습니다." 라고 알려주고 싶다면
+이렇게 쓰면 된다냥.
+
+```python
+def rain_or_snow(rain, snow):
+    if rain or snow:
+        print("날씨가 좋지 않습니다.")
+    else:
+        print("날씨가 좋습니다.")
+```
+
+이 함수는 `rain` 과 `snow` 로 boolean 값을 받는다냥. `or` 가 있으니까
+둘 중 하나라도 `True` 면 "날씨가 좋지 않습니다." 가 출력된다냥.
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: 'and',
+    color: 'blue',
+    items: [
+      '양쪽이 모두 참일 때만 참',
+      '하나라도 거짓이면 전체가 거짓',
+      '조건을 좁힐 때 쓴다',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: 'or',
+    color: 'purple',
+    items: [
+      '하나라도 참이면 참',
+      '둘 다 거짓일 때만 거짓',
+      '조건을 넓힐 때 쓴다',
+    ],
+  }}
+/>
+
+---
+
+## 4단계 · not — 뒤집기 (7분)
+
+`not` 은 값을 **반전시키는** 코드다냥. 참인 조건은 거짓으로, 거짓인
+조건은 참으로 바꿔준다냥. 아주 간단하지만 정말 자주 쓰인다냥.
+
+```python
+def not_loggedIn(loggedIn):
+    if not loggedIn:
+        print("please login")
+
+not_loggedIn(True)
+```
+
+사용자가 로그인했는지 판단하는 코드다냥. `loggedIn` 매개변수로
+`True` 또는 `False` 를 받아서 로그인 상태를 알 수 있다냥. 위처럼
+`True` 를 넣으면 `not True` 는 거짓이 되니까 아무것도 출력되지
+않는다냥. `False` 를 넣어봐야 "please login" 이 나온다냥!
+
+<StepCard step="핵심" title="not 이 값을 뒤집는 표">
+
+| 원래 값 | `not` 을 붙이면 |
+|---|---|
+| `True` | `False` |
+| `False` | `True` |
+
+</StepCard>
+
+<Callout type="tip">
+  `not` 은 괄호와 함께 쓰면 더 강력하다냥.
+  `not (a == "고양이" or a == "강아지")` 는 "고양이도 아니고 강아지도
+  아닐 때" 라는 뜻이 된다냥. 다음 시간에 만들 추천 앱에서 바로
+  써먹을 거다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'and 는 언제 참이 되고, or 는 언제 참이 되냥?',
+      answer: 'and 는 양쪽이 모두 참일 때만 참이고, or 는 둘 중 하나라도 참이면 참이다냥.',
+    },
+    {
+      question: 'rgb 함수에서 빨간색을 r == 1 하나로만 검사하면 왜 안 되냥?',
+      answer: '흰색, 노란색, 마젠타색도 빨간불이 켜진 상태라서 전부 red 로 나와버린다냥. r == 1 and g == 0 and b == 0 처럼 and 로 정확히 집어내야 한다냥.',
+    },
+    {
+      question: 'not True 의 값은 뭐냥?',
+      answer: 'False 다냥! not 은 참을 거짓으로, 거짓을 참으로 뒤집는다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 조건을 엮는 `and`, 넓히는 `or`, 뒤집는 `not` 을 배웠다냥!
+  이 셋만 있으면 중첩된 `if` 없이도 복잡한 판단을 깔끔하게 쓸 수
+  있다냥. 이제 실습 페이지에서 직접 엮어보자냥. 발톱 준비됐냥?
+  가보자냥~
+</NyangSpeech>
