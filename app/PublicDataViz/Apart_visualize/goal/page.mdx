@@ -1,0 +1,182 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 3 — 아파트 데이터 시각화',
+  description: '피벗 테이블을 히트맵으로, 면적과 가격의 관계를 산점도로 그려 결론을 내려보자냥!',
+  session: 23,
+}
+
+# 프로젝트 3 — 아파트 데이터 시각화
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 지역×평형 피벗 테이블을
+  만들었지냥? 오늘은 그 표를 **그림으로 바꿔서** 한눈에 보이게
+  만들고, 면적과 가격의 관계도 살펴볼 거다냥! 프로젝트 3의 마지막
+  시간이다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `sns.heatmap()`으로 피벗 테이블을 색깔 있는 표로 시각화할 수 있다.
+  - plotly 산점도로 면적과 가격의 관계를 살펴볼 수 있다.
+  - 분석 결과를 결론 문장으로 정리할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 피벗 테이블을 히트맵으로 그리기 (10분)
+
+<NyangSpeech>
+  숫자로 가득한 표는 한눈에 비교하기 어렵다냥! **히트맵(heatmap)**은
+  숫자 크기에 따라 색깔을 다르게 칠해줘서, 어디가 높고 낮은지 한눈에
+  보여준다냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+data = {
+    "단지명": ["행복", "은빛", "달빛", "구름", "별빛", "하늘"],
+    "지역": ["강남구", "강남구", "마포구", "마포구", "종로구", "종로구"],
+    "평형대": ["소형", "대형", "소형", "중형", "소형", "중형"],
+    "거래금액": [92000, 155000, 68000, 78000, 60000, 71000],
+}
+df = pd.DataFrame(data)
+
+표 = pd.pivot_table(
+    df, values="거래금액", index="지역", columns="평형대",
+    aggfunc="mean", observed=True,
+)
+
+sns.heatmap(표, annot=True, fmt=".0f", cmap="YlOrRd")
+plt.title("지역×평형대 평균 거래금액")
+plt.show()
+```
+
+<Callout type="important">
+  `annot=True`는 칸마다 **실제 숫자**를 함께 써준다냥. `cmap`은
+  색깔 팔레트를 정하는 옵션인데, `"YlOrRd"`는 노랑에서 빨강으로
+  갈수록 값이 커진다는 뜻이다냥. 진한 빨강일수록 가격이 높다는
+  걸 색으로 바로 알 수 있다냥!
+</Callout>
+
+---
+
+## 2단계 · 면적과 가격의 관계 보기 (9분)
+
+<NyangSpeech>
+  "면적이 넓을수록 가격도 비쌀까?"를 산점도로 확인해보자냥. seaborn
+  과정에서 배운 scatterplot을 plotly 버전으로 다시 그려보는 거다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📦',
+    label: '히트맵',
+    color: 'blue',
+    items: [
+      '지역×평형 "요약값"을 색으로 비교',
+      '표 전체를 한눈에 파악',
+    ],
+  }}
+  right={{
+    emoji: '🖱️',
+    label: '산점도 (scatter)',
+    color: 'purple',
+    items: [
+      '아파트 하나하나의 면적과 가격 관계',
+      '마우스로 각 점의 상세 정보 확인',
+    ],
+  }}
+/>
+
+```python
+import plotly.express as px
+
+fig = px.scatter(
+    df, x="전용면적", y="거래금액", color="지역",
+    hover_data=["단지명"],
+    title="전용면적과 거래금액의 관계",
+)
+fig.show()
+```
+
+<Callout type="tip">
+  점들이 오른쪽 위로 올라가는 모양이면, 면적이 넓을수록 가격도
+  비싸지는 **양의 상관관계**가 있다는 뜻이다냥! `color="지역"`을
+  더하면, 지역마다 점 색깔도 다르게 나온다냥.
+</Callout>
+
+---
+
+## 3단계 · 결론 정리하기 (6분)
+
+<NyangSpeech>
+  프로젝트 1, 2에서처럼, 오늘도 분석 결과를 한 문장으로 정리하는
+  습관을 잊지 말자냥!
+</NyangSpeech>
+
+```python
+가장비싼조합 = 표.stack().idxmax()
+print(f"결론: {가장비싼조합[0]} {가장비싼조합[1]} 아파트가 가장 비싸다.")
+```
+
+<StepCard step="핵심" title="stack()으로 표를 다시 세로로">
+
+`pivot_table()`로 만든 표는 지역이 행, 평형대가 열인 **넓은
+형태**다냥. `stack()`을 쓰면 다시 세로로 긴 형태가 되어서,
+`idxmax()`로 "가장 비싼 지역-평형 조합"을 한 번에 찾을 수 있다냥!
+
+</StepCard>
+
+<Callout type="note">
+  `stack()`은 두 번째 시간에 배운 `melt()`와 비슷한 역할을 한다냥.
+  둘 다 "넓은 표를 세로로 길게 만든다"는 목적은 같지만, `stack()`은
+  피벗 테이블처럼 이미 표 형태인 데이터에 자주 쓰인다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '피벗 테이블을 색깔로 시각화하려면 어떤 함수를 쓰냥?',
+      answer: 'sns.heatmap()이다냥! annot=True로 숫자도 함께 표시할 수 있다냥.',
+    },
+    {
+      question: '면적이 넓을수록 가격이 비싸지는 경향이 있는지 보려면 어떤 그래프가 좋냥?',
+      answer: '산점도(scatter)다냥! px.scatter(x="전용면적", y="거래금액")처럼 그려서 점들의 방향을 살펴본다냥.',
+    },
+    {
+      question: '피벗 테이블을 다시 세로로 긴 형태로 바꾸려면 어떤 함수를 쓰냥?',
+      answer: 'stack()이다냥! melt()와 비슷하게 넓은 표를 세로로 펼쳐준다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 피벗 테이블을 히트맵으로 그리고, 면적과 가격의 관계를
+  산점도로 살펴보고, 결론까지 정리했다냥! 이걸로 **프로젝트 3,
+  아파트 실거래가 데이터 분석을 완주**했다냥! 실습 페이지에서
+  마무리해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

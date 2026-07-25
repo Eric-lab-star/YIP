@@ -1,0 +1,118 @@
+"use client";
+
+import SlideShell, {
+	CodeBlock,
+	type Slide,
+} from "@/components/slide/SlideShell";
+
+const slides: Slide[] = [
+	{
+		title: "",
+		bg: "from-blue-50 to-indigo-50",
+		script: "안녕하세요, 여러분. 오늘은 아파트 분석 결과를 그래프로 그리겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
+		content: (
+			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
+				<span className="text-8xl">🔥</span>
+				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">프로젝트 3 실습</h1>
+				<p className="text-2xl text-gray-500 mt-2">아파트 분석 결과 시각화하기</p>
+				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
+			</div>
+		),
+	},
+	{
+		title: "실습 전 준비 사항",
+		bg: "from-yellow-50 to-amber-50",
+		script: "준비물을 확인하겠습니다. pandas, seaborn, matplotlib, plotly 패키지가 필요합니다.",
+		content: (
+			<div className="flex flex-col gap-6">
+				<div className="space-y-4">
+					{[
+						{ icon: "📦", text: "pandas, seaborn, matplotlib, plotly 패키지 설치 확인" },
+					].map((item, i) => (
+						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
+							<span className="text-3xl">{item.icon}</span>
+							<p className="text-xl text-gray-700">{item.text}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		),
+	},
+	{
+		title: "미션 1: 히트맵 그리기 (10~12분)",
+		bg: "from-rose-50 to-orange-50",
+		script: "첫 번째 미션입니다. 피벗 테이블을 히트맵으로 그립니다. 표를 색깔로 시각화하는 함수 이름을 빈칸에 넣습니다. 10~12분 드리겠습니다.",
+		content: (
+			<div className="flex flex-col gap-5">
+				<CodeBlock>{`sns.____(표, annot=True, cmap="YlOrRd")  # heatmap`}</CodeBlock>
+				<div className="bg-white/70 rounded-xl p-4">
+					<p className="text-lg text-gray-600">💡 빈칸: heatmap</p>
+				</div>
+			</div>
+		),
+	},
+	{
+		title: "미션 2: 면적·가격 산점도 그리기 (8~10분)",
+		bg: "from-violet-50 to-purple-50",
+		script: "두 번째 미션입니다. 전용면적과 거래금액의 관계를 살펴봅니다. 산점도를 그리는 함수 이름을 빈칸에 넣습니다. 8~10분 드리겠습니다.",
+		content: (
+			<div className="flex flex-col gap-5">
+				<CodeBlock>{`fig = px.____(df, x="전용면적", y="거래금액", color="지역")  # scatter`}</CodeBlock>
+				<div className="bg-white/70 rounded-xl p-4">
+					<p className="text-lg text-gray-600">💡 빈칸: scatter</p>
+				</div>
+			</div>
+		),
+	},
+	{
+		title: "미션 3: 결론 문장 작성하기 (7~8분)",
+		bg: "from-teal-50 to-cyan-50",
+		script: "세 번째 미션입니다. 가장 비싼 지역-평형 조합을 찾아 결론을 정리합니다. 표를 세로로 긴 형태로 바꾸는 함수 이름을 빈칸에 넣습니다. 7~8분 드리겠습니다.",
+		content: (
+			<div className="flex flex-col gap-5">
+				<CodeBlock>{`가장비싼조합 = 표.____().idxmax()  # stack`}</CodeBlock>
+				<div className="bg-white/70 rounded-xl p-4">
+					<p className="text-lg text-gray-600">💡 빈칸: stack</p>
+				</div>
+			</div>
+		),
+	},
+	{
+		title: "오늘의 실습 정리",
+		bg: "from-orange-50 to-red-50",
+		script: "오늘 세 가지 미션을 모두 수행했습니다. 히트맵과 산점도를 그리고, 결론 문장을 작성했습니다.",
+		content: (
+			<div className="flex flex-col gap-5">
+				<div className="space-y-3">
+					{[
+						{ num: "1", text: "히트맵 그리기", color: "bg-rose-100" },
+						{ num: "2", text: "면적·가격 산점도 그리기", color: "bg-violet-100" },
+						{ num: "3", text: "결론 문장 작성하기", color: "bg-teal-100" },
+					].map((item) => (
+						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
+							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
+							<p className="text-lg text-gray-700">{item.text} ✅</p>
+						</div>
+					))}
+				</div>
+			</div>
+		),
+	},
+	{
+		title: "",
+		bg: "from-blue-50 to-indigo-50",
+		script: "오늘 실습을 마치겠습니다. 이걸로 프로젝트 3, 아파트 실거래가 데이터 분석을 완주했습니다. 다음 프로젝트는 상가 정보 데이터입니다. 수고하셨습니다.",
+		content: (
+			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
+				<span className="text-8xl">🏁</span>
+				<h1 className="text-5xl font-bold text-gray-800">프로젝트 3을 완주했습니다</h1>
+				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 상가 정보 데이터</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+			</div>
+		),
+	},
+];
+
+export default function ApartVisualizeTaskSlidePage() {
+	return <SlideShell slides={slides} />;
+}

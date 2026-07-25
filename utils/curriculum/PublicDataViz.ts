@@ -143,6 +143,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"전용면적을 평형대로 나누고, 지역과 평형에 따라 가격이 어떻게 다른지 표로 정리해보자냥!",
 	},
+	{
+		name: "프로젝트 3 — 아파트 데이터 시각화",
+		slug: "Apart_visualize",
+		description:
+			"피벗 테이블을 히트맵으로, 면적과 가격의 관계를 산점도로 그려 결론을 내려보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

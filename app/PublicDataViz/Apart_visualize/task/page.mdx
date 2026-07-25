@@ -1,0 +1,125 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 3 실습 — 아파트 분석 결과 시각화하기',
+  description: '피벗 테이블을 히트맵으로, 면적과 가격의 관계를 산점도로 직접 그려보자냥!',
+  session: 23,
+}
+
+# 프로젝트 3 실습 — 아파트 분석 결과 시각화하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 아파트 분석 결과를
+  그래프로 그려볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `seaborn`, `matplotlib`, `plotly` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="히트맵 그리기" time="10~12분">
+
+피벗 테이블을 히트맵으로 그려보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+sns.____(표, annot=True, fmt=".0f", cmap="YlOrRd")
+plt.title("지역×평형대 평균 거래금액")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 표를 색깔로 시각화하는 함수 이름을 넣으면 된다냥. (`heatmap`)
+> - 값이 클수록 진한 빨간색으로 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="면적과 가격의 관계 산점도 그리기" time="8~10분">
+
+전용면적과 거래금액의 관계를 살펴보자냥.
+
+```python
+import plotly.express as px
+
+fig = px.____(
+    df, x="전용면적", y="거래금액", color="지역",
+    title="전용면적과 거래금액의 관계",
+)
+fig.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 산점도를 그리는 함수 이름을 넣으면 된다냥. (`scatter`)
+> - 점들이 오른쪽 위로 올라가는 모양이 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="결론 문장 작성하기" time="7~8분">
+
+가장 비싼 지역-평형 조합을 찾아 결론을 정리해보자냥.
+
+```python
+가장비싼조합 = 표.____().idxmax()
+print(f"결론: {가장비싼조합[0]} {가장비싼조합[1]} 아파트가 가장 비싸다.")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 표를 세로로 긴 형태로 바꾸는 함수 이름을 넣으면 된다냥. (`stack`)
+> - "강남구 대형 아파트가 가장 비싸다."라는 문장이 나오냥?
+
+<StepCard step="확인" title="idxmax()가 튜플을 돌려준다냥!">
+
+`stack()`으로 만든 결과는 (지역, 평형대) 쌍이 인덱스가 되기
+때문에, `idxmax()`는 `("강남구", "대형")`처럼 **튜플**을
+돌려준다냥. `[0]`, `[1]`로 각각 꺼낼 수 있다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `cmap="YlOrRd"`를 `"Blues"`로 바꿔서 색깔이 어떻게 달라지는지 확인해보기
+- [ ] `px.scatter(...)`에 `size="전용면적"`을 추가해서, 점 크기도 면적에 따라 달라지게 해보기
+- [ ] 아파트 데이터를 2개 더 추가해서, 히트맵과 산점도가 어떻게 바뀌는지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 세 번째 프로젝트를 완주했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. sns.heatmap()으로 피벗 테이블 시각화하기
+  2. px.scatter()로 면적과 가격의 관계 살펴보기
+  3. stack()과 idxmax()로 결론 정리하기
+
+  까지 해냈다냥! 그리고 이걸로 **프로젝트 3, 아파트 실거래가
+  데이터 분석을 완주**했다냥! 분포부터 평형·지역 분석, 시각화까지
+  전부 경험해봤다냥. 다음 프로젝트는 **상가 정보 데이터**다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
