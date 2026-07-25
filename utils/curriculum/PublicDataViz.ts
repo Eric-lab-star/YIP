@@ -131,6 +131,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"추이 그래프, 지역 선택, 기준치 슬라이더가 있는 미세먼지 대시보드를 완성해보자냥!",
 	},
+	{
+		name: "프로젝트 3 — 아파트 실거래가 분포",
+		slug: "Apart_distribution",
+		description:
+			"아파트 실거래가 데이터를 살펴보고, 히스토그램으로 가격 분포를 파악해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
