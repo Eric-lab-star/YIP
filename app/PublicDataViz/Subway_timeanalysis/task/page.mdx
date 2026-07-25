@@ -1,0 +1,131 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 1 실습 — 혼잡 시간대 찾기',
+  description: '시간대별 열을 세로로 펼치고, 가장 붐비는 시간대를 직접 찾아보자냥!',
+  session: 16,
+}
+
+# 프로젝트 1 실습 — 혼잡 시간대 찾기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, melt와 groupby로
+  혼잡 시간대를 직접 찾아볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="melt로 세로로 펼치기" time="10~12분">
+
+시간대별로 흩어진 열을 하나로 모아보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+원본 = {
+    "역명": ["강남", "역삼"],
+    "07-08시_승차": [8200, 3100],
+    "08-09시_승차": [15200, 6400],
+    "18-19시_승차": [9800, 3900],
+}
+df = pd.DataFrame(원본)
+
+길게 = pd.____(
+    df,
+    id_vars=["역명"],
+    value_vars=["07-08시_승차", "08-09시_승차", "18-19시_승차"],
+    var_name="시간대",
+    value_name="승차인원",
+)
+print(길게)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 넓은 형태를 긴 형태로 바꾸는 함수 이름을 넣으면 된다냥. (`melt`)
+> - 결과가 6행(역 2개 × 시간대 3개)으로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="시간대별 평균 구하기" time="8~10분">
+
+groupby로 시간대별 평균 승차인원을 구해보자냥.
+
+```python
+시간대평균 = 길게.groupby(____)["승차인원"].mean()
+print(시간대평균)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 그룹으로 묶을 기준 열 이름을 넣으면 된다냥. (`"시간대"`)
+> - 08-09시 평균이 가장 높게 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="가장 붐비는 시간대 찾기" time="8~10분">
+
+이제 가장 혼잡한 시간대의 이름을 콕 집어보자냥.
+
+```python
+가장붐비는시간대 = 시간대평균.____()
+print(f"가장 붐비는 시간대: {가장붐비는시간대}")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 가장 큰 값을 가진 "이름"을 찾는 함수 이름을 넣으면 된다냥. (`idxmax`)
+> - "08-09시_승차"가 출력되냥?
+
+<StepCard step="확인" title="max()와 헷갈리지 말자냥!">
+
+`시간대평균.max()`는 숫자(값)를 돌려주지만, `시간대평균.idxmax()`는
+그 값을 가진 **시간대 이름**을 돌려준다냥. 둘 다 실행해서 차이를
+비교해보자냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `시간대평균.idxmin()`으로 가장 한산한 시간대도 찾아보기
+- [ ] 시간대 열을 2개 더 추가해서 (예: "12-13시_승차") 다시 melt 해보기
+- [ ] `길게.groupby("역명")["승차인원"].sum()`으로 역별 하루 총 승차인원도 구해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. melt()로 시간대 열을 세로로 펼치기
+  2. groupby()로 시간대별 평균 구하기
+  3. idxmax()로 가장 붐비는 시간대 찾기
+
+  까지 해냈다냥! 이제 진짜 데이터에서 패턴을 찾아낼 수 있게 됐다냥.
+  다음 시간에는 오늘 분석한 결과를 **그래프로 예쁘게 시각화**해볼
+  거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

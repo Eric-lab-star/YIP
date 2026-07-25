@@ -101,6 +101,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"진짜 서울시 지하철 승하차 데이터를 살펴보고, 필요한 열만 골라 깨끗하게 정리해보자냥!",
 	},
+	{
+		name: "프로젝트 1 — 지하철 시간대별 분석",
+		slug: "Subway_timeanalysis",
+		description:
+			"시간대별로 흩어진 열을 하나로 모으고, 가장 붐비는 시간대를 찾아보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

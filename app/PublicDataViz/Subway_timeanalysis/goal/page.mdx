@@ -1,0 +1,170 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 1 — 지하철 시간대별 분석',
+  description: '시간대별로 흩어진 열을 하나로 모으고, 가장 붐비는 시간대를 찾아보자냥!',
+  session: 16,
+}
+
+# 프로젝트 1 — 지하철 시간대별 분석
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 지하철 데이터를 깨끗하게
+  정리했지냥? 오늘은 "출근 시간엔 얼마나 붐빌까?"를 알아보기 위해,
+  **시간대별 분석**을 해볼 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 시간대별로 나뉜 여러 열을, `melt()`로 하나의 열로 모을 수 있다.
+  - 시간대별 평균 승차인원을 `groupby()`로 구할 수 있다.
+  - `idxmax()`로 가장 혼잡한 시간대를 찾을 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 시간대별 데이터의 모양 (7분)
+
+<NyangSpeech>
+  실제 지하철 시간대별 데이터는, 시간대마다 **열이 따로따로**
+  나뉘어 있는 경우가 많다냥! 이런 모양을 "옆으로 넓은(wide)"
+  형태라고 부른다냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+원본 = {
+    "역명": ["강남", "역삼"],
+    "07-08시_승차": [8200, 3100],
+    "08-09시_승차": [15200, 6400],
+    "18-19시_승차": [9800, 3900],
+}
+df = pd.DataFrame(원본)
+print(df)
+```
+
+<Callout type="important">
+  이 상태로는 "시간대별 평균"을 구하기 어렵다냥! 시간대가 **행이
+  아니라 열**로 흩어져 있기 때문이다냥. 그래서 먼저 형태를
+  바꿔줘야 한다냥.
+</Callout>
+
+---
+
+## 2단계 · melt로 세로로 길게 펼치기 (10분)
+
+<NyangSpeech>
+  `melt()`는 옆으로 넓은 데이터를, **세로로 긴(long)** 형태로
+  바꿔주는 함수다냥. "시간대"라는 열 하나에 값을 모으는 거다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '↔️',
+    label: 'wide (넓은 형태)',
+    color: 'blue',
+    items: [
+      '시간대마다 열이 따로 있음',
+      '역명 | 07-08시_승차 | 08-09시_승차 ...',
+    ],
+  }}
+  right={{
+    emoji: '↕️',
+    label: 'long (긴 형태)',
+    color: 'purple',
+    items: [
+      '시간대가 하나의 열에 모임',
+      '역명 | 시간대 | 승차인원',
+    ],
+  }}
+/>
+
+```python
+길게 = pd.melt(
+    df,
+    id_vars=["역명"],
+    value_vars=["07-08시_승차", "08-09시_승차", "18-19시_승차"],
+    var_name="시간대",
+    value_name="승차인원",
+)
+print(길게)
+```
+
+<Callout type="tip">
+  `id_vars`는 **그대로 유지할 열**(역명), `value_vars`는 **모을
+  열들**(시간대별 열)이다냥. `var_name`, `value_name`으로 새로 생길
+  두 열의 이름을 정해준다냥!
+</Callout>
+
+---
+
+## 3단계 · 가장 붐비는 시간대 찾기 (8분)
+
+<NyangSpeech>
+  이제 세로로 긴 형태가 됐으니, groupby로 시간대별 평균을 구하고,
+  그중 가장 큰 값의 시간대를 찾아보자냥!
+</NyangSpeech>
+
+```python
+시간대평균 = 길게.groupby("시간대")["승차인원"].mean()
+print(시간대평균)
+
+가장붐비는시간대 = 시간대평균.idxmax()
+print(f"가장 붐비는 시간대: {가장붐비는시간대}")
+```
+
+<StepCard step="핵심" title="idxmax, 값이 아니라 이름을 찾는다냥!">
+
+| 코드 | 하는 일 |
+|---|---|
+| `시간대평균.max()` | 가장 큰 **값**이 얼마인지 알려줌 |
+| `시간대평균.idxmax()` | 가장 큰 값을 가진 **행의 이름**(여기선 시간대)을 알려줌 |
+
+</StepCard>
+
+<Callout type="note">
+  `idxmax()`는 "index(색인)의 max"라는 뜻이다냥. 값 자체보다
+  **"어떤 시간대가 1등인지"**가 더 궁금할 때 아주 유용하다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '옆으로 넓게 흩어진 여러 열을 하나로 모으려면 어떤 함수를 쓰냥?',
+      answer: 'melt()다냥! id_vars로 유지할 열, value_vars로 모을 열을 지정한다냥.',
+    },
+    {
+      question: '시간대별 평균 승차인원을 구하려면 어떤 함수를 쓰냥?',
+      answer: 'groupby("시간대")["승차인원"].mean()을 쓴다냥! 기초 과정에서 배운 groupby를 그대로 활용한다냥.',
+    },
+    {
+      question: '가장 값이 큰 시간대의 "이름"을 알고 싶다면 어떤 함수를 쓰냥?',
+      answer: 'idxmax()다냥! max()는 값 자체를, idxmax()는 그 값을 가진 행의 이름을 알려준다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 melt로 데이터를 세로로 펼치고, groupby와 idxmax로 가장
+  붐비는 시간대를 찾아봤다냥! 이제 실습 페이지에서 직접 분석해보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>
