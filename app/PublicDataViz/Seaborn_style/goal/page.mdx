@@ -1,0 +1,171 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'seaborn — 더 예쁜 그래프 그리기',
+  description: 'seaborn으로 matplotlib보다 더 예쁘고 편리한 그래프를 그려보자냥!',
+  session: 11,
+}
+
+# seaborn — 더 예쁜 그래프 그리기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 matplotlib으로 선 그래프와
+  막대 그래프를 그려봤지냥? 오늘 배울 `seaborn`은 matplotlib
+  위에서 동작하는 라이브러리인데, **훨씬 적은 코드로 더 예쁜**
+  그래프를 그릴 수 있다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `sns.set_theme()`으로 그래프 전체 스타일을 예쁘게 바꿀 수 있다.
+  - `sns.barplot()`으로 막대 그래프를 그릴 수 있다.
+  - `sns.scatterplot()`으로 두 값 사이의 관계를 살펴볼 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 테마 한 방에 바꾸기 (7분)
+
+<NyangSpeech>
+  seaborn을 불러오고 `set_theme()` 한 줄만 실행하면, 앞으로 그릴
+  모든 그래프가 자동으로 예쁘게 바뀐다냥! 마법 같지 않냥?
+</NyangSpeech>
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"  # 한글 폰트는 그대로 필요하다냥
+sns.set_theme(style="whitegrid")
+```
+
+<Callout type="important">
+  `sns.set_theme()`은 seaborn뿐 아니라, 이후에 그리는 **matplotlib
+  그래프에도** 적용된다냥! `style="whitegrid"`는 은은한 격자무늬
+  배경을 넣어주는 스타일이다냥.
+</Callout>
+
+---
+
+## 2단계 · seaborn으로 막대 그래프 그리기 (10분)
+
+<NyangSpeech>
+  seaborn의 `barplot()`은 matplotlib의 `bar()`와 비슷하지만, 색상
+  팔레트가 자동으로 예쁘게 적용된다는 차이가 있다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📊',
+    label: 'plt.bar() (matplotlib)',
+    color: 'blue',
+    items: [
+      '색상을 직접 지정해야 함',
+      '기본 스타일이 다소 밋밋함',
+    ],
+  }}
+  right={{
+    emoji: '🎨',
+    label: 'sns.barplot() (seaborn)',
+    color: 'purple',
+    items: [
+      '팔레트가 자동으로 예쁘게 적용',
+      'DataFrame을 바로 넣을 수 있음',
+    ],
+  }}
+/>
+
+```python
+import pandas as pd
+
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+sns.barplot(data=df, x="구", y="미세먼지")
+plt.title("구별 미세먼지 농도")
+plt.show()
+```
+
+<Callout type="tip">
+  seaborn 함수는 대부분 `data=df, x="열이름", y="열이름"` 형태로
+  쓴다냥. DataFrame을 통째로 넘기고, 어떤 열을 x축/y축으로 쓸지만
+  지정해주면 된다냥!
+</Callout>
+
+---
+
+## 3단계 · 두 값의 관계 살펴보기 (8분)
+
+<NyangSpeech>
+  "미세먼지가 심한 날은 초미세먼지도 심할까?"처럼, **두 값 사이의
+  관계**를 보고 싶을 땐 산점도(scatterplot)가 딱이다냥!
+</NyangSpeech>
+
+```python
+data2 = {
+    "미세먼지": [30, 42, 25, 55, 38],
+    "초미세먼지": [15, 21, 12, 30, 18],
+}
+df2 = pd.DataFrame(data2)
+
+sns.scatterplot(data=df2, x="미세먼지", y="초미세먼지")
+plt.title("미세먼지 vs 초미세먼지")
+plt.show()
+```
+
+<StepCard step="핵심" title="점들이 어떻게 흩어져 있는지 보자냥!">
+
+점들이 왼쪽 아래에서 오른쪽 위로 **비스듬히 올라가는 모양**이면,
+미세먼지가 높을수록 초미세먼지도 높아지는 경향이 있다는 뜻이다냥.
+이런 관계를 **양의 상관관계**라고 부른다냥.
+
+</StepCard>
+
+<Callout type="note">
+  산점도의 점 하나하나는 데이터의 **한 행(관측값)**을 나타낸다냥.
+  점이 많을수록 전체적인 경향을 더 잘 파악할 수 있다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '그래프 전체 스타일을 한 번에 예쁘게 바꾸려면 어떤 함수를 쓰냥?',
+      answer: 'sns.set_theme()이다냥! 이후 그리는 모든 그래프에 적용된다냥.',
+    },
+    {
+      question: 'seaborn 함수에서 DataFrame을 넘길 때는 어떤 형태로 쓰냥?',
+      answer: 'data=df, x="열이름", y="열이름" 형태로 쓴다냥! DataFrame을 통째로 넘기고 x축/y축 열만 지정하면 된다냥.',
+    },
+    {
+      question: '두 값 사이의 관계를 살펴보고 싶을 땐 어떤 그래프를 쓰냥?',
+      answer: 'sns.scatterplot()으로 그리는 산점도다냥! 점들이 흩어진 모양을 보고 두 값의 관계를 파악할 수 있다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 seaborn으로 그래프를 예쁘게 꾸미고, 막대 그래프와 산점도를
+  그려봤다냥! 이제 실습 페이지에서 직접 그려보자냥. 발톱 준비됐냥?
+  가보자냥~
+</NyangSpeech>

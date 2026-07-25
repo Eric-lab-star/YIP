@@ -71,6 +71,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"matplotlib으로 선 그래프와 막대 그래프를 그리고, 한글이 깨지지 않게 설정해보자냥!",
 	},
+	{
+		name: "seaborn — 더 예쁜 그래프 그리기",
+		slug: "Seaborn_style",
+		description:
+			"seaborn으로 matplotlib보다 더 예쁘고 편리한 그래프를 그려보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

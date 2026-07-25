@@ -1,0 +1,131 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'seaborn 실습 — 예쁜 그래프 직접 그리기',
+  description: '테마를 바꾸고, 막대 그래프와 산점도를 seaborn으로 직접 그려보자냥!',
+  session: 11,
+}
+
+# seaborn 실습 — 예쁜 그래프 직접 그리기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, seaborn으로 테마를
+  바꾸고 그래프를 그려볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `seaborn`, `matplotlib`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="테마 설정하기" time="5~7분">
+
+그래프를 그리기 전에, seaborn 테마부터 예쁘게 설정해보자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+sns.____(style="whitegrid")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 테마를 설정하는 함수 이름을 넣으면 된다냥. (`set_theme`)
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="seaborn 막대 그래프 그리기" time="10~12분">
+
+구별 미세먼지 데이터를 seaborn 막대 그래프로 그려보자냥.
+
+```python
+data = {
+    "구": ["중구", "강남구", "종로구", "마포구"],
+    "미세먼지": [30, 42, 25, 38],
+}
+df = pd.DataFrame(data)
+
+sns.barplot(data=____, x="구", y="미세먼지")
+plt.title("구별 미세먼지 농도")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 방금 만든 DataFrame 변수 이름을 넣으면 된다냥. (`df`)
+> - matplotlib 때보다 색깔이 더 예쁘게 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="산점도로 관계 살펴보기" time="8~10분">
+
+미세먼지와 초미세먼지 사이의 관계를 산점도로 살펴보자냥.
+
+```python
+data2 = {
+    "미세먼지": [30, 42, 25, 55, 38],
+    "초미세먼지": [15, 21, 12, 30, 18],
+}
+df2 = pd.DataFrame(data2)
+
+sns.____(data=df2, x="미세먼지", y="초미세먼지")
+plt.title("미세먼지 vs 초미세먼지")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 산점도를 그리는 함수 이름을 넣으면 된다냥. (`scatterplot`)
+> - 점들이 왼쪽 아래에서 오른쪽 위로 올라가는 모양이 보이냥?
+
+<StepCard step="관찰" title="양의 상관관계">
+
+점들이 오른쪽 위로 올라가는 모양이면, 미세먼지가 높을수록
+초미세먼지도 높아지는 **양의 상관관계**가 있다는 뜻이다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `sns.set_theme(style="darkgrid")`로 바꿔서 배경이 어떻게 달라지는지 확인해보기
+- [ ] `sns.barplot(...)`에 `hue="구"`를 추가해서 구별로 색을 다르게 칠해보기
+- [ ] 데이터를 3개 더 추가해서 산점도의 점이 늘어나는 걸 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. sns.set_theme()으로 스타일 예쁘게 바꾸기
+  2. sns.barplot()으로 막대 그래프 그리기
+  3. sns.scatterplot()으로 관계 살펴보기
+
+  까지 해냈다냥! 이제 훨씬 예쁜 그래프를 그릴 수 있게 됐다냥. 다음
+  시간에는 마우스로 확대하고 클릭할 수 있는 **인터랙티브 그래프**를
+  배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
