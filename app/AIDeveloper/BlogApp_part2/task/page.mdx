@@ -27,11 +27,12 @@ export const metadata = {
 </Callout>
 
 <Callout type="important">
-  **오늘은 결제(billing)가 활성화된 API 키가 있어야 진짜 그림을 볼 수 있다냥!**
+  **오늘 쓰는 이미지 모델은 일반 API 키로도 잘 작동한다냥!**
 
-  지금까지 쓴 제미나이 기능은 전부 무료였지만, 이미지를 실제로 그려주는 기능은
-  (2026년 현재) 무료 등급이 없다냥. 선생님과 함께 계정에 결제가 되어 있는지
-  미리 확인해두면 좋다냥. **결제가 안 되어 있어도 괜찮다냥!** 오늘 코드는 이미지
+  지금까지 쓴 제미나이 기능은 전부 무료였고, 오늘 쓰는 `gemini-3.1-flash-lite-image`
+  ("나노 바나나 2 라이트")도 일반 제미나이 API 키로 잘 되는 걸 확인했다냥.
+  다만 (2026년 현재) 계정이나 모델에 따라 결제(billing) 여부가 결과에 영향을
+  줄 수도 있다냥. **혹시 안 되는 친구가 있어도 괜찮다냥!** 오늘 코드는 이미지
   생성이 실패해도 에러 없이 안내만 뜨도록 만들 거고, 글 생성 기능은 그대로
   잘 작동한다냥.
 </Callout>
@@ -62,7 +63,7 @@ print("이미지 묘사:", image_description)
 # 2) 이미지 묘사문을 진짜 그림으로 바꾸기 (그대로 복사!)
 # gemini-3.5-flash는 글자만 만들 수 있어서, 그림을 그리는 전용 모델을 따로 쓴다
 image_response = client.models.generate_content(
-    model="gemini-3.1-flash-image",
+    model="gemini-3.1-flash-lite-image",
     contents=image_description,
     config=types.GenerateContentConfig(
         response_modalities=["TEXT", "IMAGE"],
@@ -71,20 +72,20 @@ image_response = client.models.generate_content(
 
 for part in image_response.parts:
     if image := part.as_image():
-        image.save("cover.png")
-        print("표지 이미지를 저장했습니다: cover.png")
+        image.save("cover.jpg")
+        print("표지 이미지를 저장했습니다: cover.jpg")
 ```
 
 > **확인해보자냥 (빈칸 힌트)**
 > - `{____}` 자리에는 글의 **분위기**를 나타내는 단어를 넣으면 된다냥. 예를 들어 "따뜻하고 아늑한", "차분하고 깔끔한" 같은 느낌 단어다냥!
-> - 실행한 폴더에 `cover.png` 파일이 새로 생겼냥? 직접 열어서 확인해보자냥!
+> - 실행한 폴더에 `cover.jpg` 파일이 새로 생겼냥? 직접 열어서 확인해보자냥!
 
 <Callout type="tip">
   **`part.as_image()`는 뭐하는 애냥?**
 
   `image_response.parts`에는 AI가 만든 결과 조각들이 여러 개 들어있을 수 있다냥
   (글자 조각, 그림 조각 등). `part.as_image()`는 "이 조각이 그림이면 꺼내주고,
-  아니면 아무것도 안 준다"는 뜻이다냥. 그림 조각을 찾으면 `.save("cover.png")`로
+  아니면 아무것도 안 준다"는 뜻이다냥. 그림 조각을 찾으면 `.save("cover.jpg")`로
   파일에 저장하면 끝이다냥!
 </Callout>
 
@@ -153,15 +154,15 @@ if st.button("블로그 글 생성하기"):
     with st.spinner("표지 이미지를 그리는 중..."):
         try:
             image_response = client.models.generate_content(
-                model="gemini-3.1-flash-image",
+                model="gemini-3.1-flash-lite-image",
                 contents=image_description,
                 config=types.GenerateContentConfig(response_modalities=["TEXT", "IMAGE"]),
             )
             saved = False
             for part in image_response.parts:
                 if image := part.as_image():
-                    image.save("cover.png")
-                    st.image("cover.png", caption="AI가 그린 표지 이미지")
+                    image.save("cover.jpg")
+                    st.image("cover.jpg", caption="AI가 그린 표지 이미지")
                     saved = True
             if not saved:
                 st.info("이번엔 이미지를 만들지 못했어요. 다시 시도해보세요!")
