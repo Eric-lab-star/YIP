@@ -107,6 +107,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"시간대별로 흩어진 열을 하나로 모으고, 가장 붐비는 시간대를 찾아보자냥!",
 	},
+	{
+		name: "프로젝트 1 — 지하철 데이터 시각화",
+		slug: "Subway_visualize",
+		description:
+			"분석한 시간대별 승차인원을 그래프로 그리고, 여러 역을 한 그래프에서 비교해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

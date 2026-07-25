@@ -1,0 +1,132 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 1 실습 — 지하철 분석 결과 시각화하기',
+  description: '시간대별 평균을 막대 그래프로, 역별 변화를 선 그래프로 직접 그려보자냥!',
+  session: 17,
+}
+
+# 프로젝트 1 실습 — 지하철 분석 결과 시각화하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지하철 분석 결과를
+  그래프로 그려볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas`, `seaborn`, `matplotlib`, `plotly` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="시간대별 평균 막대 그래프 그리기" time="10~12분">
+
+시간대평균을 seaborn 막대 그래프로 그려보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+
+길게 = pd.DataFrame({
+    "역명": ["강남", "강남", "역삼", "역삼"],
+    "시간대": ["07-08시", "08-09시", "07-08시", "08-09시"],
+    "승차인원": [8200, 15200, 3100, 6400],
+})
+
+시간대평균 = 길게.groupby("시간대")["승차인원"].mean().____()
+sns.barplot(data=시간대평균, x="시간대", y="승차인원")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 groupby 결과의 인덱스를 다시 평범한 열로 되돌리는 함수 이름을 넣으면 된다냥. (`reset_index`)
+> - 08-09시 막대가 더 높게 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="역별 변화 선 그래프 그리기" time="10~12분">
+
+이번엔 plotly로 역별 시간대 변화를 비교해보자냥.
+
+```python
+import plotly.express as px
+
+fig = px.line(
+    길게, x="시간대", y="승차인원", color=____,
+    title="역별 시간대 승차인원 변화",
+)
+fig.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 역마다 다른 색 선으로 구분해줄 열 이름을 문자열로 넣으면 된다냥. (`"역명"`)
+> - 강남과 역삼이 서로 다른 색 선으로 나오냥?
+
+<StepCard step="확인" title="범례를 클릭해보자냥!">
+
+plotly 그래프의 범례(legend)에서 역 이름을 클릭하면, 그 역의 선만
+껐다 켰다 할 수 있다냥. 직접 눌러서 확인해보자냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="결론 문장 작성하기" time="5~7분">
+
+마지막으로, 분석 결과를 한 문장으로 정리해보자냥.
+
+```python
+가장붐비는시간대 = 길게.groupby("시간대")["승차인원"].mean().idxmax()
+print(f"결론: {____}에 승차인원이 가장 많다.")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 방금 구한 변수 이름을 넣으면 된다냥. (`가장붐비는시간대`)
+> - "08-09시에 승차인원이 가장 많다."라는 문장이 출력되냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `sns.barplot(...)`에 `hue="역명"`을 추가해서, 역별로 막대 색을 다르게 칠해보기
+- [ ] `px.bar(길게, x="역명", y="승차인원", color="시간대")`로 역별 막대 그래프도 그려보기
+- [ ] 3번째 역 데이터를 추가해서, 그래프에 선이 3개로 늘어나는지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 첫 번째 프로젝트를 완주했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. seaborn으로 시간대별 평균 막대 그래프 그리기
+  2. plotly로 역별 변화 선 그래프 그리기
+  3. 결론 문장으로 분석 마무리하기
+
+  까지 해냈다냥! 그리고 이걸로 **프로젝트 1, 지하철 승하차 데이터
+  분석을 완주**했다냥! 수집·정제부터 분석, 시각화, 결론까지 전체
+  흐름을 한 번 경험해봤다냥. 다음 프로젝트는 **미세먼지 데이터**다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

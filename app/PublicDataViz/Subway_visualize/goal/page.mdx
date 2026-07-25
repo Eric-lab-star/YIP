@@ -1,0 +1,178 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 1 — 지하철 데이터 시각화',
+  description: '분석한 시간대별 승차인원을 그래프로 그리고, 여러 역을 한 그래프에서 비교해보자냥!',
+  session: 17,
+}
+
+# 프로젝트 1 — 지하철 데이터 시각화
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 melt와 groupby로 가장 붐비는
+  시간대를 찾아냈지냥? 숫자로만 보면 조금 아쉽다냥. 오늘은 그
+  결과를 **그래프로 그려서 한눈에 보이게** 만들어볼 거다냥! 첫
+  프로젝트의 마지막 시간이다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - seaborn으로 시간대별 평균 승차인원을 막대 그래프로 그릴 수 있다.
+  - plotly로 역별 시간대 변화를 인터랙티브 선 그래프로 그릴 수 있다.
+  - `color` 옵션으로 여러 역을 한 그래프에서 비교할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 시간대별 평균 막대 그래프 (8분)
+
+<NyangSpeech>
+  지난 시간에 구한 시간대평균을, seaborn 막대 그래프로 그려보자냥!
+</NyangSpeech>
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+sns.set_theme(style="whitegrid")
+
+길게 = pd.DataFrame({
+    "역명": ["강남", "강남", "역삼", "역삼"],
+    "시간대": ["07-08시", "08-09시", "07-08시", "08-09시"],
+    "승차인원": [8200, 15200, 3100, 6400],
+})
+
+시간대평균 = 길게.groupby("시간대")["승차인원"].mean().reset_index()
+
+sns.barplot(data=시간대평균, x="시간대", y="승차인원")
+plt.title("시간대별 평균 승차인원")
+plt.show()
+```
+
+<Callout type="important">
+  `groupby(...).mean()`의 결과는 "시간대"가 **인덱스**로 들어간
+  상태다냥. `reset_index()`를 붙이면, 인덱스를 다시 **평범한
+  열**로 되돌려줘서 `sns.barplot(data=..., x="시간대", ...)`처럼
+  열 이름으로 바로 쓸 수 있게 된다냥!
+</Callout>
+
+---
+
+## 2단계 · plotly로 역별 변화 살펴보기 (10분)
+
+<NyangSpeech>
+  이번엔 역마다 시간대별 승차인원이 어떻게 달라지는지, 인터랙티브
+  선 그래프로 살펴보자냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📊',
+    label: 'seaborn barplot',
+    color: 'blue',
+    items: [
+      '전체 평균처럼 요약된 값을 보여줌',
+      '빠르게 전체 흐름 파악',
+    ],
+  }}
+  right={{
+    emoji: '🖱️',
+    label: 'plotly line + color',
+    color: 'purple',
+    items: [
+      '역마다 선을 다르게 그려 비교',
+      '마우스로 특정 역만 볼 수도 있음',
+    ],
+  }}
+/>
+
+```python
+import plotly.express as px
+
+fig = px.line(
+    길게, x="시간대", y="승차인원", color="역명",
+    title="역별 시간대 승차인원 변화",
+)
+fig.show()
+```
+
+<Callout type="tip">
+  `color="역명"`을 추가하면, 역마다 **다른 색깔의 선**으로 자동
+  구분해서 그려준다냥! 범례(legend)를 클릭하면 특정 역의 선만
+  숨기거나 보이게 할 수도 있다냥.
+</Callout>
+
+---
+
+## 3단계 · 그래프로 결론 내리기 (7분)
+
+<NyangSpeech>
+  그래프를 그렸다면, 이제 **"그래서 무엇을 알게 됐나?"**를 한 문장으로
+  정리하는 습관을 들이면 좋다냥!
+</NyangSpeech>
+
+```python
+가장붐비는시간대 = 길게.groupby("시간대")["승차인원"].mean().idxmax()
+print(f"결론: {가장붐비는시간대}에 승차인원이 가장 많다.")
+print("→ 이 시간대에 배차 간격을 좁히면 혼잡도가 줄어들 것으로 예상된다.")
+```
+
+<StepCard step="핵심" title="분석 → 시각화 → 결론, 이 순서를 기억하자냥!">
+
+| 단계 | 지난 시간 / 오늘 |
+|---|---|
+| 분석 | melt, groupby, idxmax로 숫자 계산 (지난 시간) |
+| 시각화 | seaborn, plotly로 그래프 그리기 (오늘) |
+| 결론 | 그래프를 보고 한 문장으로 의미 요약 (오늘) |
+
+</StepCard>
+
+<Callout type="note">
+  숫자와 그래프만 나열하는 것과, **"그래서 무슨 의미인지"**까지
+  말하는 것은 큰 차이가 있다냥! 프로젝트 발표를 할 때는 항상 결론
+  문장을 준비해두는 게 좋다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'groupby(...).mean() 결과를 seaborn에 바로 쓰기 전에 왜 reset_index()를 붙이냥?',
+      answer: 'groupby 결과는 그룹 기준 열이 인덱스로 들어가기 때문이다냥! reset_index()로 다시 평범한 열로 되돌려야 x="열이름"처럼 쓸 수 있다냥.',
+    },
+    {
+      question: 'plotly 그래프에서 여러 역을 다른 색 선으로 구분하려면 어떤 옵션을 쓰냥?',
+      answer: 'color="역명"처럼 color 옵션에 구분하고 싶은 열 이름을 넣는다냥!',
+    },
+    {
+      question: '데이터 분석의 마지막 단계로 꼭 챙겨야 하는 것은 뭐냥?',
+      answer: '그래프를 보고 "그래서 무슨 의미인지" 한 문장으로 결론을 정리하는 것이다냥!',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 시간대별 평균을 막대 그래프로, 역별 변화를 인터랙티브
+  선 그래프로 그리고, 결론까지 정리해봤다냥! 이걸로 **첫 번째
+  프로젝트, 지하철 승하차 데이터 분석을 완주**했다냥! 실습
+  페이지에서 마무리해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>
