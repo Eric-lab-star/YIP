@@ -11,7 +11,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 드디어 우리 여정의 마지막 무대, 최종 프로젝트 시간입니다. 지금까지는 선생님이 정해준 주제를 따라 만들었지만, 이제부터는 여러분이 직접 주제를 정하고, 내 손으로 처음부터 끝까지 완성해서, 친구들 앞에서 발표하는 시간입니다. 오늘 강의에서는 프로젝트의 전체 구조, 일정, 주제 선정 방법, 평가 기준을 안내하겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🏪</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           나만의 AI 앱 만들기
           <br />
@@ -129,12 +128,11 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-6">
         <div className="space-y-4">
           {[
-            { icon: "🙂", title: "내가 관심 있는 주제", desc: "좋아하는 것을 만들어야 끝까지 즐겁게 할 수 있습니다." },
-            { icon: "🛠️", title: "실제로 쓸모 있는 것", desc: "평소 불편했던 점을 해결해주면 더 뿌듯합니다." },
-            { icon: "🤖", title: "배운 기술로 만들 수 있는 것", desc: "API, Streamlit, LangChain, RAG 등으로 구현 가능한 범위여야 합니다." },
+            { title: "내가 관심 있는 주제", desc: "좋아하는 것을 만들어야 끝까지 즐겁게 할 수 있습니다." },
+            { title: "실제로 쓸모 있는 것", desc: "평소 불편했던 점을 해결해주면 더 뿌듯합니다." },
+            { title: "배운 기술로 만들 수 있는 것", desc: "API, Streamlit, LangChain, RAG 등으로 구현 가능한 범위여야 합니다." },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -144,7 +142,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-cyan-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">
-            💡 세 가지가 <strong>겹치는 곳</strong>에서 아이디어를 찾으세요!
+ 세 가지가 <strong>겹치는 곳</strong>에서 아이디어를 찾으세요!
           </p>
         </div>
       </div>
@@ -158,7 +156,7 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-blue-50 rounded-xl p-5">
-            <p className="text-lg font-semibold text-blue-700 mb-3">💬 텍스트·대화 중심</p>
+            <p className="text-lg font-semibold text-blue-700 mb-3">텍스트·대화 중심</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 고민 상담 챗봇</li>
               <li>• 일기 쓰기 도우미</li>
@@ -167,7 +165,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-purple-50 rounded-xl p-5">
-            <p className="text-lg font-semibold text-purple-700 mb-3">🖼️ 멀티모달·RAG 활용</p>
+            <p className="text-lg font-semibold text-purple-700 mb-3">멀티모달·RAG 활용</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 사진 설명 앱 (이미지 인식)</li>
               <li>• PDF 검색 답변 앱 (RAG)</li>
@@ -178,7 +176,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
           <p className="text-lg text-gray-700">
-            ⚠️ 핵심 기능은 <strong>1~3개</strong>로 좁히세요. 대표 메뉴 하나부터 확실하게!
+ 핵심 기능은 <strong>1~3개</strong>로 좁히세요. 대표 메뉴 하나부터 확실하게!
           </p>
         </div>
       </div>
@@ -220,7 +218,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            📝 AI 윤리 가이드라인도 점검: &ldquo;AI가 만든 결과임을 표시했는가?&rdquo;
+ AI 윤리 가이드라인도 점검: &ldquo;AI가 만든 결과임을 표시했는가?&rdquo;
           </p>
         </div>
       </div>
@@ -259,7 +257,6 @@ const slides: Slide[] = [
             "발표는 과정을 보여주는 자리 (문제·방법·시연·배운 점)",
           ].map((text, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-start gap-3">
-              <span className="text-green-500 text-xl">✅</span>
               <p className="text-lg text-gray-700">{text}</p>
             </div>
           ))}
@@ -273,12 +270,11 @@ const slides: Slide[] = [
     script: "오늘 강의를 마치겠습니다. 프로젝트의 전체 구조, 일정, 주제 선정 방법, 평가 기준을 모두 안내해드렸습니다. 다음 시간에는 실습을 통해 아이디어를 구체화하고, 기획서를 직접 작성하고, 단계별 미션을 따라가며 나만의 AI 앱을 만들어보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">
           다음 시간: 아이디어 구체화 + 기획서 작성 + 단계별 제작
         </p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

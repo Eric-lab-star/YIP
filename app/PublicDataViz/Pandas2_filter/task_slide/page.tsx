@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 조건 필터링과 정렬을 직접 연습하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔍</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">pandas 실습 (2)</h1>
 				<p className="text-2xl text-gray-500 mt-2">조건으로 걸러내고 줄 세우기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,10 +26,9 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "pandas 패키지 설치 확인" },
+						{ text: "pandas 패키지 설치 확인" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -52,7 +50,7 @@ df = pd.DataFrame(data)
 
 붐비는역 = df[df["승차인원"] > ____]`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: 12000</p>
+					<p className="text-lg text-gray-600">빈칸: 12000</p>
 				</div>
 			</div>
 		),
@@ -66,7 +64,7 @@ df = pd.DataFrame(data)
 				<CodeBlock>{`중간역 = df[____]
 # (df["승차인원"] >= 10000) & (df["승차인원"] <= 14000)`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 괄호를 빠뜨리면 에러가 납니다!</p>
+					<p className="text-lg text-gray-600">괄호를 빠뜨리면 에러가 납니다!</p>
 				</div>
 			</div>
 		),
@@ -79,7 +77,7 @@ df = pd.DataFrame(data)
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`정렬결과 = df.sort_values("승차인원", ascending=____)  # False`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 sort_values는 새 결과를 돌려줄 뿐, 원래 df는 그대로!</p>
+					<p className="text-lg text-gray-600">sort_values는 새 결과를 돌려줄 뿐, 원래 df는 그대로!</p>
 				</div>
 			</div>
 		),
@@ -98,7 +96,7 @@ df = pd.DataFrame(data)
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -111,10 +109,9 @@ df = pd.DataFrame(data)
 		script: "오늘 실습을 마치겠습니다. 이제 표에서 원하는 데이터만 쏙쏙 찾아낼 수 있게 되었습니다. 다음 시간에는 데이터를 그룹으로 묶어서 요약하는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: pandas 기초 (3) 그룹으로 묶어 요약하기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

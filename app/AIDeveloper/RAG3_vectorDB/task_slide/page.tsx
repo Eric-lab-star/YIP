@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 Chroma 벡터DB를 직접 만들어보는 실습을 진행하겠습니다. 총 4가지 미션을 약 25~30분에 걸쳐 수행합니다. 서랍장 만들기, 문서 저장하기, 검색하기, 새 문서 추가하기 순서로 하나씩 진행하겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🗄️</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           벡터DB 실습 미션
         </h1>
@@ -30,13 +29,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션 시작 전 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "chromadb, google-genai 패키지 설치" },
-            { icon: "🔑", text: "제미나이 API 키 확인 (제미나이 임베딩 연결에 필요)" },
-            { icon: "📄", text: "지난 시간 청크 데이터 (없으면 예시로 직접 작성)" },
-            { icon: "❓", text: "검색 테스트용 질문 한두 개 미리 준비" },
+            { text: "chromadb, google-genai 패키지 설치" },
+            { text: "제미나이 API 키 확인 (제미나이 임베딩 연결에 필요)" },
+            { text: "지난 시간 청크 데이터 (없으면 예시로 직접 작성)" },
+            { text: "검색 테스트용 질문 한두 개 미리 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -60,7 +58,7 @@ print("chromadb 준비 완료!")`}</CodeBlock>
           <p className="text-lg text-gray-600 mt-2">에러 없이 &ldquo;chromadb 준비 완료!&rdquo;가 출력되는가?</p>
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 오늘은 제미나이 임베딩을 연결해서 쓰므로 google-genai 패키지와 API 키도 확인해두세요.</p>
+          <p className="text-base text-gray-600">오늘은 제미나이 임베딩을 연결해서 쓰므로 google-genai 패키지와 API 키도 확인해두세요.</p>
         </div>
       </div>
     ),
@@ -137,7 +135,7 @@ collection.upsert(documents=chunks, ids=ids)
 print(f"{collection.count()}개 저장 완료")`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4">
-          <p className="text-lg text-gray-600">💡 힌트: f&quot;chunk_{'{i}'}&quot; 형태로 고유 id를 만들 수 있습니다.</p>
+          <p className="text-lg text-gray-600">힌트: f&quot;chunk_{'{i}'}&quot; 형태로 고유 id를 만들 수 있습니다.</p>
         </div>
       </div>
     ),
@@ -187,7 +185,7 @@ for doc in results["documents"][0]:
     print("-", doc)`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4">
-          <p className="text-lg text-gray-600">💡 힌트: question = &quot;고양이에 대해 알려줘&quot; 형태로 넣으면 됩니다.</p>
+          <p className="text-lg text-gray-600">힌트: question = &quot;고양이에 대해 알려줘&quot; 형태로 넣으면 됩니다.</p>
         </div>
       </div>
     ),
@@ -283,7 +281,7 @@ for doc in results["documents"][0]:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -296,10 +294,9 @@ for doc in results["documents"][0]:
     script: "오늘 실습을 마치겠습니다. 여러분 모두 훌륭하게 수행해주셨습니다. 다음 시간에는 이 벡터DB에 제미나이를 연결하여 진짜 RAG 챗봇을 완성하겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 벡터DB + 제미나이 = RAG 챗봇</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 공공데이터포털의 파일 데이터, CSV를 다뤄보겠습니다. CSV 파일을 열었을 때 한글이 깨지는 이유도 함께 알아보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📄</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					CSV 파일과 인코딩 문제
 				</h1>
@@ -77,14 +76,14 @@ print(df)`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">🌏 UTF-8</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">UTF-8</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>전 세계 표준 인코딩</li>
 						<li>pandas의 기본값</li>
 					</ul>
 				</div>
 				<div className="bg-orange-50 rounded-xl p-5 border-l-4 border-orange-400">
-					<p className="text-lg font-bold text-orange-700 mb-2">🇰🇷 CP949</p>
+					<p className="text-lg font-bold text-orange-700 mb-2">CP949</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>옛 한국 윈도우 인코딩</li>
 						<li>공공데이터 CSV에 아직 많음</li>
@@ -103,7 +102,7 @@ print(df)`}</CodeBlock>
 df = pd.read_csv("subway.csv", encoding="cp949")
 print(df)`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 순서: 기본값 → cp949 → euc-kr</p>
+					<p className="text-lg text-gray-700">순서: 기본값 → cp949 → euc-kr</p>
 				</div>
 			</div>
 		),
@@ -115,13 +114,13 @@ print(df)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ CSV = 쉼표로 구분된 텍스트 표</p>
+					<p className="text-lg text-gray-700">CSV = 쉼표로 구분된 텍스트 표</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ pd.read_csv(&quot;파일명&quot;)으로 불러오기</p>
+					<p className="text-lg text-gray-700">pd.read_csv(&quot;파일명&quot;)으로 불러오기</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 한글 깨짐 → encoding=&quot;cp949&quot; 시도</p>
+					<p className="text-lg text-gray-700">한글 깨짐 → encoding=&quot;cp949&quot; 시도</p>
 				</div>
 			</div>
 		),
@@ -132,10 +131,9 @@ print(df)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. CSV 파일을 읽는 법과 인코딩 문제 해결법을 배웠습니다. 다음 시간부터는 pandas를 본격적으로 배워보겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: pandas 기초 (1) DataFrame과 Series</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

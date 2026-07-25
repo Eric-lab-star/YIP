@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 발급받은 인증키로, 오늘은 진짜 공공 API를 파이썬 코드로 직접 호출해서 실시간 미세먼지 데이터를 받아보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📡</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					파이썬으로 API 호출하기
 				</h1>
@@ -119,7 +118,7 @@ items = data["response"]["body"]["items"]
 for item in items:
     print(item["stationName"], "PM10:", item["pm10Value"])`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 pm10Value는 문자열(<code>&quot;30&quot;</code>)입니다. 계산하려면 int()로 바꿔주세요!</p>
+					<p className="text-lg text-gray-700">pm10Value는 문자열(<code>&quot;30&quot;</code>)입니다. 계산하려면 int()로 바꿔주세요!</p>
 				</div>
 			</div>
 		),
@@ -152,13 +151,13 @@ for item in items:
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ requests.get(url, params=...)로 API 요청</p>
+					<p className="text-lg text-gray-700">requests.get(url, params=...)로 API 요청</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ <code>response.json()[&quot;response&quot;][&quot;body&quot;][&quot;items&quot;]</code></p>
+					<p className="text-lg text-gray-700"><code>response.json()[&quot;response&quot;][&quot;body&quot;][&quot;items&quot;]</code></p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 숫자 값도 문자열로 옴 → int()/float() 변환 필요</p>
+					<p className="text-lg text-gray-700">숫자 값도 문자열로 옴 → int()/float() 변환 필요</p>
 				</div>
 			</div>
 		),
@@ -169,10 +168,9 @@ for item in items:
 		script: "오늘 강의를 마치겠습니다. 나라가 열어준 데이터를 코드로 직접 불러왔습니다. 다음 시간부터는 이렇게 받아온 데이터를 표 형태로 정리하는 도구, pandas를 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: CSV 파일과 인코딩 문제</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

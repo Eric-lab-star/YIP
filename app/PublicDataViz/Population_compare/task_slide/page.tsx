@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 연령대별 남녀 인구를 직접 비교하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">👨‍👩‍👧‍👦</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">프로젝트 5 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">연령대별 남녀 인구 비교하기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "pandas, seaborn, matplotlib 패키지 설치 확인" },
-						{ icon: "📄", text: "출처: 행정안전부 주민등록인구현황(예시), 공공누리 제1유형" },
+						{ text: "pandas, seaborn, matplotlib 패키지 설치 확인" },
+						{ text: "출처: 행정안전부 주민등록인구현황(예시), 공공누리 제1유형" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -48,7 +46,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`길게 = pd.melt(df, id_vars=["연령대"], value_vars=____,
     var_name="성별", value_name="인구수")  # ["남자", "여자"]`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: [&quot;남자&quot;, &quot;여자&quot;]</p>
+					<p className="text-lg text-gray-600">빈칸: [&quot;남자&quot;, &quot;여자&quot;]</p>
 				</div>
 			</div>
 		),
@@ -62,7 +60,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`sns.barplot(data=길게, x="연령대", y="인구수", hue=____)
 # "성별"`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: &quot;성별&quot;</p>
+					<p className="text-lg text-gray-600">빈칸: &quot;성별&quot;</p>
 				</div>
 			</div>
 		),
@@ -76,7 +74,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`여자20대 = df[df["연령대"]=="20대"]["여자"].____[0]
 # values`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: values</p>
+					<p className="text-lg text-gray-600">빈칸: values</p>
 				</div>
 			</div>
 		),
@@ -95,7 +93,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -108,10 +106,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 이제 연령대별 남녀 인구를 한눈에 비교할 수 있게 되었습니다. 다음 시간에는 인구 피라미드를 그리겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 인구 피라미드 그리기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 'API가 무엇인가'입니다. API는 Application Programming Interface의 약자로, 우리가 만든 프로그램이 다른 서비스와 소통할 수 있게 해주는 창구입니다. 오늘은 API의 개념을 일상생활의 비유로 이해하고, 제미나이 앱과 제미나이 API의 차이를 명확히 구분하는 것을 목표로 합니다. 마지막으로 오늘의 최종 과제인 날씨 정보 앱이 어떤 구조인지 미리 살펴보겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-orange-500">API</code>가 뭐냥?
         </h1>
@@ -94,12 +93,11 @@ const slides: Slide[] = [
         </p>
         <div className="space-y-3">
           {[
-            { icon: "🗺️", name: "지도 API", desc: "식당 위치를 지도에 표시" },
-            { icon: "💳", name: "결제 API", desc: "카드 결제를 처리" },
-            { icon: "🌤️", name: "날씨 API", desc: "배달 관련 날씨 정보를 제공" },
+            { name: "지도 API", desc: "식당 위치를 지도에 표시" },
+            { name: "결제 API", desc: "카드 결제를 처리" },
+            { name: "날씨 API", desc: "배달 관련 날씨 정보를 제공" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="font-semibold text-gray-800">{item.name}</p>
                 <p className="text-gray-600">{item.desc}</p>
@@ -123,7 +121,7 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-            <p className="text-lg font-bold text-blue-700 mb-3">💬 제미나이 앱</p>
+            <p className="text-lg font-bold text-blue-700 mb-3">제미나이 앱</p>
             <ul className="space-y-2 text-base text-gray-600">
               <li>• 사람이 직접 화면에서 타이핑</li>
               <li>• 눈으로 답변을 읽고 직접 판단</li>
@@ -132,7 +130,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-3">⚙️ 제미나이 API</p>
+            <p className="text-lg font-bold text-purple-700 mb-3">제미나이 API</p>
             <ul className="space-y-2 text-base text-gray-600">
               <li>• 코드가 자동으로 질문 전송</li>
               <li>• 답변을 코드가 자동으로 처리</li>
@@ -189,12 +187,11 @@ const slides: Slide[] = [
         </p>
         <div className="space-y-3">
           {[
-            { num: "1", text: "날씨 API에서 오늘의 날씨 정보를 가져온다", icon: "🌤️" },
-            { num: "2", text: "제미나이 API에 전달해서 AI 코멘트를 받아온다", icon: "🤖" },
-            { num: "3", text: "결과를 화면에 보여준다", icon: "📱" },
+            { num: "1", text: "날씨 API에서 오늘의 날씨 정보를 가져온다" },
+            { num: "2", text: "제미나이 API에 전달해서 AI 코멘트를 받아온다" },
+            { num: "3", text: "결과를 화면에 보여준다" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div className="flex items-center gap-3">
                 <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">{item.num}</span>
                 <p className="text-lg text-gray-700">{item.text}</p>
@@ -203,8 +200,8 @@ const slides: Slide[] = [
           ))}
         </div>
         <div className="bg-gray-900 rounded-xl p-5 text-green-300 font-mono text-base">
-          <p>🌤️ 오늘 서울 날씨: 맑음, 28도</p>
-          <p className="mt-2">🐱 코딩냥의 한마디:</p>
+          <p>오늘 서울 날씨: 맑음, 28도</p>
+          <p className="mt-2">코딩냥의 한마디:</p>
           <p>&quot;오늘은 햇살이 쨍쨍합니다! 자외선 차단제 꼭 바르세요~&quot;</p>
         </div>
       </div>
@@ -227,12 +224,12 @@ const slides: Slide[] = [
             </thead>
             <tbody className="text-gray-700">
               <tr className="bg-white">
-                <td className="p-4 font-semibold">🌤️ 날씨 API</td>
+                <td className="p-4 font-semibold">날씨 API</td>
                 <td className="p-4">날씨 데이터 가져오기</td>
                 <td className="p-4">선생님이 키 발급 완료</td>
               </tr>
               <tr className="bg-gray-50">
-                <td className="p-4 font-semibold">🤖 제미나이 API</td>
+                <td className="p-4 font-semibold">제미나이 API</td>
                 <td className="p-4">AI 코멘트 생성하기</td>
                 <td className="p-4">선생님이 키 발급 완료</td>
               </tr>
@@ -241,7 +238,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
           <p className="text-lg text-gray-700">
-            🔑 <strong>API 키(Key)</strong> = API를 사용할 수 있는 일종의 &ldquo;회원증&rdquo;
+<strong>API 키(Key)</strong> = API를 사용할 수 있는 일종의 &ldquo;회원증&rdquo;
           </p>
         </div>
       </div>
@@ -315,10 +312,9 @@ print(f"AI 코멘트: {response.text}")`}</CodeBlock>
     script: "오늘 강의를 마치겠습니다. API의 개념, 제미나이 앱과 API의 차이, 그리고 오늘 만들 날씨 정보 앱의 구조를 이해하셨을 것입니다. 다음 시간에는 직접 코드를 작성하면서 날씨 API 연결, 제미나이 API 연결, 그리고 두 API를 합치는 과정을 실습해보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 날씨 정보 앱 코드 실습</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

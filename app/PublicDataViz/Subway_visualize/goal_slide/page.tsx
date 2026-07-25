@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 melt와 groupby로 가장 붐비는 시간대를 찾아냈습니다. 오늘은 그 결과를 그래프로 그려서 한눈에 보이게 만들겠습니다. 첫 프로젝트의 마지막 시간입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📈</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 1 — 지하철
 				</h1>
@@ -63,13 +62,13 @@ sns.barplot(data=시간대평균, x="시간대", y="승차인원")`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📊 seaborn barplot</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">seaborn barplot</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>전체 평균 흐름 파악</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🖱️ plotly line + color</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">plotly line + color</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>역마다 선을 다르게 비교</li>
 					</ul>
@@ -86,7 +85,7 @@ sns.barplot(data=시간대평균, x="시간대", y="승차인원")`}</CodeBlock>
 				<CodeBlock>{`fig = px.line(길게, x="시간대", y="승차인원", color="역명")
 fig.show()`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 color=&quot;열&quot;로 자동 색 구분 + 범례 클릭 필터</p>
+					<p className="text-lg text-gray-700">color=&quot;열&quot;로 자동 색 구분 + 범례 클릭 필터</p>
 				</div>
 			</div>
 		),
@@ -112,13 +111,13 @@ print(f"결론: {가장붐비는시간대}에 승차인원이 가장 많다.")`}
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ reset_index()로 groupby 결과 정리</p>
+					<p className="text-lg text-gray-700">reset_index()로 groupby 결과 정리</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sns.barplot() / px.line(color=)로 시각화</p>
+					<p className="text-lg text-gray-700">sns.barplot() / px.line(color=)로 시각화</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 결론 문장으로 분석 마무리하기</p>
+					<p className="text-lg text-gray-700">결론 문장으로 분석 마무리하기</p>
 				</div>
 			</div>
 		),
@@ -129,10 +128,9 @@ print(f"결론: {가장붐비는시간대}에 승차인원이 가장 많다.")`}
 		script: "오늘 강의를 마치겠습니다. 이걸로 첫 번째 프로젝트, 지하철 승하차 데이터 분석을 완주했습니다. 다음 프로젝트는 미세먼지 데이터입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏁</span>
 				<h1 className="text-5xl font-bold text-gray-800">프로젝트 1을 완주했습니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 미세먼지 데이터</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

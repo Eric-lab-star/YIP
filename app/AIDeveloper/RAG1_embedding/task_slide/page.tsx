@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 임베딩의 개념을 바탕으로, 직접 실습을 진행하겠습니다. 문장을 숫자 벡터로 바꾸고, 문장들 사이의 거리(유사도)를 직접 계산해볼 것입니다. 총 4가지 미션을 약 25~30분에 걸쳐 수행합니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🔢</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           임베딩 실습
         </h1>
@@ -30,12 +29,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "google-genai, numpy 패키지 설치 확인" },
-            { icon: "🔑", text: "제미나이 API 키 준비 (지난 시간과 동일)" },
-            { icon: "📄", text: "빈칸이 포함된 코드 템플릿 (.py 또는 .ipynb)" },
+            { text: "google-genai, numpy 패키지 설치 확인" },
+            { text: "제미나이 API 키 준비 (지난 시간과 동일)" },
+            { text: "빈칸이 포함된 코드 템플릿 (.py 또는.ipynb)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -95,7 +93,7 @@ print("벡터의 길이:", len(embeddings[0]))
 print("첫 번째 벡터 일부:", embeddings[0][:5])`}
         </CodeBlock>
         <div className="bg-blue-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 벡터는 컴퓨터를 위한 표현 방식입니다. 사람은 의미를 알 수 없지만, 컴퓨터는 이것으로 유사도를 계산합니다.</p>
+          <p className="text-base text-gray-600">벡터는 컴퓨터를 위한 표현 방식입니다. 사람은 의미를 알 수 없지만, 컴퓨터는 이것으로 유사도를 계산합니다.</p>
         </div>
       </div>
     ),
@@ -228,7 +226,7 @@ print("A-C 유사도:",
     ))`}
         </CodeBlock>
         <p className="text-lg text-orange-600 font-medium">
-          ✍️ A-B 유사도가 A-C보다 높게 나오는지 확인해보세요!
+ A-B 유사도가 A-C보다 높게 나오는지 확인해보세요!
         </p>
       </div>
     ),
@@ -248,7 +246,7 @@ print("A-C 유사도:",
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -261,10 +259,9 @@ print("A-C 유사도:",
     script: "오늘 실습을 마치겠습니다. 문장이 숫자 좌표가 되고, 의미가 비슷한 문장은 가까운 좌표에 놓인다는 핵심 원리를 직접 확인하셨습니다. 다음 시간에는 긴 문서를 청크로 나누고 검색하는 방법을 배우겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 청킹과 유사도 검색</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

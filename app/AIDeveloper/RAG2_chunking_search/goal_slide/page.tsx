@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 '청킹과 유사도 검색'입니다. 지난 시간에 우리는 문장을 벡터(숫자 좌표)로 바꾸고, 두 문장이 얼마나 비슷한지 유사도로 비교하는 방법을 배웠습니다. 오늘은 한 걸음 더 나아가서, 아주 긴 문서를 AI에게 참고시키려면 어떻게 해야 하는지를 배워보겠습니다. 책 한 권처럼 긴 자료를 어떻게 쪼개고(청킹), 어떻게 찾아내는지(검색) 체계적으로 살펴보겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📚</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           청킹과 유사도 검색
         </h1>
@@ -54,11 +53,10 @@ const slides: Slide[] = [
         </div>
         <div className="space-y-4">
           {[
-            { icon: "🌫️", title: "핵심 의미가 희석됨", desc: "여러 주제가 한 좌표에 뭉쳐져서 의미가 흐려짐" },
-            { icon: "📏", title: "글자 수 한계", desc: "AI가 한 번에 처리할 수 있는 텍스트 양에 제한이 있음" },
+            { title: "핵심 의미가 희석됨", desc: "여러 주제가 한 좌표에 뭉쳐져서 의미가 흐려짐" },
+            { title: "글자 수 한계", desc: "AI가 한 번에 처리할 수 있는 텍스트 양에 제한이 있음" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -82,7 +80,6 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="flex items-start gap-4">
-          <span className="text-6xl">📖</span>
           <div>
             <p className="text-xl text-gray-700 mb-2">비유: 책을 챕터별로 나누어 책장에 정리하기</p>
             <ul className="text-lg text-gray-600 space-y-1">
@@ -103,7 +100,7 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-red-50 rounded-xl p-5">
-            <p className="font-semibold text-red-700 mb-3">📕 통째로 임베딩</p>
+            <p className="font-semibold text-red-700 mb-3">통째로 임베딩</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 여러 주제가 한 좌표에 뭉침</li>
               <li>• 핵심 의미가 흐려짐</li>
@@ -112,7 +109,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-green-50 rounded-xl p-5">
-            <p className="font-semibold text-green-700 mb-3">📚 청크별로 임베딩</p>
+            <p className="font-semibold text-green-700 mb-3">청크별로 임베딩</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 조각마다 의미가 또렷함</li>
               <li>• 글자 수 부담이 작아짐</li>
@@ -157,11 +154,11 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <p className="text-xl text-gray-700">검색기가 동작하는 5단계</p>
         {[
-          { num: "1", text: "문서를 청크로 나누기 (청킹) ✂️" },
-          { num: "2", text: "각 청크를 임베딩으로 변환 📍" },
-          { num: "3", text: "질문도 임베딩으로 변환 ❓" },
-          { num: "4", text: "질문과 각 청크의 유사도 비교 📏" },
-          { num: "5", text: "가장 유사한 청크를 결과로 반환 🎁" },
+          { num: "1", text: "문서를 청크로 나누기 (청킹)" },
+          { num: "2", text: "각 청크를 임베딩으로 변환" },
+          { num: "3", text: "질문도 임베딩으로 변환" },
+          { num: "4", text: "질문과 각 청크의 유사도 비교" },
+          { num: "5", text: "가장 유사한 청크를 결과로 반환" },
         ].map((item) => (
           <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
             <span className="bg-blue-500 text-white rounded-full w-9 h-9 flex items-center justify-center shrink-0 font-bold">{item.num}</span>
@@ -194,7 +191,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            📝 오늘은 &ldquo;검색&rdquo;까지만 진행합니다. AI가 자료를 보고 답변을 생성하는 것은 다음 차시에서 다룹니다.
+ 오늘은 &ldquo;검색&rdquo;까지만 진행합니다. AI가 자료를 보고 답변을 생성하는 것은 다음 차시에서 다룹니다.
           </p>
         </div>
       </div>
@@ -232,10 +229,9 @@ const slides: Slide[] = [
     script: "오늘 강의를 마치겠습니다. 긴 문서를 청크로 나누는 이유와 방법, 그리고 검색기의 동작 원리를 이해하셨을 것입니다. 다음 시간에는 벡터 데이터베이스를 활용하여 청크를 영구적으로 저장하고 빠르게 검색하는 방법을 배우겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 벡터DB 구축하기</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘은 AI의 환각을 직접 유도하여 관찰하고, 프롬프트와 RAG으로 환각을 줄이는 방법을 실험해보겠습니다. 마지막에는 친구들과 함께 '우리 앱에 어떤 안전장치를 넣을까'를 토론하는 시간도 가지겠습니다. 총 소요 시간은 약 25분에서 30분입니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           환각 실험실
           <br />
@@ -32,18 +31,17 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "google-genai 패키지 설치 및 API 키 확인" },
-            { icon: "🔍", text: "환각 유도용 질문 준비 (존재하지 않는 책/영화/인물 등)" },
-            { icon: "💬", text: "모둠 토론용 질문지 확인" },
+            { text: "google-genai 패키지 설치 및 API 키 확인" },
+            { text: "환각 유도용 질문 준비 (존재하지 않는 책/영화/인물 등)" },
+            { text: "모둠 토론용 질문지 확인" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 좋은 실험 주제: 내가 직접 진짜인지 확인할 수 있는 것 (없는 책 제목, 가상의 인물 등)</p>
+          <p className="text-base text-gray-600">좋은 실험 주제: 내가 직접 진짜인지 확인할 수 있는 것 (없는 책 제목, 가상의 인물 등)</p>
         </div>
       </div>
     ),
@@ -132,7 +130,7 @@ print(client.models.generate_content(
           <p className="font-semibold text-lg text-gray-800">빈칸 힌트</p>
           <p className="text-base text-gray-600 mt-2">빈칸에는 안전장치 지시문을 넣습니다. 예: &ldquo;확실하지 않은 정보는 지어내지 말고 확인할 수 없다고 답해줘&rdquo;</p>
         </div>
-        <p className="text-lg text-green-600 font-medium">✍️ 미션 1과 미션 2의 답변을 나란히 비교해보세요!</p>
+        <p className="text-lg text-green-600 font-medium">미션 1과 미션 2의 답변을 나란히 비교해보세요!</p>
       </div>
     ),
   },
@@ -160,7 +158,7 @@ print(client.models.generate_content(
             </div>
           </div>
           <div className="bg-amber-50 rounded-xl p-4">
-            <p className="text-base text-gray-600">⚠️ 완벽하지는 않으므로, 사용자의 검토가 항상 필요합니다.</p>
+            <p className="text-base text-gray-600">완벽하지는 않으므로, 사용자의 검토가 항상 필요합니다.</p>
           </div>
         </div>
       </div>
@@ -188,7 +186,7 @@ print(client.models.generate_content(
           ))}
         </div>
         <div className="bg-violet-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 토론은 정답을 찾는 것이 아니라, 다양한 관점을 나누는 것이 목적입니다.</p>
+          <p className="text-base text-gray-600">토론은 정답을 찾는 것이 아니라, 다양한 관점을 나누는 것이 목적입니다.</p>
         </div>
       </div>
     ),
@@ -201,12 +199,12 @@ print(client.models.generate_content(
       <div className="flex flex-col gap-6">
         <div className="bg-white/70 rounded-xl p-6">
           <p className="text-xl text-gray-700 mb-4">
-            🚗 <strong>자동차(AI)</strong>에 <strong>안전벨트(검토)</strong>와 <strong>신호등(안전장치)</strong>을 달자!
+<strong>자동차(AI)</strong>에 <strong>안전벨트(검토)</strong>와 <strong>신호등(안전장치)</strong>을 달자!
           </p>
           <div className="space-y-3">
-            <p className="text-lg text-gray-600">• 🪢 모르면 모른다고 답하기 (프롬프트 지시)</p>
-            <p className="text-lg text-gray-600">• 📚 참고 자료를 근거로 답하기 (RAG)</p>
-            <p className="text-lg text-gray-600">• 🏷️ AI 답변임을 표시하기 (사용자 알림)</p>
+            <p className="text-lg text-gray-600">• 모르면 모른다고 답하기 (프롬프트 지시)</p>
+            <p className="text-lg text-gray-600">• 참고 자료를 근거로 답하기 (RAG)</p>
+            <p className="text-lg text-gray-600">• AI 답변임을 표시하기 (사용자 알림)</p>
           </div>
         </div>
         <div className="bg-amber-50 rounded-xl p-4 text-center">
@@ -247,7 +245,7 @@ print(client.models.generate_content(
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -263,10 +261,9 @@ print(client.models.generate_content(
     script: `오늘 실습을 마치겠습니다. AI의 환각을 직접 경험하고, 안전장치의 효과를 확인하셨습니다. AI를 안전하게 사용하는 첫 번째 수업을 멋지게 마치셨습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
-        <p className="text-xl text-gray-600 mt-4">AI를 안전하게 사용하는 첫 번째 수업 완료! 🛡️</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-xl text-gray-600 mt-4">AI를 안전하게 사용하는 첫 번째 수업 완료!</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

@@ -9,7 +9,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 세 시간 동안 만들어온 임베딩, 청킹, 벡터DB를 하나로 합쳐서 진짜 RAG 챗봇을 완성하는 시간입니다. RAG는 Retrieval-Augmented Generation, 즉 검색 증강 생성의 약자입니다. 특히 오늘은 지금까지처럼 코드에 적어둔 예시 문장이 아니라, 실제 문서 파일을 통째로 AI에게 전달하는 방법까지 배웁니다. 자료를 찾기만 하고 끝내는 것이 아니라, 찾은 자료를 바탕으로 자연스러운 답변까지 만들어내는 완성된 시스템을 구축하겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📚</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           RAG 챗봇 완성하기
         </h1>
@@ -73,7 +72,7 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400">
-            <p className="text-lg font-bold text-green-700 mb-2">🔎 사서 (검색 시스템)</p>
+            <p className="text-lg font-bold text-green-700 mb-2">사서 (검색 시스템)</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>벡터DB에서 관련 자료를 찾아냄</li>
               <li>&ldquo;이 자료들이 관련 있어요!&rdquo;까지만 담당</li>
@@ -81,7 +80,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-2">🗣️ 설명 직원 (제미나이)</p>
+            <p className="text-lg font-bold text-purple-700 mb-2">설명 직원 (제미나이)</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>찾아온 자료를 읽고 이해</li>
               <li>&ldquo;이 자료를 보면 답은 이거예요!&rdquo;</li>
@@ -217,19 +216,19 @@ collection.upsert(documents=chunks, ids=ids)`}
     content: (
       <div className="flex flex-col gap-4">
         <div className="bg-green-50 rounded-xl p-4">
-          <p className="text-lg text-gray-700">✅ <strong>R</strong>etrieval = 벡터DB에서 관련 자료 검색</p>
+          <p className="text-lg text-gray-700"><strong>R</strong>etrieval = 벡터DB에서 관련 자료 검색</p>
         </div>
         <div className="bg-purple-50 rounded-xl p-4">
-          <p className="text-lg text-gray-700">✅ <strong>G</strong>eneration = 제미나이가 자료 기반 답변 생성</p>
+          <p className="text-lg text-gray-700"><strong>G</strong>eneration = 제미나이가 자료 기반 답변 생성</p>
         </div>
         <div className="bg-lime-50 rounded-xl p-4">
-          <p className="text-lg text-gray-700">✅ 실제 문서는 읽기 → 청킹 → 저장의 <strong>인덱싱</strong>으로 넣는다 (한 번만!)</p>
+          <p className="text-lg text-gray-700">실제 문서는 읽기 → 청킹 → 저장의 <strong>인덱싱</strong>으로 넣는다 (한 번만!)</p>
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
-          <p className="text-lg text-gray-700">✅ 핵심: AI가 모르는 내용도 검색한 자료를 참고하면 답할 수 있다</p>
+          <p className="text-lg text-gray-700">핵심: AI가 모르는 내용도 검색한 자료를 참고하면 답할 수 있다</p>
         </div>
         <div className="bg-orange-50 rounded-xl p-4">
-          <p className="text-lg text-gray-700">✅ prompt 구성 방식이 답변 품질을 좌우한다</p>
+          <p className="text-lg text-gray-700">prompt 구성 방식이 답변 품질을 좌우한다</p>
         </div>
       </div>
     ),
@@ -240,10 +239,9 @@ collection.upsert(documents=chunks, ids=ids)`}
     script: "오늘 강의를 마치겠습니다. 드디어 검색과 생성을 합쳐서 진짜 AI 사서를 완성할 준비가 끝났습니다. 이제 실습에서 실제 문서 파일을 직접 인덱싱하고, RAG 함수를 만들고, Streamlit 챗봇까지 완성해보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음: 실제 문서 인덱싱 + RAG 함수 + Streamlit 챗봇 실습</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘은 지난 시간에 배운 대화 히스토리와 페르소나 개념을 바탕으로, 직접 영어 회화 선생님을 코드로 만들어보겠습니다. 총 3가지 미션을 약 25분에서 30분에 걸쳐 수행합니다. 먼저 환경을 준비하고, 페르소나를 설정해 한 번 대화해본 뒤, 대화를 기억하며 여러 번 주고받는 기능까지 완성하겠습니다. 질문이 있으면 언제든지 손을 들어주시기 바랍니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           영어 대화 앱 실습
           <br />
@@ -32,18 +31,17 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "google-genai 패키지가 설치되어 있는가?" },
-            { icon: "🔑", text: "본인의 제미나이 API 키가 준비되어 있는가?" },
-            { icon: "💬", text: "대화 시나리오를 떠올려보았는가? (자기소개, 취미, 여행 등)" },
+            { text: "google-genai 패키지가 설치되어 있는가?" },
+            { text: "본인의 제미나이 API 키가 준비되어 있는가?" },
+            { text: "대화 시나리오를 떠올려보았는가? (자기소개, 취미, 여행 등)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-          <p className="text-base text-gray-700">⚠️ API 키는 비밀입니다. 코드를 공유할 때는 키를 반드시 가려주시기 바랍니다.</p>
+          <p className="text-base text-gray-700">API 키는 비밀입니다. 코드를 공유할 때는 키를 반드시 가려주시기 바랍니다.</p>
         </div>
       </div>
     ),
@@ -77,11 +75,10 @@ const slides: Slide[] = [
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">google-genai = 제미나이 AI에 접근하는 공식 라이브러리</p>
           </div>
           <div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
-            <p className="text-lg text-gray-700">⚠️ API 키는 비밀 열쇠입니다. 코드 공유 시 반드시 삭제하거나 가려주시기 바랍니다.</p>
+            <p className="text-lg text-gray-700">API 키는 비밀 열쇠입니다. 코드 공유 시 반드시 삭제하거나 가려주시기 바랍니다.</p>
           </div>
         </div>
       </div>
@@ -143,7 +140,7 @@ print(response.text)`}
           </div>
           <div className="bg-orange-50 rounded-xl p-4">
             <p className="text-base text-gray-600">
-              💡 지금은 한 번 질문, 한 번 답변 구조입니다. 다음 미션에서 대화 이어가기를 추가합니다.
+ 지금은 한 번 질문, 한 번 답변 구조입니다. 다음 미션에서 대화 이어가기를 추가합니다.
             </p>
           </div>
         </div>
@@ -183,7 +180,7 @@ while True:
           <p className="text-base text-gray-600 mt-2">response = ____ 에는 chat.send_message(user_input) 형태의 코드를 넣습니다.</p>
         </div>
         <p className="text-lg text-orange-600 font-medium">
-          ✍️ 영어로 자기소개 후 취미, 주말 이야기로 이어가보세요. AI가 이전 말을 기억하는지 확인!
+ 영어로 자기소개 후 취미, 주말 이야기로 이어가보세요. AI가 이전 말을 기억하는지 확인!
         </p>
       </div>
     ),
@@ -209,7 +206,7 @@ while True:
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
             <p className="text-base text-gray-600">
-              💡 chat.send_message(user_input) → 이전 대화 + 새 메시지가 함께 전달됩니다.
+ chat.send_message(user_input) → 이전 대화 + 새 메시지가 함께 전달됩니다.
             </p>
           </div>
         </div>
@@ -253,7 +250,7 @@ while True:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -270,10 +267,9 @@ while True:
     script: `오늘 실습을 마치겠습니다. 페르소나를 설정하고, 대화 히스토리를 유지하며 여러 번 대화를 주고받는 영어 선생님을 직접 만들어보셨습니다. 다음 시간에는 이 기능을 Streamlit 채팅 화면으로 옮기고, 영어 표현 교정 기능까지 추가하여 완성도 높은 앱을 만들어보겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
-        <p className="text-xl text-gray-600 mt-4">나만의 기억하는 영어 선생님 완성! ✅</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-xl text-gray-600 mt-4">나만의 기억하는 영어 선생님 완성!</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

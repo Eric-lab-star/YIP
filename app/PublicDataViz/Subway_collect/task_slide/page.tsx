@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 지하철 데이터를 직접 정리하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🚇</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">프로젝트 1 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">지하철 데이터 직접 정리하기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "pandas 패키지 설치 확인" },
-						{ icon: "📄", text: "출처: 서울열린데이터광장, 공공누리 제1유형" },
+						{ text: "pandas 패키지 설치 확인" },
+						{ text: "출처: 서울열린데이터광장, 공공누리 제1유형" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -49,7 +47,7 @@ const slides: Slide[] = [
     columns={"승차총승객수": ____, "하차총승객수": "하차"}
 )  # "승차"`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: &quot;승차&quot;</p>
+					<p className="text-lg text-gray-600">빈칸: &quot;승차&quot;</p>
 				</div>
 			</div>
 		),
@@ -63,7 +61,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`빈값 = df2.____().sum()  # isna
 이상치 = df2[df2["승차"] < 0]`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: isna</p>
+					<p className="text-lg text-gray-600">빈칸: isna</p>
 				</div>
 			</div>
 		),
@@ -77,7 +75,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`df2["하차"] = df2["하차"].fillna(____)  # 0
 df2 = df2[df2["승차"] >= ____]  # 0`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸 모두: 0</p>
+					<p className="text-lg text-gray-600">빈칸 모두: 0</p>
 				</div>
 			</div>
 		),
@@ -96,7 +94,7 @@ df2 = df2[df2["승차"] >= ____]  # 0`}</CodeBlock>
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -109,10 +107,9 @@ df2 = df2[df2["승차"] >= ____]  # 0`}</CodeBlock>
 		script: "오늘 실습을 마치겠습니다. 지저분한 지하철 데이터도 깨끗하게 다룰 수 있게 되었습니다. 다음 시간에는 출퇴근 시간대를 분석하겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 지하철 시간대별 분석</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

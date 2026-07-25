@@ -9,7 +9,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 실제 데이터셋의 라이선스를 확인하고, 출처 표시 문장을 직접 써보는 실습을 진행하겠습니다. 두 가지 미션을 약 20~25분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📜</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">라이선스 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">출처 표시 문장 써보기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 20~25분</p>
@@ -24,11 +23,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "🔑", text: "공공데이터포털 계정으로 로그인" },
-						{ icon: "📝", text: "종이나 메모장 준비 (활동지 작성용)" },
+						{ text: "공공데이터포털 계정으로 로그인" },
+						{ text: "종이나 메모장 준비 (활동지 작성용)" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -73,7 +71,7 @@ const slides: Slide[] = [
 					(출처: 공공데이터포털)
 				</div>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 이 문장 형식은 이번 학기 모든 프로젝트에서 계속 사용합니다!</p>
+					<p className="text-lg text-gray-700">이 문장 형식은 이번 학기 모든 프로젝트에서 계속 사용합니다!</p>
 				</div>
 			</div>
 		),
@@ -91,7 +89,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -104,10 +102,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 데이터를 책임감 있게 쓰는 법을 배웠습니다. 다음 시간에는 드디어 오픈 API 인증키를 발급받아보겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: Open API 인증키 발급받기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

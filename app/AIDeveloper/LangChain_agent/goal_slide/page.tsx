@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 'LangChain 에이전트'입니다. 지난 시간에 우리는 날씨 API에서 데이터를 가져와서 직접 프롬프트에 끼워 넣고, 그것을 제미나이에게 전달하는 방식으로 작업했습니다. 하지만 오늘은 AI가 스스로 '날씨를 확인해야겠다'고 판단하고 직접 API를 호출하게 만드는 방법을 배우겠습니다. 이것을 가능하게 해주는 것이 바로 LangChain입니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🧰</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           AI에게 도구를 쥐어주자!
           <br />
@@ -55,12 +54,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">지난 시간의 흐름을 정리하면 다음과 같습니다.</p>
         <div className="space-y-4">
           {[
-            { num: "1", text: "사람이 날씨 API를 직접 호출", icon: "👤" },
-            { num: "2", text: "사람이 받아온 데이터를 프롬프트에 끼워 넣음", icon: "📝" },
-            { num: "3", text: "제미나이는 그 프롬프트만 읽고 답변", icon: "🤖" },
+            { num: "1", text: "사람이 날씨 API를 직접 호출" },
+            { num: "2", text: "사람이 받아온 데이터를 프롬프트에 끼워 넣음" },
+            { num: "3", text: "제미나이는 그 프롬프트만 읽고 답변" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -79,13 +77,12 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-6">
         <div className="space-y-4">
           {[
-            { num: "1", text: "AI에게 날씨 도구(Tool)를 쥐어줌", icon: "📞" },
-            { num: "2", text: "AI가 스스로 도구가 필요한지 판단", icon: "🤔" },
-            { num: "3", text: "AI가 직접 도구를 호출해 정보 수집", icon: "🔧" },
-            { num: "4", text: "그 결과로 AI가 최종 답을 완성", icon: "✅" },
+            { num: "1", text: "AI에게 날씨 도구(Tool)를 쥐어줌" },
+            { num: "2", text: "AI가 스스로 도구가 필요한지 판단" },
+            { num: "3", text: "AI가 직접 도구를 호출해 정보 수집" },
+            { num: "4", text: "그 결과로 AI가 최종 답을 완성" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -108,8 +105,8 @@ const slides: Slide[] = [
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="p-4 text-left"></th>
-              <th className="p-4 text-left">메모 방식 📝</th>
-              <th className="p-4 text-left">전화기 방식 📞</th>
+              <th className="p-4 text-left">메모 방식</th>
+              <th className="p-4 text-left">전화기 방식</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -148,9 +145,9 @@ const slides: Slide[] = [
             </thead>
             <tbody className="text-gray-700">
               {[
-                ["LLM (제미나이)", "생각하고 답을 만드는 두뇌", "똑똑한 머리 🧠"],
-                ["Tool (도구)", "필요할 때 사용하는 외부 기능", "손에 쥔 도구 🔧"],
-                ["Agent (에이전트)", "도구 사용을 스스로 판단하는 지휘자", "결정하는 지휘자 🎯"],
+                ["LLM (제미나이)", "생각하고 답을 만드는 두뇌", "똑똑한 머리"],
+                ["Tool (도구)", "필요할 때 사용하는 외부 기능", "손에 쥔 도구"],
+                ["Agent (에이전트)", "도구 사용을 스스로 판단하는 지휘자", "결정하는 지휘자"],
               ].map(([name, role, short], i) => (
                 <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                   <td className="p-4 font-semibold">{name}</td>
@@ -162,7 +159,7 @@ const slides: Slide[] = [
           </table>
         </div>
         <div className="bg-indigo-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 Agent가 가장 핵심입니다. 사용자 질문을 보고 적절한 도구를 <strong>스스로 선택</strong>합니다.</p>
+          <p className="text-base text-gray-600">Agent가 가장 핵심입니다. 사용자 질문을 보고 적절한 도구를 <strong>스스로 선택</strong>합니다.</p>
         </div>
       </div>
     ),
@@ -206,20 +203,19 @@ result = agent.invoke({...})`}
         <p className="text-xl text-gray-700">LangChain은 여러 도구를 동시에 연결할 수 있습니다.</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { icon: "🌤️", name: "날씨" },
-            { icon: "💱", name: "환율" },
-            { icon: "📰", name: "뉴스" },
-            { icon: "🧮", name: "계산기" },
+            { name: "날씨" },
+            { name: "환율" },
+            { name: "뉴스" },
+            { name: "계산기" },
           ].map((tool, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 text-center">
-              <span className="text-4xl">{tool.icon}</span>
               <p className="text-lg text-gray-700 mt-2">{tool.name}</p>
             </div>
           ))}
         </div>
         <div className="bg-green-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 새 도구를 추가할 때 기존 코드를 수정할 필요 없이, <strong>새 함수를 등록</strong>하기만 하면 됩니다.
+ 새 도구를 추가할 때 기존 코드를 수정할 필요 없이, <strong>새 함수를 등록</strong>하기만 하면 됩니다.
           </p>
         </div>
       </div>
@@ -244,9 +240,9 @@ result = agent.invoke({...})`}
           </div>
         </div>
         <div className="bg-white/60 rounded-xl p-5 space-y-2">
-          <p className="text-lg text-gray-700">✅ 메모 방식: 사람이 판단, AI는 답만</p>
-          <p className="text-lg text-gray-700">✅ 전화기 방식: AI가 스스로 판단 + 도구 사용</p>
-          <p className="text-lg text-gray-700">✅ @tool 설명문이 Agent의 도구 선택을 좌우</p>
+          <p className="text-lg text-gray-700">메모 방식: 사람이 판단, AI는 답만</p>
+          <p className="text-lg text-gray-700">전화기 방식: AI가 스스로 판단 + 도구 사용</p>
+          <p className="text-lg text-gray-700">@tool 설명문이 Agent의 도구 선택을 좌우</p>
         </div>
       </div>
     ),
@@ -257,10 +253,9 @@ result = agent.invoke({...})`}
     script: "오늘 강의를 마치겠습니다. AI에게 스스로 일할 수 있는 능력을 부여하는 개념을 이해하셨을 것입니다. 다음 시간에는 직접 날씨 에이전트를 만들고, 다양한 질문으로 AI가 스스로 도구를 사용하는 순간을 확인해보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 직접 날씨 에이전트를 만들어봅니다</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

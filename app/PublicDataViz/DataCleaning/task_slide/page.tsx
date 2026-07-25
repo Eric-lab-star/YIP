@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 빈 값과 중복을 직접 청소하는 연습을 하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🧹</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">데이터 클리닝 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">지저분한 데이터 청소하기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,10 +26,9 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "pandas, numpy 패키지 설치 확인" },
+						{ text: "pandas, numpy 패키지 설치 확인" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -50,7 +48,7 @@ df = pd.DataFrame(data)
 
 빈값개수 = df["미세먼지"].____().sum()  # isna`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: isna</p>
+					<p className="text-lg text-gray-600">빈칸: isna</p>
 				</div>
 			</div>
 		),
@@ -64,7 +62,7 @@ df = pd.DataFrame(data)
 				<CodeBlock>{`평균값 = df["미세먼지"].mean()
 채워진_df = df.____({"미세먼지": 평균값})  # fillna`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 df.fillna(...)는 원본을 바꾸지 않고 새 결과를 돌려줍니다</p>
+					<p className="text-lg text-gray-600">df.fillna(...)는 원본을 바꾸지 않고 새 결과를 돌려줍니다</p>
 				</div>
 			</div>
 		),
@@ -80,7 +78,7 @@ df = pd.DataFrame(data)
 
 정리됨 = df2.____()  # drop_duplicates`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 모든 열의 값이 전부 같은 행만 중복으로 인식합니다</p>
+					<p className="text-lg text-gray-600">모든 열의 값이 전부 같은 행만 중복으로 인식합니다</p>
 				</div>
 			</div>
 		),
@@ -99,7 +97,7 @@ df = pd.DataFrame(data)
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -112,10 +110,9 @@ df = pd.DataFrame(data)
 		script: "오늘 실습을 마치겠습니다. 지저분한 공공데이터도 이제 깨끗하게 정리할 수 있게 되었습니다. 다음 시간에는 정리한 데이터를 그래프로 그려보는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: matplotlib으로 그래프 그리기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

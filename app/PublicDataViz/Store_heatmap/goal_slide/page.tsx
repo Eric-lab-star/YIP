@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 마커와 클러스터로 지도를 만들었습니다. 오늘은 색깔의 진하기로 밀집도를 보여주는 히트맵을 만들겠습니다. 프로젝트 4의 마지막 시간입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔥</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 4 — 상가
 				</h1>
@@ -46,13 +45,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📍 마커 (지난 시간)</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">마커 (지난 시간)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>가게 하나하나의 정확한 위치</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🔥 히트맵 (오늘)</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">히트맵 (오늘)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>밀집 정도를 색깔로 표현</li>
 					</ul>
@@ -83,7 +82,7 @@ HeatMap(좌표목록).add_to(m)`}</CodeBlock>
 				<CodeBlock>{`동별개수 = df2["동"].value_counts()
 가장많은동 = 동별개수.idxmax()`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 히트맵(그림) + value_counts(숫자) 함께 보여주기</p>
+					<p className="text-lg text-gray-700">히트맵(그림) + value_counts(숫자) 함께 보여주기</p>
 				</div>
 			</div>
 		),
@@ -95,10 +94,10 @@ HeatMap(좌표목록).add_to(m)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-700">🔥 히트맵 = 직관적 파악</p>
+					<p className="text-lg text-gray-700">히트맵 = 직관적 파악</p>
 				</div>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-700">🔢 value_counts() = 정확한 근거</p>
+					<p className="text-lg text-gray-700">value_counts() = 정확한 근거</p>
 				</div>
 			</div>
 		),
@@ -110,13 +109,13 @@ HeatMap(좌표목록).add_to(m)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 히트맵 vs 마커의 차이 이해하기</p>
+					<p className="text-lg text-gray-700">히트맵 vs 마커의 차이 이해하기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ values.tolist()로 좌표 목록 만들기</p>
+					<p className="text-lg text-gray-700">values.tolist()로 좌표 목록 만들기</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ HeatMap + value_counts로 결론 정리</p>
+					<p className="text-lg text-gray-700">HeatMap + value_counts로 결론 정리</p>
 				</div>
 			</div>
 		),
@@ -127,10 +126,9 @@ HeatMap(좌표목록).add_to(m)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 이걸로 프로젝트 4, 상가 정보 데이터 분석을 완주했습니다. 다음 프로젝트는 인구 통계 데이터입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏁</span>
 				<h1 className="text-5xl font-bold text-gray-800">프로젝트 4를 완주했습니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 인구 통계 데이터</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

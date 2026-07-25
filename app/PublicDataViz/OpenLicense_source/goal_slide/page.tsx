@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에는 공공데이터포털을 둘러보았습니다. 오늘은 데이터를 쓰기 전에 꼭 확인해야 할 것, 공공누리 라이선스와 출처 표시에 대해 알아보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📜</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					공공누리 라이선스와 출처 표시
 				</h1>
@@ -86,7 +85,7 @@ const slides: Slide[] = [
 					</table>
 				</div>
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 공공데이터포털 데이터 대부분은 제1유형입니다!</p>
+					<p className="text-lg text-gray-700">공공데이터포털 데이터 대부분은 제1유형입니다!</p>
 				</div>
 			</div>
 		),
@@ -114,13 +113,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 공공누리 = 표준 이용 허락 표시</p>
+					<p className="text-lg text-gray-700">공공누리 = 표준 이용 허락 표시</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 제1유형 = 출처표시만 하면 자유 이용</p>
+					<p className="text-lg text-gray-700">제1유형 = 출처표시만 하면 자유 이용</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 출처 표시 = 자료 출처 + 제공 기관 + 유형</p>
+					<p className="text-lg text-gray-700">출처 표시 = 자료 출처 + 제공 기관 + 유형</p>
 				</div>
 			</div>
 		),
@@ -131,10 +130,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. 데이터를 마음대로가 아니라 약속을 지키며 쓰는 법을 배웠습니다. 다음 시간에는 드디어 진짜 열쇠, 오픈 API 인증키를 발급받아보겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: Open API 인증키 발급받기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

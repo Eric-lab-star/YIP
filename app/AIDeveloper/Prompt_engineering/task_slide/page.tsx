@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 프롬프트 엔지니어링 개념을 바탕으로 직접 실습을 진행하겠습니다. 같은 질문을 나쁜 프롬프트와 좋은 프롬프트로 각각 던져보고 결과를 비교합니다. 그 다음 나만의 프롬프트 템플릿을 만들고, 지난 시간 Agent에도 적용해보겠습니다. 약 25분에서 30분이 소요됩니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-amber-500">프롬프트</code> 실습
         </h1>
@@ -30,12 +29,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "langchain-google-genai 패키지 설치 확인" },
-            { icon: "🤖", text: "지난 시간 LangChain Agent + get_weather 코드" },
-            { icon: "📝", text: "역할 / 맥락 / 지시 / 형식 네 가지 요소 메모" },
+            { text: "langchain-google-genai 패키지 설치 확인" },
+            { text: "지난 시간 LangChain Agent + get_weather 코드" },
+            { text: "역할 / 맥락 / 지시 / 형식 네 가지 요소 메모" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -102,7 +100,7 @@ print(llm.invoke(good_prompt).content)`}
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 조건을 더 추가할수록(예산, 인원, 계절) 차이가 뚜렷해집니다.
+ 조건을 더 추가할수록(예산, 인원, 계절) 차이가 뚜렷해집니다.
           </p>
         </div>
       </div>
@@ -132,7 +130,7 @@ print(llm.invoke(problem + "\\n차근차근 생각해보자.").content)`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 &ldquo;차근차근 생각해보자&rdquo; 한 문장 → 계산이 더 정확해집니다.
+ &ldquo;차근차근 생각해보자&rdquo; 한 문장 → 계산이 더 정확해집니다.
           </p>
         </div>
       </div>
@@ -190,7 +188,7 @@ print(llm.invoke(problem + "\\n차근차근 생각해보자.").content)`}
           </table>
         </div>
         <p className="text-lg text-orange-600 font-medium text-center">
-          ✍️ 여행 외에 음식, 운동, 공부 등 다른 주제로도 만들어보세요!
+ 여행 외에 음식, 운동, 공부 등 다른 주제로도 만들어보세요!
         </p>
       </div>
     ),
@@ -214,7 +212,7 @@ print(llm.invoke(problem + "\\n차근차근 생각해보자.").content)`}
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 실무에서도 프롬프트 템플릿을 만들어두고 변수만 바꿔 사용합니다.
+ 실무에서도 프롬프트 템플릿을 만들어두고 변수만 바꿔 사용합니다.
           </p>
         </div>
       </div>
@@ -292,7 +290,7 @@ print(result["messages"][-1].content)`}
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -310,14 +308,13 @@ print(result["messages"][-1].content)`}
     script: "오늘 실습을 마치겠습니다. 프롬프트 하나의 차이로 AI의 결과가 크게 달라진다는 것을 직접 확인하셨습니다. 이 원리는 앞으로 여러분이 AI를 활용하는 모든 상황에서 적용됩니다. 다음 시간에는 RAG와 임베딩에 대해 배우겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>나쁜 vs 좋은 프롬프트 비교 ✅</p>
-          <p>나만의 프롬프트 템플릿 제작 ✅</p>
-          <p>Agent에 프롬프트 원리 적용 ✅</p>
+          <p>나쁜 vs 좋은 프롬프트 비교</p>
+          <p>나만의 프롬프트 템플릿 제작</p>
+          <p>Agent에 프롬프트 원리 적용</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

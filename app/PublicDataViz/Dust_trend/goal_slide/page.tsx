@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지하철 프로젝트를 완주한 것을 축하합니다. 두 번째 프로젝트는 미세먼지 데이터입니다. 오늘은 날짜별 미세먼지 값을 시간 순서로 정리하고, 시간에 따른 변화를 살펴보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🌫️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 2 — 미세먼지
 				</h1>
@@ -46,8 +45,8 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/70 rounded-xl p-5">
-					<p className="text-lg text-gray-700">📍 제공처: 에어코리아 / 서울열린데이터광장</p>
-					<p className="text-lg text-gray-700 mt-2">📄 라이선스: 공공누리 제1유형</p>
+					<p className="text-lg text-gray-700">제공처: 에어코리아 / 서울열린데이터광장</p>
+					<p className="text-lg text-gray-700 mt-2">라이선스: 공공누리 제1유형</p>
 				</div>
 			</div>
 		),
@@ -73,13 +72,13 @@ print(df["날짜"].dtype)  # datetime64`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📄 문자열 날짜</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">문자열 날짜</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>글자 순서로 비교되어 오류 가능</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📅 datetime 날짜</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">datetime 날짜</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>진짜 날짜로 정확히 비교·정렬</li>
 					</ul>
@@ -98,7 +97,7 @@ print(df["날짜"].dtype)  # datetime64`}</CodeBlock>
 정렬됨 = df.sort_values("날짜")
 plt.plot(정렬됨["날짜"], 정렬됨["미세먼지"])`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 정렬 → plt.plot() 순서를 꼭 지키기</p>
+					<p className="text-lg text-gray-700">정렬 → plt.plot() 순서를 꼭 지키기</p>
 				</div>
 			</div>
 		),
@@ -110,13 +109,13 @@ plt.plot(정렬됨["날짜"], 정렬됨["미세먼지"])`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 데이터 출처·라이선스 확인하기</p>
+					<p className="text-lg text-gray-700">데이터 출처·라이선스 확인하기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ pd.to_datetime()으로 날짜 타입 변환</p>
+					<p className="text-lg text-gray-700">pd.to_datetime()으로 날짜 타입 변환</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sort_values() + plt.plot()으로 추이 그리기</p>
+					<p className="text-lg text-gray-700">sort_values() + plt.plot()으로 추이 그리기</p>
 				</div>
 			</div>
 		),
@@ -127,10 +126,9 @@ plt.plot(정렬됨["날짜"], 정렬됨["미세먼지"])`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 이제 날짜가 있는 데이터도 자신 있게 다룰 수 있게 되었습니다. 다음 시간에는 여러 지역의 미세먼지를 비교하겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 미세먼지 지역 비교</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

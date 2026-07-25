@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 두 차시에 걸쳐 따로따로 만들어온 부품들을 하나로 합치는 실습을 진행하겠습니다. 13차시의 봇 코드와 14차시의 풀이 코드를 한 파일에 모으고, 사진 핸들러를 추가하여 완성형 수학 풀이 봇을 만들 것입니다. 총 3가지 미션을 약 25~30분에 걸쳐 수행합니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🤖</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           수학 풀이 봇 완성 실습
         </h1>
@@ -30,13 +29,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "python-telegram-bot, google-genai, Pillow 설치 확인" },
-            { icon: "📄", text: "13차시 봇 코드 + 14차시 풀이 코드 준비" },
-            { icon: "🔑", text: "봇 토큰, 제미나이 API 키 준비" },
-            { icon: "📸", text: "테스트용 수학 문제 사진 준비" },
+            { text: "python-telegram-bot, google-genai, Pillow 설치 확인" },
+            { text: "13차시 봇 코드 + 14차시 풀이 코드 준비" },
+            { text: "봇 토큰, 제미나이 API 키 준비" },
+            { text: "테스트용 수학 문제 사진 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -56,14 +54,13 @@ const slides: Slide[] = [
         <div className="space-y-3">
           <p className="text-xl text-gray-700 font-semibold">완성 봇에 들어갈 부품들</p>
           {[
-            { icon: "🔌", text: "연결 도구: 텔레그램, 제미나이, PIL 임포트" },
-            { icon: "🔑", text: "열쇠: 봇 토큰, 제미나이 API 키" },
-            { icon: "📋", text: "풀이 프롬프트: 14차시에서 만든 명령서 재사용" },
-            { icon: "👋", text: "/start 인사 기능" },
-            { icon: "🌟", text: "사진 핸들러: 오늘 새로 추가할 핵심 부품!" },
+            { text: "연결 도구: 텔레그램, 제미나이, PIL 임포트" },
+            { text: "열쇠: 봇 토큰, 제미나이 API 키" },
+            { text: "풀이 프롬프트: 14차시에서 만든 명령서 재사용" },
+            { text: "/start 인사 기능" },
+            { text: "사진 핸들러: 오늘 새로 추가할 핵심 부품!" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-3">
-              <span className="text-2xl">{item.icon}</span>
               <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -80,12 +77,11 @@ const slides: Slide[] = [
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트: 모듈식 개발</p>
         <div className="space-y-4">
           {[
-            { icon: "🧪", title: "테스트하기 쉽다", desc: "각 부품을 따로 만들면, 그 부품 하나만 콕 집어서 확인 가능" },
-            { icon: "🔍", title: "오류를 찾기 쉽다", desc: "문제 발생 시 '어느 부품에서 잘못됐는지' 빠르게 파악" },
-            { icon: "♻️", title: "다시 쓰기 좋다", desc: "14차시 풀이 기능을 오늘 그대로 재사용하는 것이 좋은 예" },
+            { title: "테스트하기 쉽다", desc: "각 부품을 따로 만들면, 그 부품 하나만 콕 집어서 확인 가능" },
+            { title: "오류를 찾기 쉽다", desc: "문제 발생 시 '어느 부품에서 잘못됐는지' 빠르게 파악" },
+            { title: "다시 쓰기 좋다", desc: "14차시 풀이 기능을 오늘 그대로 재사용하는 것이 좋은 예" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -233,7 +229,7 @@ const slides: Slide[] = [
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -249,10 +245,9 @@ const slides: Slide[] = [
     script: "오늘 실습을 마치겠습니다. 13차시 봇과 14차시 풀이 기능을 조립하여 사진을 보내면 풀이를 답장해주는 완성형 봇을 만들었습니다. 이 경험을 바탕으로 앞으로 더 다양한 AI 앱에 도전해보시기 바랍니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 영어 대화 연습 앱</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

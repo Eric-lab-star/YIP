@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 groupby로 데이터를 그룹으로 묶어서 요약했습니다. 오늘은 실제 공공데이터에 흔히 숨어있는 빈 값과 중복된 행을 깨끗하게 청소하는 법을 배우겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🧹</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					데이터 클리닝
 				</h1>
@@ -60,13 +59,13 @@ print(df["미세먼지"].isna().sum())`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">🗑️ dropna() — 버리기</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">dropna() — 버리기</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>빈 값이 있는 행을 통째로 삭제</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🩹 fillna() — 채우기</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">fillna() — 채우기</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>빈 값을 평균, 0 등으로 대체</li>
 					</ul>
@@ -85,7 +84,7 @@ print(df["미세먼지"].isna().sum())`}</CodeBlock>
 정리된_df = df.dropna()
 채워진_df = df.fillna({"미세먼지": 평균값})`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 빈 값이 적으면 dropna, 데이터가 귀하면 fillna</p>
+					<p className="text-lg text-gray-700">빈 값이 적으면 dropna, 데이터가 귀하면 fillna</p>
 				</div>
 			</div>
 		),
@@ -111,13 +110,13 @@ print(df["미세먼지"].isna().sum())`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ isna().sum()으로 빈 값 개수 세기</p>
+					<p className="text-lg text-gray-700">isna().sum()으로 빈 값 개수 세기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ dropna() / fillna()로 빈 값 처리</p>
+					<p className="text-lg text-gray-700">dropna() / fillna()로 빈 값 처리</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ drop_duplicates()로 중복 행 제거</p>
+					<p className="text-lg text-gray-700">drop_duplicates()로 중복 행 제거</p>
 				</div>
 			</div>
 		),
@@ -128,10 +127,9 @@ print(df["미세먼지"].isna().sum())`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 지저분한 공공데이터도 이제 두렵지 않습니다. 다음 시간에는 정리한 데이터를 그래프로 그려보는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: matplotlib으로 그래프 그리기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

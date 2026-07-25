@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 기초 과정의 마지막 실습으로 나만의 데이터 앱을 완성하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🚀</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">streamlit 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">나만의 데이터 앱 완성하기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "streamlit, pandas 패키지 설치 확인" },
-						{ icon: "▶️", text: "streamlit run app.py로 실행하기" },
+						{ text: "streamlit, pandas 패키지 설치 확인" },
+						{ text: "streamlit run app.py로 실행하기" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -48,7 +46,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`st.____("우리 동네 미세먼지 앱")  # title
 st.dataframe(df)`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: title</p>
+					<p className="text-lg text-gray-600">빈칸: title</p>
 				</div>
 			</div>
 		),
@@ -61,7 +59,7 @@ st.dataframe(df)`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`st.____(df, x="구", y="미세먼지")  # bar_chart`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: bar_chart</p>
+					<p className="text-lg text-gray-600">빈칸: bar_chart</p>
 				</div>
 			</div>
 		),
@@ -74,7 +72,7 @@ st.dataframe(df)`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`선택한구 = st.____("구를 선택하세요", df["구"])  # selectbox`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 선택할 때마다 화면이 자동으로 업데이트됩니다</p>
+					<p className="text-lg text-gray-600">선택할 때마다 화면이 자동으로 업데이트됩니다</p>
 				</div>
 			</div>
 		),
@@ -93,7 +91,7 @@ st.dataframe(df)`}</CodeBlock>
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -106,10 +104,9 @@ st.dataframe(df)`}</CodeBlock>
 		script: "오늘 실습을 마치겠습니다. 축하합니다. 공공데이터 분석·시각화 기초 과정을 모두 마쳤습니다. 다음 단계인 프로젝트 과정에서 또 만나겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏆</span>
 				<h1 className="text-5xl font-bold text-gray-800">기초 과정을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 단계: 공공데이터 프로젝트 과정</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

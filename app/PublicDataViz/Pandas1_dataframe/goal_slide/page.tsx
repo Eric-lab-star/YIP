@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 CSV를 표처럼 불러왔습니다. 오늘은 그 표의 정체, DataFrame과 Series를 제대로 파헤쳐보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📊</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					pandas 기초 (1)
 				</h1>
@@ -46,14 +45,14 @@ const slides: Slide[] = [
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📊 DataFrame</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">DataFrame</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>행과 열로 이루어진 표 전체</li>
 						<li>엑셀 시트 하나와 같음</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📏 Series</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">Series</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>DataFrame에서 열 하나만 뽑은 것</li>
 						<li>엑셀의 세로줄 하나와 같음</li>
@@ -89,7 +88,7 @@ print(df)`}</CodeBlock>
 				<CodeBlock>{`승차 = df["승차인원"]       # Series
 일부 = df[["역명", "승차인원"]]  # DataFrame`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 대괄호 한 번 = Series, 대괄호 두 번(리스트) = DataFrame</p>
+					<p className="text-lg text-gray-700">대괄호 한 번 = Series, 대괄호 두 번(리스트) = DataFrame</p>
 				</div>
 			</div>
 		),
@@ -115,13 +114,13 @@ print(첫줄)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ DataFrame = 표 전체, Series = 열 하나</p>
+					<p className="text-lg text-gray-700">DataFrame = 표 전체, Series = 열 하나</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ df[&quot;열&quot;] = Series, df[[&quot;열1&quot;,&quot;열2&quot;]] = DataFrame</p>
+					<p className="text-lg text-gray-700">df[&quot;열&quot;] = Series, df[[&quot;열1&quot;,&quot;열2&quot;]] = DataFrame</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ df.iloc[번호]로 행 접근</p>
+					<p className="text-lg text-gray-700">df.iloc[번호]로 행 접근</p>
 				</div>
 			</div>
 		),
@@ -132,10 +131,9 @@ print(첫줄)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 표를 자유자재로 다루는 첫걸음을 뗐습니다. 다음 시간에는 조건을 걸어서 원하는 데이터만 걸러내는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: pandas 기초 (2) 조건 필터링과 정렬</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

@@ -1,7 +1,12 @@
 import { doodleBox, palette, ink } from "./doodle";
 
 type Side = {
-  emoji: string;
+  /**
+   * 선택 사항. 강의 콘텐츠에는 이모지를 쓰지 않으므로(CLAUDE.md) 호출부는
+   * 이 값을 넘기지 않는다. 없으면 아이콘 칸 자체를 그리지 않아, 라벨 앞에
+   * 빈 자리가 남지 않는다.
+   */
+  emoji?: string;
   label: string;
   color?: string; // palette key (blue/purple/green…) or hex
   items: string[];
@@ -23,9 +28,11 @@ function Column({ side }: { side: Side }) {
         className="mb-3 flex items-center gap-2 text-xl font-bold"
         style={{ color: c }}
       >
-        <span aria-hidden className="text-2xl">
-          {side.emoji}
-        </span>
+        {side.emoji && (
+          <span aria-hidden className="text-2xl">
+            {side.emoji}
+          </span>
+        )}
         <span>{side.label}</span>
       </div>
       <ul className="space-y-2">

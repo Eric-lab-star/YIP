@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 3차시에 발급받은 인증키로 진짜 미세먼지 데이터를 받아오는 실습을 진행하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📡</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">API 호출 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">우리 동네 미세먼지 가져오기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "requests 패키지 설치 (pip install requests)" },
-						{ icon: "🔑", text: "3차시에 발급받은 에어코리아 API 인증키(Decoding)" },
+						{ text: "requests 패키지 설치 (pip install requests)" },
+						{ text: "3차시에 발급받은 에어코리아 API 인증키(Decoding)" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -89,7 +87,7 @@ for item in items:
     pm10 = item["pm10Value"]
     print(f"{station} 측정소 - 미세먼지(PM10): {pm10}")`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: &quot;items&quot;</p>
+					<p className="text-lg text-gray-600">빈칸: &quot;items&quot;</p>
 				</div>
 			</div>
 		),
@@ -108,7 +106,7 @@ for item in items:
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -121,10 +119,9 @@ for item in items:
 		script: "오늘 실습을 마치겠습니다. 나라가 열어준 데이터를 코드로 직접 불러왔습니다. 다음 시간부터는 pandas로 데이터를 표 형태로 정리하는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: CSV 파일과 인코딩 문제</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

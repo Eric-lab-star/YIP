@@ -9,7 +9,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 실제로 Open API에 활용신청을 하고 나만의 인증키를 발급받는 실습을 진행하겠습니다. 세 가지 미션을 약 20~25분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔑</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">인증키 발급 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">나의 첫 API 열쇠 받기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 20~25분</p>
@@ -24,11 +23,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "🔑", text: "공공데이터포털 계정 (로그인 상태)" },
-						{ icon: "📝", text: "인증키를 적어둘 메모장이나 노트" },
+						{ text: "공공데이터포털 계정 (로그인 상태)" },
+						{ text: "인증키를 적어둘 메모장이나 노트" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -46,7 +44,7 @@ const slides: Slide[] = [
 					한국환경공단_에어코리아_대기오염정보
 				</div>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 검색 결과가 많다면 &quot;오픈API&quot; 필터로 좁혀보세요.</p>
+					<p className="text-lg text-gray-600">검색 결과가 많다면 &quot;오픈API&quot; 필터로 좁혀보세요.</p>
 				</div>
 			</div>
 		),
@@ -78,7 +76,7 @@ const slides: Slide[] = [
 					<p className="text-lg text-gray-600"><strong>목표:</strong> 인증키를 확인하고 안전하게 보관합니다.</p>
 				</div>
 				<div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
-					<p className="text-lg text-gray-700">⚠️ 인증키는 절대 공유하거나 인터넷에 올리지 마세요!</p>
+					<p className="text-lg text-gray-700">인증키는 절대 공유하거나 인터넷에 올리지 마세요!</p>
 				</div>
 			</div>
 		),
@@ -97,7 +95,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -110,10 +108,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 진짜 열쇠를 손에 넣었습니다. 다음 시간에는 파이썬 코드로 이 열쇠를 사용해서 진짜 데이터를 받아오겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 파이썬으로 API 호출하기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

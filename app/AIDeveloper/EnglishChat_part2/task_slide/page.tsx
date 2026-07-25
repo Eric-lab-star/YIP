@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘은 지난 시간에 만든 페르소나 대화 코드를 Streamlit 채팅 화면으로 옮기는 실습을 진행하겠습니다. 미션 1에서 환경을 준비하고, 미션 2에서 채팅 화면을 만들고, 미션 3에서 표현 교정 기능을 추가합니다. 총 소요 시간은 약 25분에서 30분입니다. 질문이 있으면 언제든지 손을 들어주시기 바랍니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           영어 대화 앱 완성 실습
           <br />
@@ -32,12 +31,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "streamlit, google-genai 패키지 설치 확인" },
-            { icon: "📄", text: "지난 시간 페르소나 / 대화 코드 참고 가능" },
-            { icon: "🆕", text: "새 파일 app.py 생성 준비" },
+            { text: "streamlit, google-genai 패키지 설치 확인" },
+            { text: "지난 시간 페르소나 / 대화 코드 참고 가능" },
+            { text: "새 파일 app.py 생성 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -88,11 +86,9 @@ config = types.GenerateContentConfig(
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">streamlit run app.py → 브라우저에 앱 화면이 자동으로 열림</p>
           </div>
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">GenerateContentConfig에 system_instruction 포함 → 페르소나 준비 완료</p>
           </div>
         </div>
@@ -161,7 +157,7 @@ if user_input:
           </div>
           <div className="bg-indigo-50 rounded-xl p-5">
             <p className="text-lg text-gray-600">
-              💡 session_state 코드를 삭제하고 실행하면 대화가 매번 사라지는 것을 직접 확인할 수 있습니다.
+ session_state 코드를 삭제하고 실행하면 대화가 매번 사라지는 것을 직접 확인할 수 있습니다.
             </p>
           </div>
         </div>
@@ -257,7 +253,7 @@ if user_input:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -273,10 +269,9 @@ if user_input:
     script: `오늘 실습을 마치겠습니다. Streamlit으로 채팅 화면을 만들고, 세션 상태로 대화를 보존하고, 프롬프트로 교정 기능까지 추가하셨습니다. 세 종류의 AI 앱을 모두 완성한 여러분을 축하합니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
-        <p className="text-xl text-gray-600 mt-4">세 종류의 AI 앱을 모두 완성했습니다! 🎊</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-xl text-gray-600 mt-4">세 종류의 AI 앱을 모두 완성했습니다!</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

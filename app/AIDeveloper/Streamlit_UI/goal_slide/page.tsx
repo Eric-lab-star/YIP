@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 'Streamlit으로 화면 만들기'입니다. 지금까지 우리는 코드의 실행 결과를 터미널이나 노트북의 텍스트 출력으로만 확인해왔습니다. 하지만 오늘부터는 코드 결과를 버튼, 입력창, 제목이 있는 실제 웹 화면으로 전환하는 방법을 배우겠습니다. 이를 가능하게 해주는 도구가 바로 Streamlit입니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🖥️</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           화면이 뿅!
           <br />
@@ -63,12 +62,11 @@ const slides: Slide[] = [
         </div>
         <div className="space-y-4">
           {[
-            { icon: "🐍", title: "파이썬만으로 가능", desc: "HTML, CSS, JavaScript 지식이 필요 없음" },
-            { icon: "⚡", title: "코드 몇 줄이면 완성", desc: "입력창, 버튼, 표 등을 간단한 함수 호출로 추가" },
-            { icon: "🌐", title: "실제 웹 브라우저에서 동작", desc: "웹 브라우저가 자동으로 열리며 결과를 시각적으로 확인" },
+            { title: "파이썬만으로 가능", desc: "HTML, CSS, JavaScript 지식이 필요 없음" },
+            { title: "코드 몇 줄이면 완성", desc: "입력창, 버튼, 표 등을 간단한 함수 호출로 추가" },
+            { title: "실제 웹 브라우저에서 동작", desc: "웹 브라우저가 자동으로 열리며 결과를 시각적으로 확인" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -123,8 +121,8 @@ const slides: Slide[] = [
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="p-4 text-left"></th>
-              <th className="p-4 text-left">print() 📜</th>
-              <th className="p-4 text-left">Streamlit 🖥️</th>
+              <th className="p-4 text-left">print()</th>
+              <th className="p-4 text-left">Streamlit</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -221,7 +219,7 @@ if st.button("인사하기"):
         </CodeBlock>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 코드 수정 후 저장하면, 화면 오른쪽 위의 <strong>Rerun</strong> 버튼으로 새 화면을 다시 그릴 수 있습니다.
+ 코드 수정 후 저장하면, 화면 오른쪽 위의 <strong>Rerun</strong> 버튼으로 새 화면을 다시 그릴 수 있습니다.
           </p>
         </div>
       </div>
@@ -235,13 +233,13 @@ if st.button("인사하기"):
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-white/70 rounded-xl p-6 border-l-4 border-yellow-400">
-            <p className="text-lg font-bold text-yellow-700 mb-2">과제 1: 날씨 정보 화면 🌤️</p>
+            <p className="text-lg font-bold text-yellow-700 mb-2">과제 1: 날씨 정보 화면</p>
             <p className="text-base text-gray-600">
               도시 이름 입력 → 버튼 클릭 → 온도와 날씨가 화면에 출력
             </p>
           </div>
           <div className="bg-white/70 rounded-xl p-6 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-2">과제 2: AI 채팅 앱 💬</p>
+            <p className="text-lg font-bold text-purple-700 mb-2">과제 2: AI 채팅 앱</p>
             <p className="text-base text-gray-600">
               질문 입력 → 버튼 클릭 → 제미나이 API 답변이 화면에 출력
             </p>
@@ -249,7 +247,7 @@ if st.button("인사하기"):
         </div>
         <div className="bg-orange-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-600">
-            오늘 여러분은 작은 <strong>식당(앱) 두 곳</strong>을 동시에 오픈하게 됩니다! 🏪
+            오늘 여러분은 작은 <strong>식당(앱) 두 곳</strong>을 동시에 오픈하게 됩니다!
           </p>
         </div>
       </div>
@@ -274,9 +272,9 @@ if st.button("인사하기"):
           </div>
         </div>
         <div className="bg-white/60 rounded-xl p-5 space-y-2">
-          <p className="text-lg text-gray-700">✅ print() → 터미널 텍스트 출력</p>
-          <p className="text-lg text-gray-700">✅ Streamlit → 웹 브라우저 화면 출력</p>
-          <p className="text-lg text-gray-700">✅ 실행: streamlit run 파일명.py</p>
+          <p className="text-lg text-gray-700">print() → 터미널 텍스트 출력</p>
+          <p className="text-lg text-gray-700">Streamlit → 웹 브라우저 화면 출력</p>
+          <p className="text-lg text-gray-700">실행: streamlit run 파일명.py</p>
         </div>
       </div>
     ),
@@ -287,12 +285,11 @@ if st.button("인사하기"):
     script: "오늘 강의를 마치겠습니다. Streamlit이 무엇이고, 어떤 함수를 사용하며, 어떻게 실행하는지 이해하셨을 것입니다. 다음 시간에는 오늘 배운 개념을 바탕으로 날씨 정보 앱과 AI 채팅 앱을 직접 만들어보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">
           다음 시간: 날씨 앱과 채팅 앱을 직접 만들어봅니다
         </p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

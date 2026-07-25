@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 미세먼지 추이를 시간 순서로 살펴봤습니다. 오늘은 어느 지역이 다른 지역보다 더 심할지 알아보기 위해 지역별로 미세먼지를 비교하겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏙️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 2 — 미세먼지
 				</h1>
@@ -60,13 +59,13 @@ sns.barplot(data=지역평균, x="지역", y="미세먼지")`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📊 막대 그래프</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">막대 그래프</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>평균 하나만 보여줌</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📦 상자그림 (boxplot)</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">상자그림 (boxplot)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>최솟값~최댓값까지 분포를 보여줌</li>
 					</ul>
@@ -82,7 +81,7 @@ sns.barplot(data=지역평균, x="지역", y="미세먼지")`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`sns.boxplot(data=df, x="지역", y="미세먼지")`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 상자 길이 = 값이 들쭉날쭉한 정도</p>
+					<p className="text-lg text-gray-700">상자 길이 = 값이 들쭉날쭉한 정도</p>
 				</div>
 			</div>
 		),
@@ -108,13 +107,13 @@ sns.barplot(data=지역평균, x="지역", y="미세먼지")`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sns.barplot()으로 지역별 평균 비교</p>
+					<p className="text-lg text-gray-700">sns.barplot()으로 지역별 평균 비교</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sns.boxplot()으로 분포 비교</p>
+					<p className="text-lg text-gray-700">sns.boxplot()으로 분포 비교</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 조건 필터링으로 위험 지역 찾기</p>
+					<p className="text-lg text-gray-700">조건 필터링으로 위험 지역 찾기</p>
 				</div>
 			</div>
 		),
@@ -125,10 +124,9 @@ sns.barplot(data=지역평균, x="지역", y="미세먼지")`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 이제 여러 지역을 다양한 방법으로 비교할 수 있게 되었습니다. 다음 시간에는 미세먼지 대시보드를 만들겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 미세먼지 대시보드 만들기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

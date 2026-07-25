@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 folium으로 지도를 만들고 마커를 찍겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🗺️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">folium 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">나만의 지도 만들기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "folium, pandas 패키지 설치 확인" },
-						{ icon: "🌐", text: "map.html을 브라우저로 열어보기" },
+						{ text: "folium, pandas 패키지 설치 확인" },
+						{ text: "map.html을 브라우저로 열어보기" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -47,7 +45,7 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`m = folium.____(location=[37.5665, 126.9780], zoom_start=12)  # Map`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: Map</p>
+					<p className="text-lg text-gray-600">빈칸: Map</p>
 				</div>
 			</div>
 		),
@@ -63,7 +61,7 @@ const slides: Slide[] = [
     popup=____,  # "서울시청"
 ).add_to(m)`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 .add_to(m)을 꼭 붙이세요!</p>
+					<p className="text-lg text-gray-600">.add_to(m)을 꼭 붙이세요!</p>
 				</div>
 			</div>
 		),
@@ -79,7 +77,7 @@ const slides: Slide[] = [
         location=[row["위도"], row["경도"]],
     ).add_to(m)`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: iterrows</p>
+					<p className="text-lg text-gray-600">빈칸: iterrows</p>
 				</div>
 			</div>
 		),
@@ -98,7 +96,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -111,10 +109,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 위치 데이터를 진짜 지도 위에 그릴 수 있게 되었습니다. 다음 시간은 지금까지 배운 걸 모두 모아 데이터 앱을 만드는 마지막 시간입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: streamlit으로 나만의 데이터 앱 만들기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

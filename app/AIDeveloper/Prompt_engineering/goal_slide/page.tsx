@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 '좋은 프롬프트 작성법', 즉 프롬프트 엔지니어링입니다. 지난 시간에 LangChain Agent를 만들었을 때, Agent가 도구를 제대로 찾지 못하고 헤맸던 경험이 있으실 겁니다. 사실 그것은 도구의 설명문이 모호하게 작성되어 있었기 때문입니다. 오늘은 AI에게 일을 제대로 시키는 방법, 즉 좋은 프롬프트를 작성하는 네 가지 핵심 요소를 배우겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📝</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           AI에게 잘 시키는 법!
           <br />
@@ -192,12 +191,12 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
-            <p className="font-bold text-red-700 mb-2">나쁜 프롬프트 💬</p>
+            <p className="font-bold text-red-700 mb-2">나쁜 프롬프트</p>
             <p className="text-gray-700 italic">&ldquo;여행지 추천해줘&rdquo;</p>
             <p className="text-sm text-gray-500 mt-2">역할·맥락·형식 없음 → 막연한 결과</p>
           </div>
           <div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400">
-            <p className="font-bold text-green-700 mb-2">좋은 프롬프트 ⚙️</p>
+            <p className="font-bold text-green-700 mb-2">좋은 프롬프트</p>
             <p className="text-gray-700 italic">&ldquo;너는 여행 전문가야. 바다를 좋아하는 사람에게, 예산 20만 원, 국내 3곳, 표 형식으로&rdquo;</p>
             <p className="text-sm text-gray-500 mt-2">4요소 모두 포함 → 또렷한 결과</p>
           </div>
@@ -252,15 +251,14 @@ print(ask(good_prompt))`}
     content: (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {[
-          { icon: "📝", name: "요약", desc: "긴 글 → 한 문장" },
-          { icon: "❓", name: "질문 답변", desc: "맥락 안에서만 답 (환각 ↓)" },
-          { icon: "🏷️", name: "분류", desc: "정해진 범주로 골라내기" },
-          { icon: "🎭", name: "역할 놀이", desc: "캐릭터와 말투 부여" },
-          { icon: "💻", name: "코드 생성", desc: "자연어 → 코드" },
-          { icon: "🧮", name: "추론", desc: "단계별로 문제 풀기" },
+          { name: "요약", desc: "긴 글 → 한 문장" },
+          { name: "질문 답변", desc: "맥락 안에서만 답 (환각 ↓)" },
+          { name: "분류", desc: "정해진 범주로 골라내기" },
+          { name: "역할 놀이", desc: "캐릭터와 말투 부여" },
+          { name: "코드 생성", desc: "자연어 → 코드" },
+          { name: "추론", desc: "단계별로 문제 풀기" },
         ].map((item, i) => (
           <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-3xl">{item.icon}</span>
             <div>
               <p className="text-xl font-bold text-gray-800">{item.name}</p>
               <p className="text-base text-gray-600">{item.desc}</p>
@@ -286,7 +284,7 @@ print(ask(good_prompt))`}
         </div>
         <div className="bg-white/70 rounded-xl p-5 border-l-4 border-purple-400">
           <p className="text-xl font-bold text-purple-700 mb-1">3. 제로샷 CoT</p>
-          <p className="text-base text-gray-600">문제 끝에 &ldquo;차근차근 생각해보자&rdquo; 한 문장만 붙이기 ✨</p>
+          <p className="text-base text-gray-600">문제 끝에 &ldquo;차근차근 생각해보자&rdquo; 한 문장만 붙이기</p>
         </div>
         <div className="bg-amber-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">공통점: <strong>AI에게 생각할 시간과 본보기를 준다</strong></p>
@@ -323,9 +321,9 @@ print(ask(good_prompt))`}
           </div>
         </div>
         <div className="bg-white/60 rounded-xl p-5 space-y-2">
-          <p className="text-lg text-gray-700">✅ 모호한 프롬프트 → 엉뚱한 결과</p>
-          <p className="text-lg text-gray-700">✅ 구체적 프롬프트 → 정확한 결과</p>
-          <p className="text-lg text-gray-700">✅ Agent의 도구 설명도 프롬프트 원리와 동일</p>
+          <p className="text-lg text-gray-700">모호한 프롬프트 → 엉뚱한 결과</p>
+          <p className="text-lg text-gray-700">구체적 프롬프트 → 정확한 결과</p>
+          <p className="text-lg text-gray-700">Agent의 도구 설명도 프롬프트 원리와 동일</p>
         </div>
       </div>
     ),
@@ -336,10 +334,9 @@ print(ask(good_prompt))`}
     script: "오늘 강의를 마치겠습니다. AI에게 제대로 일을 시키는 주문서 쓰는 법을 이해하셨을 것입니다. 다음 시간에는 직접 나쁜 프롬프트와 좋은 프롬프트를 비교하고, 나만의 프롬프트 템플릿을 만들어보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 나쁜 vs 좋은 프롬프트 비교 실험</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },
