@@ -1,0 +1,175 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 2 — 미세먼지 대시보드 만들기',
+  description: '추이 그래프, 지역 선택, 기준치 슬라이더가 있는 미세먼지 대시보드를 완성해보자냥!',
+  session: 20,
+}
+
+# 프로젝트 2 — 미세먼지 대시보드 만들기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 두 시간 동안 미세먼지 추이와 지역
+  비교를 분석해봤지냥? 오늘은 그걸 전부 모아서, **streamlit
+  대시보드**로 완성할 거다냥! 프로젝트 2의 마지막 시간이다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `st.line_chart()`로 추이 그래프를 대시보드에 넣을 수 있다.
+  - `st.selectbox()`로 지역을 선택해 데이터를 필터링할 수 있다.
+  - `st.slider()`로 기준치를 조절할 수 있는 위젯을 만들 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 추이 그래프 넣기 (7분)
+
+<NyangSpeech>
+  기초 과정 마지막 시간에 배운 streamlit, 기억나냥? `st.line_chart()`로
+  추이 그래프를 앱에 넣어보자냥!
+</NyangSpeech>
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.title("우리 동네 미세먼지 대시보드")
+
+data = {
+    "날짜": pd.to_datetime(["2025-01-01", "2025-01-02", "2025-01-03"]),
+    "지역": ["강남구", "강남구", "강남구"],
+    "미세먼지": [30, 42, 38],
+}
+df = pd.DataFrame(data)
+
+st.line_chart(df, x="날짜", y="미세먼지")
+```
+
+<Callout type="important">
+  `st.line_chart()`는 `st.bar_chart()`와 사용법이 똑같다냥! DataFrame과
+  x, y 열 이름만 넣으면, 별도의 matplotlib 코드 없이 바로 추이
+  그래프가 나타난다냥.
+</Callout>
+
+---
+
+## 2단계 · 지역 선택 필터 넣기 (10분)
+
+<NyangSpeech>
+  이번엔 사용자가 지역을 골라서, 그 지역 데이터만 보게 만들어보자냥.
+  기초 과정에서 배운 selectbox를 다시 활용한다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📋',
+    label: '지금까지: 정적인 분석',
+    color: 'blue',
+    items: [
+      '코드를 고쳐야 다른 지역을 볼 수 있음',
+      '나 혼자만 결과를 볼 수 있음',
+    ],
+  }}
+  right={{
+    emoji: '🖱️',
+    label: '오늘: 대시보드',
+    color: 'purple',
+    items: [
+      '버튼 클릭만으로 지역을 바꿔볼 수 있음',
+      '앱 주소만 알면 누구나 써볼 수 있음',
+    ],
+  }}
+/>
+
+```python
+전체지역 = ["강남구", "중구", "마포구"]
+선택지역 = st.selectbox("지역을 선택하세요", 전체지역)
+
+st.write(f"선택한 지역: {선택지역}")
+```
+
+<Callout type="tip">
+  실제로는 `df["지역"].unique()`처럼 데이터에서 지역 목록을 직접
+  뽑아서 `selectbox`에 넣는 경우가 많다냥. 그러면 지역이
+  늘어나도 코드를 고칠 필요가 없다냥!
+</Callout>
+
+---
+
+## 3단계 · 기준치 슬라이더 넣기 (8분)
+
+<NyangSpeech>
+  지난 시간에 "기준치를 넘는 지역"을 코드로 직접 정했었지냥? 오늘은
+  그 기준치를, **사용자가 슬라이더로 직접 조절**하게 만들어보자냥!
+</NyangSpeech>
+
+```python
+기준치 = st.slider("위험 기준치", min_value=0, max_value=100, value=35)
+
+st.write(f"기준치: {기준치} 이상이면 위험 지역으로 표시합니다.")
+
+if df["미세먼지"].mean() > 기준치:
+    st.write("⚠️ 이 지역은 기준치를 넘었습니다!")
+else:
+    st.write("✅ 이 지역은 기준치 이내입니다.")
+```
+
+<StepCard step="핵심" title="st.slider()의 4가지 재료">
+
+| 매개변수 | 뜻 |
+|---|---|
+| `"위험 기준치"` | 슬라이더 위에 표시될 안내 문구 |
+| `min_value` | 슬라이더가 가질 수 있는 최솟값 |
+| `max_value` | 슬라이더가 가질 수 있는 최댓값 |
+| `value` | 처음 화면에 보일 기본값 |
+
+</StepCard>
+
+<Callout type="note">
+  `st.slider()`가 돌려주는 값도 `st.selectbox()`처럼, 사용자가
+  움직일 때마다 **실시간으로 바뀐다**냥! 이 값을 `if`문 조건으로
+  쓰면, 슬라이더를 움직일 때마다 위험 여부 메시지가 바로 바뀐다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'DataFrame의 추이를 대시보드에 바로 그리려면 어떤 함수를 쓰냥?',
+      answer: 'st.line_chart(df, x=, y=)를 쓴다냥! bar_chart와 사용법이 똑같다냥.',
+    },
+    {
+      question: '사용자가 직접 숫자를 조절할 수 있는 위젯을 만들려면 어떤 함수를 쓰냥?',
+      answer: 'st.slider("안내문구", min_value=, max_value=, value=)를 쓴다냥!',
+    },
+    {
+      question: 'st.slider()가 돌려주는 값은 언제 바뀌냥?',
+      answer: '사용자가 슬라이더를 움직일 때마다 실시간으로 바뀐다냥! 이 값을 조건문에 쓰면 화면이 바로 업데이트된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 추이 그래프, 지역 선택, 기준치 슬라이더까지 갖춘 진짜
+  대시보드를 완성했다냥! 이걸로 **프로젝트 2, 미세먼지 데이터
+  분석을 완주**했다냥! 실습 페이지에서 마무리해보자냥. 발톱
+  준비됐냥? 가보자냥~
+</NyangSpeech>

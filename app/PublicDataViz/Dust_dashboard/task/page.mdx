@@ -1,0 +1,131 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 2 실습 — 미세먼지 대시보드 완성하기',
+  description: '추이 그래프, 지역 선택, 기준치 슬라이더가 있는 대시보드를 직접 완성해보자냥!',
+  session: 20,
+}
+
+# 프로젝트 2 실습 — 미세먼지 대시보드 완성하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 미세먼지 대시보드를
+  완성해볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `streamlit`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`app.py` 파일로 저장)
+  - 터미널에서 `streamlit run app.py`로 실행하기
+</Callout>
+
+---
+
+<MissionCard number={1} title="추이 그래프 넣기" time="7~8분">
+
+앱 제목을 달고, 미세먼지 추이 그래프를 넣어보자냥! 아래 템플릿에서
+**빈칸(`____`)을 채워보자냥.**
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.title("우리 동네 미세먼지 대시보드")
+
+data = {
+    "날짜": pd.to_datetime(["2025-01-01", "2025-01-02", "2025-01-03"]),
+    "미세먼지": [30, 42, 38],
+}
+df = pd.DataFrame(data)
+
+st.____(df, x="날짜", y="미세먼지")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 추이(선) 그래프를 그리는 함수 이름을 넣으면 된다냥. (`line_chart`)
+> - 날짜순으로 오르내리는 선이 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="지역 선택 필터 넣기" time="8~10분">
+
+사용자가 지역을 고를 수 있게 만들어보자냥.
+
+```python
+전체지역 = ["강남구", "중구", "마포구"]
+선택지역 = st.____("지역을 선택하세요", 전체지역)
+st.write(f"선택한 지역: {선택지역}")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 목록에서 하나를 고르는 함수 이름을 넣으면 된다냥. (`selectbox`)
+> - 다른 지역을 고르면 문장이 바뀌냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="기준치 슬라이더 넣기" time="10~12분">
+
+사용자가 기준치를 직접 조절할 수 있게 만들어보자냥.
+
+```python
+기준치 = st.____("위험 기준치", min_value=0, max_value=100, value=35)
+
+if df["미세먼지"].mean() > 기준치:
+    st.write("⚠️ 이 지역은 기준치를 넘었습니다!")
+else:
+    st.write("✅ 이 지역은 기준치 이내입니다.")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 숫자를 직접 조절하는 슬라이더 함수 이름을 넣으면 된다냥. (`slider`)
+> - 슬라이더를 낮추면 경고 메시지로 바뀌냥?
+
+<StepCard step="관찰" title="슬라이더 값이 조건문을 바꾼다냥!">
+
+`기준치`는 슬라이더를 움직일 때마다 값이 바뀌는 변수다냥. 그
+값이 `if`문의 조건으로 쓰이기 때문에, 슬라이더를 움직이면 화면의
+메시지도 실시간으로 바뀐다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `st.bar_chart(...)`도 추가해서, 추이 그래프와 막대 그래프를 함께 보여주기
+- [ ] `df["지역"].unique()`로 지역 목록을 데이터에서 직접 뽑아 selectbox에 넣어보기
+- [ ] `st.metric("평균 미세먼지", df["미세먼지"].mean())`로 숫자를 크게 강조해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 두 번째 프로젝트를 완주했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. st.line_chart()로 추이 그래프 넣기
+  2. st.selectbox()로 지역 선택 필터 넣기
+  3. st.slider()로 기준치 조절 위젯 넣기
+
+  까지 해냈다냥! 그리고 이걸로 **프로젝트 2, 미세먼지 데이터 분석을
+  완주**했다냥! 날짜 다루기부터 지역 비교, 대시보드까지 전부
+  경험해봤다냥. 다음 프로젝트는 **아파트 실거래가 데이터**다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

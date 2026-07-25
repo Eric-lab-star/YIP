@@ -125,6 +125,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"여러 지역의 미세먼지를 평균과 상자그림으로 비교하고, 기준치를 넘는 지역을 찾아보자냥!",
 	},
+	{
+		name: "프로젝트 2 — 미세먼지 대시보드 만들기",
+		slug: "Dust_dashboard",
+		description:
+			"추이 그래프, 지역 선택, 기준치 슬라이더가 있는 미세먼지 대시보드를 완성해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
