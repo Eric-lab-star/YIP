@@ -1,0 +1,173 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'matplotlib 기초 — 첫 그래프 그리기',
+  description: 'matplotlib으로 선 그래프와 막대 그래프를 그리고, 한글이 깨지지 않게 설정해보자냥!',
+  session: 10,
+}
+
+# matplotlib 기초 — 첫 그래프 그리기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간까지 데이터를 표로 다루고 깨끗하게
+  정리하는 법을 배웠지냥? 이제부터는 그 데이터를 **그래프로
+  그려서** 눈으로 한눈에 보는 법을 배워볼 거다냥! 오늘의 주인공은
+  파이썬 시각화의 기본, `matplotlib`이다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `plt.plot()`으로 선 그래프를 그릴 수 있다.
+  - `plt.bar()`로 막대 그래프를 그릴 수 있다.
+  - 그래프에서 한글이 깨지지 않게 폰트를 설정할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 선 그래프 그리기 (10분)
+
+<NyangSpeech>
+  시간에 따라 변하는 데이터, 예를 들어 요일별 지하철 승차인원처럼
+  **변화의 흐름**을 보고 싶을 땐 선 그래프가 딱이다냥!
+</NyangSpeech>
+
+```python
+import matplotlib.pyplot as plt
+
+요일 = ["월", "화", "수", "목", "금"]
+승차인원 = [12000, 11500, 13000, 12800, 15200]
+
+plt.plot(요일, 승차인원)
+plt.title("요일별 지하철 승차인원")
+plt.xlabel("요일")
+plt.ylabel("승차인원")
+plt.show()
+```
+
+<Callout type="important">
+  `plt.plot(x, y)`에서 첫 번째 리스트는 **가로축(x축)**, 두 번째
+  리스트는 **세로축(y축)** 값이다냥. 두 리스트의 **길이가 같아야**
+  각 점이 짝을 맞춰 이어진다냥!
+</Callout>
+
+---
+
+## 2단계 · 막대 그래프 그리기 (10분)
+
+<NyangSpeech>
+  변화의 흐름이 아니라, **항목끼리 크기를 비교**하고 싶을 땐 막대
+  그래프가 더 좋다냥. 예를 들어 구별 미세먼지를 비교할 때처럼
+  말이다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📈',
+    label: 'plt.plot() — 선 그래프',
+    color: 'blue',
+    items: [
+      '시간에 따른 변화(추세)를 보여줌',
+      '예: 요일별, 월별 변화 추이',
+    ],
+  }}
+  right={{
+    emoji: '📊',
+    label: 'plt.bar() — 막대 그래프',
+    color: 'purple',
+    items: [
+      '항목 간 크기를 비교하기 좋음',
+      '예: 구별, 측정소별 비교',
+    ],
+  }}
+/>
+
+```python
+구 = ["중구", "강남구", "종로구", "마포구"]
+미세먼지 = [30, 42, 25, 38]
+
+plt.bar(구, 미세먼지)
+plt.title("구별 미세먼지 농도")
+plt.xlabel("구")
+plt.ylabel("미세먼지(㎍/㎥)")
+plt.show()
+```
+
+<Callout type="tip">
+  `plt.plot()`과 `plt.bar()`는 사용법이 거의 똑같다냥! x축 리스트와
+  y축 리스트만 바꿔 넣으면, 나머지 `title`, `xlabel`, `ylabel`,
+  `show()`는 그대로 쓸 수 있다냥.
+</Callout>
+
+---
+
+## 3단계 · 한글 깨짐 방지하기 (7분)
+
+<NyangSpeech>
+  matplotlib은 원래 한글 폰트를 기본으로 지원하지 않아서, 그냥
+  실행하면 한글이 네모(□)로 깨져 보일 수 있다냥! 코드 맨 앞에 폰트
+  설정을 딱 한 줄 추가하면 해결된다냥.
+</NyangSpeech>
+
+```python
+import matplotlib.pyplot as plt
+
+# 한글 폰트 설정 (Windows는 맑은 고딕, Mac은 AppleGothic)
+plt.rcParams["font.family"] = "Malgun Gothic"
+plt.rcParams["axes.unicode_minus"] = False  # 마이너스 기호 깨짐 방지
+```
+
+<StepCard step="핵심" title="한글 폰트, 이것만 기억하자냥!">
+
+| 운영체제 | 폰트 이름 |
+|---|---|
+| Windows | `"Malgun Gothic"` (맑은 고딕) |
+| macOS | `"AppleGothic"` |
+
+</StepCard>
+
+<Callout type="note">
+  `axes.unicode_minus = False`도 함께 설정해줘야 한다냥! 한글
+  폰트로 바꾸면 마이너스(`-`) 기호가 깨지는 경우가 있는데, 이
+  옵션이 그걸 막아준다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '시간에 따른 변화 추이를 보여주고 싶을 땐 어떤 그래프를 쓰냥?',
+      answer: 'plt.plot()으로 그리는 선 그래프다냥! 요일별, 월별 변화처럼 흐름을 보여줄 때 적합하다냥.',
+    },
+    {
+      question: '여러 항목의 크기를 비교하고 싶을 땐 어떤 그래프를 쓰냥?',
+      answer: 'plt.bar()로 그리는 막대 그래프다냥! 구별, 측정소별처럼 항목끼리 비교할 때 좋다냥.',
+    },
+    {
+      question: '그래프에서 한글이 깨지지 않게 하려면 어떤 코드를 추가하냥?',
+      answer: 'plt.rcParams["font.family"]에 "Malgun Gothic"(윈도우) 또는 "AppleGothic"(맥)을 지정한다냥!',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 선 그래프와 막대 그래프를 그리고, 한글 깨짐까지 해결하는
+  법을 배웠다냥! 이제 실습 페이지에서 직접 그래프를 그려보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

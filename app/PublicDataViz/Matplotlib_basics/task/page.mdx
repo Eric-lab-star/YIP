@@ -1,0 +1,128 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'matplotlib 실습 — 나만의 그래프 그리기',
+  description: '요일별 승차인원을 선 그래프로, 구별 미세먼지를 막대 그래프로 직접 그려보자냥!',
+  session: 10,
+}
+
+# matplotlib 실습 — 나만의 그래프 그리기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 직접 선 그래프와
+  막대 그래프를 그려볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `matplotlib` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="한글 폰트 설정하기" time="5~7분">
+
+그래프를 그리기 전에, 한글이 깨지지 않도록 폰트부터 설정해보자냥!
+아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.family"] = ____  # 윈도우 기준
+plt.rcParams["axes.unicode_minus"] = False
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 윈도우용 한글 폰트 이름을 문자열로 넣으면 된다냥. (`"Malgun Gothic"`)
+> - Mac을 쓰고 있다면 `"AppleGothic"`으로 바꿔서 넣어도 좋다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="요일별 승차인원 선 그래프 그리기" time="10~12분">
+
+요일별 지하철 승차인원 변화를 선 그래프로 그려보자냥.
+
+```python
+요일 = ["월", "화", "수", "목", "금"]
+승차인원 = [12000, 11500, 13000, 12800, 15200]
+
+plt.____(요일, 승차인원)
+plt.title("요일별 지하철 승차인원")
+plt.xlabel("요일")
+plt.ylabel("승차인원")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 선 그래프를 그리는 함수 이름을 넣으면 된다냥. (`plot`)
+> - 금요일에 승차인원이 가장 높게 올라가는 그래프가 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="구별 미세먼지 막대 그래프 그리기" time="8~10분">
+
+이번엔 구별 미세먼지를 막대 그래프로 비교해보자냥.
+
+```python
+구 = ["중구", "강남구", "종로구", "마포구"]
+미세먼지 = [30, 42, 25, 38]
+
+plt.____(구, 미세먼지)
+plt.title("구별 미세먼지 농도")
+plt.xlabel("구")
+plt.ylabel("미세먼지(㎍/㎥)")
+plt.show()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 막대 그래프를 그리는 함수 이름을 넣으면 된다냥. (`bar`)
+> - 강남구 막대가 가장 높게 나오냥?
+
+<StepCard step="관찰" title="plot과 bar, 사용법은 거의 똑같다냥!">
+
+x축 리스트와 y축 리스트만 넣으면, `title`, `xlabel`, `ylabel`,
+`show()`는 두 그래프에서 똑같이 사용할 수 있다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 요일을 토, 일까지 추가해서 일주일 전체 그래프를 그려보기
+- [ ] `plt.bar()`에 `color="skyblue"`를 추가해서 막대 색을 바꿔보기
+- [ ] 폰트 설정 줄을 지우고 다시 실행해서, 한글이 어떻게 깨지는지 직접 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 한글 폰트 설정하기
+  2. plt.plot()으로 선 그래프 그리기
+  3. plt.bar()로 막대 그래프 그리기
+
+  까지 해냈다냥! 이제 데이터를 눈으로 보이게 그릴 수 있게 됐다냥.
+  다음 시간에는 `seaborn`으로 훨씬 더 예쁜 그래프를 그려볼 거다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

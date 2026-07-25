@@ -65,6 +65,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"공공데이터에 흔히 숨어있는 빈 값과 중복된 행을 찾아서 깨끗하게 정리해보자냥!",
 	},
+	{
+		name: "matplotlib 기초 — 첫 그래프 그리기",
+		slug: "Matplotlib_basics",
+		description:
+			"matplotlib으로 선 그래프와 막대 그래프를 그리고, 한글이 깨지지 않게 설정해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
