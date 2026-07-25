@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import CopyCodeBlock from "@/components/mdx/CopyCodeBlock";
 import Squiggle from "@/components/mdx/Squiggle";
+import { cn } from "@/lib/utils";
 
 /* ── Doodle tokens (mirror app/styles/theme.css) ─────────────────── */
 const ink = "#263D5B"; // secondary — hand-drawn ink line / text
@@ -77,8 +78,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			</strong>
 		),
 
-		ul: ({ children, ...props }: ComponentPropsWithoutRef<"ul">) => (
-			<ul className="my-5 space-y-2.5 pl-1" {...props}>
+		// `className` is pulled out and merged rather than spread over: remark-gfm
+		// tags task lists (`- [ ]`) with `contains-task-list` / `task-list-item`,
+		// and a bare `{...props}` would let that replace the styling classes —
+		// silently dropping the spacing here and the font size on `li` below.
+		ul: ({ children, className, ...props }: ComponentPropsWithoutRef<"ul">) => (
+			<ul className={cn("my-5 space-y-2.5 pl-1", className)} {...props}>
 				{children}
 			</ul>
 		),
@@ -90,8 +95,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 				{children}
 			</ol>
 		),
-		li: ({ children, ...props }: ComponentPropsWithoutRef<"li">) => (
-			<li className="text-lg leading-[1.7] pl-1" {...props}>
+		li: ({ children, className, ...props }: ComponentPropsWithoutRef<"li">) => (
+			<li className={cn("text-lg leading-[1.7] pl-1", className)} {...props}>
 				{children}
 			</li>
 		),
@@ -139,7 +144,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			}
 			return (
 				<code
-					className="px-1.5 py-0.5 text-[0.95em] font-mono whitespace-pre-wrap"
+					// `break-words`: chips like `client.models.generate_content` have no
+					// space to wrap at, so `whitespace-pre-wrap` alone leaves one long
+					// unbreakable run that pushes its container past the viewport at
+					// narrow widths. Breaking the chip keeps it on screen.
+					className="px-1.5 py-0.5 text-[0.95em] font-mono whitespace-pre-wrap break-words"
 					style={{
 						backgroundColor: "#e6f4fb",
 						color: ink,

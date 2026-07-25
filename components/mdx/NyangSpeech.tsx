@@ -19,8 +19,15 @@ export function NyangSpeech({ children }: { children: ReactNode }) {
         className="mt-1 shrink-0 rounded-full object-cover"
         aria-hidden
       />
+      {/*
+        `min-w-0` + `break-words`: a flex item defaults to `min-width: auto`, so
+        the bubble refuses to shrink below its longest unbreakable run. Inline
+        code chips (`MarkerCluster`, `pd.read_csv()`) have no spaces to wrap at,
+        which pushed the bubble past the viewport at 320px. `min-w-0` lets it
+        shrink, `break-words` splits the chip rather than overflowing.
+      */}
       <div
-        className="relative flex-1 px-5 py-4 text-lg leading-[1.8]"
+        className="relative min-w-0 flex-1 px-5 py-4 text-lg leading-[1.8] break-words"
         style={{
           ...doodleBoxImage,
           backgroundColor: cream,
