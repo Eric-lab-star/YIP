@@ -47,6 +47,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"pandas의 핵심인 DataFrame과 Series가 무엇인지 이해하고, 열과 행에 직접 접근해보자냥!",
 	},
+	{
+		name: "pandas 기초 (2) — 조건 필터링과 정렬",
+		slug: "Pandas2_filter",
+		description:
+			"원하는 조건에 맞는 데이터만 골라내고, 크기 순서로 줄 세우는 법을 배워보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */
