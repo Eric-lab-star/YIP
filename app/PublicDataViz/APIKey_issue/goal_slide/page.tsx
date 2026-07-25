@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 Open API를 쓰기 위한 열쇠, 인증키를 직접 발급받아보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔑</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					Open API 인증키 발급받기
 				</h1>
@@ -49,7 +48,7 @@ const slides: Slide[] = [
 					<p className="text-2xl text-gray-800 font-semibold">도서관 회원증 = API 인증키</p>
 				</div>
 				<div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-					<p className="text-lg text-gray-700">⚠️ 인증키는 나만의 비밀번호와 같습니다. 함부로 공유하지 마세요!</p>
+					<p className="text-lg text-gray-700">인증키는 나만의 비밀번호와 같습니다. 함부로 공유하지 마세요!</p>
 				</div>
 			</div>
 		),
@@ -100,7 +99,7 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-400">
-					<p className="text-xl text-gray-800">🔒 인증키는 절대 다른 사람과 공유하지 않기</p>
+					<p className="text-xl text-gray-800">인증키는 절대 다른 사람과 공유하지 않기</p>
 				</div>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-700">코드를 인터넷에 올릴 때는 인증키를 지우고 공유하기</p>
@@ -118,13 +117,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 인증키 = API를 쓰기 위한 열쇠</p>
+					<p className="text-lg text-gray-700">인증키 = API를 쓰기 위한 열쇠</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 발급: 로그인 → 데이터셋 찾기 → 활용신청 → 승인 확인</p>
+					<p className="text-lg text-gray-700">발급: 로그인 → 데이터셋 찾기 → 활용신청 → 승인 확인</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 발급된 키를 그대로 쓰고, 안전하게 보관하기</p>
+					<p className="text-lg text-gray-700">발급된 키를 그대로 쓰고, 안전하게 보관하기</p>
 				</div>
 			</div>
 		),
@@ -135,10 +134,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. Open API를 쓰기 위한 진짜 열쇠를 손에 넣을 준비를 마쳤습니다. 다음 시간에는 이 열쇠로 파이썬 코드에서 진짜 데이터를 받아오겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 파이썬으로 API 호출하기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

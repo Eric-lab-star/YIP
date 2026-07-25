@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 seaborn으로 테마를 바꾸고 그래프를 그리겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎨</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">seaborn 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">예쁜 그래프 직접 그리기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,10 +26,9 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "seaborn, matplotlib, pandas 패키지 설치 확인" },
+						{ text: "seaborn, matplotlib, pandas 패키지 설치 확인" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -47,7 +45,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`sns.____(style="whitegrid")  # set_theme
 plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: set_theme</p>
+					<p className="text-lg text-gray-600">빈칸: set_theme</p>
 				</div>
 			</div>
 		),
@@ -60,7 +58,7 @@ plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`sns.barplot(data=____, x="구", y="미세먼지")  # df`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: df</p>
+					<p className="text-lg text-gray-600">빈칸: df</p>
 				</div>
 			</div>
 		),
@@ -73,7 +71,7 @@ plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`sns.____(data=df2, x="미세먼지", y="초미세먼지")  # scatterplot`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 오른쪽 위로 올라가는 모양 = 양의 상관관계</p>
+					<p className="text-lg text-gray-600">오른쪽 위로 올라가는 모양 = 양의 상관관계</p>
 				</div>
 			</div>
 		),
@@ -92,7 +90,7 @@ plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -105,10 +103,9 @@ plt.rcParams["font.family"] = "Malgun Gothic"`}</CodeBlock>
 		script: "오늘 실습을 마치겠습니다. 이제 훨씬 예쁜 그래프를 그릴 수 있게 되었습니다. 다음 시간에는 인터랙티브 그래프를 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: plotly로 인터랙티브 그래프 만들기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

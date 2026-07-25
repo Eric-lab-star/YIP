@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '사진을 보고 푸는 수학 봇 2부'입니다. 지난 시간에는 텍스트 메시지를 받아서 답장하는 봇을 만들었습니다. 오늘은 한 단계 더 나아가서, AI가 사진 속 수학 문제를 직접 '보고', 단계별로 풀이를 생성하는 핵심 기능을 이해해보겠습니다. 봇에 연결하는 것은 다음 시간이고, 오늘은 그 핵심 두뇌 부분의 원리를 배우겠습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">👀</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           사진을 보고 푸는
           <br />
@@ -68,7 +67,7 @@ const slides: Slide[] = [
                 <td className="p-4">글자 메시지를 받아서 답장하기 (대화의 통로)</td>
               </tr>
               <tr className="bg-purple-50">
-                <td className="p-4 font-semibold text-purple-700">오늘 ⭐</td>
+                <td className="p-4 font-semibold text-purple-700">오늘</td>
                 <td className="p-4 text-purple-700 font-medium">사진 속 수학 문제를 읽고, 단계별 풀이 만들기 (눈 + 두뇌)</td>
               </tr>
               <tr className="bg-white">
@@ -94,7 +93,7 @@ const slides: Slide[] = [
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-gray-400">
-            <p className="text-lg font-bold text-gray-700 mb-3">👂 글자만 듣던 AI</p>
+            <p className="text-lg font-bold text-gray-700 mb-3">글자만 듣던 AI</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 글로 된 질문만 답할 수 있음</li>
               <li>• 사진은 전달해도 못 봄</li>
@@ -102,7 +101,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-3">👀 사진도 보는 AI (멀티모달)</p>
+            <p className="text-lg font-bold text-purple-700 mb-3">사진도 보는 AI (멀티모달)</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 이미지와 질문을 함께 받음</li>
               <li>• 사진 속 문제를 직접 읽음</li>
@@ -120,7 +119,6 @@ const slides: Slide[] = [
     content: (
       <div className="flex flex-col gap-6">
         <div className="bg-purple-50 rounded-xl p-6 text-center">
-          <p className="text-6xl mb-4">👀 ➕ 🧠</p>
           <p className="text-2xl text-gray-800 font-semibold">
             보는 능력(인식) + 푸는 능력(풀이)
           </p>
@@ -130,19 +128,15 @@ const slides: Slide[] = [
         </div>
         <div className="space-y-3">
           <div className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-            <span className="text-2xl">📷</span>
             <p className="text-lg text-gray-700"><strong>입력:</strong> 수학 문제가 적힌 사진 한 장</p>
           </div>
           <div className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-            <span className="text-2xl">👀</span>
             <p className="text-lg text-gray-700"><strong>1단계:</strong> AI가 사진을 보고 문제를 인식 (이미지 인식)</p>
           </div>
           <div className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-            <span className="text-2xl">🧠</span>
             <p className="text-lg text-gray-700"><strong>2단계:</strong> 문제를 이해하고 단계별로 풀이 생성</p>
           </div>
           <div className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-            <span className="text-2xl">📝</span>
             <p className="text-lg text-gray-700"><strong>출력:</strong> 단계별 풀이 과정 + 최종 정답</p>
           </div>
         </div>
@@ -190,12 +184,12 @@ print(response.text)`}
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-red-50 rounded-xl p-5 border-l-4 border-red-300">
-            <p className="text-lg font-bold text-red-700 mb-2">❌ 단순한 프롬프트</p>
+            <p className="text-lg font-bold text-red-700 mb-2">단순한 프롬프트</p>
             <p className="text-base text-gray-600">"이 문제 풀어줘"</p>
             <p className="text-sm text-gray-500 mt-2">→ 답만 툭 던짐</p>
           </div>
           <div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400">
-            <p className="text-lg font-bold text-green-700 mb-2">✅ 체계적인 프롬프트</p>
+            <p className="text-lg font-bold text-green-700 mb-2">체계적인 프롬프트</p>
             <p className="text-base text-gray-600">"문제를 먼저 읽고, 단계별로 풀이 과정을 설명한 뒤, 마지막에 정답을 알려줘"</p>
             <p className="text-sm text-gray-500 mt-2">→ 과정 + 정답을 체계적으로 제공</p>
           </div>
@@ -225,12 +219,11 @@ print(response.text)`}
         </div>
         <div className="space-y-4">
           {[
-            { icon: "📷", title: "사진 품질 문제", desc: "흐리거나 글씨가 작으면 AI가 문제를 잘못 읽을 수 있음" },
-            { icon: "🔢", title: "계산 실수", desc: "AI가 가끔 연산 과정에서 오류를 범할 수 있음" },
-            { icon: "✅", title: "반드시 검토", desc: "AI 풀이가 나오면 '이게 맞나?' 스스로 확인하는 습관 필요" },
+            { title: "사진 품질 문제", desc: "흐리거나 글씨가 작으면 AI가 문제를 잘못 읽을 수 있음" },
+            { title: "계산 실수", desc: "AI가 가끔 연산 과정에서 오류를 범할 수 있음" },
+            { title: "반드시 검토", desc: "AI 풀이가 나오면 '이게 맞나?' 스스로 확인하는 습관 필요" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -258,7 +251,6 @@ print(response.text)`}
             "AI 풀이는 반드시 검토 — AI는 도구이지 정답 기계가 아님",
           ].map((text, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-green-500 text-xl">✅</span>
               <p className="text-lg text-gray-700">{text}</p>
             </div>
           ))}
@@ -277,14 +269,13 @@ print(response.text)`}
     script: `개념 강의를 마치겠습니다. 오늘은 사진을 AI에게 전달하여 수학 문제를 인식하고, 단계별 풀이를 생성하는 핵심 원리를 배웠습니다. 실습 시간에 직접 코드를 작성하면서 이 개념을 체험해보시기 바랍니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">
           개념 강의를 마칩니다
         </h1>
         <p className="text-xl text-gray-600 mt-4">
           실습 시간에 직접 사진 인식 + 풀이 생성 코드를 작성합니다
         </p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

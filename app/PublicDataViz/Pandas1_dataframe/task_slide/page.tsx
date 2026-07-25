@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 직접 DataFrame을 만들고 열과 행을 꺼내는 연습을 하겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📊</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">pandas 실습 (1)</h1>
 				<p className="text-2xl text-gray-500 mt-2">나만의 표 만들기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,10 +26,9 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "pandas 패키지 설치 확인" },
+						{ text: "pandas 패키지 설치 확인" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -52,7 +50,7 @@ const slides: Slide[] = [
 df = pd.DataFrame(data)
 print(df)`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: &quot;초미세먼지&quot;</p>
+					<p className="text-lg text-gray-600">빈칸: &quot;초미세먼지&quot;</p>
 				</div>
 			</div>
 		),
@@ -66,7 +64,7 @@ print(df)`}</CodeBlock>
 				<CodeBlock>{`미세먼지_열 = df[____]        # "미세먼지"
 두열 = df[["측정소", ____]]  # "미세먼지"`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 대괄호 한 번 = Series, 두 번(리스트) = DataFrame</p>
+					<p className="text-lg text-gray-600">대괄호 한 번 = Series, 두 번(리스트) = DataFrame</p>
 				</div>
 			</div>
 		),
@@ -80,7 +78,7 @@ print(df)`}</CodeBlock>
 				<CodeBlock>{`첫번째 = df.iloc[____]  # 0
 세번째 = df.iloc[____]  # 2`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 iloc은 0부터 시작합니다!</p>
+					<p className="text-lg text-gray-600">iloc은 0부터 시작합니다!</p>
 				</div>
 			</div>
 		),
@@ -99,7 +97,7 @@ print(df)`}</CodeBlock>
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -112,10 +110,9 @@ print(df)`}</CodeBlock>
 		script: "오늘 실습을 마치겠습니다. 표를 자유자재로 다루는 첫걸음을 뗐습니다. 다음 시간에는 조건으로 원하는 데이터만 걸러내는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: pandas 기초 (2) 조건 필터링과 정렬</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

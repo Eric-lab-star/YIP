@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 표에서 열과 행을 꺼내는 법을 배웠습니다. 오늘은 한 단계 더 나아가서, 원하는 조건에 맞는 데이터만 골라내는 법과 순서대로 줄 세우는 법을 배우겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔍</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					pandas 기초 (2)
 				</h1>
@@ -60,14 +59,14 @@ print(심한곳)`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">➕ & (그리고, AND)</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">& (그리고, AND)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>두 조건을 모두 만족해야 함</li>
 						<li>예: 미세먼지 30 초과 AND 45 이하</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">↔️ | (또는, OR)</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">| (또는, OR)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>둘 중 하나만 만족해도 됨</li>
 						<li>예: 측정소가 중구 OR 마포구</li>
@@ -85,7 +84,7 @@ print(심한곳)`}</CodeBlock>
 				<CodeBlock>{`중간 = df[(df["미세먼지"] > 30) & (df["미세먼지"] <= 45)]
 특정지역 = df[(df["측정소"] == "중구") | (df["측정소"] == "마포구")]`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 각 조건은 반드시 괄호로 감싸기!</p>
+					<p className="text-lg text-gray-700">각 조건은 반드시 괄호로 감싸기!</p>
 				</div>
 			</div>
 		),
@@ -111,13 +110,13 @@ print(심한곳)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ df[조건]으로 원하는 행만 걸러내기</p>
+					<p className="text-lg text-gray-700">df[조건]으로 원하는 행만 걸러내기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ (조건1) &amp; (조건2), (조건1) | (조건2)로 조합</p>
+					<p className="text-lg text-gray-700">(조건1) &amp; (조건2), (조건1) | (조건2)로 조합</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sort_values(&quot;열&quot;, ascending=False)로 정렬</p>
+					<p className="text-lg text-gray-700">sort_values(&quot;열&quot;, ascending=False)로 정렬</p>
 				</div>
 			</div>
 		),
@@ -128,10 +127,9 @@ print(심한곳)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 이제 표에서 원하는 데이터만 쏙쏙 찾아낼 수 있게 되었습니다. 다음 시간에는 데이터를 그룹으로 묶어서 한눈에 요약하는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: pandas 기초 (3) 그룹으로 묶어 요약하기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

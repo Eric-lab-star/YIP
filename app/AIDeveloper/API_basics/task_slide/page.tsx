@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 API 개념을 바탕으로, 날씨 API와 제미나이 API를 직접 코드로 연결하는 실습을 진행하겠습니다. 총 3가지 미션과 보너스 미션으로 구성되어 있으며, 약 25~30분이 소요됩니다. 빈칸을 채워가며 한 단계씩 진행하겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-orange-500">API</code> 실습 미션
         </h1>
@@ -30,13 +29,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">준비물을 확인합니다.</p>
         <div className="space-y-3">
           {[
-            { icon: "📦", text: "requests 패키지 설치 (pip install requests)" },
-            { icon: "📦", text: "google-genai 패키지 설치 (pip install google-genai)" },
-            { icon: "🔑", text: "날씨 API 키와 제미나이 API 키 확인" },
-            { icon: "📄", text: "새 파이썬 파일 (.py) 하나 열어두기" },
+            { text: "requests 패키지 설치 (pip install requests)" },
+            { text: "google-genai 패키지 설치 (pip install google-genai)" },
+            { text: "날씨 API 키와 제미나이 API 키 확인" },
+            { text: "새 파이썬 파일 (.py) 하나 열어두기" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-2xl">{item.icon}</span>
               <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -73,7 +71,7 @@ print(f"날씨: {description}")`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4 text-base text-gray-600">
           <p>• 첫 번째/두 번째 빈칸 → 도시 이름 변수, API 키 변수</p>
-          <p>• 온도 키 → 영어로 &ldquo;온도&rdquo; 🌡️ | 설명 키 → 영어로 &ldquo;설명&rdquo;</p>
+          <p>• 온도 키 → 영어로 &ldquo;온도&rdquo; | 설명 키 → 영어로 &ldquo;설명&rdquo;</p>
         </div>
       </div>
     ),
@@ -193,7 +191,7 @@ prompt = f"오늘 {city} 날씨는 {description}, {temperature}도. 코멘트 �
 comment = client.models.generate_content(
     model="gemini-3.5-flash", contents=____).text
 
-print(f"🌤️ {city}: {description}, {temperature}도")
+print(f"{city}: {description}, {temperature}도")
 print(f"🐱 코멘트: {____}")`}
         </CodeBlock>
         <div className="bg-amber-50 rounded-xl p-4 text-base text-gray-600">
@@ -240,12 +238,11 @@ print(f"🐱 코멘트: {____}")`}
         </div>
         <div className="space-y-3">
           {[
-            { icon: "🏙️", text: "city = input(\"도시 이름: \")으로 바꿔서 다양한 도시 테스트" },
-            { icon: "🗣️", text: "프롬프트 말투 변경 (격식체, 영어 등) → 결과 비교" },
-            { icon: "🎨", text: "날씨 상태에 따라 다른 이모지 출력 (☀️🌧️❄️)" },
+            { text: "city = input(\"도시 이름: \")으로 바꿔서 다양한 도시 테스트" },
+            { text: "프롬프트 말투 변경 (격식체, 영어 등) → 결과 비교" },
+            { text: "날씨 상태에 따라 다른 이모지 출력 (☀️🌧️❄️)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-2xl">{item.icon}</span>
               <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -267,7 +264,7 @@ print(f"🐱 코멘트: {____}")`}
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -283,10 +280,9 @@ print(f"🐱 코멘트: {____}")`}
     script: "오늘 실습을 마치겠습니다. 처음으로 두 가지 API를 연결해서 작동하는 앱을 만들었습니다. 다음 시간에는 이 앱에 Streamlit UI를 입혀서 실제로 사용할 수 있는 웹 앱으로 발전시켜보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
-        <p className="text-xl text-gray-600 mt-4">날씨 API + 제미나이 API 연결 완료! ✅</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-xl text-gray-600 mt-4">날씨 API + 제미나이 API 연결 완료!</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '믿을 수 있는 AI — 환각(hallucination)이란 무엇인가'입니다. 지금까지 우리는 수학 풀이 봇, 블로그 도우미, 영어 대화 앱 같은 멋진 것들을 AI로 만들어 보았습니다. 그런데 혹시 AI가 틀린 적은 없었습니까? 오늘은 AI가 왜 그럴듯하게 틀린 답을 하는지, 그리고 어떻게 하면 우리 앱을 더 믿을 수 있게 만들 수 있는지 배워보겠습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐱</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           믿을 수 있는 AI
           <br />
@@ -66,7 +65,7 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">⚠️ 예: AI가 실제로 없는 식당을 진짜인 것처럼 추천하는 경우</p>
+          <p className="text-base text-gray-600">예: AI가 실제로 없는 식당을 진짜인 것처럼 추천하는 경우</p>
         </div>
       </div>
     ),
@@ -80,7 +79,7 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">&ldquo;검색&rdquo;과 &ldquo;생성&rdquo;은 다릅니다</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400">
-            <p className="text-lg font-bold text-green-700 mb-3">🔎 우리의 착각 — &ldquo;검색&rdquo;</p>
+            <p className="text-lg font-bold text-green-700 mb-3">우리의 착각 — &ldquo;검색&rdquo;</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 저장된 사실을 찾아온다</li>
               <li>• 없으면 &ldquo;없다&rdquo;고 답할 것 같다</li>
@@ -88,7 +87,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-3">✍️ 실제 — &ldquo;생성&rdquo;</p>
+            <p className="text-lg font-bold text-purple-700 mb-3">실제 — &ldquo;생성&rdquo;</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 그럴듯한 다음 말을 만들어낸다</li>
               <li>• 빈칸도 그럴듯하게 채워버린다</li>
@@ -138,8 +137,8 @@ const slides: Slide[] = [
           </p>
           <div className="space-y-3">
             <p className="text-lg text-gray-600">• 거짓말이 아니라, 빈칸을 채우는 데 익숙할 뿐</p>
-            <p className="text-lg text-gray-600">• 👉 &ldquo;추측하지 말고, 모르면 모른다고 해!&rdquo;</p>
-            <p className="text-lg text-gray-600">• 👉 &ldquo;이 자료를 보고 답해!&rdquo; (근거를 쥐어주기)</p>
+            <p className="text-lg text-gray-600">• &ldquo;추측하지 말고, 모르면 모른다고 해!&rdquo;</p>
+            <p className="text-lg text-gray-600">• &ldquo;이 자료를 보고 답해!&rdquo; (근거를 쥐어주기)</p>
           </div>
         </div>
         <div className="bg-amber-50 rounded-xl p-5 border-l-4 border-amber-400">
@@ -185,12 +184,11 @@ const slides: Slide[] = [
     content: (
       <div className="flex flex-col gap-5">
         {[
-          { icon: "🪢", title: "프롬프트 안전장치", desc: "'모르면 모른다고 답하라'는 지시를 추가", color: "bg-blue-500" },
-          { icon: "📚", title: "RAG 활용", desc: "참고 자료를 근거로 답하게 하여 지어내기 방지", color: "bg-green-500" },
-          { icon: "🏷️", title: "AI 답변 표시", desc: "사용자에게 AI가 만든 답변이므로 검토 필요함을 알림", color: "bg-purple-500" },
+          { title: "프롬프트 안전장치", desc: "'모르면 모른다고 답하라'는 지시를 추가", color: "bg-blue-500" },
+          { title: "RAG 활용", desc: "참고 자료를 근거로 답하게 하여 지어내기 방지", color: "bg-green-500" },
+          { title: "AI 답변 표시", desc: "사용자에게 AI가 만든 답변이므로 검토 필요함을 알림", color: "bg-purple-500" },
         ].map((item, i) => (
           <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className={`${item.color} text-white rounded-full w-10 h-10 flex items-center justify-center shrink-0 text-lg`}>{item.icon}</span>
             <div>
               <p className="text-lg font-semibold text-gray-800">{item.title}</p>
               <p className="text-base text-gray-600">{item.desc}</p>
@@ -228,16 +226,16 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-4">
         <div className="space-y-3">
           <div className="bg-red-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>환각</strong> — AI가 그럴듯하게 틀린 답을 만들어내는 현상</p>
+            <p className="text-lg text-gray-700"><strong>환각</strong> — AI가 그럴듯하게 틀린 답을 만들어내는 현상</p>
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>검토 습관</strong> — AI 답을 무조건 믿지 않고 확인하기</p>
+            <p className="text-lg text-gray-700"><strong>검토 습관</strong> — AI 답을 무조건 믿지 않고 확인하기</p>
           </div>
           <div className="bg-green-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>안전장치</strong> — &ldquo;모르면 모른다고 답하라&rdquo; 프롬프트 지시</p>
+            <p className="text-lg text-gray-700"><strong>안전장치</strong> — &ldquo;모르면 모른다고 답하라&rdquo; 프롬프트 지시</p>
           </div>
           <div className="bg-purple-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>RAG의 가치</strong> — 참고 자료를 줘서 환각 줄이기</p>
+            <p className="text-lg text-gray-700"><strong>RAG의 가치</strong> — 참고 자료를 줘서 환각 줄이기</p>
           </div>
         </div>
       </div>
@@ -249,10 +247,9 @@ const slides: Slide[] = [
     script: `오늘 개념 강의를 마치겠습니다. AI도 틀릴 수 있다는 것을 이해하는 것은 AI를 더 잘 활용하기 위한 첫걸음입니다. 다음 시간 실습에서는 직접 환각을 유도하고, 프롬프트와 RAG으로 환각을 줄이는 방법을 실험해보겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 환각 실험과 안전장치 실습</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

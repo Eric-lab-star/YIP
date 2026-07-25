@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 상가 히트맵을 직접 만들겠습니다. 세 가지 미션을 약 25~30분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔥</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">프로젝트 4 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">상가 히트맵 직접 만들기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 25~30분</p>
@@ -27,11 +26,10 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "📦", text: "folium, pandas 패키지 설치 확인" },
-						{ icon: "🌐", text: ".html 파일을 브라우저로 열어보기" },
+						{ text: "folium, pandas 패키지 설치 확인" },
+						{ text: ".html 파일을 브라우저로 열어보기" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -47,7 +45,7 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`좌표목록 = df[["위도", "경도"]].____.tolist()  # values`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: values</p>
+					<p className="text-lg text-gray-600">빈칸: values</p>
 				</div>
 			</div>
 		),
@@ -60,7 +58,7 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`____(좌표목록).add_to(m)  # HeatMap`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: HeatMap</p>
+					<p className="text-lg text-gray-600">빈칸: HeatMap</p>
 				</div>
 			</div>
 		),
@@ -73,7 +71,7 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`가장많은동 = 동별개수.____()  # idxmax`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-600">💡 빈칸: idxmax</p>
+					<p className="text-lg text-gray-600">빈칸: idxmax</p>
 				</div>
 			</div>
 		),
@@ -92,7 +90,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -105,10 +103,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 이걸로 프로젝트 4, 상가 정보 데이터 분석을 완주했습니다. 다음 프로젝트는 인구 통계 데이터입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏁</span>
 				<h1 className="text-5xl font-bold text-gray-800">프로젝트 4를 완주했습니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 인구 통계 데이터</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

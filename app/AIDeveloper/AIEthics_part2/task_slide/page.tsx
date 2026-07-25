@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 개인정보, 저작권, 공정성 개념을 바탕으로 직접 실습을 진행하겠습니다. 총 세 가지 활동과 도전 과제가 있습니다. 먼저 AI의 편향을 직접 관찰하는 실험을 하고, 그다음 우리가 만든 앱에 넣을 AI 사용 가이드라인을 모둠별로 만들고, 마지막으로 모둠별 발표와 우리 반 공통 규칙 정리까지 진행합니다. 코드도 있고 토론도 있는, 머리와 마음을 모두 쓰는 시간입니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🔬</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           윤리적인 AI (2부)
           <br />
@@ -31,13 +30,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "🔑", text: "google-genai 패키지 설치 및 API 키 확인" },
-            { icon: "📋", text: "편향 관찰 실험용 단어·직업 목록 준비" },
-            { icon: "📖", text: "지난 시간 데이터 편향 사례 복습" },
-            { icon: "✍️", text: "모둠별 가이드라인 작성 양식 (한 줄 규칙 3개)" },
+            { text: "google-genai 패키지 설치 및 API 키 확인" },
+            { text: "편향 관찰 실험용 단어·직업 목록 준비" },
+            { text: "지난 시간 데이터 편향 사례 복습" },
+            { text: "모둠별 가이드라인 작성 양식 (한 줄 규칙 3개)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -97,7 +95,7 @@ for job in jobs:
           </div>
           <div className="bg-amber-50 rounded-xl p-5 border-l-4 border-amber-400">
             <p className="text-lg text-gray-700">
-              ⚖️ 요즘 AI는 편향을 많이 개선했지만,
+ 요즘 AI는 편향을 많이 개선했지만,
               <br />
               <strong>&ldquo;여전히 조심해야 한다&rdquo;</strong>가 균형 잡힌 관점입니다.
             </p>
@@ -128,9 +126,9 @@ for job in jobs:
         <div className="bg-green-50 rounded-xl p-5">
           <p className="text-lg font-semibold text-gray-800 mb-2">만들 때 떠올릴 세 가지</p>
           <ul className="text-base text-gray-600 space-y-2">
-            <li>🔒 개인정보: 사용자가 위험한 정보를 넣지 않게 하려면?</li>
-            <li>©️ 저작권: AI 결과물을 정직하게 밝히게 하려면?</li>
-            <li>⚖️ 공정성: AI 답변을 무조건 믿지 않고 검토하게 하려면?</li>
+            <li>개인정보: 사용자가 위험한 정보를 넣지 않게 하려면?</li>
+            <li>저작권: AI 결과물을 정직하게 밝히게 하려면?</li>
+            <li>공정성: AI 답변을 무조건 믿지 않고 검토하게 하려면?</li>
           </ul>
         </div>
       </div>
@@ -181,7 +179,7 @@ for job in jobs:
         </div>
         <div className="bg-teal-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">
-            🏡 비유: 동네의 약속(규칙) = 우리 앱의 약속(가이드라인)
+ 비유: 동네의 약속(규칙) = 우리 앱의 약속(가이드라인)
           </p>
         </div>
       </div>
@@ -227,13 +225,13 @@ for job in jobs:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
         <div className="bg-white/60 rounded-xl p-4 text-center">
           <p className="text-xl text-gray-700">
-            🪪 기술(운전 실력) + 태도(교통 법규) = <strong>AI 사용 운전면허 취득!</strong>
+ 기술(운전 실력) + 태도(교통 법규) = <strong>AI 사용 운전면허 취득!</strong>
           </p>
         </div>
       </div>
@@ -245,14 +243,13 @@ for job in jobs:
     script: "오늘 실습을 마치겠습니다. 여러분 모두 훌륭하게 수행해주셨습니다. 다음 시간부터는 지금까지 배운 모든 것을 활용하여 나만의 AI 앱을 자유롭게 만들어보는 최종 프로젝트가 시작됩니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>AI 편향 관찰 실험 ✅</p>
-          <p>AI 사용 가이드라인 작성 ✅</p>
-          <p>우리 반 공통 규칙 완성 ✅</p>
+          <p>AI 편향 관찰 실험</p>
+          <p>AI 사용 가이드라인 작성</p>
+          <p>우리 반 공통 규칙 완성</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

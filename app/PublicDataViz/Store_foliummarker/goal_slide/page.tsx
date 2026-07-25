@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 상가 데이터를 깨끗하게 정리했습니다. 오늘은 그 데이터를 진짜 지도 위에 마커로 찍어보겠습니다. 기초 과정에서 배운 folium을 다시 활용합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📍</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 4 — 상가
 				</h1>
@@ -63,13 +62,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📍 기본 마커</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">기본 마커</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>모든 마커가 같은 색</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🎨 색이 다른 마커</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">색이 다른 마커</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>업종마다 다른 색 아이콘</li>
 					</ul>
@@ -86,7 +85,7 @@ const slides: Slide[] = [
 				<CodeBlock>{`색상표 = {"카페": "blue", "치킨": "red", "분식": "green"}
 icon=folium.Icon(color=색상표.get(row["업종"], "gray"))`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 딕셔너리.get(키, 기본값)</p>
+					<p className="text-lg text-gray-700">딕셔너리.get(키, 기본값)</p>
 				</div>
 			</div>
 		),
@@ -112,13 +111,13 @@ folium.Marker(...).add_to(클러스터)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ iterrows + Marker로 상가 지도 만들기</p>
+					<p className="text-lg text-gray-700">iterrows + Marker로 상가 지도 만들기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ folium.Icon(color=)로 업종별 색 구분</p>
+					<p className="text-lg text-gray-700">folium.Icon(color=)로 업종별 색 구분</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ MarkerCluster로 많은 마커 묶기</p>
+					<p className="text-lg text-gray-700">MarkerCluster로 많은 마커 묶기</p>
 				</div>
 			</div>
 		),
@@ -129,10 +128,9 @@ folium.Marker(...).add_to(클러스터)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 이제 진짜 지도 위에 상가 데이터를 예쁘게 시각화할 수 있게 되었습니다. 다음 시간에는 히트맵으로 상가 밀집도를 보여주겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 상가 밀집도 히트맵</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지금까지 표와 그래프로 데이터를 봤습니다. 위치 정보가 있는 데이터는 진짜 지도 위에 그려보면 훨씬 더 잘 와닿습니다. 오늘 배울 folium으로 지도를 그려보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🗺️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					folium
 				</h1>
@@ -60,13 +59,13 @@ m.save("map.html")`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">🗺️ folium.Map()</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">folium.Map()</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>지도의 바탕을 만듦</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📍 folium.Marker()</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">folium.Marker()</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>특정 위치에 핀을 꽂음</li>
 					</ul>
@@ -85,7 +84,7 @@ m.save("map.html")`}</CodeBlock>
     popup="서울시청",
 ).add_to(m)`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 .add_to(m)을 빠뜨리면 마커가 안 보여요!</p>
+					<p className="text-lg text-gray-700">.add_to(m)을 빠뜨리면 마커가 안 보여요!</p>
 				</div>
 			</div>
 		),
@@ -113,13 +112,13 @@ m.save("map.html")`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ folium.Map(location=, zoom_start=)</p>
+					<p className="text-lg text-gray-700">folium.Map(location=, zoom_start=)</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ folium.Marker(...).add_to(m)</p>
+					<p className="text-lg text-gray-700">folium.Marker(...).add_to(m)</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ df.iterrows()로 여러 마커 반복 추가</p>
+					<p className="text-lg text-gray-700">df.iterrows()로 여러 마커 반복 추가</p>
 				</div>
 			</div>
 		),
@@ -130,10 +129,9 @@ m.save("map.html")`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 위치 데이터를 진짜 지도 위에 그릴 수 있게 되었습니다. 다음 시간은 지금까지 배운 걸 모두 모아서 데이터 앱을 만드는 마지막 시간입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: streamlit으로 나만의 데이터 앱 만들기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘부터 10차시에 걸쳐 나만의 AI 앱을 차근차근 완성해나가겠습니다. 한 번에 다 하는 것이 아니라, 하루에 한두 미션씩 단계를 밟아가면 됩니다. 각 미션마다 구체적인 활동지가 있으니, 빈칸을 채워가며 진행해주시면 됩니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🏪</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           최종 프로젝트
           <br />
@@ -31,13 +30,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📁", text: "1~22차시 코드·자료 모음 (참고 템플릿)" },
-            { icon: "📝", text: "활동지 (기획서 · 피드백 · 발표 · 회고 시트)" },
-            { icon: "🐍", text: "streamlit, google-genai 등 패키지 환경" },
-            { icon: "⏱️", text: "발표용 타이머 (1인 5분 내외)" },
+            { text: "1~22차시 코드·자료 모음 (참고 템플릿)" },
+            { text: "활동지 (기획서 · 피드백 · 발표 · 회고 시트)" },
+            { text: "streamlit, google-genai 등 패키지 환경" },
+            { text: "발표용 타이머 (1인 5분 내외)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -118,12 +116,11 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="space-y-4">
           {[
-            { session: "25차시", title: "핵심 기능 구현", desc: "대표 메뉴 하나부터! 기획서의 핵심 기능 1개를 .ipynb에서 먼저 구현", icon: "🍳" },
-            { session: "26차시", title: "UI 연결 또는 기능 확장", desc: "Streamlit 화면 연결 또는 두 번째 기능 구현 시작", icon: "🖥️" },
-            { session: "27차시", title: "통합 및 디버깅", desc: "기능들을 하나의 앱으로 통합 + 전체 흐름 테스트", icon: "🔧" },
+            { session: "25차시", title: "핵심 기능 구현", desc: "대표 메뉴 하나부터! 기획서의 핵심 기능 1개를.ipynb에서 먼저 구현" },
+            { session: "26차시", title: "UI 연결 또는 기능 확장", desc: "Streamlit 화면 연결 또는 두 번째 기능 구현 시작" },
+            { session: "27차시", title: "통합 및 디버깅", desc: "기능들을 하나의 앱으로 통합 + 전체 흐름 테스트" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-sm text-gray-500">{item.session}</p>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
@@ -134,7 +131,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
           <p className="text-base text-gray-700">
-            ⚠️ 통합 시 주의: 변수명 충돌, 실행 순서 꼬임. 에러 메시지를 끝까지 읽고, 작은 단위로 테스트!
+ 통합 시 주의: 변수명 충돌, 실행 순서 꼬임. 에러 메시지를 끝까지 읽고, 작은 단위로 테스트!
           </p>
         </div>
       </div>
@@ -164,7 +161,7 @@ const slides: Slide[] = [
         </CodeBlock>
         <div className="bg-green-50 rounded-xl p-4">
           <p className="text-base text-gray-700">
-            💡 피드백 형식: <strong>1-1-1</strong> (좋은 점 1개 · 개선점 1개 · 질문 1개)
+ 피드백 형식: <strong>1-1-1</strong> (좋은 점 1개 · 개선점 1개 · 질문 1개)
           </p>
         </div>
       </div>
@@ -179,7 +176,7 @@ const slides: Slide[] = [
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-teal-400">
             <p className="text-sm text-gray-500">29차시</p>
-            <p className="text-lg font-semibold text-gray-800 mb-2">마무리 제작 ✨</p>
+            <p className="text-lg font-semibold text-gray-800 mb-2">마무리 제작</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>• 우선순위 높은 피드백 반영</li>
               <li>• 최종 동작 테스트</li>
@@ -189,7 +186,7 @@ const slides: Slide[] = [
           </div>
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-blue-400">
             <p className="text-sm text-gray-500">30차시</p>
-            <p className="text-lg font-semibold text-gray-800 mb-2">발표 준비 📣</p>
+            <p className="text-lg font-semibold text-gray-800 mb-2">발표 준비</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>• 발표 구성 시트 작성</li>
               <li>• 시연 입력값 미리 정하기</li>
@@ -200,7 +197,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
           <p className="text-base text-gray-700">
-            💡 완벽하지 않아도 괜찮습니다. 발표는 과정을 보여주는 자리입니다!
+ 완벽하지 않아도 괜찮습니다. 발표는 과정을 보여주는 자리입니다!
           </p>
         </div>
       </div>
@@ -219,11 +216,11 @@ const slides: Slide[] = [
         </div>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5">
-            <p className="text-lg font-semibold text-gray-800 mb-3">🗣️ 발표할 때</p>
+            <p className="text-lg font-semibold text-gray-800 mb-3">발표할 때</p>
             <p className="text-base text-gray-600">문제 → 방법 → 시연 → 배운 점 순서대로 차분하게</p>
           </div>
           <div className="bg-white/70 rounded-xl p-5">
-            <p className="text-lg font-semibold text-gray-800 mb-3">👂 들을 때</p>
+            <p className="text-lg font-semibold text-gray-800 mb-3">들을 때</p>
             <p className="text-base text-gray-600">경청 + 박수 + 질문 1개씩 준비</p>
           </div>
         </div>
@@ -276,7 +273,6 @@ const slides: Slide[] = [
             "발표 구성 시트를 작성하고, 시연 입력값을 정해뒀다",
           ].map((text, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-3">
-              <span className="text-green-500 text-xl">✅</span>
               <p className="text-lg text-gray-700">{text}</p>
             </div>
           ))}
@@ -290,14 +286,13 @@ const slides: Slide[] = [
     script: "모든 미션을 마치겠습니다. 처음 .ipynb 파일을 열었던 그 첫날부터 지금까지, 여러분은 정말 긴 여정을 걸어왔습니다. 그리고 마침내 나만의 작은 가게, 즉 AI 앱을 직접 차려냈습니다. 완벽하지 않아도 괜찮습니다. 스스로 기획하고, 만들고, 보완하고, 발표한 그 과정 전체가 여러분의 가장 큰 보물입니다. 정말 수고 많으셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">모든 여정을 마칩니다</h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
           <p>.ipynb → API → Streamlit → LangChain</p>
           <p>→ 프롬프트 → RAG → 응용 앱 → 윤리</p>
           <p>→ <strong>나만의 AI 앱 완성!</strong></p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">정말 수고 많으셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">정말 수고 많으셨습니다!</p>
       </div>
     ),
   },

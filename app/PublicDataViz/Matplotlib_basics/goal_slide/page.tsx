@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지금까지 데이터를 표로 다루고 깨끗하게 정리하는 법을 배웠습니다. 오늘부터는 그 데이터를 그래프로 그려서 눈으로 한눈에 보는 법을 배우겠습니다. 오늘의 주인공은 matplotlib입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📈</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					matplotlib 기초
 				</h1>
@@ -63,13 +62,13 @@ plt.show()`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📈 plt.plot() — 선 그래프</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">plt.plot() — 선 그래프</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>시간에 따른 변화(추세)</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📊 plt.bar() — 막대 그래프</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">plt.bar() — 막대 그래프</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>항목 간 크기 비교</li>
 					</ul>
@@ -87,7 +86,7 @@ plt.show()`}</CodeBlock>
 plt.title("구별 미세먼지 농도")
 plt.show()`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 plot ↔ bar, title/xlabel/ylabel/show는 그대로!</p>
+					<p className="text-lg text-gray-700">plot ↔ bar, title/xlabel/ylabel/show는 그대로!</p>
 				</div>
 			</div>
 		),
@@ -113,13 +112,13 @@ plt.rcParams["axes.unicode_minus"] = False`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ plt.plot(x, y)로 선 그래프</p>
+					<p className="text-lg text-gray-700">plt.plot(x, y)로 선 그래프</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ plt.bar(x, y)로 막대 그래프</p>
+					<p className="text-lg text-gray-700">plt.bar(x, y)로 막대 그래프</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ rcParams[&quot;font.family&quot;]로 한글 폰트 설정</p>
+					<p className="text-lg text-gray-700">rcParams[&quot;font.family&quot;]로 한글 폰트 설정</p>
 				</div>
 			</div>
 		),
@@ -130,10 +129,9 @@ plt.rcParams["axes.unicode_minus"] = False`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 데이터를 눈으로 보이게 그릴 수 있게 되었습니다. 다음 시간에는 seaborn으로 훨씬 더 예쁜 그래프를 그려보겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: seaborn으로 예쁜 그래프 그리기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 실습에서는 사진 속 수학 문제를 AI에게 보여주고 풀이를 받아내는 핵심 기능을 직접 만들어보겠습니다. 총 3가지 미션을 약 25~30분에 걸쳐 수행합니다. 미션 1에서 사진을 준비하고, 미션 2에서 사진 인식 코드를 완성하고, 미션 3에서 단계별 풀이 생성 프롬프트를 만들겠습니다. 질문이 있으면 언제든 손을 들어주시기 바랍니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           수학 봇 실습 <span className="text-purple-500">(2부)</span>
         </h1>
@@ -34,13 +33,12 @@ const slides: Slide[] = [
         </p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "google-genai, Pillow(PIL) 패키지 설치 확인" },
-            { icon: "📷", text: "수학 문제 예시 이미지 여러 장 (난이도별)" },
-            { icon: "🔑", text: "제미나이 API 키 준비" },
-            { icon: "📄", text: "빈칸 포함 코드 템플릿 (.py 파일)" },
+            { text: "google-genai, Pillow(PIL) 패키지 설치 확인" },
+            { text: "수학 문제 예시 이미지 여러 장 (난이도별)" },
+            { text: "제미나이 API 키 준비" },
+            { text: "빈칸 포함 코드 템플릿 (.py 파일)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -71,7 +69,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 깨끗한 사진과 흐릿한 사진을 모두 준비하면, 입력 품질의 중요성을 직접 체감할 수 있습니다.
+ 깨끗한 사진과 흐릿한 사진을 모두 준비하면, 입력 품질의 중요성을 직접 체감할 수 있습니다.
           </p>
         </div>
       </div>
@@ -86,13 +84,11 @@ const slides: Slide[] = [
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">
               코드와 같은 폴더에 이미지를 두면 파일 이름만으로 접근 가능
             </p>
           </div>
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">
               <strong>좋은 입력 = 좋은 출력</strong> — 입력 데이터 품질이 결과를 좌우
             </p>
@@ -205,7 +201,7 @@ print(response.text)`}
         </div>
         <div className="bg-red-50 rounded-xl p-4">
           <p className="text-base text-gray-700">
-            ⚠️ AI 풀이가 나오면 반드시 직접 검토하세요. AI도 계산 실수를 할 수 있습니다.
+ AI 풀이가 나오면 반드시 직접 검토하세요. AI도 계산 실수를 할 수 있습니다.
           </p>
         </div>
       </div>
@@ -252,13 +248,13 @@ print(response.text)`}
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
         <div className="bg-purple-50 rounded-xl p-5 text-center">
           <p className="text-xl text-gray-700">
-            👀 눈(인식) + 🧠 머리(풀이) = <strong>핵심 기능 완성!</strong>
+ 눈(인식) + 머리(풀이) = <strong>핵심 기능 완성!</strong>
           </p>
           <p className="text-lg text-gray-500 mt-2">
             다음 시간: 이 기능을 봇에 연결하여 완성형 앱 만들기
@@ -273,16 +269,15 @@ print(response.text)`}
     script: `오늘 실습을 마치겠습니다. 사진 인식과 단계별 풀이 생성이라는 핵심 기능을 직접 만들어보셨습니다. 다음 시간에는 이 기능을 텔레그램 봇에 연결하여 완성형 앱을 만들겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">
           실습을 마칩니다
         </h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>사진 준비 ✅</p>
-          <p>문제 인식 (멀티모달) ✅</p>
-          <p>단계별 풀이 생성 ✅</p>
+          <p>사진 준비</p>
+          <p>문제 인식 (멀티모달)</p>
+          <p>단계별 풀이 생성</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

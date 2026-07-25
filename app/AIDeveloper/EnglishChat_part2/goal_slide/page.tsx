@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '대화를 기억하는 채팅 화면 만들기'입니다. 지난 시간에 우리는 .ipynb에서 input() 함수로 영어 회화 선생님과 대화를 주고받는 기능을 만들었습니다. 오늘은 그 대화를 진짜 카카오톡 같은 채팅 화면으로 옮기고, 학생의 영어를 살짝 고쳐주는 교정 기능까지 추가하여 앱을 완성하겠습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">💬</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           대화를 기억하는
           <br />
@@ -87,7 +86,7 @@ const slides: Slide[] = [
           </table>
         </div>
         <div className="bg-blue-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 &ldquo;user&rdquo; = 사용자 말풍선, &ldquo;assistant&rdquo; = AI 말풍선</p>
+          <p className="text-base text-gray-600">&ldquo;user&rdquo; = 사용자 말풍선, &ldquo;assistant&rdquo; = AI 말풍선</p>
         </div>
       </div>
     ),
@@ -105,7 +104,7 @@ const slides: Slide[] = [
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-gray-50 rounded-xl p-5 border-l-4 border-gray-400">
-            <p className="text-lg font-bold text-gray-700 mb-3">🧽 보통 변수</p>
+            <p className="text-lg font-bold text-gray-700 mb-3">보통 변수</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 입력마다 코드 재실행 → 변수 초기화</li>
               <li>• 대화 기록이 매번 사라짐</li>
@@ -113,7 +112,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400">
-            <p className="text-lg font-bold text-green-700 mb-3">🪧 session_state</p>
+            <p className="text-lg font-bold text-green-700 mb-3">session_state</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 화면 재실행에도 데이터 유지</li>
               <li>• 대화 기록을 차곡차곡 보존</li>
@@ -175,7 +174,7 @@ user_input = st.chat_input("영어로 말해보세요")`}
           </div>
         </div>
         <div className="bg-amber-50 rounded-xl p-4">
-          <p className="text-base text-gray-600">💡 st.expander로 교정 결과를 접어두면 대화 흐름이 끊기지 않습니다.</p>
+          <p className="text-base text-gray-600">st.expander로 교정 결과를 접어두면 대화 흐름이 끊기지 않습니다.</p>
         </div>
       </div>
     ),
@@ -189,12 +188,11 @@ user_input = st.chat_input("영어로 말해보세요")`}
         <p className="text-xl text-gray-700">세 AI 앱에서 공통으로 사용한 기술</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { icon: "✏️", label: "프롬프트", desc: "AI에게 역할과 조건 부여" },
-            { icon: "🔌", label: "API", desc: "AI와 코드로 통신" },
-            { icon: "🖥️", label: "Streamlit", desc: "사용자 화면 구축" },
+            { label: "프롬프트", desc: "AI에게 역할과 조건 부여" },
+            { label: "API", desc: "AI와 코드로 통신" },
+            { label: "Streamlit", desc: "사용자 화면 구축" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 text-center">
-              <span className="text-4xl">{item.icon}</span>
               <p className="text-lg font-semibold text-gray-800 mt-2">{item.label}</p>
               <p className="text-base text-gray-600 mt-1">{item.desc}</p>
             </div>
@@ -214,16 +212,16 @@ user_input = st.chat_input("영어로 말해보세요")`}
       <div className="flex flex-col gap-4">
         <div className="space-y-3">
           <div className="bg-blue-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>st.chat_input + st.chat_message</strong> = 채팅 화면</p>
+            <p className="text-lg text-gray-700"><strong>st.chat_input + st.chat_message</strong> = 채팅 화면</p>
           </div>
           <div className="bg-green-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>st.session_state</strong> = 대화 기록 보존 (지워지지 않는 칠판)</p>
+            <p className="text-lg text-gray-700"><strong>st.session_state</strong> = 대화 기록 보존 (지워지지 않는 칠판)</p>
           </div>
           <div className="bg-amber-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>표현 교정</strong> = 프롬프트 한 줄로 구현</p>
+            <p className="text-lg text-gray-700"><strong>표현 교정</strong> = 프롬프트 한 줄로 구현</p>
           </div>
           <div className="bg-purple-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ <strong>공통 패턴</strong>: 프롬프트 + API + Streamlit</p>
+            <p className="text-lg text-gray-700"><strong>공통 패턴</strong>: 프롬프트 + API + Streamlit</p>
           </div>
         </div>
       </div>
@@ -235,10 +233,9 @@ user_input = st.chat_input("영어로 말해보세요")`}
     script: `오늘 개념 강의를 마치겠습니다. Streamlit의 채팅 UI와 세션 상태, 그리고 표현 교정 기능의 원리를 이해하셨을 것입니다. 다음 시간 실습에서 직접 채팅 화면과 교정 기능을 코드로 완성해보겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 채팅 화면과 교정 기능을 코드로 완성합니다</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

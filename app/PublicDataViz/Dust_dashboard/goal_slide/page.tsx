@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 두 시간 동안 미세먼지 추이와 지역 비교를 분석했습니다. 오늘은 그걸 전부 모아서 streamlit 대시보드로 완성하겠습니다. 프로젝트 2의 마지막 시간입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🖥️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 2 — 미세먼지
 				</h1>
@@ -60,13 +59,13 @@ st.line_chart(df, x="날짜", y="미세먼지")`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📋 정적인 분석</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">정적인 분석</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>코드를 고쳐야 다른 지역을 봄</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🖱️ 대시보드</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">대시보드</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>클릭만으로 지역을 바꿔볼 수 있음</li>
 					</ul>
@@ -83,7 +82,7 @@ st.line_chart(df, x="날짜", y="미세먼지")`}</CodeBlock>
 				<CodeBlock>{`선택지역 = st.selectbox("지역을 선택하세요", 전체지역)
 st.write(f"선택한 지역: {선택지역}")`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 df[&quot;지역&quot;].unique()로 목록을 직접 뽑기도 함</p>
+					<p className="text-lg text-gray-700">df[&quot;지역&quot;].unique()로 목록을 직접 뽑기도 함</p>
 				</div>
 			</div>
 		),
@@ -96,7 +95,7 @@ st.write(f"선택한 지역: {선택지역}")`}</CodeBlock>
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`기준치 = st.slider("위험 기준치", min_value=0, max_value=100, value=35)
 if df["미세먼지"].mean() > 기준치:
-    st.write("⚠️ 기준치를 넘었습니다!")`}</CodeBlock>
+    st.write("기준치를 넘었습니다!")`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-700">슬라이더 값이 실시간으로 조건문에 반영됨</p>
 				</div>
@@ -110,13 +109,13 @@ if df["미세먼지"].mean() > 기준치:
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ st.line_chart(df, x=, y=)로 추이 표시</p>
+					<p className="text-lg text-gray-700">st.line_chart(df, x=, y=)로 추이 표시</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ st.selectbox()로 지역 선택</p>
+					<p className="text-lg text-gray-700">st.selectbox()로 지역 선택</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ st.slider()로 기준치 조절</p>
+					<p className="text-lg text-gray-700">st.slider()로 기준치 조절</p>
 				</div>
 			</div>
 		),
@@ -127,10 +126,9 @@ if df["미세먼지"].mean() > 기준치:
 		script: "오늘 강의를 마치겠습니다. 이걸로 프로젝트 2, 미세먼지 데이터 분석을 완주했습니다. 다음 프로젝트는 아파트 실거래가 데이터입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏁</span>
 				<h1 className="text-5xl font-bold text-gray-800">프로젝트 2를 완주했습니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 아파트 실거래가 데이터</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

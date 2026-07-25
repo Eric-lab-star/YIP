@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 상가 정보 프로젝트를 완주한 것을 축하합니다. 마지막 다섯 번째 프로젝트는 인구 통계 데이터입니다. 오늘은 연령대별로 남녀 인구가 어떻게 다른지 비교하겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">👨‍👩‍👧‍👦</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 5 — 인구
 				</h1>
@@ -46,11 +45,11 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/70 rounded-xl p-5">
-					<p className="text-lg text-gray-700">📍 제공처: 행정안전부 주민등록인구현황</p>
-					<p className="text-lg text-gray-700 mt-2">📄 라이선스: 공공누리 제1유형</p>
+					<p className="text-lg text-gray-700">제공처: 행정안전부 주민등록인구현황</p>
+					<p className="text-lg text-gray-700 mt-2">라이선스: 공공누리 제1유형</p>
 				</div>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 &quot;남자&quot;, &quot;여자&quot;가 각각 다른 열</p>
+					<p className="text-lg text-gray-700">&quot;남자&quot;, &quot;여자&quot;가 각각 다른 열</p>
 				</div>
 			</div>
 		),
@@ -62,13 +61,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">↔️ 펼치기 전</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">펼치기 전</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>연령대 | 남자 | 여자</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">↕️ 펼친 후</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">펼친 후</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>연령대 | 성별 | 인구수</li>
 					</ul>
@@ -111,13 +110,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 데이터 출처·라이선스 확인하기</p>
+					<p className="text-lg text-gray-700">데이터 출처·라이선스 확인하기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ pd.melt()로 성별 열 만들기</p>
+					<p className="text-lg text-gray-700">pd.melt()로 성별 열 만들기</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sns.barplot(hue=)로 그룹 비교</p>
+					<p className="text-lg text-gray-700">sns.barplot(hue=)로 그룹 비교</p>
 				</div>
 			</div>
 		),
@@ -128,10 +127,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. 이제 연령대별 남녀 인구를 한눈에 비교할 수 있게 되었습니다. 다음 시간에는 인구 구조를 한눈에 보여주는 인구 피라미드를 그리겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 인구 피라미드 그리기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

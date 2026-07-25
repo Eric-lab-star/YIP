@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '대화를 기억하는 AI 영어 선생님 만들기'입니다. 지금까지 우리가 만든 챗봇은 한 번 질문하면 한 번 답하고 끝나는 구조였습니다. 하지만 진짜 대화는 이전에 한 이야기를 기억하면서 자연스럽게 이어져야 합니다. 오늘은 AI가 대화의 맥락을 기억하게 만드는 핵심 원리인 '대화 히스토리'와, AI에게 역할을 부여하는 '페르소나' 개념을 학습하겠습니다. 이 두 가지를 결합하면, 여러분만의 영어 회화 선생님을 만들 수 있습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐱💬</span>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 leading-tight">
           대화를 기억하는
           <br />
@@ -60,7 +59,7 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="bg-white/70 rounded-xl p-6">
-          <p className="text-lg font-semibold text-gray-800 mb-3">📒 수첩 비유</p>
+          <p className="text-lg font-semibold text-gray-800 mb-3">수첩 비유</p>
           <div className="overflow-x-auto">
             <table className="w-full text-base">
               <thead>
@@ -91,7 +90,7 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-gray-50 rounded-xl p-5 border-l-4 border-gray-400">
-            <p className="text-lg font-bold text-gray-700 mb-3">📸 지금까지의 챗봇</p>
+            <p className="text-lg font-bold text-gray-700 mb-3">지금까지의 챗봇</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 질문 한 번 → 답변 한 번으로 끝</li>
               <li>• AI가 이전 대화를 전혀 기억 못 함</li>
@@ -100,7 +99,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-            <p className="text-lg font-bold text-blue-700 mb-3">💬 오늘 만들 대화 앱</p>
+            <p className="text-lg font-bold text-blue-700 mb-3">오늘 만들 대화 앱</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 여러 번 주고받으며 대화가 이어짐</li>
               <li>• 수첩(히스토리)으로 이전 대화 기억</li>
@@ -173,7 +172,7 @@ print(response.text)`}
         </CodeBlock>
         <div className="bg-purple-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 <strong>system_instruction</strong>에 페르소나를 적어두면, AI는 매번 그 역할에 맞춰 대화합니다.
+<strong>system_instruction</strong>에 페르소나를 적어두면, AI는 매번 그 역할에 맞춰 대화합니다.
           </p>
         </div>
       </div>
@@ -187,12 +186,11 @@ print(response.text)`}
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { icon: "📒", label: "대화 히스토리", desc: "과거 대화를 매번 함께 전달" },
-            { icon: "🧑‍🏫", label: "페르소나", desc: "역할, 난이도, 말투 설정" },
-            { icon: "🎬", label: "연속극 대화", desc: "자연스럽게 이어지는 맥락" },
+            { label: "대화 히스토리", desc: "과거 대화를 매번 함께 전달" },
+            { label: "페르소나", desc: "역할, 난이도, 말투 설정" },
+            { label: "연속극 대화", desc: "자연스럽게 이어지는 맥락" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 text-center">
-              <span className="text-4xl">{item.icon}</span>
               <p className="text-lg font-semibold text-gray-800 mt-2">{item.label}</p>
               <p className="text-base text-gray-600 mt-1">{item.desc}</p>
             </div>
@@ -279,10 +277,9 @@ print(response.text)`}
     script: `오늘 개념 강의를 마치겠습니다. AI가 대화를 기억하는 원리와 페르소나 설정 방법을 이해하셨을 것입니다. 다음 시간에는 직접 페르소나를 설정하고, 제미나이의 chat 기능을 사용하여 대화를 여러 번 주고받는 영어 선생님을 코드로 완성해보겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 페르소나를 설정하고 대화 기능을 코드로 완성합니다</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

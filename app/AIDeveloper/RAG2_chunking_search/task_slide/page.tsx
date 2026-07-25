@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 청킹과 검색의 개념을 바탕으로, 직접 나만의 문서 검색기를 만들어보겠습니다. 긴 텍스트를 청크로 나누고, 각 청크를 임베딩해서, 질문과 가장 비슷한 조각을 찾아주는 검색기를 완성할 것입니다. 총 4가지 미션을 약 25~30분에 걸쳐 수행합니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🔍</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           청킹 & 검색 실습
         </h1>
@@ -30,13 +29,12 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "google-genai, numpy 패키지 설치 확인" },
-            { icon: "📄", text: "실습용 긴 텍스트 문서 (5~6개 문단 이상)" },
-            { icon: "📝", text: "빈칸 포함 코드 템플릿 (.py 또는 .ipynb)" },
-            { icon: "❓", text: "문서 내용 기반 테스트 질문 준비" },
+            { text: "google-genai, numpy 패키지 설치 확인" },
+            { text: "실습용 긴 텍스트 문서 (5~6개 문단 이상)" },
+            { text: "빈칸 포함 코드 템플릿 (.py 또는.ipynb)" },
+            { text: "문서 내용 기반 테스트 질문 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -170,7 +168,7 @@ for r in results:
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5">
-            <p className="text-lg text-gray-700 font-semibold mb-3">search 함수 = 도서관 사서 👩‍🏫</p>
+            <p className="text-lg text-gray-700 font-semibold mb-3">search 함수 = 도서관 사서</p>
             <ol className="text-base text-gray-600 space-y-2">
               <li>1. 질문을 임베딩으로 변환</li>
               <li>2. 모든 청크와 유사도 계산</li>
@@ -229,7 +227,7 @@ for r in results:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -245,10 +243,9 @@ for r in results:
     script: "오늘 실습을 마치겠습니다. 긴 문서를 청크로 나누고, 질문에 맞는 조각을 검색하는 도서관 검색 카운터를 완성하셨습니다. 다음 시간에는 벡터 데이터베이스를 활용하여 매번 다시 임베딩하지 않고도 빠르게 검색할 수 있는 방법을 배우겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 벡터DB 구축하기</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

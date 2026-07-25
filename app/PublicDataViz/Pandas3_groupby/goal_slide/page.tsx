@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 조건으로 데이터를 걸러내고 정렬하는 법을 배웠습니다. 오늘은 비슷한 것끼리 묶어서 한눈에 요약하는 법을 배우겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📦</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					pandas 기초 (3)
 				</h1>
@@ -60,13 +59,13 @@ print(구별평균)`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📐 .mean() 처럼 하나만</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">.mean() 처럼 하나만</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>그룹별 평균 딱 하나만 계산</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📦 .agg([...]) 로 여러 개</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">.agg([...]) 로 여러 개</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>평균, 합계, 개수를 한 번에</li>
 					</ul>
@@ -83,7 +82,7 @@ print(구별평균)`}</CodeBlock>
 				<CodeBlock>{`요약 = df.groupby("구")["승차인원"].agg(["mean", "sum", "count"])
 print(요약)`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 &quot;mean&quot;, &quot;sum&quot;, &quot;count&quot;, &quot;max&quot;, &quot;min&quot; 등을 조합</p>
+					<p className="text-lg text-gray-700">&quot;mean&quot;, &quot;sum&quot;, &quot;count&quot;, &quot;max&quot;, &quot;min&quot; 등을 조합</p>
 				</div>
 			</div>
 		),
@@ -109,13 +108,13 @@ print(구별역개수)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ groupby(&quot;열&quot;)로 그룹 묶기</p>
+					<p className="text-lg text-gray-700">groupby(&quot;열&quot;)로 그룹 묶기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ agg([&quot;mean&quot;,&quot;sum&quot;,&quot;count&quot;])로 여러 통계</p>
+					<p className="text-lg text-gray-700">agg([&quot;mean&quot;,&quot;sum&quot;,&quot;count&quot;])로 여러 통계</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ value_counts()로 값의 개수 세기</p>
+					<p className="text-lg text-gray-700">value_counts()로 값의 개수 세기</p>
 				</div>
 			</div>
 		),
@@ -126,10 +125,9 @@ print(구별역개수)`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 흩어진 데이터를 그룹으로 묶어 한눈에 요약할 수 있게 되었습니다. 다음 시간에는 데이터에 숨어있는 빈 값과 이상한 값을 정리하는 법을 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 빈 값과 이상한 값 정리하기</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

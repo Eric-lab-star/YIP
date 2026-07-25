@@ -60,13 +60,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">↔️ wide (넓은 형태)</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">wide (넓은 형태)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>시간대마다 열이 따로 있음</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">↕️ long (긴 형태)</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">long (긴 형태)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>시간대가 한 열에 모임</li>
 					</ul>
@@ -84,7 +84,7 @@ const slides: Slide[] = [
     value_vars=["07-08시_승차", "08-09시_승차"],
     var_name="시간대", value_name="승차인원")`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 id_vars=유지할 열, value_vars=모을 열</p>
+					<p className="text-lg text-gray-700">id_vars=유지할 열, value_vars=모을 열</p>
 				</div>
 			</div>
 		),
@@ -110,13 +110,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ pd.melt()로 wide → long 변환</p>
+					<p className="text-lg text-gray-700">pd.melt()로 wide → long 변환</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ groupby(&quot;시간대&quot;).mean()으로 평균 구하기</p>
+					<p className="text-lg text-gray-700">groupby(&quot;시간대&quot;).mean()으로 평균 구하기</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ idxmax()로 가장 혼잡한 시간대 찾기</p>
+					<p className="text-lg text-gray-700">idxmax()로 가장 혼잡한 시간대 찾기</p>
 				</div>
 			</div>
 		),
@@ -127,10 +127,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. 이제 진짜 데이터에서 패턴을 찾아낼 수 있게 되었습니다. 다음 시간에는 오늘 분석한 결과를 그래프로 예쁘게 시각화하겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 지하철 데이터 시각화</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

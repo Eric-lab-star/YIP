@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '수학 풀이 봇 완성하기'입니다. 지금까지 우리는 13차시에서 텔레그램 봇의 대화 기능을, 14차시에서 사진 속 수학 문제를 인식하고 풀이를 생성하는 기능을 각각 만들었습니다. 오늘은 이 두 가지 부품을 하나로 조립하여, 사진을 보내면 풀이를 답장해주는 완성형 봇을 만들겠습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🤖</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           부품을 조립하자!
           <br />
@@ -55,12 +54,11 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="space-y-4">
           {[
-            { icon: "👂", label: "13차시 — 대화하는 봇", desc: "텔레그램에서 텍스트 메시지를 받아 답장 (봇의 입과 귀)" },
-            { icon: "👁️", label: "14차시 — 사진 풀이 기능", desc: "사진 속 수학 문제를 인식하고 AI가 풀이 생성 (봇의 눈과 머리)" },
-            { icon: "🤖", label: "오늘 — 둘을 합치기", desc: "사진을 받으면 풀이를 답장하는 완성형 봇 조립" },
+            { label: "13차시 — 대화하는 봇", desc: "텔레그램에서 텍스트 메시지를 받아 답장 (봇의 입과 귀)" },
+            { label: "14차시 — 사진 풀이 기능", desc: "사진 속 수학 문제를 인식하고 AI가 풀이 생성 (봇의 눈과 머리)" },
+            { label: "오늘 — 둘을 합치기", desc: "사진을 받으면 풀이를 답장하는 완성형 봇 조립" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-4xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.label}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -80,7 +78,7 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">텔레그램에서 글자와 사진은 서로 다른 방식으로 처리됩니다.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-white/70 rounded-xl p-6 border-l-4 border-blue-400">
-            <p className="text-lg font-bold text-blue-700 mb-2">💬 글자(텍스트) 핸들러</p>
+            <p className="text-lg font-bold text-blue-700 mb-2">글자(텍스트) 핸들러</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>• 사용자가 보낸 글자를 받음</li>
               <li>• filters.TEXT로 글자만 골라냄</li>
@@ -88,7 +86,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-white/70 rounded-xl p-6 border-l-4 border-purple-400">
-            <p className="text-lg font-bold text-purple-700 mb-2">🖼️ 사진(이미지) 핸들러</p>
+            <p className="text-lg font-bold text-purple-700 mb-2">사진(이미지) 핸들러</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>• 사용자가 보낸 사진을 받음</li>
               <li>• filters.PHOTO로 사진만 골라냄</li>
@@ -107,13 +105,12 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
           {[
-            { num: "1", icon: "📸", text: "사용자가 수학 문제 사진을 봇에게 보냄" },
-            { num: "2", icon: "💾", text: "받은 사진을 파일(received.jpg)로 저장" },
-            { num: "3", icon: "🧠", text: "저장한 사진을 AI(풀이 기능)에 전달" },
-            { num: "4", icon: "💬", text: "AI가 만든 풀이를 사용자에게 답장" },
+            { num: "1", text: "사용자가 수학 문제 사진을 봇에게 보냄" },
+            { num: "2", text: "받은 사진을 파일(received.jpg)로 저장" },
+            { num: "3", text: "저장한 사진을 AI(풀이 기능)에 전달" },
+            { num: "4", text: "AI가 만든 풀이를 사용자에게 답장" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-2xl">{item.icon}</span>
               <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">{item.num}</span>
               <p className="text-lg text-gray-700">{item.text}</p>
             </div>
@@ -121,7 +118,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-yellow-50 rounded-xl p-4 border-l-4 border-yellow-400">
           <p className="text-base text-gray-700">
-            💡 <strong>UX 배려:</strong> 풀이 생성에 시간이 걸리므로, &ldquo;잠시만 기다려주세요...&rdquo; 안내 메시지를 먼저 보내면 친절한 봇이 됩니다.
+<strong>UX 배려:</strong> 풀이 생성에 시간이 걸리므로, &ldquo;잠시만 기다려주세요...&rdquo; 안내 메시지를 먼저 보내면 친절한 봇이 됩니다.
           </p>
         </div>
       </div>
@@ -190,13 +187,12 @@ solve_prompt = """
         <p className="text-xl text-gray-700">완성 봇에 들어갈 네 가지 부품</p>
         <div className="space-y-3">
           {[
-            { icon: "📦", label: "연결 도구 불러오기", desc: "텔레그램, 제미나이 AI, PIL(이미지) 도구 import" },
-            { icon: "🔑", label: "열쇠 준비", desc: "봇 토큰, 제미나이 API 키 설정" },
-            { icon: "♻️", label: "기존 기능 재사용", desc: "/start 인사 기능 + 풀이 프롬프트" },
-            { icon: "🌟", label: "사진 핸들러 (NEW!)", desc: "사진 받기 → 파일 저장 → AI 풀이 → 답장 전송" },
+            { label: "연결 도구 불러오기", desc: "텔레그램, 제미나이 AI, PIL(이미지) 도구 import" },
+            { label: "열쇠 준비", desc: "봇 토큰, 제미나이 API 키 설정" },
+            { label: "기존 기능 재사용", desc: "/start 인사 기능 + 풀이 프롬프트" },
+            { label: "사진 핸들러 (NEW!)", desc: "사진 받기 → 파일 저장 → AI 풀이 → 답장 전송" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.label}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -223,17 +219,14 @@ photo_file = await update.message.photo[-1].get_file()`}</CodeBlock>
         <div className="grid grid-cols-3 gap-3 text-center">
           <div className="bg-gray-100 rounded-xl p-3">
             <p className="text-sm text-gray-500">photo[0]</p>
-            <p className="text-lg">🖼️</p>
             <p className="text-xs text-gray-400">작은 썸네일</p>
           </div>
           <div className="bg-gray-100 rounded-xl p-3">
             <p className="text-sm text-gray-500">photo[1]</p>
-            <p className="text-2xl">🖼️</p>
             <p className="text-xs text-gray-400">중간 크기</p>
           </div>
           <div className="bg-blue-100 rounded-xl p-3 border-2 border-blue-400">
             <p className="text-sm text-blue-600 font-bold">photo[-1]</p>
-            <p className="text-3xl">🖼️</p>
             <p className="text-xs text-blue-500">고화질 원본</p>
           </div>
         </div>
@@ -256,7 +249,6 @@ photo_file = await update.message.photo[-1].get_file()`}</CodeBlock>
             "모듈식 개발: 테스트·디버깅·재사용에 유리",
           ].map((text, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-4 flex items-center gap-3">
-              <span className="text-green-500 text-xl">✅</span>
               <p className="text-lg text-gray-700">{text}</p>
             </div>
           ))}
@@ -270,10 +262,9 @@ photo_file = await update.message.photo[-1].get_file()`}</CodeBlock>
     script: `개념 강의를 마치겠습니다. 오늘 배운 내용을 바탕으로, 다음 실습 시간에는 사진 핸들러를 직접 코드로 추가하고, 실제로 수학 문제 사진을 보내서 풀이를 받아보는 실습을 진행하겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 사진 핸들러를 직접 추가하고 봇을 완성합니다</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

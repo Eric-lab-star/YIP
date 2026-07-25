@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 기초 과정을 전부 마친 것을 축하합니다. 이제부터는 진짜 공공데이터 하나를 끝까지 파헤치는 프로젝트를 시작합니다. 첫 번째 프로젝트는 서울시 지하철 승하차 데이터입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🚇</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 1 — 지하철
 				</h1>
@@ -46,11 +45,11 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/70 rounded-xl p-5">
-					<p className="text-lg text-gray-700">📍 제공처: 서울열린데이터광장 (data.seoul.go.kr)</p>
-					<p className="text-lg text-gray-700 mt-2">📄 라이선스: 공공누리 제1유형</p>
+					<p className="text-lg text-gray-700">제공처: 서울열린데이터광장 (data.seoul.go.kr)</p>
+					<p className="text-lg text-gray-700 mt-2">라이선스: 공공누리 제1유형</p>
 				</div>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 실제 파일 대신 같은 구조의 작은 예시 데이터로 연습합니다</p>
+					<p className="text-lg text-gray-700">실제 파일 대신 같은 구조의 작은 예시 데이터로 연습합니다</p>
 				</div>
 			</div>
 		),
@@ -79,7 +78,7 @@ const slides: Slide[] = [
     columns={"승차총승객수": "승차", "하차총승객수": "하차"}
 )`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 rename(columns={`{"기존이름": "새이름"}`})</p>
+					<p className="text-lg text-gray-700">rename(columns={`{"기존이름": "새이름"}`})</p>
 				</div>
 			</div>
 		),
@@ -106,13 +105,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 데이터 출처·라이선스 확인하기</p>
+					<p className="text-lg text-gray-700">데이터 출처·라이선스 확인하기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ rename(columns=...)으로 열 이름 정리</p>
+					<p className="text-lg text-gray-700">rename(columns=...)으로 열 이름 정리</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 결측치·이상치 점검하고 정리하기</p>
+					<p className="text-lg text-gray-700">결측치·이상치 점검하고 정리하기</p>
 				</div>
 			</div>
 		),
@@ -123,10 +122,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. 이제 지저분한 지하철 데이터도 깨끗하게 다룰 수 있게 되었습니다. 다음 시간에는 이 데이터로 출퇴근 시간대를 분석하겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 지하철 시간대별 분석</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

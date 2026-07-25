@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 'RAG와 임베딩'입니다. RAG은 Retrieval-Augmented Generation의 약자로, AI가 학습하지 못한 정보도 정확하게 답할 수 있도록 만들어주는 기술입니다. 그리고 임베딩은 RAG의 핵심 재료로, 문장을 숫자로 변환하여 컴퓨터가 의미를 비교할 수 있게 해주는 기술입니다. 이 두 가지 개념은 현대 AI 애플리케이션의 근간이 되는 매우 중요한 내용이므로, 집중해서 들어주시기 바랍니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📚</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           RAG와 임베딩
         </h1>
@@ -123,14 +122,14 @@ const slides: Slide[] = [
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-gray-400">
-            <p className="font-semibold text-gray-700 mb-2">🔡 글자 그대로 비교</p>
+            <p className="font-semibold text-gray-700 mb-2">글자 그대로 비교</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>&ldquo;강아지&rdquo;와 &ldquo;개&rdquo;는 글자가 달라서 → 다른 것</li>
               <li>겉모습(철자)만 비교함</li>
             </ul>
           </div>
           <div className="bg-white/70 rounded-xl p-5 border-l-4 border-purple-400">
-            <p className="font-semibold text-purple-700 mb-2">🧭 임베딩(의미 비교)</p>
+            <p className="font-semibold text-purple-700 mb-2">임베딩(의미 비교)</p>
             <ul className="text-base text-gray-600 space-y-1">
               <li>&ldquo;강아지&rdquo;와 &ldquo;개&rdquo;는 의미가 같아서 → 가까운 좌표</li>
               <li>의미가 비슷하면 거리가 가까움</li>
@@ -147,7 +146,6 @@ const slides: Slide[] = [
     content: (
       <div className="flex flex-col gap-6">
         <div className="flex items-start gap-4">
-          <span className="text-6xl">📖</span>
           <div>
             <p className="text-xl text-gray-700 mb-2">
               임베딩 = <strong>책을 의미에 따라 같은 책장 근처에 꽂아두는 작업</strong>
@@ -159,11 +157,9 @@ const slides: Slide[] = [
         </div>
         <div className="space-y-3">
           <div className="bg-green-50 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-2xl">🐕</span>
             <p className="text-lg text-gray-700">&ldquo;강아지&rdquo;와 &ldquo;개&rdquo; → 같은 책장 (가까운 좌표)</p>
           </div>
           <div className="bg-red-50 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-2xl">🚗</span>
             <p className="text-lg text-gray-700">&ldquo;강아지&rdquo;와 &ldquo;자동차&rdquo; → 먼 책장 (먼 좌표)</p>
           </div>
         </div>
@@ -295,10 +291,9 @@ print(result.embeddings[0].values[:5])`}
     script: "오늘 강의를 마치겠습니다. RAG의 개념과 임베딩의 원리를 이해하셨을 것입니다. 다음 시간에는 이 임베딩 기술을 실제로 활용하여 긴 문서를 조각으로 나누고(청킹), 질문과 가장 관련 있는 조각을 검색하는 방법을 배우겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 청킹과 유사도 검색</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

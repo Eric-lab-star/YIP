@@ -11,7 +11,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 '함께 잘 쓰는 AI — 윤리적인 AI 2부'입니다. 지난 시간에는 AI도 틀릴 수 있다는 점, 즉 환각(hallucination) 현상과 그래서 우리가 AI의 답을 한 번 더 검토하는 것이 왜 중요한지를 배웠습니다. 오늘은 시선을 조금 바꿔보겠습니다. AI를 사용할 때 '나'뿐 아니라 '다른 사람'과 '사회'를 어떻게 배려해야 하는지를 다루겠습니다. 좋은 개발자는 기술만 잘 다루는 사람이 아니라, 함께 잘 쓰는 법을 아는 사람입니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🤝</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           함께 잘 쓰는 AI
           <br />
@@ -70,9 +69,9 @@ const slides: Slide[] = [
             </thead>
             <tbody className="text-gray-700">
               {[
-                ["🔒 개인정보", "AI에게 입력한 내용이 어디로 갈지 모른다 — 민감한 정보 입력 주의"],
-                ["©️ 저작권", "AI가 만든 글·이미지, 남의 글을 AI에 넣을 때 생각할 점"],
-                ["⚖️ 공정성(편향)", "AI는 학습한 데이터의 편견을 그대로 가질 수 있음"],
+                ["개인정보", "AI에게 입력한 내용이 어디로 갈지 모른다 — 민감한 정보 입력 주의"],
+                ["저작권", "AI가 만든 글·이미지, 남의 글을 AI에 넣을 때 생각할 점"],
+                ["공정성(편향)", "AI는 학습한 데이터의 편견을 그대로 가질 수 있음"],
               ].map(([keyword, desc], i) => (
                 <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                   <td className="p-4 font-semibold">{keyword}</td>
@@ -86,7 +85,7 @@ const slides: Slide[] = [
     ),
   },
   {
-    title: "🔒 개인정보 — 한 번 입력하면 되돌리기 어렵다",
+    title: "개인정보 — 한 번 입력하면 되돌리기 어렵다",
     bg: "from-red-50 to-rose-50",
     script: "첫 번째 주제, 개인정보입니다. AI 채팅창에 무언가를 입력하면, 그 내용이 어디로 가서 어떻게 사용되는지 우리는 정확히 알 수 없습니다. 따라서 친구 이름, 집 주소, 비밀번호 같은 민감한 정보는 함부로 입력해서는 안 됩니다. 한번 입력하면 지우개로 지우듯 되돌리기가 어렵기 때문입니다. 간단한 기준이 있습니다. '이 내용을 모르는 사람 앞에서 큰 소리로 말해도 괜찮을까?'를 떠올려보시기 바랍니다. 괜찮지 않다면 AI에 입력하지 않는 것이 안전합니다.",
     content: (
@@ -109,14 +108,14 @@ const slides: Slide[] = [
         </div>
         <div className="bg-amber-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">
-            💡 기준: &ldquo;모르는 사람 앞에서 큰 소리로 말해도 괜찮을까?&rdquo;
+ 기준: &ldquo;모르는 사람 앞에서 큰 소리로 말해도 괜찮을까?&rdquo;
           </p>
         </div>
       </div>
     ),
   },
   {
-    title: "©️ 저작권 — 남의 물건을 내 것처럼 쓰지 않기",
+    title: "저작권 — 남의 물건을 내 것처럼 쓰지 않기",
     bg: "from-blue-50 to-sky-50",
     script: "두 번째 주제, 저작권입니다. 저작권은 두 방향으로 생각해야 합니다. 하나는 AI가 만든 글이나 이미지를 내가 사용할 때이고, 다른 하나는 남이 만든 글을 내가 AI에 넣을 때입니다. 요즘은 'AI가 만들었다'라고 정직하게 밝히는 것이 점점 중요해지고 있습니다. AI가 그려준 그림이나 써준 글을 마치 내가 처음부터 만든 것처럼 속이지 않는 것이 정직한 태도입니다. 또한, 다른 사람의 저작물을 AI에 그대로 넣어서 변형하여 쓰는 것도 저작권 침해가 될 수 있으므로 주의해야 합니다.",
     content: (
@@ -134,14 +133,14 @@ const slides: Slide[] = [
         </div>
         <div className="bg-green-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">
-            💡 핵심: <strong>솔직함</strong>이 좋은 개발자의 기본입니다.
+ 핵심: <strong>솔직함</strong>이 좋은 개발자의 기본입니다.
           </p>
         </div>
       </div>
     ),
   },
   {
-    title: "⚖️ 공정성(편향) — AI도 편견을 배운다",
+    title: "공정성(편향) — AI도 편견을 배운다",
     bg: "from-green-50 to-emerald-50",
     script: "세 번째 주제, 공정성, 또는 편향 문제입니다. 이전 수업에서 'AI는 데이터를 먹고 자란다'고 배운 것을 기억하실 것입니다. 만약 그 데이터에 편견이 섞여 있으면, AI도 그 편견을 그대로 학습합니다. 예를 들어, AI에게 '간호사'를 묘사하게 하면 자꾸 여성으로, '프로그래머'를 묘사하면 남성으로 표현하는 경우가 있을 수 있습니다. 이런 편향된 답이 특정 사람들을 차별하거나 상처 줄 수 있으므로, 우리는 AI의 답을 비판적으로 검토하는 자세가 필요합니다. 다만, 요즘 AI는 편향을 많이 개선하고 있어서 고정관념이 잘 드러나지 않을 수도 있습니다. 그렇다고 안심해서는 안 됩니다. '많이 좋아졌지만, 여전히 조심해야 한다'가 균형 잡힌 관점입니다.",
     content: (
@@ -161,7 +160,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
           <p className="text-lg text-gray-700">
-            ⚠️ 요즘 AI는 편향을 많이 개선했지만, <strong>여전히 조심해야</strong> 합니다.
+ 요즘 AI는 편향을 많이 개선했지만, <strong>여전히 조심해야</strong> 합니다.
           </p>
         </div>
       </div>
@@ -178,7 +177,7 @@ const slides: Slide[] = [
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="bg-green-50 rounded-xl p-5">
-            <p className="text-lg font-semibold text-green-700 mb-3">🏙️ 공공장소에서의 예절</p>
+            <p className="text-lg font-semibold text-green-700 mb-3">공공장소에서의 예절</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 내 비밀을 큰 소리로 말하지 않기</li>
               <li>• 남의 물건을 내 것처럼 가져가지 않기</li>
@@ -186,7 +185,7 @@ const slides: Slide[] = [
             </ul>
           </div>
           <div className="bg-purple-50 rounded-xl p-5">
-            <p className="text-lg font-semibold text-purple-700 mb-3">🤖 AI를 쓸 때의 예절</p>
+            <p className="text-lg font-semibold text-purple-700 mb-3">AI를 쓸 때의 예절</p>
             <ul className="text-base text-gray-600 space-y-2">
               <li>• 개인정보를 함부로 입력하지 않기</li>
               <li>• 저작물을 내 것처럼 쓰지 않기</li>
@@ -229,12 +228,11 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
           {[
-            { icon: "🔒", title: "개인정보", desc: "입력 전에 한 번 더 생각하기 — 되돌리기 어렵습니다" },
-            { icon: "©️", title: "저작권", desc: "'AI가 만들었다'고 솔직하게 밝히는 정직한 태도" },
-            { icon: "⚖️", title: "공정성(편향)", desc: "AI의 답을 비판적으로 검토하는 자세가 필요합니다" },
+            { title: "개인정보", desc: "입력 전에 한 번 더 생각하기 — 되돌리기 어렵습니다" },
+            { title: "저작권", desc: "'AI가 만들었다'고 솔직하게 밝히는 정직한 태도" },
+            { title: "공정성(편향)", desc: "AI의 답을 비판적으로 검토하는 자세가 필요합니다" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">{item.title}</p>
                 <p className="text-base text-gray-600">{item.desc}</p>
@@ -244,7 +242,7 @@ const slides: Slide[] = [
         </div>
         <div className="bg-teal-50 rounded-xl p-4 text-center">
           <p className="text-lg text-gray-700">
-            💡 비유: <strong>공공장소에서의 예절</strong> = AI를 쓸 때의 예절
+ 비유: <strong>공공장소에서의 예절</strong> = AI를 쓸 때의 예절
           </p>
         </div>
       </div>
@@ -256,12 +254,11 @@ const slides: Slide[] = [
     script: "오늘 강의를 마치겠습니다. AI를 다른 사람과 함께 안전하게 쓰는 예절, 개인정보, 저작권, 공정성, 이 세 가지를 기억하시기 바랍니다. 다음 시간에는 실습 페이지에서 AI의 편향을 직접 관찰하는 실험을 하고, 우리 앱에 넣을 AI 사용 가이드라인을 만들어보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">
           다음 시간: AI 편향 관찰 실험 + 가이드라인 만들기
         </p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

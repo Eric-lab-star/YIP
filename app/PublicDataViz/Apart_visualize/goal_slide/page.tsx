@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 지난 시간에 지역×평형 피벗 테이블을 만들었습니다. 오늘은 그 표를 그림으로 바꿔서 한눈에 보이게 만들고, 면적과 가격의 관계도 살펴보겠습니다. 프로젝트 3의 마지막 시간입니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🔥</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					프로젝트 3 — 아파트
 				</h1>
@@ -60,13 +59,13 @@ plt.title("지역×평형대 평균 거래금액")`}</CodeBlock>
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📦 히트맵</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">히트맵</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>요약값을 색으로 한눈에 비교</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">🖱️ 산점도</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">산점도</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>개별 아파트의 면적·가격 관계</li>
 					</ul>
@@ -83,7 +82,7 @@ plt.title("지역×평형대 평균 거래금액")`}</CodeBlock>
 				<CodeBlock>{`fig = px.scatter(df, x="전용면적", y="거래금액",
     color="지역", hover_data=["단지명"])`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 오른쪽 위로 올라가는 모양 = 양의 상관관계</p>
+					<p className="text-lg text-gray-700">오른쪽 위로 올라가는 모양 = 양의 상관관계</p>
 				</div>
 			</div>
 		),
@@ -109,13 +108,13 @@ print(f"결론: {가장비싼조합[0]} {가장비싼조합[1]}이 가장 비싸
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ sns.heatmap(annot=, cmap=)으로 표 시각화</p>
+					<p className="text-lg text-gray-700">sns.heatmap(annot=, cmap=)으로 표 시각화</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ px.scatter(color=)로 관계 살펴보기</p>
+					<p className="text-lg text-gray-700">px.scatter(color=)로 관계 살펴보기</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ stack() + idxmax()로 결론 정리</p>
+					<p className="text-lg text-gray-700">stack() + idxmax()로 결론 정리</p>
 				</div>
 			</div>
 		),
@@ -126,10 +125,9 @@ print(f"결론: {가장비싼조합[0]} {가장비싼조합[1]}이 가장 비싸
 		script: "오늘 강의를 마치겠습니다. 이걸로 프로젝트 3, 아파트 실거래가 데이터 분석을 완주했습니다. 다음 프로젝트는 상가 정보 데이터입니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏁</span>
 				<h1 className="text-5xl font-bold text-gray-800">프로젝트 3을 완주했습니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 프로젝트: 상가 정보 데이터</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

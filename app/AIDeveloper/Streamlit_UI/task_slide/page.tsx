@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 Streamlit 개념을 바탕으로 직접 실습을 진행하겠습니다. 지난 시간에 만든 API 코드를 Streamlit 화면에 연결하여, 실제로 사용할 수 있는 앱 두 개를 만들어보겠습니다. 미션 1에서 기본 환경을 확인하고, 미션 2에서 날씨 앱, 미션 3에서 채팅 앱을 완성합니다. 약 25분에서 30분이 소요됩니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-blue-500">Streamlit</code> 실습
         </h1>
@@ -30,12 +29,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "streamlit 패키지 설치 (pip install streamlit)" },
-            { icon: "🌤️", text: "지난 시간 날씨 API / 제미나이 API 코드" },
-            { icon: "📄", text: "빈칸 포함 코드 템플릿 (.py 파일)" },
+            { text: "streamlit 패키지 설치 (pip install streamlit)" },
+            { text: "지난 시간 날씨 API / 제미나이 API 코드" },
+            { text: "빈칸 포함 코드 템플릿 (.py 파일)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -129,7 +127,7 @@ if st.button("날씨 확인하기"):
           <p className="font-semibold text-lg text-gray-800">빈칸 힌트</p>
           <ul className="text-lg text-gray-600 space-y-2">
             <li>• 첫 번째 빈칸: API 키를 담은 변수 이름</li>
-            <li>• 두 번째 빈칸: 영어로 &ldquo;온도&rdquo;를 뜻하는 키 🌡️</li>
+            <li>• 두 번째 빈칸: 영어로 &ldquo;온도&rdquo;를 뜻하는 키</li>
           </ul>
         </div>
       </div>
@@ -160,7 +158,7 @@ if st.button("날씨 확인하기"):
           </div>
           <div className="bg-orange-50 rounded-xl p-4">
             <p className="text-base text-gray-600">
-              💡 이 패턴(입력 → API 호출 → 출력)은 앞으로 거의 모든 앱에서 반복됩니다.
+ 이 패턴(입력 → API 호출 → 출력)은 앞으로 거의 모든 앱에서 반복됩니다.
             </p>
           </div>
         </div>
@@ -197,7 +195,7 @@ if st.button("질문하기"):
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-5">
           <p className="text-lg text-gray-600">
-            💡 오늘은 <strong>한 번의 질문-답변</strong>에만 집중합니다.
+ 오늘은 <strong>한 번의 질문-답변</strong>에만 집중합니다.
           </p>
         </div>
       </div>
@@ -222,7 +220,7 @@ if st.button("질문하기"):
         </div>
         <div className="bg-purple-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 이 패턴을 이해하면, 어떤 API든 Streamlit에 연결할 수 있습니다.
+ 이 패턴을 이해하면, 어떤 API든 Streamlit에 연결할 수 있습니다.
           </p>
         </div>
       </div>
@@ -266,7 +264,7 @@ if st.button("질문하기"):
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -284,14 +282,13 @@ if st.button("질문하기"):
     script: "오늘 실습을 마치겠습니다. 처음으로 코드 결과를 웹 화면으로 전환하고, 사용자가 직접 사용할 수 있는 앱 두 개를 만들어보셨습니다. 다음 시간에는 LangChain을 활용하여 AI가 스스로 도구를 사용하는 에이전트를 만들어보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>Hello Streamlit 화면 띄우기 ✅</p>
-          <p>날씨 정보 앱 만들기 ✅</p>
-          <p>AI 채팅 앱 만들기 ✅</p>
+          <p>Hello Streamlit 화면 띄우기</p>
+          <p>날씨 정보 앱 만들기</p>
+          <p>AI 채팅 앱 만들기</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

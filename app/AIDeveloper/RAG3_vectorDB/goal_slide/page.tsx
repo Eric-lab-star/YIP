@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘 강의의 주제는 '벡터DB'입니다. 지난 시간에 우리는 문서를 청킹하고 임베딩으로 변환한 뒤 유사도 검색을 수행했습니다. 하지만 매번 코드를 실행할 때마다 모든 청크를 처음부터 다시 임베딩해야 하는 비효율이 있었습니다. 오늘은 이 문제를 해결하는 '벡터DB', 구체적으로 Chroma라는 도구를 배우겠습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🗄️</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           벡터DB가 뭐냥?
         </h1>
@@ -55,12 +54,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">지난 시간 검색기의 비효율을 되돌아봅니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "🔄", text: "실행할 때마다 모든 청크를 처음부터 다시 임베딩" },
-            { icon: "💸", text: "같은 API 호출을 반복 — 느리고 비용 낭비" },
-            { icon: "📈", text: "문서가 많아질수록 시간이 기하급수적으로 증가" },
+            { text: "실행할 때마다 모든 청크를 처음부터 다시 임베딩" },
+            { text: "같은 API 호출을 반복 — 느리고 비용 낭비" },
+            { text: "문서가 많아질수록 시간이 기하급수적으로 증가" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -84,7 +82,6 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-7xl">🗄️</span>
           <div>
             <p className="text-xl text-gray-600">오늘 사용할 도구: <strong>Chroma</strong></p>
             <p className="text-base text-gray-500">가볍고 무료로 사용 가능한 벡터DB</p>
@@ -108,8 +105,8 @@ const slides: Slide[] = [
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="p-4 text-left"></th>
-              <th className="p-4 text-left">지난 시간 방식 📝</th>
-              <th className="p-4 text-left">벡터DB 방식 🗄️</th>
+              <th className="p-4 text-left">지난 시간 방식</th>
+              <th className="p-4 text-left">벡터DB 방식</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -253,17 +250,15 @@ print(results["documents"][0])`}
         </div>
         <div className="space-y-3">
           <div className="bg-blue-50 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-green-500 text-xl">✅</span>
             <p className="text-lg text-gray-700">upsert() 호출 → 임베딩 자동 생성 및 저장 (재실행해도 안전)</p>
           </div>
           <div className="bg-blue-50 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-green-500 text-xl">✅</span>
             <p className="text-lg text-gray-700">query() 호출 → 가장 가까운 문서 자동 검색</p>
           </div>
         </div>
         <div className="bg-purple-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            📌 다음 시간 예고: 이 벡터DB에 제미나이를 연결하여 진짜 RAG 앱을 완성합니다.
+ 다음 시간 예고: 이 벡터DB에 제미나이를 연결하여 진짜 RAG 앱을 완성합니다.
           </p>
         </div>
       </div>
@@ -277,19 +272,19 @@ print(results["documents"][0])`}
       <div className="flex flex-col gap-5">
         <div className="space-y-3">
           <div className="bg-orange-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ 지난 방식: 매번 전체를 다시 임베딩 → 비효율</p>
+            <p className="text-lg text-gray-700">지난 방식: 매번 전체를 다시 임베딩 → 비효율</p>
           </div>
           <div className="bg-green-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ 벡터DB: 한 번 저장하고 계속 재사용 (PersistentClient)</p>
+            <p className="text-lg text-gray-700">벡터DB: 한 번 저장하고 계속 재사용 (PersistentClient)</p>
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ Chroma 핵심: get_or_create_collection → upsert → query</p>
+            <p className="text-lg text-gray-700">Chroma 핵심: get_or_create_collection → upsert → query</p>
           </div>
           <div className="bg-purple-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ 한국어 검색은 제미나이 임베딩 연결 (embedding_function)</p>
+            <p className="text-lg text-gray-700">한국어 검색은 제미나이 임베딩 연결 (embedding_function)</p>
           </div>
           <div className="bg-red-50 rounded-xl p-4">
-            <p className="text-lg text-gray-700">✅ upsert는 같은 id를 다시 넣어도 안전하게 덮어씀 (에러 없음)</p>
+            <p className="text-lg text-gray-700">upsert는 같은 id를 다시 넣어도 안전하게 덮어씀 (에러 없음)</p>
           </div>
         </div>
       </div>
@@ -301,10 +296,9 @@ print(results["documents"][0])`}
     script: "오늘 강의를 마치겠습니다. 벡터DB는 한 번 정리해두면 두고두고 빠르게 꺼내 쓸 수 있는 자동 도서관 시스템입니다. 다음 시간에는 이 도서관에 친절한 AI 사서(제미나이)를 연결해서 진짜 RAG 앱을 완성하겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
         <p className="text-xl text-gray-600 mt-4">다음 시간: 벡터DB + 제미나이 = RAG 챗봇 완성</p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

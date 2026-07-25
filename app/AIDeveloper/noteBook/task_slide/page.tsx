@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘은 지난 시간에 배운 .ipynb 노트북의 개념을 바탕으로, 직접 실습을 진행하겠습니다. 총 5가지 미션을 약 25분에 걸쳐 수행합니다. 각 미션은 5분씩 배정되어 있으며, 미션마다 구체적인 목표와 확인 사항이 있습니다. 강의 시간에 배운 내용을 직접 손으로 실행해보면서 체감하는 것이 오늘의 목적입니다. 질문이 있으면 언제든지 손을 들어주시기 바랍니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-orange-500">.ipynb</code> 실습 미션
         </h1>
@@ -34,13 +33,11 @@ const slides: Slide[] = [
         </p>
         <div className="space-y-4">
           {[
-            { icon: "💻", text: "VS Code가 열려 있는가?" },
+            { text: "VS Code가 열려 있는가?" },
             {
-              icon: "📄",
               text: "새 .ipynb 파일이 생성되어 있는가? (practice.ipynb)",
             },
             {
-              icon: "🐍",
               text: 'Python 커널이 연결되어 있는가? (오른쪽 상단 "Python 3" 표시 확인)',
             },
           ].map((item, i) => (
@@ -48,7 +45,6 @@ const slides: Slide[] = [
               key={i}
               className="bg-white/70 rounded-xl p-5 flex items-center gap-4"
             >
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -84,7 +80,7 @@ const slides: Slide[] = [
           </ul>
         </div>
         <p className="text-lg text-orange-600 font-medium">
-          ✍️ 완료한 분: print(&quot;...&quot;) 안의 내용을 자신만의 문장으로
+ 완료한 분: print(&quot;...&quot;) 안의 내용을 자신만의 문장으로
           바꿔서 재실행해보세요.
         </p>
       </div>
@@ -99,7 +95,6 @@ const slides: Slide[] = [
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p>
         <div className="space-y-4">
           <div className="bg-white/70 rounded-xl p-5 flex items-start gap-4">
-            <span className="text-green-500 text-2xl">✅</span>
             <p className="text-xl text-gray-700">
               코드와 결과가 바로 인접해 있어, 어떤 코드가 어떤 결과를
               만들었는지 한눈에 파악 가능
@@ -237,7 +232,7 @@ const slides: Slide[] = [
             <li>• my_name을 자신의 이름으로 바꾸고 재실행하면?</li>
           </ul>
           <p className="text-orange-600 font-medium mt-2">
-            💡 핵심: 셀의 위치가 아닌 &ldquo;실행한 순서&rdquo;에 따라 결과가
+ 핵심: 셀의 위치가 아닌 &ldquo;실행한 순서&rdquo;에 따라 결과가
             결정됩니다.
           </p>
         </div>
@@ -270,7 +265,7 @@ const slides: Slide[] = [
           </div>
           <div className="bg-blue-50 rounded-xl p-4">
             <p className="text-base text-gray-600">
-              💡 셀 왼쪽의 번호 (예: [1], [2])가 실행 순서를 나타냅니다.
+ 셀 왼쪽의 번호 (예: [1], [2])가 실행 순서를 나타냅니다.
             </p>
           </div>
         </div>
@@ -308,7 +303,7 @@ print(simple_ai_response("안녕! 고양이 좋아하니?"))`}
           </p>
         </div>
         <p className="text-lg text-orange-600 font-medium">
-          ✍️ 완료한 분: elif 줄을 추가하여 나만의 규칙을 만들어보세요.
+ 완료한 분: elif 줄을 추가하여 나만의 규칙을 만들어보세요.
         </p>
       </div>
     ),
@@ -413,7 +408,7 @@ print(simple_ai_response("안녕! 고양이 좋아하니?"))`}
               <span className="text-lg font-bold text-gray-500">
                 미션 {item.num}
               </span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -426,18 +421,17 @@ print(simple_ai_response("안녕! 고양이 좋아하니?"))`}
     script: `오늘 실습을 마치겠습니다. 여러분 모두 훌륭하게 수행해주셨습니다. .ipynb 파일을 만들고, 코드를 실행하고, 설명을 작성하고, 변수를 활용하는 기본 능력을 갖추셨습니다. 이 기초 위에 앞으로 본격적인 AI 실습을 진행하게 됩니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">
           실습을 마칩니다
         </h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>코드 셀 실행 ✅</p>
-          <p>마크다운 셀 작성 ✅</p>
-          <p>셀 간 변수 공유 이해 ✅</p>
-          <p>AI 예제 코드 실행 ✅</p>
-          <p>자유 실습 완료 ✅</p>
+          <p>코드 셀 실행</p>
+          <p>마크다운 셀 작성</p>
+          <p>셀 간 변수 공유 이해</p>
+          <p>AI 예제 코드 실행</p>
+          <p>자유 실습 완료</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

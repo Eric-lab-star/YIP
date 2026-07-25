@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: `안녕하세요, 여러분. 오늘 강의의 주제는 '.ipynb 파일과 친해지기'입니다. .ipynb는 'Interactive Python Notebook'의 약자로, 주피터 노트북이라고도 불리는 파일 형식입니다. 이 파일은 AI 개발, 데이터 분석, 머신러닝 분야에서 표준적으로 사용되는 도구이며, 여러분이 앞으로 AI를 학습하는 과정에서 반드시 익혀야 할 핵심 도구입니다. 오늘 강의에서는 먼저 여러분이 이미 알고 있는 .py 파일과 비교하면서, .ipynb 파일이 어떤 점에서 다르고 왜 유용한지 체계적으로 살펴보겠습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-orange-500">.ipynb</code> 파일과
           <br />
@@ -76,7 +75,6 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="flex items-start gap-6">
-          <span className="text-7xl shrink-0">🥤</span>
           <div className="flex-1">
             <CodeBlock>
               {`# my_recipe.py
@@ -111,17 +109,14 @@ const slides: Slide[] = [
         <div className="space-y-4">
           {[
             {
-              icon: "🔒",
               title: "부분 실행이 어렵다",
               desc: "특정 부분만 테스트하려면 나머지를 주석 처리하거나 별도 파일 필요",
             },
             {
-              icon: "🔍",
               title: "중간 결과 확인이 번거롭다",
               desc: "매번 print문을 넣었다 지웠다 해야 함",
             },
             {
-              icon: "📝",
               title: "설명 작성이 제한적이다",
               desc: "주석(#)으로만 가능 — 수식, 이미지, 서식 있는 글은 불가",
             },
@@ -130,7 +125,6 @@ const slides: Slide[] = [
               key={i}
               className="bg-white/70 rounded-xl p-5 flex items-start gap-4"
             >
-              <span className="text-3xl">{item.icon}</span>
               <div>
                 <p className="text-lg font-semibold text-gray-800">
                   {item.title}
@@ -164,14 +158,13 @@ const slides: Slide[] = [
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-7xl">🐟</span>
           <p className="text-xl text-gray-600">
             간식을 한 알씩 천천히 음미하는 것처럼,
             <br />한 셀씩 실행하고 결과를 바로 확인합니다.
           </p>
         </div>
         <div className="bg-emerald-50 rounded-xl p-4 text-base text-gray-500">
-          💡 Jupyter라는 이름은 <strong>Ju</strong>lia +{" "}
+ Jupyter라는 이름은 <strong>Ju</strong>lia +{" "}
           <strong>Pyt</strong>hon + <strong>R</strong> 세 언어의 이름에서
           유래했습니다.
         </div>
@@ -279,8 +272,8 @@ const slides: Slide[] = [
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="p-4 text-left"></th>
-              <th className="p-4 text-left">.py 파일 🥤</th>
-              <th className="p-4 text-left">.ipynb 파일 🐟</th>
+              <th className="p-4 text-left">.py 파일</th>
+              <th className="p-4 text-left">.ipynb 파일</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -344,7 +337,7 @@ const slides: Slide[] = [
             로 실행
           </p>
           <p className="text-base text-gray-500">
-            💡 &ldquo;Select Kernel&rdquo; 창이 뜨면 Python을 선택하세요.
+ &ldquo;Select Kernel&rdquo; 창이 뜨면 Python을 선택하세요.
             처음 한 번만 설정하면 됩니다.
           </p>
         </div>
@@ -378,13 +371,11 @@ const slides: Slide[] = [
         </div>
         <div className="bg-white/70 rounded-xl p-5 space-y-3">
           <div className="flex items-center gap-3">
-            <span className="text-green-500 text-xl">✅</span>
             <p className="text-lg text-gray-700">
               셀 1 → 셀 2 순서로 실행 → 정상 출력
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-red-500 text-xl">❌</span>
             <p className="text-lg text-gray-700">
               셀 2를 먼저 실행 → <code className="bg-red-100 px-1 rounded">NameError</code> 발생
             </p>
@@ -401,17 +392,14 @@ const slides: Slide[] = [
       <div className="flex flex-col gap-5">
         {[
           {
-            icon: "🤖",
             title: "AI / 머신러닝 개발",
             desc: "데이터 로드 → 전처리 → 모델 학습 → 시각화를 단계별로 진행. Google Colab, Kaggle 등이 기본으로 사용.",
           },
           {
-            icon: "📊",
             title: "데이터 분석",
             desc: "대량의 데이터를 탐색하고, 통계를 계산하고, 그래프를 그리는 작업에 적합.",
           },
           {
-            icon: "📚",
             title: "학습 및 교육",
             desc: "코드와 설명이 함께 있어 교재나 튜토리얼로 활용. 대부분의 AI 실습 자료가 .ipynb 형식으로 제공.",
           },
@@ -420,7 +408,6 @@ const slides: Slide[] = [
             key={i}
             className="bg-white/70 rounded-xl p-5 flex items-start gap-4"
           >
-            <span className="text-4xl">{item.icon}</span>
             <div>
               <p className="text-lg font-semibold text-gray-800">
                 {item.title}
@@ -442,25 +429,25 @@ const slides: Slide[] = [
           <div className="bg-blue-50 rounded-xl p-5">
             <p className="text-xl text-gray-700">
               <strong>.py 파일</strong> = 처음부터 끝까지 한 번에 실행하는 완성된
-              코드 🥤
+              코드
             </p>
           </div>
           <div className="bg-green-50 rounded-xl p-5">
             <p className="text-xl text-gray-700">
               <strong>.ipynb 파일</strong> = 셀 단위로 실행 + 즉시 결과 확인 +
-              마크다운 설명 🐟
+              마크다운 설명
             </p>
           </div>
         </div>
         <div className="bg-white/60 rounded-xl p-5 space-y-2">
           <p className="text-lg text-gray-700">
-            ✅ 코드 셀과 마크다운 셀 두 가지로 구성
+ 코드 셀과 마크다운 셀 두 가지로 구성
           </p>
           <p className="text-lg text-gray-700">
-            ✅ 셀의 &ldquo;실행 순서&rdquo;가 핵심
+ 셀의 &ldquo;실행 순서&rdquo;가 핵심
           </p>
           <p className="text-lg text-gray-700">
-            ✅ AI, 데이터 분석, 학습에서 표준적으로 사용
+ AI, 데이터 분석, 학습에서 표준적으로 사용
           </p>
         </div>
       </div>
@@ -472,14 +459,13 @@ const slides: Slide[] = [
     script: `오늘 강의를 마치겠습니다. .ipynb 파일이 무엇이고, .py 파일과 어떻게 다른지, 왜 AI 분야에서 널리 사용되는지 이해하셨을 것입니다. 다음 시간에는 오늘 배운 개념을 바탕으로, VS Code에서 직접 .ipynb 파일을 만들고 5가지 실습 미션을 수행해보겠습니다. 수고하셨습니다.`,
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">📘</span>
         <h1 className="text-5xl font-bold text-gray-800">
           개념 강의를 마칩니다
         </h1>
         <p className="text-xl text-gray-600 mt-4">
           다음 시간: .ipynb 실습 미션을 직접 수행해봅니다
         </p>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

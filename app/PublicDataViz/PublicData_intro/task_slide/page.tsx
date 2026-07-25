@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘은 코드 없이 공공데이터포털을 직접 눈으로 탐험해보겠습니다. 회원가입부터 데이터 검색까지, 세 가지 미션을 약 20~25분에 걸쳐 수행합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🗂️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800">공공데이터포털 실습</h1>
 				<p className="text-2xl text-gray-500 mt-2">데이터 탐험 떠나기</p>
 				<p className="text-lg text-gray-400">총 소요 시간: 약 20~25분</p>
@@ -27,12 +26,11 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
-						{ icon: "💻", text: "인터넷이 되는 컴퓨터" },
-						{ icon: "📧", text: "이메일 주소 (회원가입용)" },
-						{ icon: "💡", text: "궁금한 주제 1~2개 미리 생각해두기" },
+						{ text: "인터넷이 되는 컴퓨터" },
+						{ text: "이메일 주소 (회원가입용)" },
+						{ text: "궁금한 주제 1~2개 미리 생각해두기" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-							<span className="text-3xl">{item.icon}</span>
 							<p className="text-xl text-gray-700">{item.text}</p>
 						</div>
 					))}
@@ -64,7 +62,7 @@ const slides: Slide[] = [
 					<p className="text-xl text-gray-700">회원가입 → 이메일 인증 → 로그인 성공까지 확인!</p>
 				</div>
 				<div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-					<p className="text-lg text-gray-700">⚠️ 비밀번호를 안전한 곳에 적어두세요. 3차시에 로그인해서 인증키를 신청합니다.</p>
+					<p className="text-lg text-gray-700">비밀번호를 안전한 곳에 적어두세요. 3차시에 로그인해서 인증키를 신청합니다.</p>
 				</div>
 			</div>
 		),
@@ -115,7 +113,7 @@ const slides: Slide[] = [
 					].map((item) => (
 						<div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
 							<span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-							<p className="text-lg text-gray-700">{item.text} ✅</p>
+							<p className="text-lg text-gray-700">{item.text}</p>
 						</div>
 					))}
 				</div>
@@ -128,10 +126,9 @@ const slides: Slide[] = [
 		script: "오늘 실습을 마치겠습니다. 넓은 데이터 창고를 눈으로 확인했습니다. 다음 시간에는 이 데이터를 쓸 때 지켜야 할 약속, 공공누리 라이선스와 출처 표시를 배우겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🎉</span>
 				<h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 공공누리 라이선스와 출처 표시</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

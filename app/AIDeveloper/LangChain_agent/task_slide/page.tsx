@@ -12,7 +12,6 @@ const slides: Slide[] = [
     script: "안녕하세요, 여러분. 오늘은 지난 시간에 배운 LangChain 개념을 바탕으로, 날씨 API를 LangChain Tool로 등록하고 제미나이 Agent가 스스로 도구를 호출하는 앱을 직접 만들어보겠습니다. 총 4가지 미션을 약 25분에서 30분에 걸쳐 수행합니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🐾</span>
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
           <code className="text-purple-500">LangChain</code> 실습
         </h1>
@@ -30,12 +29,11 @@ const slides: Slide[] = [
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { icon: "📦", text: "langchain, langchain-google-genai 패키지 설치" },
-            { icon: "🌤️", text: "지난 시간 날씨 API 호출 함수 코드" },
-            { icon: "🔑", text: "날씨 API 키 + 제미나이 API 키" },
+            { text: "langchain, langchain-google-genai 패키지 설치" },
+            { text: "지난 시간 날씨 API 호출 함수 코드" },
+            { text: "날씨 API 키 + 제미나이 API 키" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
-              <span className="text-3xl">{item.icon}</span>
               <p className="text-xl text-gray-700">{item.text}</p>
             </div>
           ))}
@@ -172,7 +170,7 @@ for message in result["messages"]:
         </CodeBlock>
         <div className="bg-blue-50 rounded-xl p-4">
           <p className="text-base text-gray-600">
-            💡 pretty_print()로 Agent의 사고 과정을 확인할 수 있습니다.
+ pretty_print()로 Agent의 사고 과정을 확인할 수 있습니다.
           </p>
         </div>
       </div>
@@ -187,13 +185,12 @@ for message in result["messages"]:
         <p className="text-2xl text-gray-800 font-semibold">핵심 포인트: Agent의 내부 동작</p>
         <div className="space-y-3">
           {[
-            { num: "1", text: "질문 분석", icon: "🔍" },
-            { num: "2", text: "필요한 도구가 있는지 판단", icon: "🤔" },
-            { num: "3", text: "도구 호출 및 결과 수집", icon: "🔧" },
-            { num: "4", text: "최종 답변 작성", icon: "✍️" },
+            { num: "1", text: "질문 분석" },
+            { num: "2", text: "필요한 도구가 있는지 판단" },
+            { num: "3", text: "도구 호출 및 결과 수집" },
+            { num: "4", text: "최종 답변 작성" },
           ].map((item) => (
             <div key={item.num} className="bg-white/70 rounded-xl p-4 flex items-start gap-4">
-              <span className="text-2xl">{item.icon}</span>
               <p className="text-lg text-gray-700"><strong>{item.num}.</strong> {item.text}</p>
             </div>
           ))}
@@ -212,12 +209,12 @@ for message in result["messages"]:
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-blue-50 rounded-xl p-4">
-            <p className="font-semibold text-blue-700 mb-2">🌤️ 날씨 관련 질문</p>
+            <p className="font-semibold text-blue-700 mb-2">날씨 관련 질문</p>
             <p className="text-gray-600">&ldquo;부산 날씨 알려줘&rdquo;</p>
             <p className="text-sm text-gray-500 mt-1">→ 도구 사용 O</p>
           </div>
           <div className="bg-orange-50 rounded-xl p-4">
-            <p className="font-semibold text-orange-700 mb-2">🍱 무관한 질문</p>
+            <p className="font-semibold text-orange-700 mb-2">무관한 질문</p>
             <p className="text-gray-600">&ldquo;점심 메뉴 추천해줘&rdquo;</p>
             <p className="text-sm text-gray-500 mt-1">→ 도구 사용 X</p>
           </div>
@@ -250,7 +247,7 @@ for message in result["messages"]:
           </div>
           <div className="bg-purple-50 rounded-xl p-4">
             <p className="text-base text-gray-600">
-              💡 이것은 다음 시간 &ldquo;프롬프트 엔지니어링&rdquo;과 직결됩니다.
+ 이것은 다음 시간 &ldquo;프롬프트 엔지니어링&rdquo;과 직결됩니다.
             </p>
           </div>
         </div>
@@ -272,7 +269,7 @@ for message in result["messages"]:
           ].map((item) => (
             <div key={item.num} className={`${item.color} rounded-xl p-4 flex items-center gap-4`}>
               <span className="text-lg font-bold text-gray-500">미션 {item.num}</span>
-              <p className="text-lg text-gray-700">{item.text} ✅</p>
+              <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
         </div>
@@ -285,15 +282,14 @@ for message in result["messages"]:
     script: "오늘 실습을 마치겠습니다. LangChain으로 AI 에이전트를 만들고, 도구를 스스로 사용하는 순간을 직접 확인하셨습니다. 다음 시간에는 좋은 프롬프트 작성법을 배우고, Agent가 도구를 더 정확하게 사용하도록 개선해보겠습니다. 수고하셨습니다.",
     content: (
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-        <span className="text-8xl">🎉</span>
         <h1 className="text-5xl font-bold text-gray-800">실습을 마칩니다</h1>
         <div className="text-xl text-gray-600 space-y-2 mt-4">
-          <p>패키지 설치 확인 ✅</p>
-          <p>날씨 함수 → Tool 등록 ✅</p>
-          <p>Agent 생성 및 실행 ✅</p>
-          <p>Agent 판단력 테스트 ✅</p>
+          <p>패키지 설치 확인</p>
+          <p>날씨 함수 → Tool 등록</p>
+          <p>Agent 생성 및 실행</p>
+          <p>Agent 판단력 테스트</p>
         </div>
-        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+        <p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
       </div>
     ),
   },

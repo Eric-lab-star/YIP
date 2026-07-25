@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 드디어 기초 과정의 마지막 시간입니다. 지금까지 데이터를 표로 다루고, 정리하고, 그래프와 지도로 그려봤습니다. 오늘은 그걸 전부 모아서 버튼과 목록을 눌러가며 쓸 수 있는 진짜 웹 앱을 만들어보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🚀</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					streamlit
 				</h1>
@@ -60,13 +59,13 @@ st.write("공공데이터를 브라우저에서 바로 살펴보자냥!")`}</Cod
 		content: (
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 				<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-					<p className="text-lg font-bold text-blue-700 mb-2">📋 st.dataframe(df)</p>
+					<p className="text-lg font-bold text-blue-700 mb-2">st.dataframe(df)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>DataFrame을 표로 보여줌</li>
 					</ul>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-					<p className="text-lg font-bold text-purple-700 mb-2">📊 st.bar_chart(df)</p>
+					<p className="text-lg font-bold text-purple-700 mb-2">st.bar_chart(df)</p>
 					<ul className="text-base text-gray-600 space-y-1">
 						<li>DataFrame을 막대 그래프로 바로 그림</li>
 					</ul>
@@ -83,7 +82,7 @@ st.write("공공데이터를 브라우저에서 바로 살펴보자냥!")`}</Cod
 				<CodeBlock>{`st.dataframe(df)
 st.bar_chart(df, x="구", y="미세먼지")`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">💡 plt.show() 없이 바로 화면에 보입니다</p>
+					<p className="text-lg text-gray-700">plt.show() 없이 바로 화면에 보입니다</p>
 				</div>
 			</div>
 		),
@@ -109,13 +108,13 @@ st.bar_chart(df, x="구", y="미세먼지")`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ streamlit run 파일이름.py로 실행</p>
+					<p className="text-lg text-gray-700">streamlit run 파일이름.py로 실행</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ st.dataframe() / st.bar_chart()로 표·그래프</p>
+					<p className="text-lg text-gray-700">st.dataframe() / st.bar_chart()로 표·그래프</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ st.selectbox()로 사용자 필터 만들기</p>
+					<p className="text-lg text-gray-700">st.selectbox()로 사용자 필터 만들기</p>
 				</div>
 			</div>
 		),
@@ -126,10 +125,9 @@ st.bar_chart(df, x="구", y="미세먼지")`}</CodeBlock>
 		script: "오늘 강의를 마치겠습니다. 축하합니다. 공공데이터 분석·시각화 기초 과정을 모두 마쳤습니다. 다음 단계인 프로젝트 과정에서 또 만나겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🏆</span>
 				<h1 className="text-5xl font-bold text-gray-800">기초 과정을 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 단계: 공공데이터 프로젝트 과정</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},

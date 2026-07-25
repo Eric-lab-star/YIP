@@ -12,7 +12,6 @@ const slides: Slide[] = [
 		script: "안녕하세요, 여러분. 오늘부터 대한민국 곳곳의 공공데이터를 파이썬으로 수집하고, 분석하고, 지도와 그래프로 그려보는 여행을 시작합니다. 첫 시간인 오늘은 공공데이터가 무엇인지부터 알아보겠습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">🗂️</span>
 				<h1 className="text-5xl sm:text-6xl font-bold text-gray-800 leading-tight">
 					공공데이터가 뭐냥?
 				</h1>
@@ -66,14 +65,14 @@ const slides: Slide[] = [
 			<div className="flex flex-col gap-5">
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 					<div className="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-400">
-						<p className="text-lg font-bold text-blue-700 mb-2">🚇 지하철 승하차 데이터</p>
+						<p className="text-lg font-bold text-blue-700 mb-2">지하철 승하차 데이터</p>
 						<ul className="text-base text-gray-600 space-y-1">
 							<li>가장 붐비는 역과 시간대 찾기</li>
 							<li>출퇴근 시간 혼잡도 비교하기</li>
 						</ul>
 					</div>
 					<div className="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-400">
-						<p className="text-lg font-bold text-purple-700 mb-2">🌫️ 미세먼지 데이터</p>
+						<p className="text-lg font-bold text-purple-700 mb-2">미세먼지 데이터</p>
 						<ul className="text-base text-gray-600 space-y-1">
 							<li>우리 동네 공기질 실시간 확인</li>
 							<li>지역별 대기오염 지도 만들기</li>
@@ -111,8 +110,8 @@ const slides: Slide[] = [
 					<thead>
 						<tr className="bg-gray-800 text-white">
 							<th className="p-4 text-left"></th>
-							<th className="p-4 text-left">파일 데이터 📁</th>
-							<th className="p-4 text-left">Open API 🔌</th>
+							<th className="p-4 text-left">파일 데이터</th>
+							<th className="p-4 text-left">Open API</th>
 						</tr>
 					</thead>
 					<tbody className="text-gray-700">
@@ -139,13 +138,13 @@ const slides: Slide[] = [
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 공공데이터 = 공공기관이 공개한, 누구나 쓸 수 있는 데이터</p>
+					<p className="text-lg text-gray-700">공공데이터 = 공공기관이 공개한, 누구나 쓸 수 있는 데이터</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 공공데이터포털(data.go.kr) = 행정안전부 운영</p>
+					<p className="text-lg text-gray-700">공공데이터포털(data.go.kr) = 행정안전부 운영</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ 파일 데이터(다운로드) vs Open API(인증키 필요)</p>
+					<p className="text-lg text-gray-700">파일 데이터(다운로드) vs Open API(인증키 필요)</p>
 				</div>
 			</div>
 		),
@@ -156,10 +155,9 @@ const slides: Slide[] = [
 		script: "오늘 강의를 마치겠습니다. 공공데이터가 무엇인지, 어디서 구할 수 있는지 감을 잡았습니다. 다음 시간에는 이 데이터를 마음대로 써도 되는지, 쓸 때 무엇을 지켜야 하는지 알아보겠습니다. 수고하셨습니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
-				<span className="text-8xl">📘</span>
 				<h1 className="text-5xl font-bold text-gray-800">개념 강의를 마칩니다</h1>
 				<p className="text-xl text-gray-600 mt-4">다음 시간: 공공누리 라이선스와 출처 표시</p>
-				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다! 🐾</p>
+				<p className="text-2xl text-gray-500 mt-4">수고하셨습니다!</p>
 			</div>
 		),
 	},
