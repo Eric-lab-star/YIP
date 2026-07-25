@@ -2,6 +2,42 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working Agreement
+
+Carry a task through to the end without checking in at each step. The round
+trips cost more than the mistakes they prevent — a 142-file sweep landed from a
+single "정리하고 PR까지" because nothing interrupted it.
+
+**Finish the whole thing.** When verification passes, commit and open the PR
+without asking. "Should I commit?" is not a question worth a round trip.
+
+**Verification is the gate, not approval.** Before calling lesson work done:
+
+```bash
+npx tsc --noEmit          # must be 0 errors
+npm run build             # reproduces Vercel failures; `npm run dev` does not
+npm run lint              # compare against main's baseline, not against zero
+```
+
+For `.mdx`, compile with `@mdx-js/mdx` + `remark-gfm` as well — it catches JSX
+brace errors that `tsc` cannot see. Lint currently reports 168 problems on
+`main`; the bar is "no new findings", not a clean sheet.
+
+**Ask only when the answer changes the work**, or before something
+irreversible: force push, deleting files, merging, anything that leaves the
+machine. Routine judgment calls are yours to make — state the assumption and
+keep going.
+
+**Report results, not progress.** Say what changed, what was verified, and what
+is still open. Skip the narration of steps already taken.
+
+**Split unrelated work into separate PRs.** A verified fix should not wait
+behind a large mechanical sweep, and a reviewer should not have to untangle
+them.
+
+**Say what you broke.** Scripted bulk edits go wrong; the useful thing is the
+list of what was wrong and how it was caught, not a clean-looking summary.
+
 ## Tool Preferences
 
 Use `rg` (ripgrep) instead of `grep` for searching files. It matters more here
