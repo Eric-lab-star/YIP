@@ -80,15 +80,15 @@ const slides: Slide[] = [
 	{
 		title: "인증키는 어떻게 생겼냥?",
 		bg: "from-cyan-50 to-blue-50",
-		script: "발급받은 인증키는 영문자, 숫자, 특수기호가 뒤섞인 긴 문자열입니다. 마이페이지에는 일반 인증키 Decoding과 Encoding, 두 가지 형태로 나와있습니다. 파이썬 requests로 API를 부를 때는 대부분 Decoding 키를 씁니다.",
+		script: "발급받은 인증키는 영문자와 숫자가 섞인 64자리 문자열입니다. 마이페이지의 Open API, 인증키 발급현황에서 확인합니다. 일반이라고 적힌 키 하나만 나오는데, 그것을 그대로 쓰면 됩니다. 옛 자료에는 Decoding 키를 쓰라는 설명이 많은데, 그것은 기호가 섞여 있던 예전 형식 이야기입니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`b3lk9F8s%2FpQ...(생략)...xR7z%3D%3D
+				<CodeBlock>{`81e63f94...(생략)...ffa9a4000
 
-일반 인증키(Decoding) ← 파이썬 requests에서 주로 사용
-일반 인증키(Encoding)`}</CodeBlock>
+마이페이지 → Open API → 인증키 발급현황
+구분: 일반   ← 이 키를 그대로 쓴다`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
-					<p className="text-lg text-gray-700">다음 시간에 코드로 직접 어떤 키를 쓰는지 확인해봅니다!</p>
+					<p className="text-lg text-gray-700">영문자·숫자뿐이라 Encoding/Decoding 구분이 없다</p>
 				</div>
 			</div>
 		),
@@ -114,7 +114,7 @@ const slides: Slide[] = [
 	{
 		title: "오늘 배운 내용 정리",
 		bg: "from-orange-50 to-red-50",
-		script: "오늘 배운 내용을 정리하겠습니다. 인증키는 API를 쓰기 위한 열쇠이며 서버 보호를 위해 필요합니다. 발급은 로그인, 데이터셋 찾기, 활용신청, 승인 확인 네 단계입니다. 인증키는 Decoding과 Encoding 두 형태가 있고, 안전하게 보관해야 합니다.",
+		script: "오늘 배운 내용을 정리하겠습니다. 인증키는 API를 쓰기 위한 열쇠이며 서버 보호를 위해 필요합니다. 발급은 로그인, 데이터셋 찾기, 활용신청, 승인 확인 네 단계입니다. 발급된 키는 그대로 쓰면 되고, 안전하게 보관해야 합니다.",
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
@@ -124,7 +124,7 @@ const slides: Slide[] = [
 					<p className="text-lg text-gray-700">✅ 발급: 로그인 → 데이터셋 찾기 → 활용신청 → 승인 확인</p>
 				</div>
 				<div className="bg-purple-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ Decoding/Encoding 두 형태, 안전하게 보관하기</p>
+					<p className="text-lg text-gray-700">✅ 발급된 키를 그대로 쓰고, 안전하게 보관하기</p>
 				</div>
 			</div>
 		),

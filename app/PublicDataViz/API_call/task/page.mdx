@@ -21,7 +21,7 @@ export const metadata = {
   **준비물 체크리스트**
 
   - `requests` 패키지 설치 확인 (`pip install requests`)
-  - 3차시에 발급받은 **에어코리아 API 인증키(Decoding)**
+  - 3차시에 발급받은 **에어코리아 API 인증키**
   - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
 </Callout>
 
@@ -58,7 +58,7 @@ import requests
 url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
 
 params = {
-    "serviceKey": ____,  # 3차시에 발급받은 인증키(Decoding)를 넣어보세요
+    "serviceKey": ____,  # 3차시에 발급받은 인증키를 그대로 넣어보세요
     "returnType": "json",
     "numOfRows": 10,
     "pageNo": 1,
@@ -77,8 +77,8 @@ print("상태 코드:", response.status_code)
 
 <Callout type="important">
   **상태 코드가 200이 아니라면?** 개념 강의 4단계에서 배운 흔한 원인들을
-  하나씩 확인해보자냥 — 인증키 오타, 승인 대기 중, Encoding/Decoding
-  혼동 등이다냥.
+  하나씩 확인해보자냥 — 인증키 오타, 앞뒤 공백, 승인 대기 중
+  등이다냥.
 </Callout>
 
 </MissionCard>

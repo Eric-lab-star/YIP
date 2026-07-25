@@ -22,13 +22,13 @@ const slides: Slide[] = [
 	{
 		title: "실습 전 준비 사항",
 		bg: "from-yellow-50 to-amber-50",
-		script: "준비물을 확인하겠습니다. requests 패키지와, 3차시에 발급받은 에어코리아 API 인증키(Decoding)가 필요합니다.",
+		script: "준비물을 확인하겠습니다. requests 패키지와, 3차시에 발급받은 에어코리아 API 인증키가 필요합니다.",
 		content: (
 			<div className="flex flex-col gap-6">
 				<div className="space-y-4">
 					{[
 						{ icon: "📦", text: "requests 패키지 설치 (pip install requests)" },
-						{ icon: "🔑", text: "3차시에 발급받은 에어코리아 API 인증키(Decoding)" },
+						{ icon: "🔑", text: "3차시에 발급받은 에어코리아 API 인증키" },
 					].map((item, i) => (
 						<div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
 							<span className="text-3xl">{item.icon}</span>
@@ -53,7 +53,7 @@ print("requests 준비 완료!")`}</CodeBlock>
 	{
 		title: "미션 2: API 요청 보내기 (10~12분)",
 		bg: "from-violet-50 to-purple-50",
-		script: "두 번째 미션입니다. 3차시에 발급받은 인증키로 진짜 요청을 보냅니다. 빈칸에는 문자열로 된 본인의 인증키를 넣으면 됩니다. 상태 코드가 200으로 출력되는지 확인합니다. 200이 아니라면 인증키 오타, 승인 대기 중, Encoding/Decoding 혼동을 확인해봅니다. 10~12분 드리겠습니다.",
+		script: "두 번째 미션입니다. 3차시에 발급받은 인증키로 진짜 요청을 보냅니다. 빈칸에는 문자열로 된 본인의 인증키를 넣으면 됩니다. 상태 코드가 200으로 출력되는지 확인합니다. 200이 아니라면 인증키 오타, 앞뒤 공백, 승인 대기 중을 확인해봅니다. 10~12분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="bg-white/60 rounded-xl p-4">
@@ -62,7 +62,7 @@ print("requests 준비 완료!")`}</CodeBlock>
 				<CodeBlock>{`url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
 
 params = {
-    "serviceKey": ____,  # 본인의 인증키(Decoding)
+    "serviceKey": ____,  # 본인의 인증키
     "returnType": "json",
     "numOfRows": 10,
     "pageNo": 1,
