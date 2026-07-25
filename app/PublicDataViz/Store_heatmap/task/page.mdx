@@ -1,0 +1,133 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '프로젝트 4 실습 — 상가 히트맵 직접 만들기',
+  description: '좌표 목록으로 히트맵을 그리고, 동별 상가 개수로 결론을 정리해보자냥!',
+  session: 26,
+}
+
+# 프로젝트 4 실습 — 상가 히트맵 직접 만들기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 상가 히트맵을
+  직접 만들어볼 거다냥. 빈칸(`____`)을 채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `folium`, `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+  - 만든 지도는 `.html`로 저장해서 브라우저로 열어보기
+</Callout>
+
+---
+
+<MissionCard number={1} title="좌표 목록 만들기" time="7~8분">
+
+DataFrame에서 위도, 경도만 뽑아 좌표 목록을 만들어보자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+data = {
+    "상호명": ["코딩냥카페", "달빛카페", "은빛카페"],
+    "위도": [37.4979, 37.4985, 37.4970],
+    "경도": [127.0276, 127.0280, 127.0265],
+}
+df = pd.DataFrame(data)
+
+좌표목록 = df[["위도", "경도"]].____.tolist()
+print(좌표목록)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 DataFrame을 순수 숫자 배열로 바꾸는 속성 이름을 넣으면 된다냥. (`values`)
+> - [[37.4979, 127.0276], ...] 형태로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="히트맵 그리기" time="10~12분">
+
+좌표 목록으로 히트맵을 그려보자냥.
+
+```python
+import folium
+from folium.plugins import HeatMap
+
+m = folium.Map(location=[37.5, 127.02], zoom_start=13)
+____(좌표목록).add_to(m)
+m.save("heatmap.html")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 히트맵을 만드는 클래스 이름을 넣으면 된다냥. (`HeatMap`)
+> - 지도에 색깔이 진하게 표시된 부분이 보이냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="동별 상가 개수로 결론 정리하기" time="8~10분">
+
+어느 동에 상가가 가장 많은지 숫자로 확인해보자냥.
+
+```python
+data2 = {"동": ["역삼동", "역삼동", "역삼동", "성수동"]}
+df2 = pd.DataFrame(data2)
+
+동별개수 = df2["동"].value_counts()
+가장많은동 = 동별개수.____()
+print(f"결론: {가장많은동}에 상가가 가장 많이 몰려있다.")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 가장 큰 값을 가진 이름을 찾는 함수 이름을 넣으면 된다냥. (`idxmax`)
+> - "역삼동"이 출력되냥?
+
+<StepCard step="확인" title="히트맵 + 숫자, 함께 보여주기">
+
+그림만 보여주면 "그래서 정확히 몇 곳이길래?"라는 질문을 받을 수
+있다냥. 히트맵과 `value_counts()` 숫자를 함께 준비해두면 발표가
+훨씬 탄탄해진다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `HeatMap(좌표목록, radius=25)`로 반경을 넓혀서 히트맵 모양이 어떻게 바뀌는지 확인해보기
+- [ ] 데이터를 5개 더 추가해서, 히트맵이 더 진해지는지 확인해보기
+- [ ] 지난 시간에 만든 마커 지도와 오늘 히트맵을 비교해보고, 각각 언제 쓰면 좋을지 생각해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 네 번째 프로젝트를 완주했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 좌표 목록 만들기
+  2. HeatMap()으로 밀집도 시각화하기
+  3. value_counts()로 결론 정리하기
+
+  까지 해냈다냥! 그리고 이걸로 **프로젝트 4, 상가 정보 데이터
+  분석을 완주**했다냥! 정제부터 마커, 히트맵까지 전부 경험해봤다냥.
+  다음 프로젝트는 **인구 통계 데이터**다냥. 다들 정말 멋지게
+  해냈다냥, 냐옹~
+</NyangSpeech>

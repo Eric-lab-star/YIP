@@ -161,6 +161,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"정리한 카페 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!",
 	},
+	{
+		name: "프로젝트 4 — 상가 밀집도 히트맵",
+		slug: "Store_heatmap",
+		description:
+			"마커 대신 히트맵으로, 상가가 몰려있는 곳을 색깔로 한눈에 보여줘보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

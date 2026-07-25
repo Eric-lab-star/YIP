@@ -1,0 +1,171 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 4 — 상가 밀집도 히트맵',
+  description: '마커 대신 히트맵으로, 상가가 몰려있는 곳을 색깔로 한눈에 보여줘보자냥!',
+  session: 26,
+}
+
+# 프로젝트 4 — 상가 밀집도 히트맵
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 마커와 클러스터로 지도를
+  만들었지냥? 오늘은 조금 다른 방식으로, **색깔의 진하기로 밀집도를
+  보여주는 히트맵**을 만들어볼 거다냥! 프로젝트 4의 마지막
+  시간이다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `HeatMap`이 무엇이고 마커와 어떻게 다른지 안다.
+  - 좌표 목록으로 히트맵을 그릴 수 있다.
+  - 분석 결과를 결론 문장으로 정리할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 히트맵이란? (7분)
+
+<NyangSpeech>
+  마커는 "여기에 가게가 있다"를 하나씩 보여주지만, 히트맵은
+  "이 근처에 가게가 얼마나 몰려있는지"를 **색깔**로 보여준다냥.
+  가게가 많이 몰린 곳일수록 빨갛고 진하게 표시된다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📍',
+    label: '마커 (지난 시간)',
+    color: 'blue',
+    items: [
+      '가게 하나하나의 위치를 정확히 표시',
+      '가게 이름, 정보를 팝업으로 확인 가능',
+    ],
+  }}
+  right={{
+    emoji: '🔥',
+    label: '히트맵 (오늘)',
+    color: 'purple',
+    items: [
+      '가게가 몰린 정도를 색깔로 표현',
+      '"어느 동네가 상권이 활발한지" 한눈에 파악',
+    ],
+  }}
+/>
+
+---
+
+## 2단계 · 히트맵 그리기 (10분)
+
+<NyangSpeech>
+  히트맵은 `folium.plugins`의 `HeatMap`을 쓴다냥. 마커처럼
+  하나씩 반복문을 돌 필요 없이, **좌표 목록을 통째로** 넘기면
+  된다냥!
+</NyangSpeech>
+
+```python
+import folium
+from folium.plugins import HeatMap
+import pandas as pd
+
+data = {
+    "상호명": ["코딩냥카페", "달빛카페", "은빛카페", "행복분식", "구름치킨"],
+    "위도": [37.4979, 37.4985, 37.4970, 37.4990, 37.5636],
+    "경도": [127.0276, 127.0280, 127.0265, 127.0290, 126.9975],
+}
+df = pd.DataFrame(data)
+
+m = folium.Map(location=[37.52, 127.01], zoom_start=13)
+
+좌표목록 = df[["위도", "경도"]].values.tolist()
+HeatMap(좌표목록).add_to(m)
+
+m.save("heatmap.html")
+```
+
+<Callout type="important">
+  `df[["위도", "경도"]].values.tolist()`는 DataFrame의 위도, 경도
+  두 열을 **[[위도, 경도], [위도, 경도], ...]** 형태의 파이썬
+  리스트로 바꿔준다냥. `HeatMap()`은 바로 이 형태의 좌표 목록을
+  입력으로 받는다냥!
+</Callout>
+
+---
+
+## 3단계 · 결론 정리하기 (8분)
+
+<NyangSpeech>
+  마지막으로, groupby를 다시 활용해서 "어느 동네에 상가가 가장
+  많은지" 숫자로도 확인하고 결론을 내려보자냥!
+</NyangSpeech>
+
+```python
+data2 = {
+    "동": ["역삼동", "역삼동", "역삼동", "역삼동", "성수동"],
+    "상호명": ["코딩냥카페", "달빛카페", "은빛카페", "행복분식", "구름치킨"],
+}
+df2 = pd.DataFrame(data2)
+
+동별개수 = df2["동"].value_counts()
+print(동별개수)
+
+가장많은동 = 동별개수.idxmax()
+print(f"결론: {가장많은동}에 상가가 가장 많이 몰려있다.")
+```
+
+<StepCard step="핵심" title="히트맵과 숫자, 둘 다 보여주기">
+
+| 방법 | 장점 |
+|---|---|
+| 히트맵 | 지도 위에서 시각적으로 밀집도를 직관적으로 파악 |
+| `value_counts()` | 정확한 숫자로 "몇 곳인지" 확인 가능 |
+
+</StepCard>
+
+<Callout type="note">
+  그림(히트맵)과 숫자(value_counts)를 **함께** 보여주면, 발표할
+  때 훨씬 설득력이 있다냥! 그림만 있으면 정확한 근거가 부족하고,
+  숫자만 있으면 감이 잘 안 오기 때문이다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '히트맵은 마커와 비교했을 때 무엇을 보여주는 데 더 좋냥?',
+      answer: '가게가 몰려있는 정도(밀집도)를 색깔로 한눈에 보여주는 데 좋다냥! 마커는 정확한 위치와 정보를 하나씩 보여줄 때 좋다냥.',
+    },
+    {
+      question: 'HeatMap()에 넣을 좌표 목록은 어떤 형태로 만드냥?',
+      answer: 'df[["위도","경도"]].values.tolist()로 만든다냥! [[위도,경도], ...] 형태의 리스트가 된다냥.',
+    },
+    {
+      question: '히트맵과 함께 정확한 숫자를 보여주고 싶다면 어떤 함수를 쓰면 좋냥?',
+      answer: 'value_counts()다냥! 그림과 숫자를 함께 보여주면 발표할 때 더 설득력이 있다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 히트맵으로 상가 밀집도를 시각화하고, 숫자로도 결론을
+  확인해봤다냥! 이걸로 **프로젝트 4, 상가 정보 데이터 분석을
+  완주**했다냥! 실습 페이지에서 마무리해보자냥. 발톱 준비됐냥?
+  가보자냥~
+</NyangSpeech>
