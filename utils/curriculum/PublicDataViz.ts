@@ -53,6 +53,12 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		description:
 			"원하는 조건에 맞는 데이터만 골라내고, 크기 순서로 줄 세우는 법을 배워보자냥!",
 	},
+	{
+		name: "pandas 기초 (3) — 그룹으로 묶어 요약하기",
+		slug: "Pandas3_groupby",
+		description:
+			"구별, 노선별로 데이터를 그룹으로 묶어서 평균과 합계를 한눈에 요약해보자냥!",
+	},
 ];
 
 /** Look up a lesson by slug. Useful in MDX metadata. */

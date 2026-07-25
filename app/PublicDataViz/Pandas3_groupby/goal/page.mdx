@@ -1,0 +1,185 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'pandas 기초 (3) — 그룹으로 묶어 요약하기',
+  description: '구별, 노선별로 데이터를 그룹으로 묶어서 평균과 합계를 한눈에 요약해보자냥!',
+  session: 8,
+}
+
+# pandas 기초 (3) — 그룹으로 묶어 요약하기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 조건으로 데이터를 걸러내고
+  정렬하는 법을 배웠지냥? 오늘은 **비슷한 것끼리 묶어서 한눈에
+  요약하는 법**을 배워볼 거다냥. 엑셀의 피벗 테이블과 비슷한 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `groupby()`로 데이터를 그룹으로 묶을 수 있다.
+  - 그룹별 평균, 합계 등을 한 번에 구할 수 있다.
+  - `value_counts()`로 값의 개수를 세어볼 수 있다.
+</Callout>
+
+---
+
+## 1단계 · groupby로 묶어보기 (10분)
+
+<NyangSpeech>
+  "구별로 지하철역 승차인원의 평균이 얼마나 될까?" 궁금하지 않냥?
+  이럴 때 `groupby()`를 쓰면 된다냥!
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+data = {
+    "구": ["강남구", "강남구", "종로구", "종로구", "마포구"],
+    "역명": ["강남", "역삼", "종로3가", "동대문", "합정"],
+    "승차인원": [15230, 9820, 8200, 6100, 11000],
+}
+df = pd.DataFrame(data)
+
+구별평균 = df.groupby("구")["승차인원"].mean()
+print(구별평균)
+```
+
+```text
+구
+강남구    12525.0
+마포구    11000.0
+종로구     7150.0
+Name: 승차인원, dtype: float64
+```
+
+<Callout type="important">
+  `groupby("구")`는 "구" 열의 **같은 값끼리 묶겠다**는 뜻이다냥.
+  그 뒤에 `["승차인원"].mean()`을 붙이면, 묶인 그룹마다 승차인원의
+  **평균**을 계산해준다냥!
+</Callout>
+
+---
+
+## 2단계 · 여러 통계를 한 번에 (10분)
+
+<NyangSpeech>
+  평균만 궁금한 게 아니라 합계, 개수도 같이 보고 싶을 땐 `agg()`를
+  쓰면 된다냥!
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📐',
+    label: '.mean() 처럼 하나만',
+    color: 'blue',
+    items: [
+      '그룹별 평균 딱 하나만 계산',
+      'df.groupby("구")["승차인원"].mean()',
+    ],
+  }}
+  right={{
+    emoji: '📦',
+    label: '.agg([...]) 로 여러 개',
+    color: 'purple',
+    items: [
+      '평균, 합계, 개수를 한 번에',
+      'df.groupby("구")["승차인원"].agg(["mean","sum","count"])',
+    ],
+  }}
+/>
+
+```python
+요약 = df.groupby("구")["승차인원"].agg(["mean", "sum", "count"])
+print(요약)
+```
+
+```text
+          mean    sum  count
+구
+강남구   12525.0  25050      2
+마포구   11000.0  11000      1
+종로구    7150.0  14300      2
+```
+
+<Callout type="tip">
+  `agg()`의 리스트 안에 원하는 통계 함수 이름을 문자열로 나열하면
+  된다냥. `"mean"`(평균), `"sum"`(합계), `"count"`(개수) 외에도
+  `"max"`, `"min"` 등을 쓸 수 있다냥!
+</Callout>
+
+---
+
+## 3단계 · value_counts로 개수 세기 (7분)
+
+<NyangSpeech>
+  이번엔 "각 구에 지하철역이 몇 개씩 있을까?"처럼, **값이 몇 번씩
+  나오는지** 세어보자냥! `value_counts()`를 쓰면 된다냥.
+</NyangSpeech>
+
+```python
+구별역개수 = df["구"].value_counts()
+print(구별역개수)
+```
+
+```text
+구
+강남구    2
+종로구    2
+마포구    1
+Name: count, dtype: int64
+```
+
+<StepCard step="핵심" title="groupby vs value_counts">
+
+| 코드 | 하는 일 |
+|---|---|
+| `df.groupby("열")["다른열"].mean()` | 그룹별로 **다른 열의 통계**(평균 등)를 계산 |
+| `df["열"].value_counts()` | 그 **열 자체의 값**이 몇 번씩 나오는지 개수를 셈 |
+
+</StepCard>
+
+<Callout type="note">
+  `value_counts()`는 기본적으로 **개수가 많은 순서**로 결과를 보여준다냥.
+  어떤 값이 가장 흔한지 한눈에 알 수 있다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: '데이터를 특정 열의 같은 값끼리 묶으려면 어떤 함수를 쓰냥?',
+      answer: 'groupby()다냥! df.groupby("열이름")처럼 쓴다냥.',
+    },
+    {
+      question: '그룹별로 평균과 합계를 동시에 구하고 싶다면 어떤 함수를 쓰냥?',
+      answer: 'agg()다냥! df.groupby("열")["다른열"].agg(["mean","sum"])처럼 리스트로 원하는 통계를 나열하면 된다냥.',
+    },
+    {
+      question: '특정 열의 값이 각각 몇 번씩 나오는지 세려면 어떻게 하냥?',
+      answer: 'df["열"].value_counts()를 쓴다냥! 개수가 많은 순서로 결과를 보여준다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 groupby로 데이터를 묶고, agg로 여러 통계를 한 번에 구하고,
+  value_counts로 개수를 세는 법을 배웠다냥! 이제 실습 페이지에서
+  직접 그룹으로 요약해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

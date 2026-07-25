@@ -1,0 +1,124 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'pandas 실습 (3) — 구별로 요약하기',
+  description: '미세먼지 측정소 데이터를 구별로 묶어서 평균을 구하고, 값의 개수도 세어보자냥!',
+  session: 8,
+}
+
+# pandas 실습 (3) — 구별로 요약하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, groupby와
+  value_counts를 직접 연습해볼 거다냥. 빈칸(`____`)을 채워가며
+  하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas` 패키지 설치 확인
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="구별 미세먼지 평균 구하기" time="10~12분">
+
+미세먼지 측정소 데이터에서, 구별 평균 미세먼지를 구해보자냥! 아래
+템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+import pandas as pd
+
+data = {
+    "구": ["중구", "중구", "강남구", "강남구", "마포구"],
+    "측정소": ["중구1", "중구2", "강남1", "강남2", "마포1"],
+    "미세먼지": [30, 34, 42, 38, 25],
+}
+df = pd.DataFrame(data)
+
+# 구별로 묶어서 미세먼지 평균을 구해보세요
+구별평균 = df.groupby(____)["미세먼지"].mean()
+print(구별평균)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 그룹으로 묶을 기준 열 이름을 문자열로 넣으면 된다냥. (`"구"`)
+> - 중구, 강남구, 마포구 세 그룹의 평균이 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="평균과 최댓값 함께 보기" time="8~10분">
+
+이번엔 평균뿐 아니라 최댓값도 함께 구해보자냥.
+
+```python
+요약 = df.groupby("구")["미세먼지"].agg([____, "max"])
+print(요약)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 평균을 뜻하는 통계 함수 이름을 문자열로 넣으면 된다냥. (`"mean"`)
+> - 강남구의 max 값이 42로 나오냥?
+
+<StepCard step="확인" title="agg에는 리스트로 여러 개!">
+
+`agg(["mean", "max"])`처럼 대괄호 안에 원하는 통계 이름을 콤마로
+나열하면, 그 통계들을 한 번에 계산해준다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="구별 측정소 개수 세기" time="8~10분">
+
+이번엔 각 구에 측정소가 몇 개씩 있는지 세어보자냥.
+
+```python
+구별개수 = df[____].value_counts()
+print(구별개수)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 개수를 세고 싶은 열 이름을 문자열로 넣으면 된다냥. (`"구"`)
+> - 중구와 강남구가 각각 2, 마포구가 1로 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `df.groupby("구")["미세먼지"].sum()`을 실행해서, 구별 합계도 구해보기
+- [ ] 측정소를 2개 더 추가해서 나만의 데이터로 groupby 다시 해보기
+- [ ] `df.groupby("구")["미세먼지"].agg(["mean", "sum", "count"])`를 실행해서, 여러 통계를 한 번에 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. groupby로 구별로 데이터 묶기
+  2. agg로 평균과 최댓값 함께 구하기
+  3. value_counts로 개수 세기
+
+  까지 해냈다냥! 이제 흩어진 데이터를 그룹으로 묶어 한눈에 요약할 수
+  있게 됐다냥. 다음 시간에는 데이터에 숨어있는 **빈 값과 이상한 값을
+  정리하는 법**을 배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>
