@@ -1,0 +1,141 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'CSV 실습 — 지하철 데이터 직접 읽어보기',
+  description: '지하철 승하차 인원 CSV 파일을 내려받아 pandas로 읽고, 인코딩 문제를 직접 해결해보자냥!',
+  session: 5,
+}
+
+# CSV 실습 — 지하철 데이터 직접 읽어보기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 진짜 CSV 파일을 내려받아
+  파이썬으로 읽고, 인코딩 문제를 직접 해결해볼 거다냥. 빈칸(`____`)을
+  채워가며 하나씩 해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `pandas` 패키지 설치 확인 (`pip install pandas`)
+  - 공공데이터포털 계정 (로그인)
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="지하철 CSV 파일 내려받기" time="7~8분">
+
+공공데이터포털에서 아래처럼 검색해서 CSV 파일을 내려받아보자냥.
+
+```text
+서울교통공사_지하철호선별 역별 승하차 인원 정보
+```
+
+내려받은 파일을 코드 파일과 **같은 폴더**에 저장하고, 파일 이름을 기억해두자냥.
+
+> **확인해보자냥**
+> - 검색 결과에서 "다운로드" 버튼이 있는 CSV 데이터를 찾았냥?
+> - 파일을 코드 파일과 같은 폴더에 저장했냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="CSV 읽고 인코딩 문제 해결하기" time="10~12분">
+
+이제 내려받은 파일을 pandas로 읽어보자냥! 아래 템플릿에서
+**빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import pandas as pd
+
+# 1) 먼저 기본값(UTF-8)으로 읽어보세요
+df = pd.read_csv("여기에 파일 이름 입력.csv")
+print(df.head())
+```
+
+> **확인해보자냥**
+> - 한글 열 이름(역명, 승차인원 등)이 잘 보이냥, 아니면 깨져 보이냥?
+
+한글이 깨져 보인다면, 아래처럼 인코딩 옵션을 추가해보자냥.
+
+```python
+# 2) 한글이 깨진다면 encoding 옵션을 추가해서 다시 읽어보세요
+df = pd.read_csv("여기에 파일 이름 입력.csv", encoding=____)
+print(df.head())
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 개념 강의에서 배운 한국 공공기관 CSV에 자주 쓰이는 인코딩을 따옴표로 감싸서 넣으면 된다냥. (`"cp949"`)
+> - 이번엔 한글이 잘 보이냥?
+
+<Callout type="important">
+  **`UnicodeDecodeError`가 뜬다면?** 인코딩이 맞지 않다는 신호다냥!
+  `encoding="cp949"`를 시도해보고, 그래도 안 되면 `encoding="euc-kr"`을
+  시도해보자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="불러온 데이터 살펴보기" time="8~10분">
+
+파일을 잘 읽었다면, DataFrame의 기본 정보를 확인해보자냥.
+
+```python
+print("행과 열의 개수:", df.shape)
+print("열 이름:", df.columns.tolist())
+print(df.head(3))
+```
+
+> **확인해보자냥**
+> - 몇 행, 몇 열인지 확인했냥?
+> - 열 이름들을 보고, 어떤 정보가 담겨 있는지 짐작할 수 있냥?
+
+<StepCard step="관찰" title="shape과 columns, 이것만 기억하자냥!">
+
+| 코드 | 하는 일 |
+|---|---|
+| `df.shape` | (행 개수, 열 개수)를 튜플로 보여줌 |
+| `df.columns` | 열 이름들을 보여줌 |
+| `df.head(n)` | 위에서부터 n개 행만 미리보기 |
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 다른 공공데이터 CSV 파일도 하나 내려받아서 인코딩을 확인해보기
+- [ ] `df.head(10)`, `df.tail(5)`처럼 다양한 값을 넣어 결과 비교해보기
+- [ ] `df.dtypes`를 출력해서 각 열이 숫자인지 문자인지 확인해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 지하철 승하차 CSV 파일 내려받기
+  2. pandas로 읽고 인코딩 문제 해결하기
+  3. DataFrame의 기본 정보 살펴보기
+
+  까지 해냈다냥! 이제 우리는 공공데이터포털의 파일 데이터도 자유자재로
+  읽을 수 있게 됐다냥. 다음 시간부터는 이 표(DataFrame)를 본격적으로
+  다루는 법, **pandas**를 제대로 배워볼 거다냥. 다들 정말 멋지게
+  해냈다냥, 냐옹~
+</NyangSpeech>

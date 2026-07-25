@@ -1,0 +1,206 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'pandas 기초 (1) — DataFrame과 Series',
+  description: 'pandas의 핵심인 DataFrame과 Series가 무엇인지 이해하고, 열과 행에 직접 접근해보자냥!',
+  session: 6,
+}
+
+# pandas 기초 (1) — DataFrame과 Series
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지난 시간에 `pd.read_csv()`로 CSV를 표처럼
+  불러왔지냥? 오늘은 그 표의 정체, **DataFrame**과 **Series**를 제대로
+  파헤쳐볼 거다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **DataFrame**과 **Series**가 무엇이고 어떻게 다른지 설명할 수 있다.
+  - 딕셔너리로부터 직접 DataFrame을 만들 수 있다.
+  - 열(column)과 행(row)에 각각 접근하는 방법을 안다.
+</Callout>
+
+---
+
+## 1단계 · DataFrame은 엑셀 표다냥! (5분)
+
+<NyangSpeech>
+  **DataFrame(데이터프레임)**은 쉽게 말해 **행과 열로 이루어진 표**다냥.
+  엑셀 시트를 떠올리면 딱 맞다냥! 그리고 그 표에서 **열 하나**만 딱
+  떼어내면, 그게 바로 **Series(시리즈)**다냥.
+</NyangSpeech>
+
+<CompareBubble
+  left={{
+    emoji: '📊',
+    label: 'DataFrame',
+    color: 'blue',
+    items: [
+      '행과 열로 이루어진 표 전체',
+      '엑셀 시트 하나와 같음',
+      '여러 개의 Series가 모여서 만들어짐',
+    ],
+  }}
+  right={{
+    emoji: '📏',
+    label: 'Series',
+    color: 'purple',
+    items: [
+      'DataFrame에서 열 하나만 뽑은 것',
+      '엑셀의 한 세로줄과 같음',
+      '값들이 순서대로 나열된 목록',
+    ],
+  }}
+/>
+
+---
+
+## 2단계 · 딕셔너리로 DataFrame 만들기 (10분)
+
+<NyangSpeech>
+  CSV 파일이 없어도, 파이썬 딕셔너리만으로 직접 DataFrame을 만들 수
+  있다냥! 실습할 때 예시 데이터를 빨리 만들고 싶을 때 아주 유용하다냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+data = {
+    "역명": ["강남", "역삼", "선릉"],
+    "승차인원": [15230, 9820, 11400],
+    "하차인원": [14800, 9500, 11100],
+}
+
+df = pd.DataFrame(data)
+print(df)
+```
+
+```text
+   역명   승차인원   하차인원
+0  강남   15230   14800
+1  역삼    9820    9500
+2  선릉   11400   11100
+```
+
+<Callout type="note">
+  딕셔너리의 **키(key)**는 열 이름이 되고, **값(value)의 리스트**는 그
+  열의 데이터가 된다냥. 맨 왼쪽에 자동으로 붙는 `0, 1, 2`는 **인덱스
+  (index)**라고 부르는 행 번호다냥.
+</Callout>
+
+---
+
+## 3단계 · 열(Column) 접근하기 (8분)
+
+<NyangSpeech>
+  이제 표에서 원하는 열만 쏙 꺼내보자냥! 대괄호 안에 열 이름을 적으면
+  된다냥.
+</NyangSpeech>
+
+```python
+승차 = df["승차인원"]
+print(승차)
+print(type(승차))
+```
+
+```text
+0    15230
+1     9820
+2    11400
+Name: 승차인원, dtype: int64
+<class 'pandas.core.series.Series'>
+```
+
+<Callout type="important">
+  `df["열이름"]`으로 꺼낸 결과는 **Series**다냥! 방금 배운 대로, DataFrame의
+  열 하나가 바로 Series라는 걸 코드로 직접 확인한 거다냥.
+</Callout>
+
+열을 **여러 개** 꺼내고 싶다면, 대괄호를 두 번 겹쳐서 리스트로 넣으면 된다냥.
+
+```python
+일부 = df[["역명", "승차인원"]]
+print(일부)
+print(type(일부))  # 이번엔 DataFrame!
+```
+
+---
+
+## 4단계 · 행(Row) 접근하기 (7분)
+
+<NyangSpeech>
+  이번엔 반대로, 특정 **행(줄)**을 꺼내보자냥! `.iloc`을 쓰면 번호로 행을
+  꺼낼 수 있다냥.
+</NyangSpeech>
+
+<StepCard step="핵심" title="행에 접근하는 두 가지 방법">
+
+| 코드 | 하는 일 |
+|---|---|
+| `df.iloc[0]` | **위치 번호**로 첫 번째 행을 꺼냄 (0부터 시작) |
+| `df.loc[0]` | **인덱스 값**으로 행을 꺼냄 (보통 iloc과 같지만, 인덱스를 바꾸면 달라질 수 있음) |
+
+</StepCard>
+
+```python
+첫줄 = df.iloc[0]
+print(첫줄)
+```
+
+```text
+역명         강남
+승차인원    15230
+하차인원    14800
+Name: 0, dtype: object
+```
+
+<Callout type="tip">
+  헷갈린다면 당분간은 `.iloc`만 써도 충분하다냥! "숫자로 몇 번째 줄인지
+  꺼낸다"고 기억하면 된다냥.
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'DataFrame과 Series는 각각 무엇이냥?',
+      answer: 'DataFrame은 행과 열로 이루어진 표 전체이고, Series는 그 표에서 열 하나만 뽑은 것이다냥! 엑셀 시트 전체 vs 세로줄 하나로 생각하면 된다냥.',
+    },
+    {
+      question: '딕셔너리로 DataFrame을 만들 때, 딕셔너리의 키와 값은 각각 무엇이 되냥?',
+      answer: '키는 열 이름이 되고, 값(리스트)은 그 열의 데이터가 된다냥!',
+    },
+    {
+      question: 'df["열이름"]으로 열 하나를 꺼내면 어떤 타입이 되냥?',
+      answer: 'Series다냥! DataFrame의 열 하나이기 때문이다냥.',
+    },
+    {
+      question: '번호로 특정 행을 꺼내려면 어떤 코드를 쓰냥?',
+      answer: 'df.iloc[번호]다냥! 예를 들어 df.iloc[0]은 첫 번째 행을 꺼낸다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 DataFrame과 Series의 정체를 파헤치고, 열과 행에 접근하는 법을
+  배웠다냥! 이제 실습 페이지에서 직접 표를 만들고 이리저리 꺼내보는
+  연습을 해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

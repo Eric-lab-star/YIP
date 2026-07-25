@@ -15,9 +15,10 @@ type Entry = {
   priority: number;
 };
 
-// Only genuinely public, crawlable pages belong here. Three of the four lesson
-// curricula (/tourOfPython, /spaceshipCaptain, /AIDeveloper) are login-gated in
-// proxy.ts — an anonymous crawler is 307-redirected to /login — so listing them
+// Only genuinely public, crawlable pages belong here. Four of the five lesson
+// curricula (/tourOfPython, /spaceshipCaptain, /AIDeveloper, /PublicDataViz)
+// are login-gated in proxy.ts — an anonymous crawler is 307-redirected to
+// /login — so listing them
 // would just feed Google "page with redirect" errors. They're excluded here and
 // disallowed in robots.ts. Other auth-gated routes (chat, dashBoard, editor,
 // login, students, /problems/*/solutions, /problems/new) are excluded too.

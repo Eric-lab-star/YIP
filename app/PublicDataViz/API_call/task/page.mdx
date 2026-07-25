@@ -1,0 +1,149 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'API 호출 실습 — 우리 동네 미세먼지 가져오기',
+  description: '인증키로 에어코리아 API를 호출해서, 실시간 미세먼지 데이터를 받아와 출력해보자냥!',
+  session: 4,
+}
+
+# API 호출 실습 — 우리 동네 미세먼지 가져오기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 3차시에 발급받은 인증키로
+  진짜 미세먼지 데이터를 받아와볼 거다냥. 빈칸(`____`)을 채워가며 하나씩
+  해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  ** 준비물 체크리스트**
+
+  - `requests` 패키지 설치 확인 (`pip install requests`)
+  - 3차시에 발급받은 **에어코리아 API 인증키(Decoding)**
+  - 빈칸이 포함된 코드 템플릿 (`.py` 또는 `.ipynb` 파일)
+</Callout>
+
+---
+
+<MissionCard number={1} title="환경 준비 — requests 설치 확인하기" time="5분">
+
+먼저 `requests`가 잘 깔렸는지 확인해보자냥.
+
+```bash
+pip install requests
+```
+
+```python
+import requests
+print("requests 준비 완료!")
+```
+
+> **확인해보자냥**
+> - 에러 없이 "requests 준비 완료!"가 출력되냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="API 요청 보내기" time="10~12분">
+
+이제 3차시에 발급받은 인증키로 진짜 요청을 보내보자냥! 아래 템플릿에서
+**빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import requests
+
+url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
+
+params = {
+    "serviceKey": ____,  # 3차시에 발급받은 인증키(Decoding)를 넣어보세요
+    "returnType": "json",
+    "numOfRows": 10,
+    "pageNo": 1,
+    "sidoName": "서울",
+    "ver": "1.0",
+}
+
+response = requests.get(url, params=params)
+print("상태 코드:", response.status_code)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 문자열로 된 본인의 인증키를 따옴표로 감싸서 넣으면 된다냥.
+>   예: `"serviceKey": "여기에 나만의 인증키"`
+> - 상태 코드가 **200**으로 출력되냥?
+
+<Callout type="important">
+  **상태 코드가 200이 아니라면?** 개념 강의 4단계에서 배운 흔한 원인들을
+  하나씩 확인해보자냥 — 인증키 오타, 승인 대기 중, Encoding/Decoding
+  혼동 등이다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="원하는 데이터 꺼내기" time="10~13분">
+
+요청이 성공했다면, 이제 JSON 응답에서 우리가 원하는 값만 쏙쏙 꺼내보자냥!
+아래 템플릿에서 **빈칸(`____`)을 채워보자냥.**
+
+```python
+data = response.json()
+items = data["response"]["body"][____]  # 실제 데이터가 담긴 부분을 넣어보세요
+
+for item in items:
+    station = item["stationName"]
+    pm10 = item["pm10Value"]
+    print(f"{station} 측정소 - 미세먼지(PM10): {pm10}")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `____` 자리에는 개념 강의에서 배운, 실제 데이터 리스트가 들어있는 키를 넣으면 된다냥. (`"items"`)
+> - 서울 각 지역의 측정소 이름과 미세먼지 수치가 잘 출력되냥?
+
+<StepCard step="관찰" title="측정소마다 값이 다른 이유">
+
+같은 서울이라도 측정소마다 미세먼지 수치가 다르게 나온다냥! 도로 근처인지,
+공원 근처인지에 따라 공기질이 다르기 때문이다냥. 이런 차이를 비교하는 게
+바로 다음 학기 프로젝트에서 할 일이라냥.
+
+</StepCard>
+
+**직접 해보기**
+`sidoName`을 `"부산"`, `"경기"` 등 다른 지역으로 바꿔서 실행해보자냥. 결과가
+어떻게 달라지냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `pm25Value`(초미세먼지) 값도 함께 출력해보기
+- [ ] `numOfRows`를 25로 늘려서 더 많은 측정소를 받아보기
+- [ ] `int(pm10)`으로 숫자 변환해서, 가장 미세먼지가 심한 측정소를 직접 찾아보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. `requests`로 진짜 공공 API에 요청 보내기
+  2. JSON 응답에서 원하는 데이터 꺼내기
+  3. 요청 실패 시 원인 확인하는 법 익히기
+
+  까지 해냈다냥! 이제 우리는 나라가 열어준 데이터를 코드로 직접 불러올 수
+  있게 됐다냥. 다음 시간부터는 이렇게 받아온 데이터를 **표 형태로 깔끔하게
+  정리하는 도구, pandas**를 배워볼 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

@@ -1,0 +1,180 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'CSV 파일과 인코딩 문제',
+  description: '공공데이터포털에서 CSV 파일을 내려받아 파이썬으로 읽고, 한글이 깨지는 인코딩 문제를 해결해보자냥!',
+  session: 5,
+}
+
+# CSV 파일과 인코딩 문제
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 지금까지는 Open API로 데이터를 받아왔지냥. 오늘은
+  공공데이터포털의 또 다른 얼굴, **파일 데이터(CSV)**를 다뤄볼 거다냥. 그런데
+  CSV 파일을 열었더니 한글이 이상하게 깨져 보인 적 없냥? 오늘 그 이유를
+  알아보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **CSV 파일**이 무엇인지 설명할 수 있다.
+  - `pandas.read_csv()`로 CSV 파일을 파이썬으로 불러올 수 있다.
+  - 한글이 깨지는 **인코딩 문제**의 원인과 해결법을 안다.
+</Callout>
+
+---
+
+## 1단계 · CSV 파일이 뭐냥? (5분)
+
+<NyangSpeech>
+  CSV는 **Comma-Separated Values**의 줄임말이다냥. 이름 그대로, 쉼표(,)로
+  값을 구분해서 적어놓은 아주 단순한 표 형식의 파일이다냥!
+</NyangSpeech>
+
+```text
+역명,승차인원,하차인원
+강남,15230,14800
+역삼,9820,9500
+```
+
+이렇게 생긴 파일을 엑셀로 열면 표처럼 보이지만, 사실은 그냥 **글자로만
+이루어진 텍스트 파일**이다냥. 공공데이터포털의 파일 데이터 대부분이 이
+CSV 형식으로 제공된다냥.
+
+<Callout type="important">
+  CSV는 엑셀 파일(`.xlsx`)보다 훨씬 가볍고 다루기 쉬워서, 데이터 분석에서
+  가장 많이 쓰이는 형식이다냥!
+</Callout>
+
+---
+
+## 2단계 · pandas로 CSV 읽기 (8분)
+
+<NyangSpeech>
+  이제 이 CSV 파일을 파이썬으로 읽어보자냥! **pandas**라는 라이브러리를
+  쓰면 CSV를 표(DataFrame) 형태로 순식간에 불러올 수 있다냥. pandas는
+  다음 시간부터 본격적으로 배울 거고, 오늘은 `read_csv()`만 먼저
+  맛보기로 써보자냥.
+</NyangSpeech>
+
+```python
+import pandas as pd
+
+df = pd.read_csv("subway.csv")
+print(df)
+```
+
+```text
+pip install pandas
+```
+
+<Callout type="note">
+  `pd.read_csv()` 딱 한 줄이면, CSV 파일 전체가 표 형태로 변신한다냥! 이
+  표를 **DataFrame(데이터프레임)**이라고 부른다냥.
+</Callout>
+
+---
+
+## 3단계 · 한글이 깨져요! 인코딩이 뭐냥? (12분)
+
+<NyangSpeech>
+  자, 그런데 방금 코드를 그대로 실행했는데 한글이 `?좑깖?ㅼ쨮` 처럼
+  이상하게 나온다면? 당황하지 말라냥! 이건 **인코딩(encoding)** 문제다냥.
+</NyangSpeech>
+
+컴퓨터는 글자를 숫자로 바꿔서 저장한다냥. 이때 "어떤 규칙으로 숫자로
+바꿀지" 정하는 게 바로 **인코딩**이다냥. 문제는, 이 규칙이 여러 가지라는
+거다냥!
+
+<CompareBubble
+  left={{
+    emoji: '🌏',
+    label: 'UTF-8',
+    color: 'blue',
+    items: [
+      '전 세계에서 가장 널리 쓰이는 표준 인코딩',
+      '요즘 만들어지는 파일 대부분이 UTF-8',
+      'pandas의 기본값',
+    ],
+  }}
+  right={{
+    emoji: '🇰🇷',
+    label: 'CP949 (EUC-KR)',
+    color: 'orange',
+    items: [
+      '옛날 한국 윈도우에서 많이 쓰던 인코딩',
+      '공공데이터포털 CSV 파일에 아직도 많이 남아있음',
+      'UTF-8로 읽으면 한글이 깨짐',
+    ],
+  }}
+/>
+
+이 두 규칙이 서로 다르다 보니, **CP949로 저장된 파일을 UTF-8인 줄 알고
+읽으면** 한글이 깨져 보이는 거다냥. 해결법은 간단하다냥 — `read_csv()`에
+`encoding` 옵션을 정확히 알려주면 된다냥!
+
+```python
+import pandas as pd
+
+# UTF-8로 읽었는데 한글이 깨진다면, cp949로 다시 시도해보자
+df = pd.read_csv("subway.csv", encoding="cp949")
+print(df)
+```
+
+<StepCard step="문제 해결" title="한글이 깨질 때, 이 순서로 시도해보자냥!">
+
+1. 아무 옵션 없이 `pd.read_csv("파일명")`으로 읽어본다냥. (기본값은 UTF-8)
+2. 한글이 깨지면 `encoding="cp949"`를 추가해서 다시 읽어본다냥.
+3. 그래도 안 되면 `encoding="euc-kr"`을 시도해본다냥. (cp949와 거의 비슷하다냥)
+
+</StepCard>
+
+<Callout type="tip">
+  공공데이터포털에서 내려받은 한국 정부/공공기관 CSV 파일은 **cp949일 확률이
+  꽤 높다냥**. 한글이 깨지면 제일 먼저 `encoding="cp949"`부터 시도해보자냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'CSV 파일이란 무엇이냥?',
+      answer: 'Comma-Separated Values의 줄임말로, 쉼표로 값을 구분해서 적어놓은 표 형식의 텍스트 파일이다냥!',
+    },
+    {
+      question: 'pandas로 CSV 파일을 읽는 함수는 무엇이냥?',
+      answer: 'pd.read_csv("파일명")이다냥! 이 한 줄로 CSV 파일이 DataFrame으로 변신한다냥.',
+    },
+    {
+      question: '한글이 깨져 보이는 이유는 무엇이냥?',
+      answer: '파일이 저장된 인코딩(예: cp949)과, 읽을 때 사용한 인코딩(예: UTF-8)이 서로 다르기 때문이다냥!',
+    },
+    {
+      question: '한글이 깨질 때 가장 먼저 시도해볼 인코딩 옵션은 무엇이냥?',
+      answer: 'encoding="cp949"다냥! 한국 공공기관 CSV 파일에 자주 쓰이는 인코딩이다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 CSV 파일을 읽는 법과, 한글이 깨질 때 당황하지 않는 법을 배웠다냥!
+  이제 실습 페이지에서 진짜 공공데이터 CSV 파일을 직접 다운로드하고
+  읽어볼 차례다냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

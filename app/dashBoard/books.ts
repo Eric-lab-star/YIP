@@ -39,6 +39,15 @@ export const Booklist = {
     description:
       "문법은 배웠지만 문제 앞에서 막막한 학생을 위한 수업입니다. 자주 쓰이는 풀이 뼈대를 익히고 채점기에 직접 제출해보는 것을 목표로 합니다.",
   },
+  "Public Data Viz": {
+    title: "Public Data Viz",
+    link: "/PublicDataViz",
+    // TODO: R2에 전용 로고 업로드 후 교체 (임시로 algorithm.png 재사용)
+    imagekey: "algorithm.png",
+    state: "기초 2",
+    description:
+      "공공데이터포털의 데이터를 파이썬으로 수집·분석·시각화해보면서, 지도와 그래프로 세상을 읽는 눈을 기르는 것을 목표로 합니다.",
+  },
 };
 
 /** 교재 선택 드롭다운 옵션. Booklist 에서 파생시켜 두 곳이 어긋나지 않게 한다. */

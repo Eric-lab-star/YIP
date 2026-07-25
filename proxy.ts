@@ -51,6 +51,7 @@ export const config = {
     "/tourOfPython/:path*",
     "/spaceshipCaptain/:path*",
     "/AIDeveloper/:path*",
+    "/PublicDataViz/:path*",
     "/login",
     "/chat/:path*",
     "/editor/:path*",
