@@ -1,0 +1,139 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: 'input 실습 — 묻고, 바꾸고, 지키기',
+  description: '사용자에게 값을 받고 형을 바꾸고, try..except로 프로그램을 지켜보자냥!',
+  session: 4,
+}
+
+# input 실습 — 묻고, 바꾸고, 지키기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 30분 동안 사용자와 대화하는
+  프로그램을 만들어볼 거다냥. 오늘의 핵심은 하나다냥 —
+  **input()은 언제나 문자열을 준다냥!**
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - VSCode와 작업 폴더
+  - 개념 강의에서 본 try / except 표
+</Callout>
+
+---
+
+<MissionCard number={1} title="물어보고 대답 받기" time="6~8분">
+
+빈칸(`____`)을 채워서 완성해보자냥.
+
+```python
+name = ____("이름이 뭐예요? ")
+print(name + "님, 반갑습니다!")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 사용자에게 물어보는 함수 이름을 넣으면 된다냥.
+> - 실행하면 프로그램이 **멈춰서 기다리냥?** 그게 정상이다냥. 답을 입력하고 엔터를 눌러보자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="함정 확인하기" time="8~10분">
+
+오늘의 핵심 함정을 **직접 눈으로** 확인해보자냥.
+
+```python
+age = input("나이가 몇이에요? ")
+print(type(age))       # 무엇이 나오냥?
+print(age + 1)         # 어떤 오류가 나냥?
+```
+
+> **확인해보자냥**
+> - 분명 숫자를 입력했는데 `<class 'str'>` 이 나오냥?
+> - `age + 1` 에서 나는 오류 메시지를 **소리내어 읽어보자냥.**
+> - `age + "1"` 로 바꾸면 어떻게 되냥? 계산이 아니라 이어붙여지냥?
+
+<StepCard step="핵심" title="한 줄 요약">
+
+`input()` 은 무엇을 입력하든 **문자열**을 준다냥. 그래서 숫자로
+쓰려면 반드시 바꿔줘야 한다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="형 바꿔서 계산하기" time="8~10분">
+
+이제 함정을 피해보자냥.
+
+```python
+age = ____(input("나이가 몇이에요? "))
+print(type(age))
+print("내년에는", age + 1, "살이네요!")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 문자열을 정수로 바꾸는 함수다냥.
+> - 이번엔 `<class 'int'>` 가 나오냥?
+> - 15를 입력하면 "내년에는 16 살이네요!" 가 나오냥?
+> - 이제 **"hello" 를 입력해보자냥.** 프로그램이 어떻게 되냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="try..except 로 프로그램 지키기" time="10~12분">
+
+방금 "hello" 를 넣었을 때 프로그램이 그냥 죽었지냥? 막아보자냥.
+
+```python
+____:
+    age = int(input("나이가 몇이에요? "))
+    print("내년에는", age + 1, "살이네요!")
+____ ValueError:
+    print("숫자를 입력하세요")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 오류가 날 수 있는 코드를 감싸는 블록과, 오류가 났을 때 실행할 블록이다냥.
+> - 15를 넣으면 정상 동작하냥?
+> - "hello" 를 넣으면 이번엔 **죽지 않고** 안내 문구가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 키와 몸무게를 입력받아 둘을 더한 값을 출력해보기 (형 변환 잊지 말기)
+- [ ] `except ValueError` 에서 `ValueError` 를 지우고 `except:` 로만 써보고 차이를 생각해보기
+- [ ] 숫자를 제대로 넣을 때까지 계속 물어보게 만들어보기 (힌트: 다음 시간에 배울 반복문)
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. input()으로 물어보고 답 받기
+  2. input()이 문자열을 준다는 함정 확인하기
+  3. int()로 바꿔서 계산하기
+  4. try..except로 프로그램 지키기
+
+  까지 해냈다냥! 특히 2번에서 오류 메시지를 직접 읽어봤다면 오늘은
+  대성공이다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

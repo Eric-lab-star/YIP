@@ -1,0 +1,261 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '숫자 맞히기 게임 실습 — 직접 만들어보기',
+  description: '타이틀부터 정답 판정까지, 숫자 맞히기 게임을 한 단계씩 직접 완성해보자냥!',
+  session: 11,
+}
+
+# 숫자 맞히기 게임 실습 — 직접 만들어보기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 40분 동안 게임을 **처음부터 끝까지**
+  직접 만들어볼 거다냥. 한 미션이 끝날 때마다 꼭 실행해보자냥.
+  조금씩 만들고 조금씩 실행하는 게 가장 빠른 길이다냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 새 파일 `main.py`
+  - 개념 강의에서 정리한 게임 규칙 여섯 줄
+</Callout>
+
+---
+
+<MissionCard number={1} title="타이틀과 뼈대 만들기" time="8~10분">
+
+먼저 게임의 얼굴부터 만들어보자냥. 빈칸(`____`)을 채워서 완성해보자냥.
+
+```python
+# main.py
+____ main():
+    print("=====================")
+    print("____")       # 게임 제목을 자유롭게 지어보자냥
+    print("=====================")
+
+____()   # main 함수 호출하기
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 함수를 만들 때는 `def` 로 시작한다냥.
+> - 제목은 `number guessing game` 도 좋고, 직접 지은 이름도 좋다냥.
+> - 함수는 **만들기만 하면 실행되지 않는다냥.** 마지막 줄에서 `main()` 을 불러줘야 한다냥.
+> - 실행했을 때 줄이 세 줄 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="while 로 기회 3번 만들기" time="10~12분">
+
+이제 게임이 반복되게 만들어보자냥. 기회는 3번이다냥.
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    chances = ____          # 총 기회 수
+    attempts = ____         # 지금까지 시도한 횟수
+    while attempts ____ chances:
+        input("guess my number: ")
+        attempts ____ 1     # 시도할 때마다 1 늘리기
+    else:
+        print("you lose")
+
+main()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 기회는 3번, 시도 횟수는 0부터 시작한다냥.
+> - "시도 횟수가 기회보다 **작을 동안**" 반복해야 한다냥. `<` 냥, `<=` 냥?
+> - 1씩 더하는 건 `+=` 다냥.
+> - 아무 값이나 세 번 입력했을 때 `you lose` 가 나오냥?
+
+<StepCard step="실험" title="attempts += 1 을 지워보자냥">
+
+일부러 `attempts += 1` 줄을 지우고 실행해보자냥. 시도 횟수가 계속 0이라
+조건이 영원히 참이 되고, 게임이 **끝나지 않는다냥!** 이걸 무한 루프라고
+부른다냥. 확인했으면 다시 되돌려놓자냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="랜덤 정답과 예외 처리" time="10~12분">
+
+컴퓨터가 몰래 정답을 정하게 만들고, 이상한 입력이 들어와도 게임이 꺼지지
+않게 만들어보자냥.
+
+```python
+# main.py
+____ random                      # 라이브러리 가져오기
+
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.____(1, 11)  # 1~10 중 하나 뽑기
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        ____:
+            user_input = ____(input("guess my number: "))
+            attempts += 1
+        ____ ValueError:
+            print("Invalid input. Only numbers are allowed")
+    else:
+        print("you lose")
+
+main()
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 라이브러리를 가져올 때는 `import` 다냥.
+> - 정수 난수를 뽑는 함수는 `randint` 다냥.
+> - 예외를 감시하는 블록은 `try`, 잡아내는 블록은 `except` 다냥.
+> - `input()` 이 준 문자열을 숫자로 바꾸는 함수는 `int` 다냥.
+> - 숫자를 넣지 않고 그냥 엔터를 눌러보자냥. 프로그램이 꺼지지 않고 안내 문구가 나오냥?
+
+<Callout type="tip">
+  정답이 뭔지 궁금하면 잠깐 `print(answer)` 를 넣어서 확인해도 좋다냥.
+  다 만든 뒤에는 꼭 지우자냥 — 안 그러면 게임이 아니라 정답 알려주기가
+  돼버린다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="isCorrect 함수로 게임 완성하기" time="12~15분">
+
+마지막이다냥! 정답을 판정하는 함수를 만들고, `main` 과 이어붙이면 게임이
+완성된다냥.
+
+```python
+# main.py
+def isCorrect(answer, user_input):
+    if user_input ____ answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return ____
+    elif user_input ____ answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return ____
+    elif user_input ____ answer:
+        print("정답입니다.")
+        return ____
+```
+
+그리고 `main` 의 `while` 안을 이렇게 바꿔주자냥.
+
+```python
+        try:
+            user_input = int(input("guess my number: "))
+            if isCorrect(answer, user_input):
+                ____              # 정답이면 반복을 끝내기
+            else:
+                attempts += 1     # 오답이면 시도 횟수 증가
+        except ValueError:
+            print("숫자를 입력하세요")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 입력값이 정답보다 **크면** 정답은 그보다 작은 수다냥. 부등호 방향을 잘 보자냥.
+> - 정답일 때만 `True`, 나머지는 `False` 를 돌려준다냥.
+> - 반복을 즉시 끝내는 명령은 `break` 다냥.
+> - 정답을 맞혔을 때 `you lose` 가 같이 나오면 안 된다냥. 나온다면 `break` 자리를 다시 보자냥!
+
+</MissionCard>
+
+---
+
+## 전체 코드 확인하기
+
+<NyangSpeech>
+  다 만들었으면 아래 완성본과 비교해보자냥. 내 코드와 다른 부분이 있어도
+  게임이 잘 돌아간다면 그것도 정답이다냥!
+</NyangSpeech>
+
+```python
+# main.py
+import random
+
+def isCorrect(answer, user_input):
+    """
+    사용자가 입력한 답과 정답을 비교하는 함수. 정답일 경우 True를 반환하고
+    다른 모든 경우에는 False를 반환한다.
+    """
+    if user_input > answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return False
+    elif user_input < answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return False
+    elif user_input == answer:
+        print("정답입니다.")
+        return True
+
+def main():
+    """
+    실제 게임 로직이 진행되는 함수
+    """
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)
+    chances = 3
+    attempts = 0
+    while attempts < chances:  # 루프 종료 조건
+        try:  # int에서 발생하는 예외를 처리하기 위한 try 블록
+            user_input = int(input("guess my number: "))  # input은 문자열을 반환하므로 int형으로 변경
+            if isCorrect(answer, user_input):  # 정답 확인 코드
+                break  # 정답이면 반복 중단
+            else:
+                attempts += 1  # 오답이면 시도 횟수 증가
+        except ValueError:  # 예외 발생시 실행되는 블록
+            print("숫자를 입력하세요")
+    else:
+        print("you lose")
+
+main()
+```
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+게임을 완성했다면 아래처럼 바꿔서 **나만의 게임**으로 만들어보자냥!
+
+- [ ] 기회를 3번에서 5번으로 늘려보기 (힌트: `chances` 값)
+- [ ] 정답 범위를 1~10에서 1~100으로 바꿔보기 (힌트: `random.randint(1, 11)`)
+- [ ] 정답을 맞히면 "축하해요!" 같은 메시지를 더 출력해보기
+- [ ] 남은 기회가 몇 번인지 매번 알려주기 (힌트: `chances - attempts`)
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 타이틀과 main 함수로 뼈대 만들기
+  2. while 로 기회 3번 세기
+  3. random 으로 정답 만들고 try...except 로 지키기
+  4. isCorrect 함수로 정답 판정하고 게임 완성하기
+
+  까지 해냈다냥! 배운 문법 여섯 가지를 한 프로그램 안에서 전부
+  써봤다냥. 이렇게 조립해서 만드는 게 바로 프로그래밍이다냥.
+  다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

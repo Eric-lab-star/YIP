@@ -1,0 +1,115 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '편집기 실습 — 첫 코드를 실행해보기',
+  description: 'VSCode로 폴더를 만들고 파일을 만들어서, 내 손으로 첫 파이썬 코드를 실행해보자냥!',
+  session: 1,
+}
+
+# 편집기 실습 — 첫 코드를 실행해보기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 오늘은 코드를 많이 쓰지는 않는다냥. 대신
+  **앞으로 계속 쓸 작업 환경**을 손에 익히는 시간이다냥. 천천히
+  따라와보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - VSCode가 설치되어 있는지 확인
+  - 파이썬이 설치되어 있는지 확인
+</Callout>
+
+---
+
+<MissionCard number={1} title="작업 폴더 만들기" time="7~8분">
+
+앞으로 만들 파일들을 담아둘 집을 만들어보자냥.
+
+1. 바탕화면에서 마우스 **우클릭** → 새로 만들기 → 폴더
+2. 폴더 이름을 `python_study` 로 바꾸기
+3. VSCode를 열고 **파일 → 폴더 열기**로 방금 만든 폴더 선택하기
+
+> **확인해보자냥**
+> - VSCode 왼쪽에 `PYTHON_STUDY` 라고 폴더 이름이 보이냥?
+> - 폴더 이름에 **띄어쓰기와 한글은 피하자냥.** 나중에 문제가 생길 수 있다냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="첫 파이썬 파일 만들기" time="7~8분">
+
+이제 코드를 담을 파일을 만들어보자냥.
+
+1. 왼쪽 폴더 이름 옆의 **새 파일** 아이콘 누르기
+2. 파일 이름을 `hello.py` 라고 정확히 입력하기
+3. 아래 코드를 **직접 타이핑**해보기 (복사 붙여넣기 금지다냥!)
+
+```python
+print("hello world")
+```
+
+> **확인해보자냥**
+> - 파일 이름 끝이 `.py` 가 맞냥? `.txt` 면 실행되지 않는다냥.
+> - `print` 와 `"hello world"` 의 **색깔이 다르게** 보이냥? 그게 IDE의 색깔구분이다냥!
+
+<StepCard step="확인" title="실행하는 방법">
+
+오른쪽 위의 **실행 버튼(▶)** 을 누르거나, 터미널에 `python hello.py`
+라고 입력하면 된다냥. 아래쪽 터미널 창에 `hello world` 가 나오면
+성공이다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="오류를 일부러 만들어보기" time="8~10분">
+
+오류는 무서운 게 아니라 **알려주는 신호**다냥. 일부러 만들어보자냥!
+
+```python
+print("hello world"     # 닫는 괄호를 일부러 빼보자냥
+```
+
+> **확인해보자냥**
+> - 실행하기 **전에** VSCode가 이미 빨간 밑줄을 그어주냥? 그게 오류표시 기능이다냥.
+> - 실행하면 어떤 메시지가 나오냥? 영어로 나오지만 겁먹지 말고 읽어보자냥.
+> - 괄호를 다시 닫으면 밑줄이 사라지냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] `print()` 를 여러 줄 써서 내 이름과 좋아하는 것을 출력해보기
+- [ ] `hello.py` 말고 파일을 하나 더 만들어서 실행해보기
+- [ ] VSCode 확장 프로그램에서 `Python` 을 검색해서 설치해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 작업 폴더 만들고 VSCode로 열기
+  2. `.py` 파일 만들고 첫 코드 실행하기
+  3. 오류를 일부러 만들어보고 메시지 읽기
+
+  까지 해냈다냥! 특히 3번이 중요하다냥 — 앞으로 오류는 아주 자주
+  만난다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

@@ -1,0 +1,325 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '숫자 맞히기 게임 만들기',
+  description: '반복문과 조건문을 합쳐서, 정답을 맞힐 때까지 물어보는 게임을 만들어보자냥!',
+  session: 11,
+}
+
+# 숫자 맞히기 게임 만들기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘은 지금까지 배운 걸 전부 모아서 **진짜
+  게임**을 하나 만들어볼 거다냥. 컴퓨터가 마음속으로 숫자 하나를
+  정하고, 사람이 그걸 맞히는 게임이다냥. 기회는 딱 3번, 3번 안에
+  맞히면 사람 승리, 못 맞히면 컴퓨터 승리다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 게임을 규칙 → 필요한 재료 → 코드 순서로 설계할 수 있다.
+  - `random`, `while`, `if...elif...else`, `try...except` 를 하나의 프로그램 안에서 합쳐 쓸 수 있다.
+  - 역할이 다른 코드를 함수로 나눠서, 읽기 쉬운 프로그램을 만들 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 게임 규칙부터 정하기 (5분)
+
+<NyangSpeech>
+  코드를 바로 쓰기 전에, **무엇을 만들 건지 말로 먼저 정하는 것**이
+  훨씬 빠르다냥. 우리 게임의 규칙은 이렇다냥.
+</NyangSpeech>
+
+<StepCard step="설계" title="숫자 맞히기 게임의 규칙">
+
+| 순서 | 하는 일 |
+|---|---|
+| 1 | 게임 제목을 보여준다 |
+| 2 | 컴퓨터가 1에서 10 사이 숫자 하나를 몰래 정한다 |
+| 3 | 사람에게 숫자를 물어본다 |
+| 4 | 크면 "더 작은 수", 작으면 "더 큰 수" 라고 알려준다 |
+| 5 | 맞히면 바로 끝, 틀리면 시도 횟수를 1 늘린다 |
+| 6 | 3번을 다 쓰면 "you lose" 를 보여주고 끝낸다 |
+
+</StepCard>
+
+규칙이 정해졌으면, 각 줄마다 어떤 문법이 필요한지 짝을 지어보면 된다냥.
+
+<Callout type="note">
+  **이번에 활용할 재료**
+
+  1. 내장 함수 `print`
+  2. 표준 라이브러리 `random`
+  3. 반복문 `while`
+  4. 조건문 `if...elif...else`
+  5. 변수 만들기
+  6. 예외 처리 `try...except`
+
+  전부 이미 배운 것들이다냥! 새로운 문법은 하나도 없다냥. 오늘은
+  **조립하는 날**이다냥.
+</Callout>
+
+---
+
+## 2단계 · 게임 환영 타이틀 만들기 (5분)
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")  # 게임 타이틀
+    print("=====================")
+
+main()  # main 함수 호출
+```
+
+<Callout type="tip">
+  게임의 중요한 로직은 전부 `main()` 안에 담을 거다냥. `print()` 세
+  줄은 게임이 실행될 때 "무슨 게임인지" 알려주는 제목이다냥. 간단하지만
+  의미는 확실하게 전달된다냥!
+</Callout>
+
+---
+
+## 3단계 · while 로 기회를 세기 (10분)
+
+<NyangSpeech>
+  코드가 위에서 아래로 딱 한 번만 실행되면 게임이 될 수 없다냥.
+  물어보고, 또 물어보고를 반복해야 한다냥. 그런데 **무한히** 반복되면
+  안 되니까 끝나는 조건이 필요하다냥!
+</NyangSpeech>
+
+```python
+# main.py
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    chances = 3
+    attempts = 0
+    while attempts < chances:  # while 조건
+        input("guess my number: ")
+        attempts += 1
+    else:  # while 조건이 거짓이 되었을 때만 실행됨
+        print("you lose")
+
+main()
+```
+
+<StepCard step="핵심" title="변수 두 개가 하는 일">
+
+| 변수 | 뜻 |
+|---|---|
+| `chances` | 총 몇 번의 기회를 줄 것인가 (3) |
+| `attempts` | 지금까지 몇 번 시도했는가 (0에서 시작) |
+
+시도할 때마다 `attempts += 1` 로 1씩 늘어난다냥. `attempts` 가 3이
+되는 순간 `attempts < chances` 가 거짓이 되어 반복이 끝난다냥.
+
+</StepCard>
+
+<Callout type="important">
+  `while` 뒤에 붙은 `else` 는 **반복이 조건 때문에 끝났을 때만**
+  실행된다냥. 그래서 기회를 다 쓰면 `print("you lose")` 가 나온다냥.
+  나중에 배우겠지만 `break` 로 중간에 빠져나오면 이 `else` 는 실행되지
+  않는다냥 — 정답을 맞혔을 때 "you lose" 가 안 나오는 이유다냥!
+</Callout>
+
+---
+
+## 4단계 · 랜덤 숫자 만들기 (8분)
+
+```python
+# main.py
+import random  # 라이브러리 가져오기
+
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)  # 난수 생성
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        user_input = int(input("guess my number: "))  # int형으로 바꾸기
+        attempts += 1
+    else:
+        print("you lose")
+
+main()
+```
+
+<Callout type="note">
+  랜덤 숫자를 만들려면 `import random` 으로 라이브러리를 먼저
+  가져온다냥. `random.randint(1, 11)` 은 1에서 10 사이의 숫자를
+  하나 뽑아준다냥.
+
+  그리고 `input()` 이 주는 값은 언제나 **문자열**이다냥. 숫자와
+  비교하려면 `int()` 로 바꿔줘야 한다냥!
+</Callout>
+
+여기까지 만들고 실행한 다음, 숫자를 입력하지 않고 그냥 엔터를 눌러보면
+이상한 메시지가 나오면서 프로그램이 꺼져버린다냥. 다음 단계에서 그걸
+막아보자냥.
+
+---
+
+## 5단계 · 예외 처리로 프로그램 지키기 (8분)
+
+<NyangSpeech>
+  `int()` 는 문자열을 숫자로 바꿔주는 내장 함수다냥. 그런데
+  "안녕" 같은 글자는 숫자로 바꿀 수가 없다냥. 이럴 때 파이썬은
+  **예외**를 던지고, 아무도 안 받아주면 프로그램이 그대로 종료된다냥.
+</NyangSpeech>
+
+```python
+# main.py
+import random
+
+def main():
+    print("=====================")
+    print("number guessing game")
+    print("=====================")
+    answer = random.randint(1, 11)
+    chances = 3
+    attempts = 0
+    while attempts < chances:
+        try:  # 예외를 잡는 블록
+            user_input = int(input("guess my number: "))  # 여기서 예외가 날 수 있음
+            attempts += 1
+        except ValueError:  # ValueError 가 나면 여기가 실행됨
+            print("Invalid input. Only numbers are allowed")
+    else:
+        print("you lose")
+
+main()
+```
+
+<Callout type="important">
+  예외를 잡아주는 코드가 `try...except` 다냥. `try` 안에서 예외가
+  발생하면 코드의 흐름이 곧바로 `except` 로 넘어간다냥. `except`
+  안에서 반복을 끝내지 않으면 다시 `while` 의 처음으로 돌아간다냥 —
+  덕분에 잘못 입력해도 게임이 꺼지지 않는다냥!
+</Callout>
+
+---
+
+## 6단계 · 정답 확인은 함수에게 맡기기 (10분)
+
+정답을 확인하는 일은 `isCorrect` 라는 **따로 만든 함수**에게 맡길
+거다냥. 맞으면 `True`, 틀리면 `False` 를 돌려주는 함수다냥.
+
+```python
+# main.py
+def main():
+    ...
+    while attempts < chances:
+        try:
+            user_input = int(input("guess my number: "))
+            if isCorrect(answer, user_input):  # 정답 확인
+                break  # 정답이면 반복 중단
+            else:
+                attempts += 1  # 오답이면 시도 횟수 증가
+        except ValueError:
+            print("숫자를 입력하세요")
+    else:
+        print("you lose")
+```
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '한 함수에 다 몰아넣기',
+    color: 'blue',
+    items: [
+      '코드가 끝없이 길어짐',
+      '흐름을 눈으로 따라가기 어려움',
+      '고치려면 전체를 다시 읽어야 함',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '역할별로 함수 나누기',
+    color: 'purple',
+    items: [
+      'main 은 게임 흐름만 담당',
+      'isCorrect 는 정답 판정만 담당',
+      '고칠 곳을 바로 찾을 수 있음',
+    ],
+  }}
+/>
+
+<Callout type="tip">
+  모든 코드를 한곳에 몰아 쓰면 면발이 엉킨 것처럼 흐름을 알 수 없는
+  코드가 된다냥. 이걸 **스파게티 코드**라고 부른다냥. 막는 방법은
+  두 가지다냥 — **하나의 함수에는 한 가지 역할만**, 그리고 **길어지면
+  함수로 나누기**다냥.
+
+  [스파게티 코드 더 알아보기](https://namu.wiki/w/%EC%8A%A4%ED%8C%8C%EA%B2%8C%ED%8B%B0%20%EC%BD%94%EB%93%9C)
+</Callout>
+
+이제 `isCorrect` 함수 안을 채워보자냥. 크다, 작다, 같다 — 세 갈래니까
+`if...elif` 가 딱 맞는다냥.
+
+```python
+# main.py
+def isCorrect(answer, user_input):
+    if user_input > answer:
+        print(f"{user_input} 보다 작은 수입니다.")
+        return False
+    elif user_input < answer:
+        print(f"{user_input} 보다 큰 수입니다.")
+        return False
+    elif user_input == answer:
+        print("정답입니다.")
+        return True
+```
+
+<Callout type="note">
+  `isCorrect()` 는 `main` 함수 **밖** 어디에 써도 괜찮다냥. 다만
+  `main()` 을 호출하는 줄보다는 **위쪽**에 있어야 한다냥 — 파이썬은
+  위에서부터 읽기 때문에, 아직 배우지 않은 함수는 부를 수 없다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'while 반복이 3번만 돌게 만드는 두 변수는 각각 무슨 일을 하냥?',
+      answer: 'chances 는 총 기회 수(3)를 담고, attempts 는 지금까지 시도한 횟수를 센다냥. attempts 가 chances 와 같아지면 조건이 거짓이 되어 반복이 끝난다냥.',
+    },
+    {
+      question: 'input() 으로 받은 값을 왜 int() 로 바꿔야 하냥?',
+      answer: 'input() 은 언제나 문자열을 돌려주기 때문이다냥. 숫자끼리 크기를 비교하려면 int형으로 바꿔야 한다냥.',
+    },
+    {
+      question: 'try...except 를 빼면 어떤 일이 생기냥?',
+      answer: '숫자가 아닌 값을 입력하면 int() 에서 ValueError 가 나고, 아무도 잡아주지 않아서 프로그램이 그대로 종료된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 규칙을 정하고, `while` 로 기회를 세고, `random` 으로 정답을
+  만들고, `try...except` 로 프로그램을 지키고, 함수로 역할까지
+  나눠봤다냥! 이제 실습 페이지에서 게임을 처음부터 끝까지 직접
+  만들어보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

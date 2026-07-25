@@ -45,8 +45,8 @@ const slides: Slide[] = [
 		script: "첫 번째 미션입니다. 남자, 여자 열을 하나의 성별 열로 모읍니다. 모으고 싶은 열들을 리스트로 빈칸에 넣습니다. 10~12분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`길게 = pd.melt(df, id_vars=["연령대"],
-    value_vars=____)  # ["남자", "여자"]`}</CodeBlock>
+				<CodeBlock>{`길게 = pd.melt(df, id_vars=["연령대"], value_vars=____,
+    var_name="성별", value_name="인구수")  # ["남자", "여자"]`}</CodeBlock>
 				<div className="bg-white/70 rounded-xl p-4">
 					<p className="text-lg text-gray-600">💡 빈칸: [&quot;남자&quot;, &quot;여자&quot;]</p>
 				</div>

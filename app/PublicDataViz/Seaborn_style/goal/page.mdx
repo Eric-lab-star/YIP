@@ -42,14 +42,22 @@ export const metadata = {
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-plt.rcParams["font.family"] = "Malgun Gothic"  # 한글 폰트는 그대로 필요하다냥
 sns.set_theme(style="whitegrid")
+plt.rcParams["font.family"] = "Malgun Gothic"  # 한글 폰트는 set_theme 다음에!
 ```
 
 <Callout type="important">
   `sns.set_theme()`은 seaborn뿐 아니라, 이후에 그리는 **matplotlib
   그래프에도** 적용된다냥! `style="whitegrid"`는 은은한 격자무늬
   배경을 넣어주는 스타일이다냥.
+</Callout>
+
+<Callout type="tip">
+  **순서를 꼭 지키자냥!** `set_theme()`은 글꼴 설정까지 기본값으로
+  되돌려놓는다냥. 한글 폰트를 먼저 정하고 `set_theme()`을 나중에
+  부르면, 애써 정한 글꼴이 지워져서 그래프의 한글이 전부 □□□
+  네모로 보인다냥. **`set_theme()`을 먼저, 한글 폰트를 나중에**
+  기억해두자냥!
 </Callout>
 
 ---

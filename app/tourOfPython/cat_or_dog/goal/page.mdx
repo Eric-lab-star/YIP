@@ -1,0 +1,286 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '강아지와 고양이 1 — CLI 앱 만들기',
+  description: '배운 조건문으로, 질문에 답하면 반려동물을 추천해주는 CLI 앱을 만들어보자냥!',
+  session: 7,
+}
+
+# 강아지와 고양이 1 — CLI 앱 만들기
+
+<NyangSpeech>
+  와~~~ 지금까지 정말 많은 걸 배웠다냥! 변수, 함수, `input()`,
+  `type()`, `int()`, `if`, `else`, `elif`, 그리고 지난 시간엔
+  `and` `or` `not` 까지 배웠다냥. 이만큼 배웠으면 이제 하나하나
+  조립해서 **진짜 프로그램**을 만들 준비가 됐다냥. 오늘부터
+  두 시간에 걸쳐, 고양이나 강아지 품종을 추천해주는 앱을 만들어보자냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `input()` 으로 사용자의 입력을 받아 처리할 수 있다.
+  - 잘못된 입력을 `not` 과 `or` 로 걸러내고 `raise` 로 막을 수 있다.
+  - 기능마다 함수로 나눠서 코드를 정리할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 완성 예시와 CLI 앱 (5분)
+
+<video
+  src="https://r2.kimkyungsub.com/cat_or_dog.mp4"
+  preload="metadata"
+  controls
+  className="mx-auto h-70 bg-zinc-700"
+/>
+
+이렇게 **문자로만** 되어 있는 프로그램을 CLI 앱이라고 부른다냥. CLI는
+command line interface의 약자로, 그림 화면(GUI)과 대비되는 앱이다냥.
+그래픽이 없는 제한된 환경에서 주로 쓰이고, 개발자들이 편하게 일할 수
+있게 도와주는 도구들이 아주 많다냥.
+
+<Callout type="note">
+  [더 많은 CLI 앱 구경하기](https://github.com/agarrharr/awesome-cli-apps)
+
+  웹에서 코드를 작성해야 한다면 [codesandbox.io](https://codesandbox.io)
+  에서 작성해도 된다냥.
+</Callout>
+
+우리가 만들 프로그램은 간단하지만 재미있다냥. 사용자에게 **3가지
+질문**을 하고, 답에 맞는 품종을 추천해줄 거다냥.
+
+1. 고양이가 좋아 강아지가 좋아?
+2. 검은색이 좋아 흰색이 좋아?
+3. 원하는 크기 있어?
+
+<Callout type="tip">
+  정확하지도 않고 불편한 제약도 많은 프로그램을 왜 만드냥? **작은
+  프로젝트를 직접 만들면서 파이썬에 익숙해지는 것**이 진짜 목표이기
+  때문이다냥. 완벽한 앱이 아니라 완성한 앱이 실력을 만든다냥!
+</Callout>
+
+---
+
+## 2단계 · start() 함수로 시작하기 (8분)
+
+```python
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+```
+
+함수를 배운 지 너무 오래돼서 잊어버린 건 아니냥? 우리 프로그램의 모든
+코드는 `start()` 가 실행될 때 실행되도록 만들 거다냥. 우선 이 함수를
+쓰고 실행해서 출력창에 "반려견 또는 반려묘를 추천해 드려요." 가
+나오는지 확인해보자냥.
+
+---
+
+## 3단계 · 입력을 함수로 분리하기 (10분)
+
+이제 사용자가 원하는 게 고양이인지 강아지인지 확인해야겠다냥.
+`input()` 을 쓰면 쉽게 물어볼 수 있다냥.
+
+```python
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ")
+```
+
+그런데 문제가 하나 생긴다냥. 우리는 고양이나 강아지를 입력받고
+싶은데, 사용자가 **코끼리**를 입력해도 막을 방법이 없다냥. 곧 막는
+코드를 넣을 텐데, 그러면 `start()` 가 점점 길어진다냥. 이럴 때는
+새 함수로 **분리**하는 게 좋은 방법이다냥.
+
+```python
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    animal = cat_or_dog()
+
+def cat_or_dog():
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ")
+    return cat_dog.strip()
+```
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: 'start() 안에 전부',
+    color: 'blue',
+    items: [
+      '기능을 넣을수록 함수가 길어짐',
+      '어디를 고쳐야 할지 찾기 어려움',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: '함수로 분리',
+    color: 'purple',
+    items: [
+      'start() 는 짧고 읽기 쉬움',
+      'cat_or_dog() 만 고치면 됨',
+    ],
+  }}
+/>
+
+---
+
+## 4단계 · 잘못된 입력 걸러내기 (12분)
+
+```python
+def cat_or_dog():
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ").strip()  # <-- 추가
+    if not (cat_dog == "고양이" or cat_dog == "강아지"):  # <-- 추가
+        raise ValueError("오류!!!!!")  # <-- 추가
+    return cat_dog
+```
+
+새로운 코드가 세 개 들어갔다냥. 하나씩 뜯어보자냥.
+
+<StepCard step="하나" title=".strip() — 앞뒤 공백 지우기">
+
+`.strip()` 은 단어 앞뒤에 있을 수 있는 **공백을 제거**한다냥. 공백도
+엄연한 글자라서, 공백이 있는 단어와 없는 단어는 서로 같은 값이
+아니다냥. 사용자가 실수로 스페이스를 눌러도 통과시켜주려고 넣은
+코드다냥.
+
+[클릭해서 .strip() 더 알아보기](https://docs.python.org/3/library/stdtypes.html#str.strip)
+
+</StepCard>
+
+<StepCard step="둘" title="not (A or B) — 둘 다 아닐 때">
+
+`cat_dog == "고양이" or cat_dog == "강아지"` 는 고양이일 때도 참,
+강아지일 때도 참이다냥. 그런데 앞에 `not` 을 붙여서 참을 거짓으로
+뒤집어버렸다냥.
+
+결국 **고양이도 강아지도 아닐 때** `if` 의 조건이 참이 되는
+거다냥. 지난 시간에 배운 `or` 와 `not` 이 여기서 쓰인다냥!
+
+</StepCard>
+
+<StepCard step="셋" title="raise ValueError() — 일부러 에러 내기">
+
+고양이도 강아지도 아닌 값은 프로그램이 원하는 상황이 아니다냥. 그래서
+**일부러 에러를 발생시켜서** 프로그램을 중단시켜버릴 거다냥. 그게
+`raise ValueError()` 다냥.
+
+`raise` 는 의도적으로 오류를 일으켜 코드의 흐름을 바꾸는 방법이고,
+`ValueError()` 는 어떤 에러인지 알려주는 이름이다냥. 에러를 만들고
+회복시키지 않으면 프로그램이 종료된다냥. 이번엔 일부러 잡지 않고
+종료시킬 거다냥.
+
+</StepCard>
+
+<Callout type="important">
+  이렇게 하면 `cat_or_dog()` 가 돌려주는 값은 **반드시 "고양이" 또는
+  "강아지"** 가 된다냥. 뒤에서 이 값을 쓸 때 이상한 값이 섞여 있을까
+  걱정하지 않아도 되는 거다냥!
+</Callout>
+
+---
+
+## 5단계 · 색과 크기도 같은 방식으로 (8분)
+
+<NyangSpeech>
+  다음은 어떤 색을 원하는지 확인할 차례다냥. 간단하게 만들려고 흰색과
+  검정색만 받을 수 있게 제한했다냥. 앞에서 고양이·강아지를 구별하고
+  잘못된 값을 걸러낸 방식을 **그대로** 쓰면 된다냥. 한번 스스로
+  만들어볼 수 있겠냥?
+</NyangSpeech>
+
+```python
+def black_or_white():
+    color = input("검정색과 흰색중 하나를 입력하세요\n 검정색 또는 흰색 입력: ").strip()
+    if not (color == "검정색" or color == "흰색"):
+        raise ValueError("오류!!!!!")
+    return color
+```
+
+크기도 같은 방식이다냥. 다만 선택지가 셋이니 `or` 를 하나 더 이어주면
+된다냥.
+
+```python
+def small_medium_large():
+    size = input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    if not (size == "소형" or size == "중형" or size == "대형"):
+        raise ValueError("오류!!!!")
+    return size
+```
+
+<StepCard step="중간 점검" title="여기까지 하면 이런 코드가 나온다냥">
+
+```python
+def cat_or_dog():
+    cat_dog = input("고양이가 좋아 강아지가 좋아?\n 고양이 또는 강아지 입력: ").strip()
+    if not (cat_dog == "고양이" or cat_dog == "강아지"):
+        raise ValueError("오류!!!!!")
+    return cat_dog
+
+def black_or_white():
+    color = input("검정색과 흰색중 하나를 입력하세요\n 검정색 또는 흰색 입력: ").strip()
+    if not (color == "검정색" or color == "흰색"):
+        raise ValueError("오류!!!!!")
+    return color
+
+def small_medium_large():
+    size = input("원하는 크기가 있어?: \n 소형 또는 중형 또는 대형 입력: ").strip()
+    if not (size == "소형" or size == "중형" or size == "대형"):
+        raise ValueError("오류!!!!")
+    return size
+
+
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    animal = cat_or_dog()
+    color = black_or_white()
+    size = small_medium_large()
+```
+
+</StepCard>
+
+<Callout type="note">
+  아직 추천은 안 해준다냥. 지금은 **정보를 모으는 단계**까지 온
+  거다냥. 모은 정보로 실제 품종을 추천하는 건 다음 시간에 이어서
+  만들 거다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'input() 뒤에 .strip() 을 붙이는 이유가 뭐냥?',
+      answer: '앞뒤 공백을 지우기 위해서다냥. 공백도 글자라서 " 고양이" 와 "고양이" 는 서로 다른 값이다냥.',
+    },
+    {
+      question: 'not (cat_dog == "고양이" or cat_dog == "강아지") 는 언제 참이 되냥?',
+      answer: '고양이도 아니고 강아지도 아닐 때 참이 된다냥. or 로 두 경우를 묶고 not 으로 뒤집었기 때문이다냥.',
+    },
+    {
+      question: 'raise ValueError() 를 쓰면 어떻게 되냥?',
+      answer: '일부러 에러를 발생시켜서 프로그램을 중단시킨다냥. 덕분에 함수는 우리가 원하는 값만 돌려주게 된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 CLI 앱의 뼈대를 세우고, 입력을 함수로 나누고, 잘못된 입력을
+  막는 법까지 배웠다냥! 이제 실습 페이지에서 직접 앱을 만들어보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

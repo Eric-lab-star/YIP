@@ -1,0 +1,174 @@
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '내장함수 실습 — 꺼내 쓰고, 바꿔 쓰고, 가져와 쓰기',
+  description: '개념 확인 문제부터 주사위 만들기까지, 내장함수와 표준 라이브러리를 직접 써보자냥!',
+  session: 10,
+}
+
+# 내장함수 실습 — 꺼내 쓰고, 바꿔 쓰고, 가져와 쓰기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 35분 동안 미리 만들어진 도구들을
+  직접 꺼내 써볼 거다냥. 마지막 미션에서는 `import` 로 라이브러리를
+  가져와서 진짜 주사위를 만들어볼 거다냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 개념 강의에서 본 `input` / `int` / `len` / `range` / `max` / `min` 정리
+</Callout>
+
+---
+
+<MissionCard number={1} title="개념 확인하기" time="8~10분">
+
+먼저 스스로 답을 생각하고 골라보자냥. 헷갈리는 문제가 있으면 개념
+강의로 돌아가서 다시 확인해도 좋다냥!
+
+<QuizzWithOptions answer={3} question="1. 문자열의 길이를 알려주는 내장함수는?">
+  <Option value={1}>int()</Option>
+  <Option value={2}>range()</Option>
+  <Option value={3}>len()</Option>
+  <Option value={4}>input()</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`print(max(3, 10, 7))`} />
+  <Option value={1}>3</Option>
+  <Option value={2}>10</Option>
+  <Option value={3}>7</Option>
+  <Option value={4}>20</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="3. range(5) 가 만드는 숫자의 범위는?">
+  <Option value={1}>1, 2, 3, 4, 5</Option>
+  <Option value={2}>0, 1, 2, 3, 4, 5</Option>
+  <Option value={3}>1, 2, 3, 4</Option>
+  <Option value={4}>0, 1, 2, 3, 4</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="4. 표준 라이브러리를 가져올 때 쓰는 키워드는?">
+  <Option value={1}>import</Option>
+  <Option value={2}>def</Option>
+  <Option value={3}>return</Option>
+  <Option value={4}>print</Option>
+</QuizzWithOptions>
+
+<StepCard step="확인" title="3번이 헷갈렸다면">
+
+`range` 의 **끝 숫자는 포함되지 않는다냥.** `range(5)` 는 0부터
+시작해서 5 **직전까지**, 즉 0, 1, 2, 3, 4 다냥. 개수로 세면 딱
+다섯 개다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="input 과 int 로 계산기 만들기" time="8~10분">
+
+빈칸(`____`)을 채워서 두 숫자를 더하는 계산기를 만들어보자냥.
+
+```python
+a = ____(input("첫 번째 숫자: "))
+b = ____(input("두 번째 숫자: "))
+
+print(a + b)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `input()` 은 언제나 **문자열**을 준다냥. 숫자로 더하려면 무엇으로 감싸야 하냥?
+> - 빈칸을 지우고 그냥 실행해보자냥. 12와 3을 넣으면 15가 아니라 `123` 이 나온다냥!
+> - 소수점까지 계산하고 싶으면 `int` 대신 무엇을 쓰면 되냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="len, max, min 써보기" time="8~10분">
+
+미리 만들어진 도구로 리스트를 살펴보자냥.
+
+```python
+numbers = [4, 8, 2, 9, 5]
+
+print(____(numbers))     # 가장 작은 값
+print(____(numbers))     # 가장 큰 값
+print(____(numbers))     # 값이 몇 개인지
+
+이름 = input("이름을 입력하세요: ")
+print(____(이름))        # 이름이 몇 글자인지
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 가장 작은 값은 `min`, 가장 큰 값은 `max`, 개수와 길이는 둘 다 `len` 이다냥.
+> - 차례대로 2, 9, 5 가 나오냥?
+> - `len` 은 리스트의 **개수**도, 문자열의 **글자 수**도 알려준다냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="random 으로 주사위 만들기" time="10~12분">
+
+이제 표준 라이브러리를 가져와서 진짜 주사위를 만들어보자냥.
+
+```python
+____ random
+
+def roll():
+    return random.____(1, 6)
+
+print(roll())
+print(roll())
+print(roll())
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 라이브러리를 가져오는 키워드는 `import` 다냥.
+> - 정해진 범위에서 정수를 뽑아주는 함수는 `randint` 다냥.
+> - `randint(1, 6)` 은 1과 6을 **둘 다 포함한다냥.** `range` 와 다르니 헷갈리지 말자냥!
+> - 실행할 때마다 숫자가 달라지냥? 달라지지 않으면 뭔가 잘못된 거다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 주사위를 100번 굴려서, 6이 몇 번 나오는지 세어보기 (반복문과 함께)
+- [ ] `input()` 으로 숫자 세 개를 받아 가장 큰 값을 출력하는 프로그램 만들기
+- [ ] `random.choice()` 를 찾아보고, 오늘 저녁 메뉴를 랜덤으로 뽑아주는 프로그램 만들기
+- [ ] 파이썬 공식 문서에서 처음 보는 내장함수를 하나 골라, 무엇을 하는지 친구에게 설명해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 내장함수 개념 확인하기
+  2. `input` 과 `int` 로 계산기 만들기
+  3. `len`, `max`, `min` 직접 써보기
+  4. `import random` 으로 주사위 만들기
+
+  까지 해냈다냥! 특히 4번에서 배운 `random` 은 다음 시간에 만들
+  숫자 맞추기 게임의 핵심 재료다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

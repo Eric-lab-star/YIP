@@ -54,7 +54,7 @@ print(df)
 
 <Callout type="important">
   이 데이터는 "남자"와 "여자"가 **각각 다른 열**로 나뉘어 있다냥.
-  남녀를 그래프에서 나란히 비교하려면, 두 번째 프로젝트에서 배운
+  남녀를 그래프에서 나란히 비교하려면, 프로젝트 1에서 배운
   `melt()`로 형태를 바꿔줘야 한다냥!
 </Callout>
 
@@ -73,8 +73,8 @@ print(df)
     label: '펼치기 전',
     color: 'blue',
     items: [
+      '남자, 여자가 각각 다른 열로 나뉨',
       '연령대 | 남자 | 여자',
-      '10대   | 4200 | 4000',
     ],
   }}
   right={{
@@ -82,8 +82,8 @@ print(df)
     label: '펼친 후',
     color: 'purple',
     items: [
+      '성별이 하나의 열에 모임',
       '연령대 | 성별 | 인구수',
-      '10대   | 남자 | 4200',
     ],
   }}
 />
@@ -118,8 +118,8 @@ print(길게)
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-plt.rcParams["font.family"] = "Malgun Gothic"
 sns.set_theme(style="whitegrid")
+plt.rcParams["font.family"] = "Malgun Gothic"
 
 sns.barplot(data=길게, x="연령대", y="인구수", hue="성별")
 plt.title("연령대별 남녀 인구 비교")

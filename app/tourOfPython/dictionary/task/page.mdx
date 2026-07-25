@@ -1,0 +1,242 @@
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '딕셔너리 실습 — 이름표로 찾고, 세고, 정리하기',
+  description: '개념 확인 문제부터 재고 관리·단어 빈도 분석까지, 딕셔너리를 직접 다뤄보자냥!',
+  session: 14,
+}
+
+# 딕셔너리 실습 — 이름표로 찾고, 세고, 정리하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 30분 동안 딕셔너리를 직접 다뤄볼
+  거다냥. 딕셔너리는 실제 프로그램에서 정말 많이 쓰니까, 손에 꼭
+  익혀두자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 파이썬을 실행할 수 있는 편집기
+  - 개념 강의에서 본 keys / values / items 비교표
+</Callout>
+
+---
+
+<MissionCard number={1} title="개념 확인하기" time="8~10분">
+
+먼저 스스로 답을 생각하고 골라보자냥.
+
+<QuizzWithOptions answer={2} question="1. 다음 중 딕셔너리를 올바르게 만드는 방법은?">
+  <Option value={1}>{'d = [1: "a", 2: "b"]'}</Option>
+  <Option value={2}>{'d = {1: "a", 2: "b"}'}</Option>
+  <Option value={3}>{'d = (1: "a", 2: "b")'}</Option>
+  <Option value={4}>{'d = <1: "a", 2: "b">'}</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"name": "철수", "age": 13}
+print(d["name"])`} />
+  <Option value={1}>철수</Option>
+  <Option value={2}>13</Option>
+  <Option value={3}>name</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="3. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"x": 10, "y": 20}
+d["x"] = 99
+print(d["x"])`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>99</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="4. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+print(d["c"])`} />
+  <Option value={1}>None</Option>
+  <Option value={2}>0</Option>
+  <Option value={3}>c</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="5. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+print(d.get("c", 0))`} />
+  <Option value={1}>에러 발생</Option>
+  <Option value={2}>0</Option>
+  <Option value={3}>None</Option>
+  <Option value={4}>c</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="6. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"name": "영희", "score": 100}
+print(list(d.keys()))`} />
+  <Option value={1}>['name', 'score']</Option>
+  <Option value={2}>['영희', 100]</Option>
+  <Option value={3}>[('name', '영희'), ('score', 100)]</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="7. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2, "c": 3}
+del d["b"]
+print(len(d))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="8. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"apple": 3, "banana": 5}
+print("banana" in d)`} />
+  <Option value={1}>False</Option>
+  <Option value={2}>True</Option>
+  <Option value={3}>5</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="9. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"a": 1, "b": 2}
+d["c"] = 3
+print(len(d))`} />
+  <Option value={1}>1</Option>
+  <Option value={2}>2</Option>
+  <Option value={3}>3</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="10. 다음 코드의 출력 결과는?">
+  <CodeBlock code={`d = {"x": 10, "y": 20, "z": 30}
+total = 0
+for v in d.values():
+    total += v
+print(total)`} />
+  <Option value={1}>10</Option>
+  <Option value={2}>20</Option>
+  <Option value={3}>30</Option>
+  <Option value={4}>60</Option>
+</QuizzWithOptions>
+
+<StepCard step="확인" title="4번과 5번을 나란히 보자냥">
+
+같은 "없는 키"인데 4번은 **에러**, 5번은 **0**이 나온다냥. 대괄호
+`d["c"]` 는 없으면 멈추고, `d.get("c", 0)` 은 기본값을 돌려준다냥.
+이 차이가 딕셔너리에서 가장 자주 만나는 함정이다냥!
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="성적표 만들기" time="8~10분">
+
+빈칸(`____`)을 채워서 코드를 완성해보자냥.
+
+```python
+scores = {"국어": 90, "영어": 80, "수학": 100}
+
+scores["과학"] = ____          # 과학 85점 추가하기
+
+합계 = sum(scores.____())      # 값만 모아서 더하기
+평균 = 합계 / ____(scores)     # 과목 수로 나누기
+
+print("합계:", 합계)
+print("평균:", 평균)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 값만 모으는 건 `values()` 다냥.
+> - 과목이 몇 개인지 세는 건 `len()` 이다냥.
+> - 합계 355, 평균 88.75 가 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="편의점 재고 관리" time="10~12분">
+
+`items()` 로 키와 값을 함께 꺼내보자냥.
+
+```python
+재고 = {"콜라": 5, "사이다": 0, "물": 12}
+
+for 상품, 개수 in 재고.____():
+    if 개수 == 0:
+        print(상품, "품절!")
+    else:
+        print(상품, 개수, "개")
+
+재고["콜라"] = 재고["콜라"] - ____   # 콜라 2개 판매
+print(재고)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 키와 값을 짝으로 꺼내는 건 `items()` 다냥.
+> - 2개를 팔았으니 빼는 값도 2 다냥.
+> - "사이다 품절!" 이 나오고, 콜라가 3으로 바뀌냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="단어 빈도 분석기" time="10~12분">
+
+딕셔너리가 가장 빛나는 순간이다냥. 무엇이 몇 번 나왔는지 세어보자냥!
+
+```python
+words = ["사과", "바나나", "사과", "딸기", "사과", "바나나"]
+
+세기 = {}
+for w in words:
+    세기[w] = 세기.____(w, 0) + 1
+
+print(세기)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 처음 보는 단어는 아직 키가 없다냥. 그래서 `get(w, 0)` 으로 "없으면 0"부터 시작한다냥.
+> - 대괄호로 꺼내면 첫 단어에서 바로 에러가 난다냥. 왜 그런지 생각해보자냥!
+> - `{'사과': 3, '바나나': 2, '딸기': 1}` 이 나오냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 나라와 수도를 담은 딕셔너리로 수도 맞히기 퀴즈 만들어보기
+- [ ] 성적표에서 가장 점수가 높은 과목의 이름을 찾아 출력해보기
+- [ ] 단어 빈도 결과에서 2번 이상 나온 단어만 골라 출력해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 딕셔너리 개념 확인하기
+  2. 성적표 합계와 평균 구하기
+  3. items()로 재고 관리하기
+  4. get()으로 단어 세어보기
+
+  까지 해냈다냥! 특히 4번의 `get(키, 0)` 패턴은 앞으로도 정말 자주
+  쓰게 될 거다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

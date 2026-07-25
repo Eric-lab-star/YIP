@@ -1,0 +1,156 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '변수 실습 — 담고, 바꾸고, 구분하기',
+  description: '변수를 만들고 실행 순서를 실험하고, 문자열과 불리언을 직접 구분해보자냥!',
+  session: 2,
+}
+
+# 변수 실습 — 담고, 바꾸고, 구분하기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지금부터 약 30분 동안 변수를 직접 다뤄볼
+  거다냥. 특히 **오류를 일부러 만들어보는 미션**이 있다냥. 오류는
+  친구니까 겁먹지 말자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 지난 시간에 만든 작업 폴더와 VSCode
+  - 개념 강의에서 본 변수 이름 규칙
+</Callout>
+
+---
+
+<MissionCard number={1} title="변수 만들고 계산하기" time="7~8분">
+
+빈칸(`____`)을 채워서 완성해보자냥.
+
+```python
+a = 2
+b = 3
+c = a ____ b
+print(c)      # 5 가 나와야 한다냥
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 5를 만들려면 두 값을 어떻게 해야 하냥?
+> - `print(c)` 대신 `print(a + b)` 라고 써도 결과가 같냥? 직접 해보자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="실행 순서 실험하기" time="8~10분">
+
+개념 강의에서 배운 걸 **직접 눈으로** 확인해보자냥.
+
+```python
+# 실험 1
+a = 2
+b = 3
+c = a + b
+a = 3
+print(c)     # 몇이 나오냥?
+```
+
+```python
+# 실험 2 — a = 3 을 위로 올려보자냥
+a = 2
+b = 3
+a = 3
+c = a + b
+print(c)     # 이번엔 몇이 나오냥?
+```
+
+> **확인해보자냥**
+> - 실험 1은 5, 실험 2는 6이 나오냥?
+> - 왜 다른지 옆 친구에게 설명해보자냥. 설명할 수 있으면 완전히 이해한 거다냥!
+
+<StepCard step="핵심" title="한 줄 요약">
+
+파이썬은 **위에서 아래로** 실행한다냥. `c` 는 계산되는 그 순간의
+`a`, `b` 값으로 정해지고, 그 뒤에 `a` 가 바뀌어도 되돌아가지 않는다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="변수 이름 규칙 확인하기" time="7~8분">
+
+아래 다섯 줄을 직접 써보고, **어느 줄에서 오류가 나는지** 확인해보자냥.
+
+```python
+my age = 30
+my_age = 30
+10_age = 20
+age_10 = 10
+@age_10 = 10
+```
+
+> **확인해보자냥**
+> - 오류가 나는 줄은 몇 개냥? (답: 3개다냥)
+> - 오류 줄을 하나씩 지워가면서 실행해보자냥. VSCode가 실행 전에 이미 표시해주냥?
+> - 오류가 난 세 줄을 **규칙에 맞게 고쳐서** 다시 써보자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="문자열과 불리언 구분하기" time="8~10분">
+
+따옴표가 있느냐 없느냐로 완전히 달라진다냥.
+
+```python
+food = ____        # apple 이라는 글자를 담아보자냥
+year = "2026"
+dead = ____        # 거짓을 담아보자냥
+
+print(food)
+print(year + "년")
+print(dead)
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 글자를 담을 때는 따옴표로 감싼다냥.
+> - 불리언은 따옴표 **없이**, 첫 글자는 **대문자**다냥.
+> - `year + "년"` 은 왜 계산이 아니라 이어붙이기가 되냥? 따옴표를 다시 보자냥!
+> - `dead = "False"` 로 바꾸면 무엇이 달라지냥? `type(dead)` 로 확인해보자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="시간이 남는다면?" time="선택">
+
+빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
+
+- [ ] 내 이름, 나이, 사는 도시를 각각 변수에 담고 한 줄씩 출력해보기
+- [ ] `year = 2026` (따옴표 없이) 로 바꾸고 `year + "년"` 을 실행해서 어떤 오류가 나는지 읽어보기
+- [ ] 변수 이름을 snake_case 로 세 개 지어보고 왜 그렇게 지었는지 말해보기
+
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥! 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. 변수를 만들고 계산하기
+  2. 실행 순서를 직접 실험하기
+  3. 변수 이름 규칙 확인하기
+  4. 문자열과 불리언 구분하기
+
+  까지 해냈다냥! 특히 2번 실험에서 5와 6이 갈리는 이유를 설명할 수
+  있다면 오늘은 대성공이다냥. 다들 정말 멋지게 해냈다냥, 냐옹~
+</NyangSpeech>

@@ -1,0 +1,224 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '내장함수와 표준 라이브러리',
+  description: '파이썬이 기본으로 주는 내장 함수와 표준 라이브러리를 꺼내 써보자냥!',
+  session: 10,
+}
+
+# 내장함수와 표준 라이브러리
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 그림을 그리려는데 **연필부터 직접 만들어야
+  한다면** 어떻겠냥? 나무를 깎고 흑연을 넣고... 상상만 해도 끔찍하다냥.
+  연필은 이미 만들어진 걸 사서 쓰고, 그림에만 집중하는 게 훨씬
+  현명하다냥. 오늘 배울 **내장함수**가 바로 그 잘 만들어진 연필이다냥!
+</NyangSpeech>
+
+<Callout type="analogy">
+  내장함수는 파이썬을 설치할 때 **같이 설치되는 미리 만들어진
+  함수들**이다냥. 잘 만들어진 바퀴, 연필, 샤프심 같은 거다냥.
+  가져다 쓰기만 하면 된다냥!
+</Callout>
+
+[더 많은 내장 함수 구경하기](https://docs.python.org/3/library/functions.html)
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `input`, `int`, `float` 로 사용자 입력을 받아 원하는 자료형으로 바꿀 수 있다.
+  - `len`, `range`, `max`, `min` 을 상황에 맞게 골라 쓸 수 있다.
+  - `import` 로 표준 라이브러리를 가져와 그 안의 함수를 쓸 수 있다.
+</Callout>
+
+---
+
+## 1단계 · input — 키보드로 입력받기 (8분)
+
+지금까지 계속 써 온 `input` 이 대표적인 내장함수다냥. 공식 문서를
+읽어보면 `input(prompt, /)` 라고 나와 있다냥. 여기서 `prompt` 는
+**입력 안내 문구**가 들어가는 자리다냥.
+
+```python
+name = input("what is your name ")
+```
+
+"what is your name " 이라는 문구를 먼저 보여줘서, 무엇을 입력해야
+하는지 알려주고 있다냥.
+
+<StepCard step="핵심" title="input 에 대해 꼭 기억할 세 가지">
+
+| 번호 | 기억할 것 |
+|---|---|
+| 1 | 괄호 안의 글자는 **안내 문구**일 뿐, 입력값이 아니다 |
+| 2 | 엔터를 눌러도 **줄바꿈 기호는 저장되지 않는다** |
+| 3 | 저장되는 값은 **언제나 문자열**이다 |
+
+</StepCard>
+
+<Callout type="important">
+  3번이 가장 중요하다냥! 나이를 입력받아도 그건 숫자가 아니라
+  글자 "12" 다냥. 그래서 계산을 하려면 반드시 형을 바꿔줘야 한다냥.
+</Callout>
+
+---
+
+## 2단계 · int, float — 형 바꾸기 (6분)
+
+```python
+age = int("12")
+pi = float("3.14")
+```
+
+`int` 는 문자열 "12"를 정수 12로, `float` 은 문자열 "3.14"를 실수
+3.14로 바꿔준다냥.
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: '형을 안 바꾸면',
+    color: 'blue',
+    items: [
+      '"12" + "3" → "123" (글자 이어붙이기)',
+      '올바른 계산이 안 됨',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: 'int 로 바꾸면',
+    color: 'purple',
+    items: [
+      'int("12") + int("3") → 15',
+      '숫자로 제대로 계산됨',
+    ],
+  }}
+/>
+
+---
+
+## 3단계 · len — 길이 재기 (5분)
+
+```python
+len("hello")
+```
+
+`len` 을 쓰면 문자열의 **길이**를 알 수 있다냥. "hello" 는 다섯
+글자니까 5가 나온다냥. 리스트에 쓰면 담긴 값의 **개수**를 알려준다냥.
+
+---
+
+## 4단계 · range — 숫자 범위 만들기 (6분)
+
+```python
+for i in range(5):
+    print(i)
+```
+
+`range` 는 `for` 반복문에서 **범위를 만들어주는** 역할을 한다냥.
+`range(5)` 는 0, 1, 2, 3, 4 를 뜻하고 **5는 포함하지 않는다냥.**
+
+<Callout type="tip">
+  지난 시간 반복문에서 이미 만난 친구다냥! 끝 숫자를 포함하지
+  않는다는 규칙만 기억하면 된다냥.
+</Callout>
+
+---
+
+## 5단계 · max, min — 가장 큰 값, 가장 작은 값 (5분)
+
+```python
+big = max(3, 10, 7)
+small = min(5, 2, 9)
+print(big)    # 10
+print(small)  # 2
+```
+
+`max` 는 가장 큰 값을, `min` 은 가장 작은 값을 찾아준다냥. 값을
+여러 개 나열해도 되고, 리스트를 통째로 넣어도 된다냥.
+
+---
+
+## 6단계 · 표준 라이브러리 가져오기 (10분)
+
+<NyangSpeech>
+  표준 라이브러리도 파이썬을 설치할 때 함께 깔린다냥. 그런데
+  내장함수와 다른 점이 하나 있다냥. 종류가 **너무너무 많아서**
+  필요한 것만 골라서 꺼내 쓰도록 되어 있다냥. 도서관에서 읽고
+  싶은 책만 뽑아오는 것과 똑같다냥!
+</NyangSpeech>
+
+[더 많은 표준 라이브러리 구경하기](https://docs.python.org/3/library/index.html)
+
+종류가 너무 많고 다양해서 전부 외우지는 않는다냥. 하지만 **어떻게
+꺼내오는지**는 알아둘 필요가 있다냥.
+
+```python
+import random
+
+def get_rnd():
+    return random.randint(0, 10)
+
+def main():
+    a = get_rnd()
+    b = get_rnd()
+    c = get_rnd()
+    d = get_rnd()
+
+    print(a, b, c, d)
+```
+
+<StepCard step="핵심" title="라이브러리 쓰는 두 단계">
+
+| 순서 | 하는 일 | 코드 |
+|---|---|---|
+| 1 | 맨 위에서 가져온다 | `import random` |
+| 2 | 이름 뒤에 점을 찍고 함수를 쓴다 | `random.randint(0, 10)` |
+
+</StepCard>
+
+`import` 를 써야 라이브러리를 가져올 수 있다냥. 가져온 다음에는
+**라이브러리 이름 뒤에 점(`.`)** 을 붙여서 안에 있는 함수를 쓴다냥.
+이 프로그램을 실행할 때마다 출력되는 숫자가 달라지는 걸 볼 수
+있다냥!
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'input() 으로 받은 값의 자료형은 뭐냥?',
+      answer: '언제나 문자열이다냥! 숫자로 계산하려면 int()나 float()으로 바꿔줘야 한다냥.',
+    },
+    {
+      question: 'max() 와 min() 은 각각 무엇을 찾아주냥?',
+      answer: 'max()는 가장 큰 값, min()은 가장 작은 값을 찾아준다냥.',
+    },
+    {
+      question: 'random 라이브러리의 randint 를 쓰려면 어떻게 해야 하냥?',
+      answer: '먼저 맨 위에 import random 을 쓰고, random.randint(0, 10) 처럼 이름 뒤에 점을 찍고 부른다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 미리 만들어진 도구들을 꺼내 쓰는 법을 배웠다냥! 세상의
+  모든 코드를 처음부터 만들 필요는 없다냥. 이미 잘 만들어진 게
+  있으면 가져다 쓰고, 남은 힘은 **내가 진짜 만들고 싶은 것**에
+  쓰는 게 프로그래머의 지혜다냥. 이제 실습 페이지로 가보자냥.
+  발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

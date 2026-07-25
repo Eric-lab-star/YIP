@@ -9,7 +9,7 @@ const slides: Slide[] = [
 	{
 		title: "",
 		bg: "from-blue-50 to-indigo-50",
-		script: "안녕하세요, 여러분. 지난 시간에 카페 데이터를 깨끗하게 정리했습니다. 오늘은 그 데이터를 진짜 지도 위에 마커로 찍어보겠습니다. 기초 과정에서 배운 folium을 다시 활용합니다.",
+		script: "안녕하세요, 여러분. 지난 시간에 상가 데이터를 깨끗하게 정리했습니다. 오늘은 그 데이터를 진짜 지도 위에 마커로 찍어보겠습니다. 기초 과정에서 배운 folium을 다시 활용합니다.",
 		content: (
 			<div className="flex flex-col items-center justify-center h-full gap-6 text-center">
 				<span className="text-8xl">📍</span>
@@ -40,7 +40,7 @@ const slides: Slide[] = [
 		),
 	},
 	{
-		title: "카페 마커 찍기",
+		title: "상가 마커 찍기",
 		bg: "from-green-50 to-emerald-50",
 		script: "기초 과정에서 배운 iterrows와 Marker를 다시 씁니다. location은 지도의 중심, zoom_start는 확대 정도, for 반복문으로 각 행마다 마커를 찍습니다.",
 		content: (
@@ -83,7 +83,7 @@ const slides: Slide[] = [
 		script: "색상표 딕셔너리의 get 메서드는 값을 찾되 없으면 기본값을 씁니다. 혹시 새로운 업종이 나와도 에러 없이 회색으로 표시됩니다.",
 		content: (
 			<div className="flex flex-col gap-5">
-				<CodeBlock>{`색상표 = {"카페": "blue", "치킨": "red"}
+				<CodeBlock>{`색상표 = {"카페": "blue", "치킨": "red", "분식": "green"}
 icon=folium.Icon(color=색상표.get(row["업종"], "gray"))`}</CodeBlock>
 				<div className="bg-amber-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">💡 딕셔너리.get(키, 기본값)</p>
@@ -112,7 +112,7 @@ folium.Marker(...).add_to(클러스터)`}</CodeBlock>
 		content: (
 			<div className="flex flex-col gap-4">
 				<div className="bg-green-50 rounded-xl p-4">
-					<p className="text-lg text-gray-700">✅ iterrows + Marker로 카페 지도 만들기</p>
+					<p className="text-lg text-gray-700">✅ iterrows + Marker로 상가 지도 만들기</p>
 				</div>
 				<div className="bg-blue-50 rounded-xl p-4">
 					<p className="text-lg text-gray-700">✅ folium.Icon(color=)로 업종별 색 구분</p>

@@ -1,0 +1,145 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '파이썬 Editor 소개',
+  description: '파이썬 코드를 어디에 쓰고 어떻게 실행하는지, 편집기 사용법부터 익혀보자냥!',
+  session: 1,
+}
+
+# 파이썬 Editor 소개
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 파이썬을 배우기 전에 먼저 정할 게 있다냥 —
+  **코드를 어디에 쓸 거냥?** 메모장에도 쓸 수는 있지만, 개발자들은
+  코딩을 도와주는 전용 도구를 쓴다냥. 그걸 **IDE**라고 부른다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - IDE가 무엇이고 왜 쓰는지 설명할 수 있다.
+  - VSCode와 PyCharm의 차이를 안다.
+  - VSCode로 폴더를 만들고 파이썬 파일을 실행할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · IDE를 쓰면 좋은 점 (7분)
+
+<StepCard step="핵심" title="IDE가 대신 해주는 일 네 가지">
+
+| 기능 | 무엇을 도와주냥 |
+|---|---|
+| 자동완성 | 앞 글자만 쳐도 나머지를 제안해준다 |
+| 오류표시 | 실행하기 전에 잘못된 곳에 밑줄을 그어준다 |
+| 색깔구분 | 명령어와 문자열을 다른 색으로 보여준다 |
+| 바로실행 | 버튼 하나로 코드를 돌려본다 |
+
+</StepCard>
+
+<Callout type="note">
+  메모장에 코드를 써도 파이썬은 돌아간다냥. 하지만 오타 하나를
+  찾으려고 눈을 부릅뜨게 된다냥. IDE는 그걸 대신 찾아주는 도구다냥!
+</Callout>
+
+---
+
+## 2단계 · 대표적인 IDE 두 가지 (8분)
+
+<CompareBubble
+  left={{
+    emoji: '1',
+    label: 'VSCode',
+    color: 'blue',
+    items: [
+      '무료이고 소스코드도 공개',
+      '가볍고 빠름',
+      '확장 프로그램으로 기능 추가',
+      '실시간 협업 가능',
+    ],
+  }}
+  right={{
+    emoji: '2',
+    label: 'PyCharm',
+    color: 'purple',
+    items: [
+      '분석 기능이 강력함',
+      '이름 하나 바꾸면 전체 자동 수정',
+      '실행 중 변수값을 실시간 확인',
+    ],
+  }}
+/>
+
+![vscode 홈페이지](https://r2.kimkyungsub.com/vscodeHome.png)
+
+<Callout type="tip">
+  이 수업에서는 **VSCode**를 쓴다냥. 가볍고 무료라서 처음 배우기에
+  좋다냥. 나중에 큰 프로젝트를 하게 되면 PyCharm도 써보자냥!
+</Callout>
+
+---
+
+## 3단계 · VSCode로 코드 실행하기 (10분)
+
+<NyangSpeech>
+  이제 직접 해보자냥. 순서만 지키면 어렵지 않다냥!
+</NyangSpeech>
+
+<StepCard step="순서" title="첫 파이썬 파일 실행까지">
+
+| 순서 | 하는 일 |
+|---|---|
+| 1 | 바탕화면에서 우클릭 → 새 폴더 만들기 |
+| 2 | 폴더 이름을 알아보기 쉽게 바꾸기 |
+| 3 | VSCode에서 그 폴더 열기 |
+| 4 | `.py` 로 끝나는 파일 만들기 |
+| 5 | 코드를 쓰고 실행 버튼 누르기 |
+
+</StepCard>
+
+![vscode에서 새 폴더 만들기](https://r2.kimkyungsub.com/vscode/vscode_howto1.png)
+
+<Callout type="important">
+  파일 이름은 반드시 **`.py`** 로 끝나야 한다냥. 파이썬에게 "이건
+  파이썬 코드야" 라고 알려주는 표시다냥. `hello.txt` 로 만들면
+  실행되지 않는다냥!
+</Callout>
+
+---
+
+## 오늘 배운 내용 정리
+
+<NyangSpeech>
+  배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
+  "정답 보기"를 눌러서 맞는지 확인해보자냥!
+</NyangSpeech>
+
+<QuizCard
+  items={[
+    {
+      question: 'IDE가 대신 해주는 일 네 가지는 뭐냥?',
+      answer: '자동완성, 오류표시, 색깔구분, 바로실행이다냥! 메모장에는 없는 기능들이다냥.',
+    },
+    {
+      question: 'VSCode의 가장 큰 장점은 뭐냥?',
+      answer: '무료이고 가볍고 빠르다냥! 확장 프로그램으로 필요한 기능을 골라 넣을 수도 있다냥.',
+    },
+    {
+      question: '파이썬 파일 이름은 무엇으로 끝나야 하냥?',
+      answer: '.py 다냥! 이게 있어야 파이썬 코드로 인식되어 실행된다냥.',
+    },
+  ]}
+/>
+
+---
+
+<NyangSpeech>
+  오늘은 코드를 쓸 도구를 준비했다냥! 이제 실습 페이지에서 직접
+  폴더를 만들고 첫 코드를 실행해보자냥. 발톱 준비됐냥? 가보자냥~
+</NyangSpeech>

@@ -4,7 +4,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Tool Preferences
 
-Use `rg` (ripgrep) instead of `grep` for searching files.
+Use `rg` (ripgrep) instead of `grep` for searching files. It matters more here
+than in most repos — measured on this tree:
+
+| command | files read | time |
+|---|---|---|
+| `rg pattern` | 793 | 0.06s |
+| `grep -rn pattern .` | 101,181 | 18.5s |
+| `rg -uuu pattern` | 101,181 + binaries | 67.8s |
+
+Times are with a warm file cache. The first `grep -rn` of a session ran past
+120s and had to be backgrounded, so treat 18.5s as the optimistic number.
+
+`node_modules` alone is 81,617 files, plus `.next`, `public/monaco`, and any
+`.claude/worktrees`. All of it is gitignored, so `rg` skips it and `grep -r`
+does not. The gap is about *what gets opened*, not matching speed — on an equal
+scope `grep` was actually faster than `rg -uuu`.
+
+Two flags worth knowing:
+
+- `-r` is `--replace`, **not** recursive (recursion is already the default), and
+  it takes an argument — so `rg -rn pattern` eats the `n` as the replacement,
+  succeeds, and prints every match rewritten to `n`. It looks like the file was
+  corrupted. Its real job is reshaping matches:
+  `rg -o 'session: (\d+)' -r 'session=$1'` → `session=12`.
+- To search gitignored files use `-uu`. `-uuu` additionally disables binary
+  detection and will crawl through `.next` cache blobs (that is the 67.8s).
+
+`fd` (installed) beats `find` for locating files, but for a different reason —
+its traversal is genuinely parallel, so it wins even on an equal scope:
+
+| task | fd | find |
+|---|---|---|
+| `.mdx` across the whole tree | 0.09s | 0.86s |
+| same, traversal only (output discarded) | 0.08s | 0.84s |
+| dump all 112k paths | 1.35s | 0.77s |
+
+So prefer `fd` for the normal "where is this file" case. It is not a blanket
+rule: once the result set is tens of thousands of lines `find` wins, because
+fd's cost there is emitting the paths, not walking the tree. And scope still
+beats tool choice — adding `-prune` for `node_modules` takes `find` from 0.86s
+to 0.06s on its own.
 
 ## Responsive Checks
 

@@ -42,13 +42,24 @@ export const Booklist = {
   "Public Data Viz": {
     title: "Public Data Viz",
     link: "/PublicDataViz",
-    // TODO: R2에 전용 로고 업로드 후 교체 (임시로 algorithm.png 재사용)
-    imagekey: "algorithm.png",
+    imagekey: "publicdataviz-card.png",
     state: "기초 2",
     description:
       "공공데이터포털의 데이터를 파이썬으로 수집·분석·시각화해보면서, 지도와 그래프로 세상을 읽는 눈을 기르는 것을 목표로 합니다.",
   },
 };
+
+export type Book = (typeof Booklist)[keyof typeof Booklist];
+
+/**
+ * 학생 문서의 `books` 는 배정 시점의 Booklist 항목을 **복사해서** 저장한다
+ * (`SignUpForm` 의 onSubmit 참고). 그래서 여기 링크·이미지·설명을 고쳐도 이미
+ * 배정받은 학생에게는 반영되지 않는다. 렌더할 때 제목으로 다시 조회해서 최신
+ * 정보를 쓰고, 목록에서 사라진 교재는 저장된 값을 그대로 보여준다.
+ */
+export function resolveBook<T extends { title: string }>(stored: T): T | Book {
+  return Booklist[stored.title as keyof typeof Booklist] ?? stored;
+}
 
 /** 교재 선택 드롭다운 옵션. Booklist 에서 파생시켜 두 곳이 어긋나지 않게 한다. */
 export const BOOK_TITLES = (

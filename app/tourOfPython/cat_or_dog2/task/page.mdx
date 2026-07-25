@@ -1,0 +1,179 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '추천 앱 실습 2 — 조립하고, 완성하고, 바꿔보기',
+  description: 'f-string 과 중첩 조건문으로 suggest() 를 만들고, 나만의 추천 앱으로 바꿔보자냥!',
+  session: 8,
+}
+
+# 추천 앱 실습 2 — 조립하고, 완성하고, 바꿔보기
+
+<NyangSpeech>
+  안녕, 코딩냥이다냥! 지난 시간에 만든 코드를 열어보자냥. 지금부터
+  약 45분 동안 `suggest()` 를 만들어서 앱을 **완성**할 거다냥.
+  마지막 미션은 나만의 앱으로 바꾸는 거니까 마음껏 상상해보자냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 지난 시간에 만든 코드 (없으면 개념 강의 1단계의 코드를 다시 입력하자냥)
+  - 개념 강의에서 본 f-string 과 세 겹 중첩 구조
+</Callout>
+
+---
+
+<MissionCard number={1} title="f-string 으로 안내 문구 만들기" time="8~10분">
+
+먼저 `suggest()` 함수를 만들고, 모은 정보로 문장을 만들어보자냥.
+
+```python
+def suggest(animal, color, size):
+    print(____"너에게 알맞는 {size} {color} {animal}는")
+
+suggest("고양이", "검정색", "소형")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 문자열 앞에 글자 하나를 붙여야 중괄호가 변수로 인식된다냥.
+> - 출력이 "너에게 알맞는 소형 검정색 고양이는" 으로 나오냥?
+> - 그 글자를 빼고 실행하면 어떻게 나오냥? 직접 비교해보자냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="동물부터 나누기" time="8~10분">
+
+세 가지 정보 중 먼저 **동물**부터 갈라보자냥.
+
+```python
+def suggest(animal, color, size):
+    print(f"너에게 알맞는 {size} {color} {animal}는")
+    ____ animal == "고양이":
+        print("고양이 선택")
+    ____ animal == "강아지":
+        print("강아지 선택")
+
+suggest("강아지", "흰색", "대형")
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 첫 갈래는 `if`, 그 다음 갈래는 `elif` 다냥.
+> - "강아지 선택" 이 나오냥? `suggest("고양이", ...)` 로 바꾸면 "고양이 선택" 이 나오냥?
+> - 문자열을 비교할 때는 등호를 **두 개** 쓴다냥. `=` 하나는 값을 넣는 거다냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="색과 크기까지 중첩하기" time="12~15분">
+
+이제 색으로 한 번 더, 크기로 또 한 번 더 좁혀보자냥. 고양이 쪽만
+채워주면 강아지 쪽은 같은 방식으로 만들 수 있다냥.
+
+```python
+def suggest(animal, color, size):
+    print(f"너에게 알맞는 {size} {color} {animal}는")
+    if animal == "고양이":
+        ____ color == "검정색":
+            ____ size == "소형":
+                print("1. 봄베이")
+                print("2. 아메리칸 쇼트헤어")
+                print("3. 코니시 렉스")
+            elif size == "중형":
+                print("1. 버미즈")
+                print("2. 오리엔탈 쇼트헤어")
+                print("3. 봄베이")
+            elif size == "대형":
+                print("1. 메인쿤")
+                print("2. 브리티시 쇼트헤어")
+                print("3. 차우시")
+        elif color == "흰색":
+            ____
+    elif animal == "강아지":
+        ____
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 갈래가 시작될 때마다 첫 조건은 `if`, 다음부터는 `elif` 다냥.
+> - 흰색 쪽과 강아지 쪽도 **같은 모양**으로 채워보자냥. 품종은 내가 아는 걸로 써도 된다냥!
+> - 들여쓰기가 한 칸씩 깊어지는 게 보이냥? 들여쓰기를 틀리면 엉뚱한 갈래에 들어간다냥.
+
+<StepCard step="구조" title="세 번 좁히면 답이 하나">
+
+```
+동물          색            크기
+고양이  ┬─ 검정색 ┬─ 소형 → 봄베이 ...
+        │         ├─ 중형 → 버미즈 ...
+        │         └─ 대형 → 메인쿤 ...
+        └─ 흰색   → ...
+강아지  ┬─ 검정색 → ...
+        └─ 흰색   → ...
+```
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="전부 연결하고 실행하기" time="8~10분">
+
+마지막으로 `start()` 안에서 `suggest()` 를 불러주고, 프로그램을
+실행해보자냥.
+
+```python
+def start():
+    print("반려견 또는 반려묘를 추천해 드려요.")
+    animal = cat_or_dog()
+    color = black_or_white()
+    size = small_medium_large()
+    ____(animal, color, size)
+
+____
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - 모은 값 셋을 그대로 넘겨줄 함수 이름이 들어간다냥.
+> - 맨 아랫줄에서 `start()` 를 불러야 프로그램이 돌아간다냥. 아무 일도 안 일어난다면 이걸 빠뜨린 거다냥!
+> - "고양이 · 검정색 · 소형" 을 넣으면 봄베이가 나오냥?
+> - 여섯 가지 조합을 골고루 넣어서 **전부 다 나오는지** 확인하자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number="도전" title="나만의 추천 앱으로 바꿔보기" time="선택">
+
+프로그램을 완성했다면, 아래처럼 바꿔서 나만의 앱을 만들어보자냥!
+
+- [ ] 추천 품종을 내가 아는 다른 동물로 바꿔보기
+- [ ] 색깔 선택지에 "갈색" 을 하나 더 추가해보기 (힌트: `black_or_white` 함수)
+- [ ] 마지막에 "좋은 선택이에요!" 같은 인사말을 출력해보기
+
+> 정해진 정답은 없다냥. 바꾸고 싶은 부분이 있으면 과감하게 바꿔보자냥!
+> 막히는 부분이 있으면 손을 들고 코딩냥(선생님)에게 질문해도 좋다냥. 질문은 언제나 환영이다냥~
+
+</MissionCard>
+
+---
+
+## 오늘의 실습, 정말 잘했다냥!
+
+<NyangSpeech>
+  오늘 우리는
+
+  1. f-string 으로 안내 문구 만들기
+  2. 동물부터 갈래 나누기
+  3. 색과 크기까지 세 겹으로 중첩하기
+  4. 전부 연결해서 앱 완성하기
+
+  까지 해냈다냥! 지금 여러분은 **직접 기획하고 완성한 프로그램**을
+  하나 가지고 있다냥. 이건 정말 대단한 일이다냥. 다음 시간에는 같은
+  일을 여러 번 시키는 **반복문**을 배워볼 거다냥. 다들 정말 멋지게
+  해냈다냥, 냐옹~
+</NyangSpeech>

@@ -16,8 +16,17 @@ export interface Slide {
   script: string;
 }
 
+// `select-text` re-enables selection inside the shell's `select-none`: the deck
+// is projected while learners type the code along with it, so the snippet has to
+// stay copyable even though the surrounding slide chrome should not be
+// drag-selectable.
+//
+// Long lines wrap rather than scroll. A slide is a fixed canvas being projected
+// — code that runs off the right edge is simply unreadable to the room, and
+// nobody scrolls a projected deck. (The MDX handout keeps horizontal scrolling;
+// there the reader controls the viewport.)
 export const CodeBlock = ({ children }: { children: string }) => (
-  <pre className="bg-gray-900 text-green-300 rounded-xl p-5 text-base sm:text-lg font-mono overflow-x-auto leading-relaxed">
+  <pre className="bg-gray-900 text-green-300 rounded-xl p-5 text-base sm:text-lg font-mono leading-relaxed select-text whitespace-pre-wrap break-words">
     <code>{children}</code>
   </pre>
 );
@@ -70,11 +79,39 @@ export default function SlideShell({ slides }: { slides: Slide[] }) {
     return () => document.removeEventListener("fullscreenchange", handler);
   }, []);
 
+  // Swipe navigation for tablets/phones, where the 이전/다음 buttons are the
+  // only way through the deck. A gesture counts as a swipe when it travels far
+  // enough horizontally and stays mostly horizontal, so vertical scrolling of a
+  // tall slide never flips the page.
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    const t = e.changedTouches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  }, []);
+
+  const onTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const start = touchStart.current;
+      touchStart.current = null;
+      if (!start) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+      if (Math.abs(dx) < 60 || Math.abs(dx) <= Math.abs(dy)) return;
+      if (dx < 0) goNext();
+      else goPrev();
+    },
+    [goNext, goPrev],
+  );
+
   const slide = slides[current];
 
   return (
     <div
       ref={containerRef}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       className={`w-full h-full bg-gradient-to-br ${slide.bg} flex flex-col select-none`}
     >
       <div className="flex items-center justify-between px-8 pt-6 pb-2">
@@ -90,7 +127,8 @@ export default function SlideShell({ slides }: { slides: Slide[] }) {
           <button
             onClick={() => setShowScript((v) => !v)}
             className={`transition-colors p-2 ${showScript ? "text-orange-500" : "text-gray-400 hover:text-gray-600"}`}
-            aria-label="Toggle script (S)"
+            aria-label={showScript ? "강의 스크립트 숨기기 (S)" : "강의 스크립트 보기 (S)"}
+            aria-pressed={showScript}
             title="강의 스크립트 (S)"
           >
             <MessageSquareText size={22} />
@@ -98,7 +136,8 @@ export default function SlideShell({ slides }: { slides: Slide[] }) {
           <button
             onClick={toggleFullscreen}
             className="text-gray-400 hover:text-gray-600 transition-colors p-2"
-            aria-label="Toggle fullscreen"
+            aria-label={isFullscreen ? "전체 화면 끄기 (F)" : "전체 화면 (F)"}
+            title="전체 화면 (F)"
           >
             {isFullscreen ? <Minimize size={22} /> : <Maximize size={22} />}
           </button>

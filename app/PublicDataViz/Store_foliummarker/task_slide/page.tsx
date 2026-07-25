@@ -40,9 +40,9 @@ const slides: Slide[] = [
 		),
 	},
 	{
-		title: "미션 1: 카페 마커 찍기 (8~10분)",
+		title: "미션 1: 상가 마커 찍기 (8~10분)",
 		bg: "from-rose-50 to-orange-50",
-		script: "첫 번째 미션입니다. 카페 데이터를 지도에 마커로 찍습니다. DataFrame을 한 행씩 꺼내는 함수 이름을 빈칸에 넣습니다. 8~10분 드리겠습니다.",
+		script: "첫 번째 미션입니다. 상가 데이터를 지도에 마커로 찍습니다. DataFrame을 한 행씩 꺼내는 함수 이름을 빈칸에 넣습니다. 8~10분 드리겠습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
 				<CodeBlock>{`for i, row in df.____():  # iterrows
@@ -83,12 +83,12 @@ const slides: Slide[] = [
 	{
 		title: "오늘의 실습 정리",
 		bg: "from-orange-50 to-red-50",
-		script: "오늘 세 가지 미션을 모두 수행했습니다. 카페 마커를 찍고, 색을 입히고, 클러스터로 묶었습니다.",
+		script: "오늘 세 가지 미션을 모두 수행했습니다. 상가 마커를 찍고, 색을 입히고, 클러스터로 묶었습니다.",
 		content: (
 			<div className="flex flex-col gap-5">
 				<div className="space-y-3">
 					{[
-						{ num: "1", text: "카페 마커 찍기", color: "bg-rose-100" },
+						{ num: "1", text: "상가 마커 찍기", color: "bg-rose-100" },
 						{ num: "2", text: "업종별 아이콘 색 입히기", color: "bg-violet-100" },
 						{ num: "3", text: "MarkerCluster로 묶기", color: "bg-teal-100" },
 					].map((item) => (
