@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(kling who_am_i)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__plugin_pixel-plugin_aseprite__get_pixels",
+      "mcp__claude_ai_Figma__get_screenshot"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\")/.claude/hooks/no-recursive-grep.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\")/.claude/hooks/stray-dev-server.py\"",
+            "timeout": 20,
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

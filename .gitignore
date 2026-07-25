@@ -42,7 +42,18 @@ next-env.d.ts
 
 .vercel
 .env*.local
-/.claude
+
+# Claude Code config. Ignore the directory's contents by default, then share the
+# team-wide pieces: hooks, the chapter-conversion agent, slash commands, and the
+# permission/hook wiring that makes them run. `settings.local.json` stays out —
+# it is personal and has held credentials — as do worktrees and launch.json.
+# Note `/.claude/*` rather than `/.claude`: git cannot re-include a path whose
+# parent directory is excluded, so the negations below would never apply.
+/.claude/*
+!/.claude/settings.json
+!/.claude/hooks/
+!/.claude/agents/
+!/.claude/commands/
 
 # local connectivity/debug script (contained credentials — do not commit)
 test-mongo.mjs
