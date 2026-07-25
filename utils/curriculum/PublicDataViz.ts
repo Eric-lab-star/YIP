@@ -159,7 +159,7 @@ export const PublicDataVizCurriculum: Lesson[] = [
 		name: "프로젝트 4 — 상가 정보 folium 마커 시각화",
 		slug: "Store_foliummarker",
 		description:
-			"정리한 카페 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!",
+			"정리한 상가 데이터를 지도에 마커로 찍고, 마커가 많을 때 묶어서 보여주는 법을 배워보자냥!",
 	},
 	{
 		name: "프로젝트 4 — 상가 밀집도 히트맵",
