@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
+import { createRequire } from "node:module";
 import dns from "dns";
 dns.setDefaultResultOrder('ipv4first');
 
@@ -32,9 +33,38 @@ if (process.platform === "win32" && dns.getServers().join() === "127.0.0.1") {
 		console.warn("[next.config] failed to read OS DNS servers:", e);
 	}
 }
+// Crawlers that must be served metadata inside <head> rather than streamed.
+//
+// When `generateMetadata` awaits something (e.g. /problems/[slug] looks the
+// problem up in Mongo), Next flushes the shell first and emits the meta tags
+// later in the body, where React hoists them client-side. Bots that run JS are
+// fine; bots that only read HTML see a <head> with nothing but charset and
+// viewport. Next already ships a list of such bots — Yeti and Chrome-Lighthouse
+// are on it — but the Korean ones below are not, and they matter here:
+// kakaotalk-scrap drives link previews when students share a problem in
+// KakaoTalk, and Daumoa/NaverBot index the site. Verified against the live site
+// before adding: all three received body-level metadata, Yeti did not.
+//
+// `htmlLimitedBots` replaces the default list rather than extending it, so the
+// default pattern is spliced in. The import path is internal; the fallback
+// keeps the build working (with only our additions) if it ever moves.
+function htmlLimitedBots(): RegExp {
+	const EXTRA = "Daumoa|NaverBot|kakaotalk-scrap|Yeti";
+	try {
+		const { HTML_LIMITED_BOT_UA_RE_STRING } = createRequire(import.meta.url)(
+			"next/dist/shared/lib/router/utils/is-bot"
+		) as { HTML_LIMITED_BOT_UA_RE_STRING: string };
+		return new RegExp(`${HTML_LIMITED_BOT_UA_RE_STRING}|${EXTRA}`, "i");
+	} catch {
+		console.warn("[next.config] could not read Next's default bot list; using additions only");
+		return new RegExp(EXTRA, "i");
+	}
+}
+
 const nextConfig: NextConfig = {
 	env: {},
 	reactStrictMode: false,
+	htmlLimitedBots: htmlLimitedBots(),
 	// Rewrite barrel-file imports (e.g. `import { X } from "lucide-react"`) to
 	// deep per-module imports so each route only bundles the icons/components it
 	// actually uses instead of pulling the whole package. lucide-react is used
