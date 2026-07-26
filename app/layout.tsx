@@ -3,7 +3,7 @@ import "./styles/globals.css";
 import { Toaster } from "sonner";
 import { OctagonXIcon } from "lucide-react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import SidebarShell from "@/components/commons/SidebarShell";
 import AppSideBar from "@/components/commons/AppSideBar";
 import Header from "@/components/commons/Header";
 
@@ -146,7 +146,7 @@ export default async function RootLayout({
       </head>
       <body className="flex sm:justify-center antialiased">
         <SpeedInsights />
-        <SidebarProvider defaultOpen={false}>
+        <SidebarShell>
           <AppSideBar />
           <main className="w-full  flex flex-col ">
             <Header />
@@ -154,7 +154,7 @@ export default async function RootLayout({
               {children}
             </div>
           </main>
-        </SidebarProvider>
+        </SidebarShell>
         <Toaster
           icons={{ error: <OctagonXIcon className="size-4 text-red-500" /> }}
         />
