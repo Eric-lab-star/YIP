@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listProblems } from "@/app/lib/mongo/problems";
-import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
-import { validateToken } from "@/app/lib/auth/login";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import {
+	NewProblemButton,
+	SolvedMark,
+} from "@/components/judge/ProblemListPersonal";
 
-export const dynamic = "force-dynamic";
+// The list is the same for everyone; only the "완료" ticks and the admin link
+// differ per user, and both are fetched in the browser now. That lets the page
+// be prerendered instead of `force-dynamic`, which was costing every visitor an
+// uncached render (X-Vercel-Cache MISS, ~280ms TTFB against ~55ms for the
+// cached routes). One hour matches app/sitemap.ts, which revalidates on the
+// same cadence so a newly published problem appears without a redeploy.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
 	title: "코딩 문제 풀이",
@@ -23,21 +29,17 @@ const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 };
 
 export default async function ProblemsPage() {
-	const [problems, auth] = await Promise.all([listProblems(), validateToken()]);
-	const isAdmin = auth.success && auth.role === "admin";
-	const solved = auth.success
-		? new Set(await getSolvedSlugs(auth.id))
-		: new Set<string>();
+	const problems = await listProblems();
 
 	return (
 		<div className="mx-auto w-full max-w-3xl px-4 py-8">
-			<div className="mb-6 flex items-center justify-between">
+			{/* min-h keeps this row the height it has *with* the admin button, so
+			    the button appearing after the auth check does not push the list
+			    down. Non-admins see the same spacing, which is what the row
+			    already looked like. */}
+			<div className="mb-6 flex min-h-9 items-center justify-between">
 				<h1 className="text-2xl font-bold">문제</h1>
-				{isAdmin && (
-					<Button asChild>
-						<Link href="/problems/new">새 문제</Link>
-					</Button>
-				)}
+				<NewProblemButton />
 			</div>
 
 			{problems.length === 0 ? (
@@ -59,12 +61,7 @@ export default async function ProblemsPage() {
 									className="flex items-center gap-3 px-4 py-3 hover:bg-accent"
 								>
 									<span className="font-medium">{p.title}</span>
-									{solved.has(p.slug) && (
-										<span className="flex items-center gap-0.5 text-xs font-medium text-green-600">
-											<Check className="size-4" />
-											완료
-										</span>
-									)}
+									<SolvedMark slug={p.slug} />
 									<Badge className={`ml-auto ${d.tone}`}>{d.label}</Badge>
 								</Link>
 							</li>
