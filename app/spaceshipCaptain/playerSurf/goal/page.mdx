@@ -1,0 +1,227 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '우주선 이미지 띄우기 — 이미지와 Frect',
+  description: '파일에서 이미지를 불러오는 방법과, 위치를 다루는 Frect의 기준점 개념을 이해해보자냥!',
+  session: 3,
+}
+
+# 우주선 이미지 띄우기
+
+<NyangSpeech>
+  지난 시간엔 주황색 네모를 올렸다냥. 오늘은 그 자리에 **진짜 우주선 그림**을 올린다냥!
+  그리고 그림을 화면 정중앙에 놓거나 벽에 튕기게 하려면
+  **위치를 다루는 방법**이 필요하다냥. 그게 오늘의 주인공 `Frect` 다냥.
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 이미지 파일을 불러오는 세 단계(**경로 → 불러오기 → 투명 처리**)를 설명할 수 있다.
+  - `Frect` 가 무엇이고 왜 `get_rect` 가 아니라 `get_frect` 를 쓰는지 말할 수 있다.
+  - 기준점(`center`, `topleft`, `midbottom` …)이 무엇을 뜻하는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 이미지를 불러오는 세 단계 (7분)
+
+<StepCard step="1" title="경로 만들기 — join()">
+
+```python
+from os.path import join
+
+player_path = join("images", "player.png")
+```
+
+`join` 은 폴더 이름과 파일 이름을 이어서 **경로**를 만들어준다냥.
+왜 그냥 `"images/player.png"` 라고 안 쓰냥?
+윈도우는 `\`, 맥은 `/` 로 폴더를 구분하기 때문이다냥.
+`join` 이 컴퓨터에 맞는 기호를 알아서 넣어준다냥.
+
+</StepCard>
+
+<StepCard step="2" title="불러오기 — pygame.image.load()">
+
+```python
+player_surf = pygame.image.load(player_path)
+```
+
+파일을 읽어서 **Surface** 로 만들어준다냥.
+지난 시간에 배운 그 그림 조각이다냥. 그러니 `blit` 으로 붙이면 된다냥.
+
+</StepCard>
+
+<StepCard step="3" title="투명 처리 — convert_alpha()">
+
+```python
+player_surf = pygame.image.load(player_path).convert_alpha()
+```
+
+우주선 그림의 **배경이 투명한 부분**을 제대로 처리해준다냥.
+이걸 빠뜨리면 우주선 주위에 네모난 상자가 보인다냥.
+덤으로 그리는 속도도 빨라진다냥.
+
+</StepCard>
+
+<Callout type="important">
+  `convert_alpha()` 는 `pygame.display.set_mode()` **뒤에** 호출해야 한다냥.
+  화면이 아직 없는데 "화면에 맞게 변환"할 수는 없기 때문이다냥.
+</Callout>
+
+---
+
+## 2단계 · Frect — 위치를 다루는 사각형 (10분)
+
+우주선을 화면 **정중앙**에 놓고 싶다냥. `blit(player_surf, (?, ?))` 의 물음표에 뭘 넣어야 하냥?
+
+<Callout type="analogy">
+  직접 계산하면 이렇게 된다냥.
+
+  ```
+  x = 화면가로/2 - 이미지가로/2
+  y = 화면세로/2 - 이미지세로/2
+  ```
+
+  이미지 크기가 바뀌면 다시 계산, 화면 크기가 바뀌어도 다시 계산이다냥.
+  귀찮다냥!
+</Callout>
+
+그래서 파이게임은 이미지를 감싸는 **투명한 사각형**을 하나 준다냥.
+그게 `Frect` 다냥.
+
+```python
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+```
+
+"이 사각형의 **중심**을 화면 한가운데에 맞춰줘" 라고만 하면
+파이게임이 알아서 왼쪽 위 좌표를 계산해준다냥.
+
+<Callout type="analogy">
+  기준점은 **종이를 벽에 붙일 때 어느 부분을 맞출지** 정하는 것과 같다냥.
+
+  - `center` — 종이 한가운데를 맞춘다냥
+  - `topleft` — 왼쪽 위 모서리를 맞춘다냥
+  - `midbottom` — 아래쪽 변의 가운데를 맞춘다냥
+</Callout>
+
+자주 쓰는 기준점이다냥.
+
+- `center` — 중심
+- `topleft`, `topright`, `bottomleft`, `bottomright` — 네 모서리
+- `midtop`, `midbottom`, `midleft`, `midright` — 각 변의 가운데
+
+---
+
+## 3단계 · 왜 get_rect가 아니라 get_frect냥? (5분)
+
+<CompareBubble
+  left={{
+    label: 'get_rect() — 정수만',
+    color: 'ink',
+    items: [
+      '위치가 1, 2, 3 같은 정수만 가능',
+      '속도 0.5로 움직이면 소수점이 잘림',
+      '움직임이 뚝뚝 끊겨 보인다',
+      '옛날부터 있던 방식',
+    ],
+  }}
+  right={{
+    label: 'get_frect() — 소수점 가능',
+    color: 'blue',
+    items: [
+      'x = 150.75 같은 값도 그대로 저장',
+      '느린 속도도 정확하게 누적된다',
+      '움직임이 부드럽다',
+      'pygame-ce가 추가한 방식',
+    ],
+  }}
+/>
+
+<Callout type="tip">
+  `f` 는 **float**(소수)의 f다냥.
+  우리는 속도를 0.5처럼 소수로 줄 거라서 `get_frect` 를 쓴다냥.
+  사용법은 `get_rect` 와 똑같다냥.
+</Callout>
+
+---
+
+## 4단계 · 벽에 튕기게 만드는 원리 (8분)
+
+우주선을 좌우로 왔다 갔다 하게 만들려면 두 가지가 필요하다냥.
+
+<StepCard step="1" title="방향과 속력을 나눠서 갖는다">
+
+```python
+direction = 1     # 1이면 오른쪽, -1이면 왼쪽
+speed = 0.5       # 한 프레임에 얼마나 갈지
+```
+
+매 프레임 `speed * direction` 만큼 위치를 더한다냥.
+`direction` 이 `-1` 이 되면 자연스럽게 반대로 간다냥.
+
+</StepCard>
+
+<StepCard step="2" title="벽에 닿았는지 확인한다">
+
+```python
+if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0:
+    direction *= -1
+```
+
+`Frect` 는 `right`, `left`, `top`, `bottom` 으로
+**사각형의 각 변이 지금 어디 있는지** 알려준다냥.
+오른쪽 변이 화면 끝을 넘었으면 방향을 뒤집는다냥.
+
+</StepCard>
+
+<Callout type="important">
+  `direction *= -1` 은 "부호를 뒤집어라" 는 뜻이다냥.
+  1이면 -1이 되고, -1이면 1이 된다냥. 튕기는 동작을 한 줄로 표현한 것이다냥.
+</Callout>
+
+---
+
+## 오늘 만들 결과
+
+우주 배경 위에 우주선이 떠 있고, **좌우로 왔다 갔다 하며 벽에서 튕기는** 화면이 된다냥.
+실습 마지막 도전 과제에서는 **상하좌우 모든 방향**으로 튕기게 만든다냥.
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: '이미지를 불러오는 세 단계를 순서대로 말해보자냥.',
+      answer: 'join으로 경로를 만들고, pygame.image.load로 파일을 Surface로 불러오고, convert_alpha로 투명한 부분을 처리한다냥.',
+    },
+    {
+      question: 'convert_alpha()를 빠뜨리면 어떻게 되냥?',
+      answer: '우주선 주위의 투명해야 할 부분이 네모난 상자로 보인다냥. 그리는 속도도 느려진다냥.',
+    },
+    {
+      question: 'get_rect 대신 get_frect를 쓰는 이유는 뭐냥?',
+      answer: 'get_rect는 위치를 정수로만 저장해서 0.5 같은 느린 속도로 움직이면 소수점이 잘려 움직임이 끊긴다냥. get_frect는 소수점을 그대로 저장해서 부드럽다냥.',
+    },
+    {
+      question: 'direction *= -1 은 무슨 뜻이냥?',
+      answer: '방향의 부호를 뒤집는다는 뜻이다냥. 1이면 -1, -1이면 1이 되어서 진행 방향이 반대가 된다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame.image.load](https://pyga.me/docs/ref/image.html#pygame.image.load)
+2. [Surface.convert_alpha](https://pyga.me/docs/ref/surface.html#pygame.Surface.convert_alpha)
+3. [Rect / FRect 기준점 전체 목록](https://pyga.me/docs/ref/rect.html)
