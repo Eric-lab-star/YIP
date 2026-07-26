@@ -63,8 +63,11 @@ function Squiggle({
 // component with no client JS.
 export default function CodingAcademyLanding() {
   // Hand-written font for Korean body + headings (Gaegu), Latin display fallback.
+  // "Gaegu Fallback" (base.css) is metric-matched to Gaegu so Korean text does
+  // not reflow when the real font swaps in.
   const handFont = {
-    fontFamily: '"Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive',
+    fontFamily:
+      '"Gaegu", "Gaegu Fallback", "Delius Swash Caps", "Comic Sans MS", cursive',
   };
   // Latin accent labels lean on the swashy display face.
   const swashFont = {

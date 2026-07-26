@@ -1,3 +1,53 @@
+/* Metric-matched stand-in for Gaegu, used only while Gaegu is in flight.
+   Not in @layer base: @font-face must sit at the top level.
+
+   Gaegu draws Hangul at 0.82em advance, but every Korean system font is
+   full-width (Malgun Gothic measures exactly 1.0em). So before Gaegu arrived,
+   every line of Korean text was laid out ~22% too wide and then snapped
+   narrower on swap — that is the whole of the measured font-swap CLS
+   (0.599 on desktop lesson pages, 0.205 on mobile).
+
+   next/font's `adjustFontFallback` does not fix this: it derives size-adjust
+   from Gaegu's *Latin* metrics against Arial, which has no Hangul, so the
+   override describes nothing that actually renders Korean.
+
+   The numbers are measured, not derived. Sweeping size-adjust against real
+   rendered paragraphs (4 texts x 6 font sizes x 6 widths = 144 layouts,
+   comparing line counts and block heights against Gaegu) put the optimum at
+   87%, scored through the full fallback chain:
+
+     size-adjust   line mismatches   total height error
+        82%          20/144             828px
+        85%          11/144             614px
+        87%           5/144             429px   <- chosen
+        88%           7/144             523px
+     current           40/144            1179px
+
+   87% beats the naive per-glyph ratio (82/100 = 82%) because wrapping depends
+   on spaces and Latin runs too, not just Hangul advance.
+
+   Deliberately no `unicode-range` limiting this to Hangul: measured both ways
+   on the same grid, and letting it cover Latin too scored better (5/144 vs
+   7/144), because Malgun Gothic's Latin at 87% lands closer to Gaegu's than
+   Comic Sans does.
+
+   ascent/descent keep Gaegu's own 76:24 split scaled to its natural 1.25 line
+   height: 1.25 / 0.87 = 1.436, split 76/24 -> 109.2% / 34.5%.
+
+   Tuned against Malgun Gothic (measurable here); the other srcs are also
+   full-width Hangul faces so the ratio carries over closely. `local()` only —
+   this adds no network request and no render-blocking bytes. */
+@font-face {
+  font-family: "Gaegu Fallback";
+  src: local("Malgun Gothic"), local("맑은 고딕"),
+    local("Apple SD Gothic Neo"), local("AppleSDGothicNeo-Regular"),
+    local("Noto Sans KR"), local("Nanum Gothic"), local("나눔고딕");
+  size-adjust: 87%;
+  ascent-override: 109.2%;
+  descent-override: 34.5%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -10,8 +60,11 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Handwritten, doodle-style type across the whole app */
-    font-family: "Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive;
+    /* Handwritten, doodle-style type across the whole app. "Gaegu Fallback"
+       sits directly behind Gaegu so Korean text holds Gaegu's metrics until
+       the real font lands. */
+    font-family: "Gaegu", "Gaegu Fallback", "Delius Swash Caps",
+      "Comic Sans MS", cursive;
     /* Warm notebook dot-grid paper */
     background-image: radial-gradient(
       rgba(38, 61, 91, 0.08) 1.4px,

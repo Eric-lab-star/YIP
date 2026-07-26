@@ -13,8 +13,11 @@ export const metadata: Metadata = {
 const ink = "#263D5B";
 const paper = "#FFFDF7";
 
+// "Gaegu Fallback" (base.css) is metric-matched to Gaegu so Korean text does
+// not reflow when the real font swaps in.
 const handFont = {
-  fontFamily: '"Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive',
+  fontFamily:
+    '"Gaegu", "Gaegu Fallback", "Delius Swash Caps", "Comic Sans MS", cursive',
 };
 
 export default function VamsurlikePage() {

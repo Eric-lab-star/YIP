@@ -30,8 +30,11 @@ const doodleField: React.CSSProperties = {
 	borderRadius: "14px 6px 14px 6px / 6px 14px 6px 14px",
 }
 
+// "Gaegu Fallback" (base.css) is metric-matched to Gaegu so Korean text does
+// not reflow when the real font swaps in.
 const handFont = {
-	fontFamily: '"Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive',
+	fontFamily:
+		'"Gaegu", "Gaegu Fallback", "Delius Swash Caps", "Comic Sans MS", cursive',
 }
 const monoFont = {
 	fontFamily: '"JetBrains Mono", ui-monospace, monospace',
