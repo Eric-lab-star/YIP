@@ -1,0 +1,228 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — 벡터로 묶고 델타타임 적용하기',
+  description: '위치와 속도를 Vector2로 바꾸고, Clock과 dt를 붙여 컴퓨터 성능과 무관하게 같은 속도로 움직이게 만들어보자냥!',
+  session: 4,
+}
+
+# 실습 — 벡터로 묶고 델타타임 적용하기
+
+<NyangSpeech>
+  오늘 실습은 **이미 있는 코드를 고치는 작업**이다냥.
+  새로 만드는 게 없어서 화면은 거의 그대로지만,
+  안쪽이 훨씬 튼튼해진다냥. 이런 걸 **리팩토링**이라고 한다냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **오늘의 출발점** — 지난 시간에 완성한 `main.py` 다냥.
+  우주선이 벽에서 튕기고 있어야 한다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="위치를 Vector2로 묶기" time="7분">
+
+이미지를 불러온 아래쪽, `get_frect` 를 쓰는 부분을 이렇게 바꾸자냥.
+
+```python
+player_surf = pygame.image.load(player_path).convert_alpha()
+pos = pygame.________(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+player_rect = player_surf.get_frect(center=pos)
+```
+
+> 힌트: 2차원 벡터를 만드는 클래스다냥. 이름 끝에 숫자 `2` 가 붙는다냥.
+
+**화면은 지금과 똑같아야 한다냥.** 겉모습이 안 바뀌는 게 정상이다냥.
+좌표 두 개를 벡터 하나로 묶기만 한 것이니까냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="속도도 Vector2로 바꾸기" time="8분">
+
+지금은 방향 변수 `x`, `y` 와 `speed` 를 따로 쓰고 있다냥.
+이걸 **속도 벡터 하나**로 합치자냥.
+
+`def main():` 안의 변수들을 이렇게 바꾸자냥.
+
+```python
+def main():
+    running = True
+    speed = pygame.Vector2(2, 1)     # 오른쪽 2, 아래 1
+```
+
+그리고 위치 갱신 부분을 한 줄로 줄이자냥.
+
+```python
+        player_rect.______ += speed
+```
+
+> 힌트: 사각형의 중심을 뜻하는 기준점이다냥. `centerx`, `centery` 를 한꺼번에 다루는 이름이다냥.
+
+<Callout type="tip">
+  벽 튕김 판정(`if player_rect.right >= ...`)은 잠시 지워두자냥.
+  이번 미션에서는 우주선이 화면 밖으로 나가도 괜찮다냥.
+  다음 챕터에서 **키보드로 직접 조종**하게 되면서 이 부분은 필요 없어진다냥.
+</Callout>
+
+**우주선이 오른쪽 아래로 비스듬히 흘러가면 성공이다냥.**
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Clock 만들고 FPS 제한하기" time="7분">
+
+`def main():` **위쪽**, 다른 준비 코드들 옆에 시계를 하나 만들자냥.
+
+```python
+clock = pygame.time.______()
+```
+
+> 힌트: 시계를 뜻하는 영어 단어다냥. 대문자로 시작한다냥.
+
+그리고 게임 루프 **맨 첫 줄**에 이렇게 넣자냥.
+
+```python
+    while running:
+        clock.tick(60)
+        for event in pygame.event.get():
+```
+
+<Callout type="important">
+  `clock.tick()` 은 루프의 **맨 앞**에 두는 게 관례다냥.
+  한 바퀴가 시작될 때 시간을 재야 정확하기 때문이다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="델타타임 붙이기" time="10분">
+
+이제 오늘의 핵심이다냥. `clock.tick()` 이 돌려주는 값을 받아쓰자냥.
+
+```python
+    while running:
+        dt = clock.tick(60) / ______
+```
+
+> 힌트: `tick()` 은 **밀리초**를 돌려준다냥. 초로 바꾸려면 얼마로 나눠야 하냥?
+
+그리고 위치 갱신에 곱해주자냥.
+
+```python
+        player_rect.center += speed * ____
+```
+
+**여기서 우주선이 거의 안 움직일 거다냥. 정상이다냥!**
+
+이제 `speed` 의 뜻이 "한 프레임에 몇 픽셀" 에서 **"1초에 몇 픽셀"** 로 바뀌었기 때문이다냥.
+`Vector2(2, 1)` 은 1초에 겨우 2픽셀이라는 뜻이다냥.
+
+숫자를 크게 키우자냥.
+
+```python
+    speed = pygame.Vector2(200, 100)
+```
+
+**아까와 비슷한 속도로 움직이면 성공이다냥.**
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="확인 실험 — FPS를 바꿔보기" time="8분">
+
+델타타임이 정말 일하고 있는지 직접 확인해보자냥.
+
+`clock.tick(60)` 의 숫자를 **30으로, 그다음 120으로** 바꿔가며 실행해보자냥.
+
+> **관찰해보자냥**
+> - 우주선이 화면을 가로지르는 **시간**이 달라지냥?
+> - 움직임이 **부드러운 정도**는 달라지냥?
+
+<Callout type="tip">
+  제대로 됐다면 **속도는 그대로**이고 **부드러움만** 달라진다냥.
+  30에서는 살짝 끊겨 보이고 120에서는 매끈하다냥.
+  하지만 화면 끝까지 가는 데 걸리는 시간은 같다냥. 그게 델타타임의 힘이다냥!
+</Callout>
+
+이번엔 `* dt` 를 잠깐 지우고 같은 실험을 해보자냥.
+FPS를 바꾸면 **속도까지 달라지는 것**을 볼 수 있다냥. 이게 dt 없는 세상이다냥.
+
+<Callout type="important">
+  실험이 끝나면 `* dt` 를 **다시 넣어두자냥.** 앞으로 계속 쓴다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="코드 확인하기"
+  code={`import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+pos = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+player_rect = player_surf.get_frect(center=pos)
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    speed = pygame.Vector2(200, 100)
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        player_rect.center += speed * dt
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - 위치와 속도를 `Vector2` 하나로 묶어 코드를 절반으로 줄였다.
+  - `pygame.time.Clock()` 으로 FPS를 제한했다.
+  - `dt` 를 곱해서 **컴퓨터 성능과 무관하게 같은 속도**로 만들었다.
+  - FPS를 바꿔가며 델타타임이 실제로 동작하는 것을 눈으로 확인했다.
+</Callout>
+
+다음 시간에는 우주선이 혼자 흘러가는 대신
+**방향키로 직접 조종**하게 만든다냥!

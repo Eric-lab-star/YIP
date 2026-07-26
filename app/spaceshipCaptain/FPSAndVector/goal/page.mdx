@@ -1,0 +1,204 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'FPS와 Vector — 컴퓨터마다 같은 속도로',
+  description: '방향과 거리를 하나로 묶는 Vector2와, 성능이 달라도 같은 속도를 만드는 FPS·델타타임을 배워보자냥!',
+  session: 4,
+}
+
+# FPS와 Vector
+
+<NyangSpeech>
+  지난 시간에 만든 우주선, 친구 컴퓨터에서 돌려봤냥?
+  **어떤 컴퓨터에선 슝 날아가고, 어떤 컴퓨터에선 느릿느릿** 한다냥.
+  오늘은 그 문제를 해결한다냥. 그리고 x와 y를 따로 들고 다니느라
+  길어진 코드도 **벡터**로 깔끔하게 묶는다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `Vector2` 가 무엇이고 왜 x, y를 따로 두는 것보다 편한지 설명할 수 있다.
+  - **FPS**가 무엇인지, `clock.tick()` 이 무슨 일을 하는지 말할 수 있다.
+  - **델타타임(dt)** 을 곱하면 왜 컴퓨터마다 같은 속도가 되는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · Vector2 — 화살표 하나로 묶기 (8분)
+
+벡터는 **화살표**라고 생각하면 된다냥.
+보물 지도의 "오른쪽으로 5걸음, 위로 3걸음" 처럼
+x와 y 두 숫자로 **방향과 거리를 한 번에** 나타낸다냥.
+
+```python
+pygame.Vector2(5, 3)   # 오른쪽 5, 아래 3
+```
+
+<Callout type="important">
+  파이게임에서 y는 **아래쪽이 커진다냥.**
+  화면 맨 위가 y=0 이고, 아래로 갈수록 숫자가 커진다냥.
+  수학 시간에 배운 좌표와 반대라서 처음엔 헷갈린다냥.
+</Callout>
+
+벡터가 좋은 이유는 **더하기가 된다는 것**이다냥.
+
+<CompareBubble
+  left={{
+    label: 'x, y를 따로 관리하면',
+    color: 'ink',
+    items: [
+      'pos_x = 640 / pos_y = 360',
+      'speed_x = 2 / speed_y = 1',
+      'pos_x += speed_x',
+      'pos_y += speed_y  ← 두 줄씩 계속',
+    ],
+  }}
+  right={{
+    label: 'Vector2로 묶으면',
+    color: 'blue',
+    items: [
+      'pos = Vector2(640, 360)',
+      'speed = Vector2(2, 1)',
+      'pos += speed',
+      'x끼리 y끼리 알아서 더해진다',
+    ],
+  }}
+/>
+
+<Callout type="analogy">
+  x와 y를 따로 드는 건 **양손에 짐을 하나씩 들고 가는 것**이고,
+  벡터는 **가방 하나에 담아 드는 것**이다냥.
+  가방째로 옮기면 안에 든 게 몇 개든 한 번에 옮겨진다냥.
+</Callout>
+
+---
+
+## 2단계 · FPS는 플립북이다냥 (7분)
+
+FPS는 **1초에 화면을 몇 번 그리는가** 다냥.
+
+<Callout type="analogy">
+  빠르게 넘기는 만화책, **플립북**을 떠올려보자냥.
+
+  - 1초에 60장 넘기면 → 아주 부드럽다냥
+  - 1초에 10장만 넘기면 → 뚝뚝 끊긴다냥
+
+  게임 화면도 똑같다냥. 이 "1초에 몇 장" 이 FPS다냥.
+</Callout>
+
+파이게임에서는 시계를 하나 만들어서 속도를 제한한다냥.
+
+```python
+clock = pygame.time.Clock()   # 게임 시작 전에 한 번 만든다냥
+
+# 게임 루프 안에서
+clock.tick(60)                # 초당 60번을 넘지 않게 붙잡아준다냥
+```
+
+---
+
+## 3단계 · 진짜 문제 — 컴퓨터마다 속도가 다르다냥 (10분)
+
+여기가 오늘의 핵심이다냥.
+
+지금 우리 코드는 **한 프레임에 speed 만큼** 움직인다냥.
+그런데 프레임 수가 컴퓨터마다 다르다냥.
+
+```
+빠른 컴퓨터: 1초에 200프레임 → 200번 이동 → 슝!
+느린 컴퓨터: 1초에  30프레임 →  30번 이동 → 느릿...
+```
+
+같은 코드인데 결과가 다르다냥. 이건 게임으로선 큰 문제다냥.
+
+### 해결책: 델타타임(dt)
+
+**"한 프레임에 얼마"** 대신 **"1초에 얼마"** 로 생각을 바꾸는 것이다냥.
+
+```python
+dt = clock.tick(60) / 1000     # 지난 프레임에서 지금까지 걸린 시간(초)
+player_rect.center += speed * dt
+```
+
+`clock.tick()` 은 **지난 프레임과 지금 사이에 걸린 시간을 밀리초로 돌려준다냥.**
+1000으로 나누면 초 단위가 된다냥.
+
+<StepCard step="빠른 컴퓨터" title="1초에 200프레임이면">
+
+한 프레임에 걸린 시간 `dt` 는 약 **0.005초** 다냥.
+`speed * 0.005` 씩 200번 → 합치면 `speed * 1` 이다냥.
+
+</StepCard>
+
+<StepCard step="느린 컴퓨터" title="1초에 30프레임이면">
+
+한 프레임에 걸린 시간 `dt` 는 약 **0.033초** 다냥.
+`speed * 0.033` 씩 30번 → 합치면 역시 `speed * 1` 이다냥.
+
+</StepCard>
+
+<Callout type="important">
+  **어느 컴퓨터든 1초가 지나면 딱 `speed` 만큼 이동한다냥.**
+  그래서 `speed` 의 의미가 "한 프레임에 몇 픽셀" 에서
+  **"1초에 몇 픽셀"** 로 바뀐다냥.
+  그래서 실습에서 `speed` 숫자를 훨씬 크게 키우게 된다냥.
+</Callout>
+
+---
+
+## 4단계 · 왜 tick()과 dt를 같이 쓰냥? (3분)
+
+`clock.tick(60)` 은 두 가지 일을 **동시에** 한다냥.
+
+1. 프레임이 60을 넘지 않게 **붙잡아준다냥** (컴퓨터가 헛돌지 않게)
+2. 지난 프레임에서 걸린 **시간을 돌려준다냥** (dt를 만들 재료)
+
+그래서 이 한 줄로 두 문제를 다 해결한다냥.
+
+```python
+dt = clock.tick(60) / 1000
+```
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: 'Vector2를 쓰면 뭐가 편해지냥?',
+      answer: 'x와 y를 하나로 묶어서 더하기 한 번으로 둘 다 갱신할 수 있다냥. x끼리 y끼리 알아서 더해져서 코드가 절반으로 줄어든다냥.',
+    },
+    {
+      question: 'FPS가 뭐냥?',
+      answer: '1초에 화면을 몇 번 그리는지를 뜻한다냥. 플립북을 1초에 몇 장 넘기는지와 같다냥. 숫자가 클수록 부드럽다냥.',
+    },
+    {
+      question: 'dt를 곱하면 왜 컴퓨터마다 속도가 같아지냥?',
+      answer: 'dt는 한 프레임에 걸린 시간이다냥. 프레임이 많으면 dt가 작고 적으면 dt가 크기 때문에, 1초 동안 더해진 값은 어느 컴퓨터에서든 speed와 같아진다냥.',
+    },
+    {
+      question: 'clock.tick(60)이 하는 두 가지 일은 뭐냥?',
+      answer: '초당 60프레임을 넘지 않게 속도를 제한하고, 동시에 지난 프레임에서 걸린 시간을 밀리초로 돌려준다냥.',
+    },
+    {
+      question: 'dt를 도입하면 speed 숫자를 왜 키워야 하냥?',
+      answer: 'dt를 곱하면서 speed의 뜻이 "한 프레임에 몇 픽셀"에서 "1초에 몇 픽셀"로 바뀌기 때문이다냥. 0.5였다면 초당 0.5픽셀이라 거의 안 움직인다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame.Vector2](https://pyga.me/docs/ref/math.html)
+2. [pygame.time.Clock](https://pyga.me/docs/ref/time.html#pygame.time.Clock)
+3. [Clock.tick](https://pyga.me/docs/ref/time.html#pygame.time.Clock.tick)
