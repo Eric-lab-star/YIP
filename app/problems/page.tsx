@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { listProblems } from "@/app/lib/mongo/problems";
-import { Badge } from "@/components/ui/badge";
 import {
+	ClientProblemList,
 	NewProblemButton,
-	SolvedMark,
-} from "@/components/judge/ProblemListPersonal";
+	ProblemRows,
+	type ListedProblem,
+} from "@/components/judge/ProblemList";
 
 // The list is the same for everyone; only the "완료" ticks and the admin link
 // differ per user, and both are fetched in the browser now. That lets the page
@@ -22,14 +22,21 @@ export const metadata: Metadata = {
 	alternates: { canonical: "https://yipcode.xyz/problems" },
 };
 
-const DIFFICULTY: Record<string, { label: string; tone: string }> = {
-	easy: { label: "쉬움", tone: "bg-green-600 text-white" },
-	medium: { label: "보통", tone: "bg-yellow-500 text-white" },
-	hard: { label: "어려움", tone: "bg-red-600 text-white" },
-};
-
 export default async function ProblemsPage() {
-	const problems = await listProblems();
+	// Prerendering means the build now talks to Mongo, and a build must not die
+	// because Atlas had a bad minute — app/sitemap.ts guards the same call for
+	// the same reason. `null` means "could not load here", and the list is
+	// fetched in the browser instead of baking an empty page into the cache.
+	let problems: ListedProblem[] | null = null;
+	try {
+		problems = (await listProblems()).map((p) => ({
+			slug: p.slug,
+			title: p.title,
+			difficulty: p.difficulty,
+		}));
+	} catch (e) {
+		console.warn("[/problems] could not load problems at render time:", e);
+	}
 
 	return (
 		<div className="mx-auto w-full max-w-3xl px-4 py-8">
@@ -42,32 +49,10 @@ export default async function ProblemsPage() {
 				<NewProblemButton />
 			</div>
 
-			{problems.length === 0 ? (
-				<p className="text-muted-foreground">
-					아직 등록된 문제가 없습니다. `node scripts/seed-problems.mjs`로 예시
-					문제를 추가할 수 있어요.
-				</p>
+			{problems ? (
+				<ProblemRows problems={problems} />
 			) : (
-				<ul className="flex flex-col divide-y overflow-hidden rounded-md border">
-					{problems.map((p) => {
-						const d = DIFFICULTY[p.difficulty] ?? {
-							label: p.difficulty,
-							tone: "",
-						};
-						return (
-							<li key={p._id}>
-								<Link
-									href={`/problems/${p.slug}`}
-									className="flex items-center gap-3 px-4 py-3 hover:bg-accent"
-								>
-									<span className="font-medium">{p.title}</span>
-									<SolvedMark slug={p.slug} />
-									<Badge className={`ml-auto ${d.tone}`}>{d.label}</Badge>
-								</Link>
-							</li>
-						);
-					})}
-				</ul>
+				<ClientProblemList />
 			)}
 		</div>
 	);
