@@ -37,9 +37,12 @@ export const metadata: Metadata = {
     "Arduino",
     "어린이 코딩",
   ],
-  alternates: {
-    canonical: SITE_URL,
-  },
+  // No `alternates.canonical` here on purpose. Metadata is inherited, so a
+  // canonical set on the root layout is emitted by every page that does not
+  // override it — every /Algorithm page was telling Google it was a duplicate
+  // of the homepage, which is the opposite of why /Algorithm is left ungated.
+  // The homepage declares its own canonical in app/page.tsx; pages without one
+  // are self-canonical to the URL that was crawled, which is correct.
   robots: {
     index: true,
     follow: true,

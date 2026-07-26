@@ -7,8 +7,16 @@ import {
   Sparkles,
   Star,
 } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CatIcon } from "@/components/mdx/CatIcon";
+
+// The canonical used to live on the root layout, where every page inherited it.
+// It belongs to the homepage alone; title/description still come from the
+// layout since this page is the site's default face.
+export const metadata: Metadata = {
+  alternates: { canonical: "https://yipcode.xyz" },
+};
 
 /* ── Doodle design tokens ─────────────────────────────────────── */
 const ink = "#263D5B"; // secondary — hand-drawn ink line / text
