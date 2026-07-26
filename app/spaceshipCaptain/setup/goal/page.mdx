@@ -1,0 +1,202 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '프로젝트 설정하기 — uv와 파이게임의 뼈대',
+  description: 'uv가 무엇인지, 파이게임 프로그램이 어떤 뼈대로 돌아가는지 이해하고 오늘 만들 창을 미리 그려보자냥!',
+  session: 1,
+}
+
+# 프로젝트 설정하기
+
+<NyangSpeech>
+  안녕, 나 코딩냥이다냥! 오늘부터 우주선 게임을 만든다냥.
+  그런데 게임을 만들기 전에 **작업실부터 차려야** 한다냥.
+  오늘은 그 작업실을 차리는 도구 `uv`와, 파이게임 프로그램이
+  어떤 뼈대로 굴러가는지를 배운다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `uv`가 무엇을 해주는 도구인지 설명할 수 있다.
+  - 파이게임 프로그램의 네 가지 뼈대(**준비 · 창 · 반복 · 종료**)를 순서대로 말할 수 있다.
+  - 게임이 왜 `while` 반복문 안에서 돌아가야 하는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · uv는 뭐하는 도구냥? (5분)
+
+게임을 만들려면 `pygame` 같은 **남이 만들어둔 도구**를 가져다 써야 한다냥.
+그 도구를 내려받고, 정리하고, 실행까지 시켜주는 관리인이 `uv`다냥.
+
+<Callout type="analogy">
+  `uv`는 **작업실 관리인**이라고 생각하면 된다냥.
+
+  - 새 작업실을 차려주고 (`uv init`)
+  - 필요한 장비를 주문해서 넣어주고 (`uv add`)
+  - 그 작업실에서 프로그램을 돌려준다냥 (`uv run`)
+</Callout>
+
+기억할 명령은 딱 세 개다냥.
+
+<StepCard step="1" title="uv init — 새 프로젝트 만들기">
+
+프로젝트 폴더와 기본 파일들을 한 번에 만들어준다냥.
+이사 갈 집의 방 구조를 미리 설계해주는 것과 같다냥.
+
+</StepCard>
+
+<StepCard step="2" title="uv add — 도구 설치하기">
+
+`uv add pygame-ce` 처럼 쓰면 그 도구를 프로젝트에 넣어준다냥.
+새 집에 가구를 배달 주문하는 것과 같다냥.
+
+</StepCard>
+
+<StepCard step="3" title="uv run — 실행하기">
+
+`uv run main.py` 로 내 프로그램을 돌린다냥.
+설치한 도구들이 있는 그 작업실 안에서 실행해준다냥.
+
+</StepCard>
+
+<Callout type="note">
+  우리가 설치할 건 `pygame`이 아니라 **`pygame-ce`** 다냥.
+  `ce`는 Community Edition, 즉 여러 사람이 더 부지런히 관리하는 버전이라는 뜻이다냥.
+  쓰는 방법은 `pygame`과 똑같다냥.
+</Callout>
+
+---
+
+## 2단계 · 게임은 왜 반복문 안에서 도냥? (7분)
+
+우리가 지금까지 만든 프로그램은 **위에서 아래로 한 번 실행되고 끝**이었다냥.
+그런데 게임은 그러면 안 된다냥. 창이 뜨자마자 꺼져버리니까냥.
+
+<CompareBubble
+  left={{
+    label: '지금까지의 프로그램',
+    color: 'ink',
+    items: [
+      '위에서 아래로 한 번 실행',
+      '마지막 줄에 도착하면 끝',
+      'print 하고 계산하고 종료',
+      '창을 띄워도 곧바로 사라짐',
+    ],
+  }}
+  right={{
+    label: '게임 프로그램',
+    color: 'blue',
+    items: [
+      '끄기 전까지 계속 살아 있음',
+      '1초에 수십 번 화면을 다시 그림',
+      '매 순간 키 입력을 확인',
+      '그래서 while 반복문이 필요함',
+    ],
+  }}
+/>
+
+그래서 게임에는 **게임 루프**가 있다냥.
+`while` 반복문 하나가 게임이 살아 있는 내내 계속 돈다냥.
+
+```python
+running = True
+while running:
+    # 1. 무슨 일이 있었는지 확인하고 (이벤트)
+    # 2. 화면을 다시 그린다냥
+```
+
+<Callout type="analogy">
+  게임 루프는 **TV 방송**과 같다냥.
+  전원을 끄기 전까지 1초에 수십 번 화면을 새로 뿌린다냥.
+  그 한 바퀴 한 바퀴를 **프레임**이라고 부른다냥.
+</Callout>
+
+---
+
+## 3단계 · 파이게임 프로그램의 네 뼈대 (8분)
+
+어떤 파이게임 프로그램이든 뼈대는 똑같다냥. 이 순서만 기억하면 된다냥.
+
+<StepCard step="준비" title="pygame.init()">
+
+파이게임의 모든 기능을 사용할 수 있게 켜준다냥.
+빵을 굽기 전에 오븐을 예열하는 것과 같다냥.
+
+</StepCard>
+
+<StepCard step="창" title="pygame.display.set_mode((가로, 세로))">
+
+게임이 펼쳐질 **창**을 만든다냥.
+그림을 그리기 전에 도화지 크기를 정하는 것과 같다냥.
+이때 돌려받는 값이 앞으로 모든 걸 그릴 도화지다냥.
+
+</StepCard>
+
+<StepCard step="반복" title="while running:">
+
+끄기 전까지 계속 도는 게임 루프다냥.
+그 안에서 `pygame.event.get()` 으로 "무슨 일이 있었는지"를 확인한다냥.
+
+</StepCard>
+
+<StepCard step="종료" title="pygame.quit()">
+
+반복문을 빠져나오면 파이게임이 쓰던 것들을 깔끔하게 반납한다냥.
+
+</StepCard>
+
+<Callout type="important">
+  `pygame.event.get()` 은 **민원 접수함**이다냥.
+  키를 누르거나, 마우스를 클릭하거나, 창의 X 버튼을 누른 사건이 전부 여기에 쌓인다냥.
+  이걸 매 프레임 비워주지 않으면 창이 멈춘 것처럼 보인다냥.
+</Callout>
+
+---
+
+## 오늘 만들 결과
+
+오늘 실습이 끝나면 **가로 1280 · 세로 720짜리 검은 창**이 뜨고,
+X 버튼을 누르면 얌전히 닫히는 프로그램이 완성된다냥.
+아직 아무것도 안 그려져 있지만, 이게 우주선이 날아다닐 무대다냥.
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: 'uv의 세 가지 명령과 각각의 역할을 말해보자냥.',
+      answer: 'uv init은 새 프로젝트를 만들고, uv add는 필요한 도구를 설치하고, uv run은 프로그램을 실행한다냥.',
+    },
+    {
+      question: '게임 코드를 while 반복문 안에 넣는 이유는 뭐냥?',
+      answer: '게임은 끄기 전까지 계속 화면을 다시 그리고 입력을 받아야 하기 때문이다냥. 반복문이 없으면 창이 뜨자마자 프로그램이 끝나버린다냥.',
+    },
+    {
+      question: 'pygame.display.set_mode()가 돌려주는 값은 무엇에 쓰이냥?',
+      answer: '앞으로 모든 것을 그릴 도화지(surface)다냥. 배경색을 칠하거나 우주선을 올릴 때 전부 이 위에 그린다냥.',
+    },
+    {
+      question: 'pygame.event.get()은 무슨 일을 하냥?',
+      answer: '키보드, 마우스, 창 닫기 같은 사건들을 모아서 리스트로 꺼내준다냥. 매 프레임 이걸 확인해서 X 버튼이 눌렸는지 판단한다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame-ce 공식 홈페이지](https://pyga.me/)
+2. [pygame.display](https://pyga.me/docs/ref/display.html)
+3. [pygame.display.set_mode()](https://pyga.me/docs/ref/display.html#pygame.display.set_mode)
+4. [pygame.event.get()](https://pyga.me/docs/ref/event.html#pygame.event.get)

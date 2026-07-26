@@ -1,523 +1,97 @@
-import { SideBarTreeItem } from "@/components/commons/SideBarItems";
-import { buildLessonPages } from "./pageSequence";
+export interface Lesson {
+  /** Sidebar display name */
+  name: string;
+  /** Folder name under app/spaceshipCaptain/ */
+  slug: string;
+  /** Short description shown in metadata */
+  description: string;
+}
 
-export const spaceshipCaptainCurriculum: SideBarTreeItem[] = [
+/**
+ * Space Ship Captain, restructured to the four-route shape the AIDeveloper
+ * curriculum uses (goal / goal_slide / task / task_slide).
+ *
+ * The old layout was 17 single long pages whose sidebar entries were ~90 links
+ * to in-page anchors (`/setup#uv_setup`). Five of those pages were exercises
+ * with no concept half (`surface_challenge`, `moveSpaceShipChallenge`,
+ * `classExcerciseLevel1..3`, `backgroundClass`) and two were concept with no
+ * exercise, so this is a regrouping rather than a 1:1 split: each exercise page
+ * is folded into the `task` of the chapter that teaches it.
+ *
+ * The `source_code/*` reference dumps are not lessons and stay outside this
+ * list — spaceshipCaptainTree appends them as their own folder.
+ */
+export const spaceshipCaptainCurriculum: Lesson[] = [
   {
-    kind: "folder",
     name: "프로젝트 설정하기",
-    files: [
-      {
-        kind: "file",
-        name: "uv 설치",
-        url: "/spaceshipCaptain/setup#uv_setup",
-      },
-      { kind: "file", name: "uv 실행", url: "/spaceshipCaptain/setup#uv_init" },
-      {
-        kind: "file",
-        name: "pygame-ce 설치하기",
-        url: "/spaceshipCaptain/setup#pygame-ce",
-      },
-      {
-        kind: "file",
-        name: "main.py: 파이게임 초기화",
-        url: "/spaceshipCaptain/setup#pygame-init",
-      },
-      {
-        kind: "file",
-        name: "main.py: display_surface",
-        url: "/spaceshipCaptain/setup#display_surface",
-      },
-      {
-        kind: "file",
-        name: "main.py: while 루프",
-        url: "/spaceshipCaptain/setup#while-setup",
-      },
-      {
-        kind: "file",
-        name: "main.py: 이벤트",
-        url: "/spaceshipCaptain/setup#event",
-      },
-      {
-        kind: "file",
-        name: "결과 확인하기",
-        url: "/spaceshipCaptain/setup#result",
-      },
-    ],
+    slug: "setup",
+    description:
+      "uv로 파이게임 프로젝트를 만들고, 창이 뜨는 main.py까지 직접 작성해보자냥!",
   },
   {
-    kind: "folder",
     name: "surface 이해하기",
-    files: [
-      {
-        kind: "file",
-        name: "창: display",
-        url: "/spaceshipCaptain/surface/#display",
-      },
-      {
-        kind: "file",
-        name: "창 제목: caption",
-        url: "/spaceshipCaptain/surface/#caption",
-      },
-      {
-        kind: "file",
-        name: "창 업데이트: flip()",
-        url: "/spaceshipCaptain/surface/#flip",
-      },
-      {
-        kind: "file",
-        name: "창 색칠하기: fill()",
-        url: "/spaceshipCaptain/surface/#fill",
-      },
-      {
-        kind: "file",
-        name: "모양 추가하기: Surface()",
-        url: "/spaceshipCaptain/surface/#surface",
-      },
-      {
-        kind: "file",
-        name: "결과 확인하기",
-        url: "/spaceshipCaptain/surface/#result",
-      },
-    ],
+    slug: "surface",
+    description:
+      "화면을 그리는 도화지 surface의 개념을 배우고, 창 색과 모양을 직접 바꿔보자냥!",
   },
   {
-    kind: "folder",
-    name: "과제: 색 바꾸기",
-    files: [
-      {
-        kind: "file",
-        name: "색바꾸기 과제",
-        url: "/spaceshipCaptain/surface_challenge",
-      },
-    ],
+    name: "우주선 이미지 띄우기",
+    slug: "playerSurf",
+    description:
+      "이미지를 surface로 불러오고 Frect로 위치를 다루며 우주선을 화면에 올려보자냥!",
   },
   {
-    kind: "folder",
-    name: "우주선 이미지",
-    files: [
-      {
-        kind: "file",
-        name: "이미지 저장하기",
-        url: "/spaceshipCaptain/playerSurf#download",
-      },
-      {
-        kind: "file",
-        name: "이미지 코드",
-        url: "/spaceshipCaptain/playerSurf#image_surf",
-      },
-      {
-        kind: "file",
-        name: "이미지 코드 점검",
-        url: "/spaceshipCaptain/playerSurf#checkpoint1",
-      },
-      {
-        kind: "file",
-        name: "연습하기",
-        url: "/spaceshipCaptain/playerSurf#practice",
-      },
-      {
-        kind: "file",
-        name: "배경 추가하기",
-        url: "/spaceshipCaptain/playerSurf#addingBG",
-      },
-      {
-        kind: "file",
-        name: "Frect",
-        url: "/spaceshipCaptain/playerSurf#getFrect",
-      },
-      {
-        kind: "file",
-        name: "Center Frect",
-        url: "/spaceshipCaptain/playerSurf#frectCenter",
-      },
-      {
-        kind: "file",
-        name: "Move Frect",
-        url: "/spaceshipCaptain/playerSurf#moveFrect",
-      },
-      {
-        kind: "file",
-        name: "확인하기",
-        url: "/spaceshipCaptain/playerSurf#result",
-      },
-    ],
+    name: "FPS와 Vector",
+    slug: "FPSAndVector",
+    description:
+      "벡터로 방향을 다루고 FPS·델타타임으로 컴퓨터마다 같은 속도가 되게 만들어보자냥!",
   },
   {
-    kind: "folder",
-    name: "과제: 우주선 이동",
-    files: [
-      {
-        kind: "file",
-        name: "과제 확인하기",
-        url: "/spaceshipCaptain/moveSpaceShipChallenge",
-      },
-    ],
+    name: "방향키로 움직이기",
+    slug: "keyboardInput",
+    description:
+      "pygame.key로 키보드 입력을 받고, 벡터를 정규화해서 대각선 속도까지 맞춰보자냥!",
   },
   {
-    kind: "folder",
-    name: "FPS 와 Vector",
-    files: [
-      {
-        kind: "file",
-        name: "Vector",
-        url: "/spaceshipCaptain/FPSAndVector#vector",
-      },
-      { kind: "file", name: "FPS", url: "/spaceshipCaptain/FPSAndVector#FPS" },
-      {
-        kind: "file",
-        name: "확인하기",
-        url: "/spaceshipCaptain/FPSAndVector#check",
-      },
-    ],
+    name: "클래스: 개념과 연습",
+    slug: "class",
+    description:
+      "클래스·인스턴스·상속의 개념을 익히고 레벨 1~3 문제로 손에 붙여보자냥!",
   },
   {
-    kind: "folder",
-    name: "방향키 설정하기",
-    files: [
-      {
-        kind: "file",
-        name: "pygame.key",
-        url: "/spaceshipCaptain/keyboardInput#key",
-      },
-      {
-        kind: "file",
-        name: "코드 확인하기",
-        url: "/spaceshipCaptain/keyboardInput#check",
-      },
-      {
-        kind: "file",
-        name: "벡터 정규화",
-        url: "/spaceshipCaptain/keyboardInput#normalization",
-      },
-      {
-        kind: "file",
-        name: "코드 확인하기 2",
-        url: "/spaceshipCaptain/keyboardInput#check2",
-      },
-    ],
+    name: "Sprite 클래스",
+    slug: "spriteClass",
+    description:
+      "파이게임의 Sprite와 Group을 배우고 Player 클래스로 우주선을 다시 만들어보자냥!",
   },
   {
-    kind: "folder",
-    name: "클래스: 개념",
-    files: [
-      { kind: "file", name: "클래스", url: "/spaceshipCaptain/class" },
-      {
-        kind: "file",
-        name: "인스턴스",
-        url: "/spaceshipCaptain/class#instance",
-      },
-      { kind: "file", name: "개념", url: "/spaceshipCaptain/class#basic" },
-      {
-        kind: "file",
-        name: "상속",
-        url: "/spaceshipCaptain/class#inheritance",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "클래스 문제",
-    files: [
-      {
-        kind: "file",
-        name: "Level 1",
-        url: "/spaceshipCaptain/classExcerciseLevel1",
-      },
-      {
-        kind: "file",
-        name: "Level 2",
-        url: "/spaceshipCaptain/classExcerciseLevel2",
-      },
-      {
-        kind: "file",
-        name: "Level 3",
-        url: "/spaceshipCaptain/classExcerciseLevel3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "Sprite Class",
-    files: [
-      {
-        kind: "file",
-        name: "sprite class",
-        url: "/spaceshipCaptain/spriteClass#spriteClass",
-      },
-      {
-        kind: "file",
-        name: "Player 클래스 정의하기",
-        url: "/spaceshipCaptain/spriteClass#definePlayerClass",
-      },
-      {
-        kind: "file",
-        name: "중간 점검 1",
-        url: "/spaceshipCaptain/spriteClass#check1",
-      },
-      {
-        kind: "file",
-        name: "플레이어 이동시키기",
-        url: "/spaceshipCaptain/spriteClass#updatePlayerClass",
-      },
-      {
-        kind: "file",
-        name: "중간점검 2",
-        url: "/spaceshipCaptain/spriteClass#check2",
-      },
-      {
-        kind: "file",
-        name: "키보드 입력받기",
-        url: "/spaceshipCaptain/spriteClass#keyboardInput",
-      },
-      {
-        kind: "file",
-        name: "코드확인",
-        url: "/spaceshipCaptain/spriteClass#check3",
-      },
-    ],
-  },
-  {
-    kind: "folder",
     name: "모듈과 패키지",
-    files: [
-      {
-        kind: "file",
-        name: "모듈과 패키지 개념",
-        url: "/spaceshipCaptain/moduleNPackage#intro",
-      },
-      {
-        kind: "file",
-        name: "모듈과 패키지 이점",
-        url: "/spaceshipCaptain/moduleNPackage#benefit",
-      },
-      {
-        kind: "file",
-        name: "모듈과 패키지 예시",
-        url: "/spaceshipCaptain/moduleNPackage#benefitExample",
-      },
-      {
-        kind: "file",
-        name: "리팩토링",
-        url: "/spaceshipCaptain/moduleNPackage#refactoring",
-      },
-      {
-        kind: "file",
-        name: "코드 확인하기",
-        url: "/spaceshipCaptain/moduleNPackage#check",
-      },
-    ],
+    slug: "moduleNPackage",
+    description:
+      "길어진 main.py를 모듈과 패키지로 나누고, 배경 클래스까지 직접 분리해보자냥!",
   },
   {
-    kind: "folder",
-    name: "과제: 배경 클래스",
-    files: [
-      {
-        kind: "file",
-        name: "배경 클래스 만들기",
-        url: "/spaceshipCaptain/backgroundClass#bgClass",
-      },
-      {
-        kind: "file",
-        name: "배경 클래스 힌트",
-        url: "/spaceshipCaptain/backgroundClass#hint",
-      },
-    ],
-  },
-  {
-    kind: "folder",
     name: "미사일 클래스",
-    files: [
-      {
-        kind: "file",
-        name: "미사일 클래스 만들기",
-        url: "/spaceshipCaptain/missileClass",
-      },
-      {
-        kind: "file",
-        name: "미사일 발사하기",
-        url: "/spaceshipCaptain/missileClass#fireMissile",
-      },
-      {
-        kind: "file",
-        name: "코드 확인하기",
-        url: "/spaceshipCaptain/missileClass#check",
-      },
-    ],
+    slug: "missileClass",
+    description:
+      "미사일 클래스를 만들고 스페이스바로 발사해서 우주선에 공격을 붙여보자냥!",
   },
   {
-    kind: "folder",
     name: "운석 클래스",
-    files: [
-      {
-        kind: "file",
-        name: "운석 클래스",
-        url: "/spaceshipCaptain/meteorClass",
-      },
-      {
-        kind: "file",
-        name: "운석 클래스 만들기",
-        url: "/spaceshipCaptain/meteorClass#createMeteorClass",
-      },
-      {
-        kind: "file",
-        name: "운석 클래스 이동시키기",
-        url: "/spaceshipCaptain/meteorClass#move",
-      },
-      {
-        kind: "file",
-        name: "운석 이벤트",
-        url: "/spaceshipCaptain/meteorClass#spawn",
-      },
-      {
-        kind: "file",
-        name: "중간 점검",
-        url: "/spaceshipCaptain/meteorClass#check1",
-      },
-      {
-        kind: "file",
-        name: "최적화",
-        url: "/spaceshipCaptain/meteorClass#surfOptimization",
-      },
-      {
-        kind: "file",
-        name: "코드확인하기",
-        url: "/spaceshipCaptain/meteorClass#finalCode",
-      },
-    ],
+    slug: "meteorClass",
+    description:
+      "타이머 이벤트로 운석을 계속 만들어내고, 화면 밖 운석을 정리해 최적화해보자냥!",
   },
   {
-    kind: "folder",
     name: "충돌 처리하기",
-    files: [
-      {
-        kind: "file",
-        name: "충돌의 개념",
-        url: "/spaceshipCaptain/collision#collision",
-      },
-      {
-        kind: "file",
-        name: "충돌 구현하기",
-        url: "/spaceshipCaptain/collision#spritecollide",
-      },
-      {
-        kind: "file",
-        name: "결과확인하기 1",
-        url: "/spaceshipCaptain/collision#collisionResult",
-      },
-      {
-        kind: "file",
-        name: "종료하기",
-        url: "/spaceshipCaptain/collision#quit",
-      },
-      {
-        kind: "file",
-        name: "중간점검",
-        url: "/spaceshipCaptain/collision#check",
-      },
-      {
-        kind: "file",
-        name: "미사일 충돌",
-        url: "/spaceshipCaptain/collision#missileCollision",
-      },
-      {
-        kind: "file",
-        name: "결과 확인하기 2",
-        url: "/spaceshipCaptain/collision#fincalCheck",
-      },
-    ],
+    slug: "collision",
+    description:
+      "spritecollide로 우주선과 운석, 미사일과 운석의 충돌을 판정해보자냥!",
   },
   {
-    kind: "folder",
-    name: "gameOver",
-    files: [
-      {
-        kind: "file",
-        name: "게임오버",
-        url: "/spaceshipCaptain/gameOver#gameOver",
-      },
-      {
-        kind: "file",
-        name: "HUD 클래스 만들기",
-        url: "/spaceshipCaptain/gameOver#hud",
-      },
-      {
-        kind: "file",
-        name: "게임 종료 표시하기",
-        url: "/spaceshipCaptain/gameOver#conditional",
-      },
-      {
-        kind: "file",
-        name: "코드 점검하기 1",
-        url: "/spaceshipCaptain/gameOver#checkpoint1",
-      },
-      {
-        kind: "file",
-        name: "폰트 변경하기",
-        url: "/spaceshipCaptain/gameOver#uploadFont",
-      },
-      {
-        kind: "file",
-        name: "재시작하기",
-        url: "/spaceshipCaptain/gameOver#restart",
-      },
-      {
-        kind: "file",
-        name: "코드 확인하기 2",
-        url: "/spaceshipCaptain/gameOver#checkpoint2",
-      },
-    ],
-  },
-  {
-    kind: "folder",
-    name: "모든 코드 확인하기",
-    files: [
-      {
-        kind: "file",
-        name: "main.py",
-        url: "/spaceshipCaptain/source_code/main",
-      },
-      {
-        kind: "file",
-        name: "settings.py",
-        url: "/spaceshipCaptain/source_code/settings",
-      },
-      {
-        kind: "folder",
-        name: "entity",
-        files: [
-          {
-            kind: "file",
-            name: "player.py",
-            url: "/spaceshipCaptain/source_code/entity/player",
-          },
-          {
-            kind: "file",
-            name: "bg.py",
-            url: "/spaceshipCaptain/source_code/entity/bg",
-          },
-          {
-            kind: "file",
-            name: "hud.py",
-            url: "/spaceshipCaptain/source_code/entity/hud",
-          },
-          {
-            kind: "file",
-            name: "meteor.py",
-            url: "/spaceshipCaptain/source_code/entity/meteor",
-          },
-          {
-            kind: "file",
-            name: "missile.py",
-            url: "/spaceshipCaptain/source_code/entity/missile",
-          },
-        ],
-      },
-    ],
+    name: "게임 오버와 재시작",
+    slug: "gameOver",
+    description:
+      "HUD 클래스로 점수와 게임 오버를 표시하고 재시작까지 붙여 게임을 완성해보자냥!",
   },
 ];
-
-/** Flat prev/next sequence for the Space Ship Captain lessons (see buildLessonPages). */
-export const spaceshipCaptainPages = buildLessonPages(
-  spaceshipCaptainCurriculum,
-  { url: "/spaceshipCaptain", label: "소개" }
-);

@@ -1,7 +1,7 @@
 "use client";
 
 import { tourOfPythonPages } from "@/utils/sideBarTree/tourOfPythonTree";
-import { spaceshipCaptainPages } from "@/utils/curriculum/spaceshipCaptain";
+import { spaceshipCaptainPages } from "@/utils/sideBarTree/spaceshipCaptainTree";
 import { simpleWebDevPages } from "@/utils/curriculum/simpleWebDev";
 import type { LessonPage } from "@/utils/curriculum/pageSequence";
 import { ArrowLeft, ArrowRight } from "lucide-react";
