@@ -1,0 +1,617 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import CodeBlock from '@/components/commons/CodeBlock'
+import QuizzWithOptions from '@/components/forms/quizz/QuizzWithOptions'
+import { Option } from '@/components/forms/quizz/Option'
+
+export const metadata = {
+  title: '실습 — 클래스 연습문제 Level 1~3',
+  description: '개념 확인 퀴즈 10문항부터 기본 실습 15문제, 종합 도전 10문제까지 단계별로 풀어보자냥!',
+  session: 6,
+}
+
+# 실습 — 클래스 연습문제
+
+<NyangSpeech>
+  클래스는 **눈으로 봐서는 절대 안 익는다냥.**
+  직접 손으로 써봐야 한다냥!
+  Level 1은 코드를 읽고 결과를 맞히는 퀴즈,
+  Level 2는 직접 짜보는 기본 문제,
+  Level 3은 실제로 쓸 법한 종합 문제다냥.
+  **Level 2까지만 해도 게임 만드는 데는 충분하다냥.**
+</NyangSpeech>
+
+---
+
+<MissionCard number="Level 1" title="개념 확인 퀴즈" time="15분">
+
+코드를 읽고 결과를 예측해보자냥. 실행해보기 전에 **먼저 머리로 풀어보자냥!**
+
+<QuizzWithOptions answer={2} question="1. 클래스에 관한 설명으로 틀린 것을 고르세요.">
+  <Option value={1}>클래스를 사용하면 데이터와 기능을 하나로 묶을 수 있다.</Option>
+  <Option value={2}>하나의 클래스로는 하나의 객체만 만들 수 있다.</Option>
+  <Option value={3}>클래스에서 정의된 함수를 메소드라고 한다.</Option>
+  <Option value={4}>클래스는 객체를 만들기 위한 설계도 역할을 한다.</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="2. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Dog:
+    def __init__(self, name):
+        self.name = name
+
+d = Dog("초코")
+print(d.name)`} />
+  <Option value={1}>초코</Option>
+  <Option value={2}>name</Option>
+  <Option value={3}>Dog</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="3. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Cat:
+    def __init__(self, age):
+        self.age = age
+
+c = Cat(3)
+print(c.age)`} />
+  <Option value={1}>Cat</Option>
+  <Option value={2}>3</Option>
+  <Option value={3}>age</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="4. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def greet(self):
+        return "안녕, 나는 " + self.name
+
+p = Person("민준")
+print(p.greet())`} />
+  <Option value={1}>안녕, 나는 Person</Option>
+  <Option value={2}>안녕, 나는 self.name</Option>
+  <Option value={3}>안녕, 나는 민준</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="5. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return self.radius * self.radius
+
+c = Circle(5)
+print(c.area())`} />
+  <Option value={1}>25</Option>
+  <Option value={2}>10</Option>
+  <Option value={3}>5</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="6. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Counter:
+    count = 0
+
+    def add(self):
+        self.count += 1
+
+c = Counter()
+c.add()
+c.add()
+print(c.count)`} />
+  <Option value={1}>0</Option>
+  <Option value={2}>1</Option>
+  <Option value={3}>2</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={3} question="7. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Box:
+    def __init__(self, color):
+        self.color = color
+
+b = Box("빨강")
+b.color = "파랑"
+print(b.color)`} />
+  <Option value={1}>빨강</Option>
+  <Option value={2}>Box</Option>
+  <Option value={3}>파랑</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={4} question="8. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Animal:
+    def __init__(self, name, sound):
+        self.name = name
+        self.sound = sound
+
+    def speak(self):
+        return self.name + ": " + self.sound
+
+a = Animal("강아지", "멍멍")
+print(a.speak())`} />
+  <Option value={1}>강아지</Option>
+  <Option value={2}>멍멍</Option>
+  <Option value={3}>name: sound</Option>
+  <Option value={4}>강아지: 멍멍</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={1} question="9. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+s1 = Student("지수", 90)
+s2 = Student("민호", 80)
+print(s1.score + s2.score)`} />
+  <Option value={1}>170</Option>
+  <Option value={2}>90</Option>
+  <Option value={3}>80</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+<QuizzWithOptions answer={2} question="10. 다음 코드의 실행 결과로 올바른 것을 고르세요.">
+  <CodeBlock code={`class Lamp:
+    def __init__(self):
+        self.on = False
+
+    def toggle(self):
+        self.on = not self.on
+
+lamp = Lamp()
+lamp.toggle()
+lamp.toggle()
+lamp.toggle()
+print(lamp.on)`} />
+  <Option value={1}>False</Option>
+  <Option value={2}>True</Option>
+  <Option value={3}>None</Option>
+  <Option value={4}>에러 발생</Option>
+</QuizzWithOptions>
+
+</MissionCard>
+
+---
+
+<MissionCard number="Level 2" title="기본 실습 15문제" time="40분">
+
+이제 직접 짜보자냥. 새 파이썬 파일을 하나 열고 문제마다 코드를 써보자냥.
+
+### 문제 1. 클래스 만들기
+
+`Dog` 클래스를 만들고, 이름(`name`)과 나이(`age`)를 받는 `__init__` 메소드를 작성하자냥.
+그런 다음 '초코', 3살 강아지 객체를 만들어 이름과 나이를 출력하자냥.
+
+```text
+출력:
+초코
+3
+```
+
+### 문제 2. 메소드 추가하기
+
+아래 클래스에 `bark()` 메소드를 추가하자냥. `'(이름): 멍멍!'` 형식의 문자열을 반환해야 한다냥.
+
+```python
+class Dog:
+    def __init__(self, name):
+        self.name = name
+
+d = Dog("초코")
+print(d.bark())
+
+# 출력: 초코: 멍멍!
+```
+
+### 문제 3. 여러 객체 만들기
+
+아래 `Car` 클래스로 '소나타'(흰색)와 '아반떼'(검정)를 각각 객체로 만들고, 각 차의 이름과 색상을 출력하자냥.
+
+```python
+class Car:
+    def __init__(self, model, color):
+        self.model = model
+        self.color = color
+
+# 출력:
+# 소나타 흰색
+# 아반떼 검정
+```
+
+### 문제 4. 속성 값 수정하기
+
+객체를 생성한 뒤 `score` 속성을 95로 수정하고 출력하자냥.
+
+```python
+class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+s = Student("김철수", 80)
+# score를 95로 수정하세요
+
+# 출력: 95
+```
+
+### 문제 5. 계산하는 메소드
+
+`Rectangle` 클래스에 `area()` 메소드를 추가해 넓이(가로 × 세로)를 반환하게 만들자냥.
+
+```python
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+r = Rectangle(5, 3)
+print(r.area())
+
+# 출력: 15
+```
+
+### 문제 6. 정보 출력 메소드
+
+`Person` 클래스에 `info()` 메소드를 추가하자냥. `'이름: (name), 나이: (age)'` 형식을 반환해야 한다냥.
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+p = Person("이영희", 15)
+print(p.info())
+
+# 출력: 이름: 이영희, 나이: 15
+```
+
+### 문제 7. 메소드로 속성 변경하기
+
+`Lamp` 클래스에 `turn_on()`, `turn_off()` 메소드를 추가하자냥.
+
+```python
+class Lamp:
+    def __init__(self):
+        self.is_on = False
+
+lamp = Lamp()
+lamp.turn_on()
+print(lamp.is_on)
+lamp.turn_off()
+print(lamp.is_on)
+
+# 출력:
+# True
+# False
+```
+
+### 문제 8. 누적 기능 만들기
+
+`BankAccount` 클래스에 `deposit(amount)` 메소드를 추가하자냥. 부를 때마다 `balance` 에 더해진다냥.
+
+```python
+class BankAccount:
+    def __init__(self):
+        self.balance = 0
+
+account = BankAccount()
+account.deposit(1000)
+account.deposit(500)
+print(account.balance)
+
+# 출력: 1500
+```
+
+### 문제 9. `__str__` 메소드
+
+`Book` 클래스에 `__str__` 메소드를 추가해 `print()` 로 출력했을 때 아래 형식이 나오게 하자냥.
+
+```python
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+b = Book("파이썬 기초", "김코딩")
+print(b)
+
+# 출력: [파이썬 기초] 저자: 김코딩
+```
+
+### 문제 10. 객체 리스트 활용
+
+학생 3명의 객체를 만들어 리스트에 저장한 뒤, `for` 문으로 각 학생의 이름과 점수를 출력하자냥.
+
+```python
+class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+# 김철수(90), 이영희(85), 박민수(78) 객체를 만드세요
+
+# 출력:
+# 김철수: 90점
+# 이영희: 85점
+# 박민수: 78점
+```
+
+### 문제 11. 조건 판단 메소드
+
+`Student` 클래스에 `is_pass()` 메소드를 추가하자냥. `score` 가 60 이상이면 `True` 다냥.
+
+```python
+s1 = Student("김철수", 75)
+s2 = Student("이영희", 45)
+print(s1.is_pass())   # True
+print(s2.is_pass())   # False
+```
+
+### 문제 12. 클래스 변수
+
+객체가 생성될 때마다 클래스 변수 `count` 가 1씩 증가하게 만들자냥.
+
+```python
+class Counter:
+    count = 0
+
+    def __init__(self):
+        Counter.count += 1
+
+c1 = Counter()
+c2 = Counter()
+c3 = Counter()
+print(Counter.count)
+
+# 출력: 3
+```
+
+### 문제 13. 두 객체 비교하기
+
+`Rectangle` 클래스에 `is_bigger(other)` 메소드를 추가하자냥. 자기 넓이가 `other` 보다 크면 `True` 다냥.
+
+```python
+r1 = Rectangle(5, 4)
+r2 = Rectangle(3, 3)
+print(r1.is_bigger(r2))   # True
+print(r2.is_bigger(r1))   # False
+```
+
+### 문제 14. 메소드 여러 개 활용
+
+`Calculator` 클래스에 `add()`, `subtract()`, `reset()` 메소드를 추가하자냥.
+
+```python
+class Calculator:
+    def __init__(self):
+        self.result = 0
+
+calc = Calculator()
+calc.add(10)
+calc.add(5)
+calc.subtract(3)
+print(calc.result)   # 12
+calc.reset()
+print(calc.result)   # 0
+```
+
+### 문제 15. 클래스 종합 활용
+
+`StudentGroup` 클래스를 완성하자냥.
+
+```python
+class StudentGroup:
+    def __init__(self):
+        self.students = []
+
+    def add_student(self, name, score):
+        # 딕셔너리로 학생 정보를 students 리스트에 추가하세요
+        pass
+
+    def show_all(self):
+        # 모든 학생의 이름과 점수를 출력하세요
+        pass
+
+    def best_student(self):
+        # 가장 점수가 높은 학생의 이름을 반환하세요
+        pass
+
+group = StudentGroup()
+group.add_student("김철수", 85)
+group.add_student("이영희", 92)
+group.add_student("박민수", 78)
+group.show_all()
+print("최고 점수:", group.best_student())
+
+# 출력:
+# 김철수: 85점
+# 이영희: 92점
+# 박민수: 78점
+# 최고 점수: 이영희
+```
+
+</MissionCard>
+
+---
+
+<MissionCard number="Level 3" title="종합 도전 10문제" time="숙제 또는 심화">
+
+<Callout type="note">
+  Level 3은 **실제로 쓸 법한 프로그램**을 클래스로 설계하는 문제다냥.
+  수업 시간에 다 못 풀어도 괜찮다냥. 숙제로 가져가거나,
+  게임을 다 만든 뒤에 돌아와서 풀어도 좋다냥.
+</Callout>
+
+### 문제 1. 학생 성적 관리
+
+`Student` 클래스에 `get_grade()` 를 만들자냥. 90 이상 A, 80 이상 B, 70 이상 C, 미만 F다냥.
+객체 리스트로 성적표를 출력하고 마지막에 평균을 출력하자냥.
+
+```text
+=== 성적표 ===
+김철수 - 92점 - A
+이영희 - 85점 - B
+박민수 - 73점 - C
+정수아 - 61점 - F
+홍길동 - 88점 - B
+평균 점수: 79.8점
+```
+
+### 문제 2. 편의점 재고 관리
+
+`Product` 클래스에 `get_status()` 를 만들자냥. 0개면 `[품절]`, 5개 이하면 `[품절임박]` 이다냥.
+
+```text
+=== 재고 현황 ===
+삼각김밥 - 3개 [품절임박]
+컵라면 - 0개 [품절]
+우유 - 8개
+과자 - 2개 [품절임박]
+음료수 - 5개 [품절임박]
+품절임박 상품: ['삼각김밥', '컵라면', '과자', '음료수']
+```
+
+### 문제 3. 카페 주문 시스템
+
+`CafeOrder` 클래스에 `add_item(name)`, `get_total()`, `show_receipt()` 를 만들자냥.
+'완료' 를 입력하면 영수증을 출력한다냥.
+
+```text
+입력: 아메리카노, 녹차, 스무디, 완료
+
+=== 주문 내역 ===
+아메리카노 - 4000원
+녹차 - 3500원
+스무디 - 6000원
+총 금액: 13500원
+```
+
+### 문제 4. 나라별 수도 퀴즈
+
+`CapitalQuiz` 클래스에 `check_answer(country, answer)` 와 `show_result()` 를 만들자냥.
+
+```text
+입력: 파리, 도쿄, 뉴욕, 런던, 시드니
+
+프랑스의 수도는? 파리 → 정답!
+일본의 수도는? 도쿄 → 정답!
+미국의 수도는? 뉴욕 → 오답! (정답: 워싱턴)
+영국의 수도는? 런던 → 정답!
+호주의 수도는? 시드니 → 오답! (정답: 캔버라)
+결과: 5문제 중 3개 정답
+틀린 나라: ['미국', '호주']
+```
+
+### 문제 5. 단어 빈도 분석기
+
+`WordCounter` 클래스에 `analyze(sentence)` 와 `show_frequent(min_count)` 를 만들자냥.
+딕셔너리에 단어를 넣을 때 `get()` 을 활용하자냥.
+
+```text
+sentence = "apple banana apple orange banana apple grape orange banana"
+
+=== 단어 빈도 ===
+apple: 3번
+banana: 3번
+orange: 2번
+```
+
+### 문제 6. 팀원 역할 배정
+
+`TeamManager` 클래스에 `assign(name, role)` 과 `show_teams()` 를 만들자냥.
+
+```text
+members = [
+    ("김철수", "디자인"), ("이영희", "개발"), ("박민수", "개발"),
+    ("정수아", "기획"), ("홍길동", "디자인"), ("최민지", "기획"),
+    ("강민준", "개발")
+]
+
+=== 역할별 팀원 ===
+디자인: 김철수, 홍길동
+개발: 이영희, 박민수, 강민준
+기획: 정수아, 최민지
+```
+
+### 문제 7. 여행 경비 계산기
+
+`TravelBudget` 클래스에 `record_actual(item, amount)` 와 `show_report()` 를 만들자냥.
+
+```text
+budget = {"숙박": 150000, "식비": 80000, "교통": 50000, "관광": 40000}
+actual = [("숙박", 130000), ("식비", 95000), ("교통", 45000), ("관광", 52000)]
+
+=== 여행 경비 정산 ===
+숙박: 예산 150000원 → 실지출 130000원 (20000원 절약)
+식비: 예산 80000원 → 실지출 95000원 (15000원 초과)
+교통: 예산 50000원 → 실지출 45000원 (5000원 절약)
+관광: 예산 40000원 → 실지출 52000원 (12000원 초과)
+총 예산: 320000원 | 총 지출: 322000원 | 2000원 초과
+```
+
+### 문제 8. 학생 출석 통계
+
+`AttendanceBook` 클래스에 `add_student(name, records)`, `get_rate(name)`, `show_report()` 를 만들자냥.
+출석률 80% 미만은 경고 명단에 넣자냥.
+
+```text
+=== 출석 통계 ===
+김철수 - 출석: 8/10 (80.0%) - 양호
+이영희 - 출석: 5/10 (50.0%) - 경고
+박민수 - 출석: 10/10 (100.0%) - 양호
+정수아 - 출석: 6/10 (60.0%) - 경고
+경고 학생: ['이영희', '정수아']
+```
+
+### 문제 9. RPG 캐릭터 상점
+
+`RPGCharacter` 클래스에 `buy(item, shop)` 과 `show_status()` 를 만들자냥.
+골드가 부족하면 안내 메시지를 출력한다냥.
+
+```text
+입력: 체력포션, 방패, 마나포션, 장갑, 종료
+
+체력포션 구매 완료! (남은 골드: 700)
+방패 구매 완료! (남은 골드: 200)
+마나포션 - 골드가 부족합니다. (보유: 200, 필요: 250)
+장갑 - 골드가 부족합니다. (보유: 200, 필요: 400)
+=== 최종 상태 ===
+캐릭터: 용사
+보유 골드: 200
+인벤토리: ['체력포션', '방패']
+```
+
+### 문제 10. 학교 급식 만족도 분석
+
+`MenuAnalyzer` 클래스에 `add_review(name, menu, score)`, `get_avg(menu)`, `show_report()` 를 만들자냥.
+평균 4.0 이상 '인기메뉴', 3.0 이상 '보통', 미만 '개선필요' 다냥.
+
+```text
+=== 급식 만족도 분석 ===
+비빔밥 - 평균: 4.0점 - 인기메뉴
+돈까스 - 평균: 4.7점 - 인기메뉴
+된장국 - 평균: 2.3점 - 개선필요
+볶음밥 - 평균: 4.3점 - 인기메뉴
+```
+
+</MissionCard>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - Level 1 퀴즈로 클래스·`self`·클래스 변수의 동작을 확인했다.
+  - Level 2에서 클래스를 직접 15개 짜봤다.
+  - Level 3에서 실제로 쓸 법한 프로그램을 클래스로 설계해봤다.
+</Callout>
+
+다음 시간에는 드디어 이 클래스를 게임에 쓴다냥.
+파이게임이 만들어둔 **`Sprite` 클래스를 상속받아** 우주선을 다시 만든다냥!
