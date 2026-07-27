@@ -23,6 +23,13 @@ For `.mdx`, compile with `@mdx-js/mdx` + `remark-gfm` as well — it catches JSX
 brace errors that `tsc` cannot see. Lint currently reports 168 problems on
 `main`; the bar is "no new findings", not a clean sheet.
 
+Editor diagnostics arriving *during* a branch switch are not a verification
+result. Merging #28 produced 22 `Cannot find module '@/components/slide/
+SlideShell'` errors the instant the checkout landed on `main`; the file was
+tracked and present the whole time — the TS server had simply read the working
+tree while git was still rewriting it. Re-run `tsc` before believing a
+diagnostic that appeared without an edit.
+
 **Ask only when the answer changes the work**, or before something
 irreversible: force push, deleting files, merging, anything that leaves the
 machine. Routine judgment calls are yours to make — state the assumption and
@@ -81,6 +88,13 @@ rule: once the result set is tens of thousands of lines `find` wins, because
 fd's cost there is emitting the paths, not walking the tree. And scope still
 beats tool choice — adding `-prune` for `node_modules` takes `find` from 0.86s
 to 0.06s on its own.
+
+Two shells are available here and they do not share syntax. A PowerShell
+here-string (`@'…'@`) passed to the Bash tool does not error — it silently
+becomes part of the string. `git commit -m @'…'@` that way produced a commit
+whose subject line was a lone `@`, which then needed an amend and a force push
+to undo. In Bash use a heredoc (`git commit -F - <<'MSG'`); keep `@'…'@` for
+the PowerShell tool.
 
 ## Responsive Checks
 
@@ -170,11 +184,17 @@ Prop shapes that are easy to get wrong (check the component, don't guess):
 The `lesson-converter` agent exists for converting a legacy single-page chapter
 into this shape.
 
-`spaceshipCaptain` was converted in PR #28 (2026-07-27): 17 single long pages,
-whose sidebar entries were ~90 in-page anchors, became 12 chapters. It was a
-regrouping rather than a 1:1 split — five of the old pages were exercise-only
-and got folded into the `task` of the chapter that teaches them. The rationale
-per chapter is in the header comment of `utils/curriculum/spaceshipCaptain.ts`.
+`spaceshipCaptain` was converted in PR #28, merged 2026-07-27 as `957a2fe`: 17
+single long pages, whose sidebar entries were ~90 in-page anchors, became 12
+chapters. It was a regrouping rather than a 1:1 split — five of the old pages
+were exercise-only and got folded into the `task` of the chapter that teaches
+them. The rationale per chapter is in the header comment of
+`utils/curriculum/spaceshipCaptain.ts`.
+
+The slide narration and prose in those 12 chapters were newly written and have
+**not** been checked against how the class is actually taught. `tsc`, `build`,
+and `lint` all pass, but none of them can tell whether an explanation is right,
+so treat that content as unreviewed until someone reads it.
 
 ## Commands
 
