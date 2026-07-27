@@ -126,6 +126,56 @@ Note that box drawing (`─ ┌ ┐ │ ├ └ ┘`), arrows (`→ ←`), enclo
 (`① ② ③`), and `○ ■ ▶ ★ ░` are **not** emoji and are used deliberately —
 several appear inside Python examples, where removing them breaks the code.
 
+## Lesson Section Structure
+
+`AIDeveloper`, `PublicDataViz`, `tourOfPython`, and `spaceshipCaptain` all use
+the same **four routes per chapter**:
+
+```
+app/<section>/<slug>/goal/page.mdx        개념 — 학습 목표
+app/<section>/<slug>/goal_slide/page.tsx  개념 슬라이드 — 학습 슬라이드
+app/<section>/<slug>/task/page.mdx        실습 — 실습 과제
+app/<section>/<slug>/task_slide/page.tsx  실습 슬라이드 — 실습 슬라이드
+```
+
+The sidebar labels are exactly those four Korean strings — they come from the
+tree module, not the page. Two modules per section drive everything:
+
+- `utils/curriculum/<section>.ts` — a flat `Lesson[]` of
+  `{ name, slug, description }`, in teaching order. This is the only place a
+  chapter is declared.
+- `utils/sideBarTree/<section>Tree.ts` — maps that array into one folder per
+  chapter with the four files, then exports
+  `<section>Pages = buildLessonPages(tree, …)` for `LessonPager`'s prev/next.
+
+So adding a chapter means one entry in the curriculum array plus the four route
+files. Anything that isn't a lesson (e.g. spaceshipCaptain's 모든 코드 확인하기
+source dumps) is appended to the tree by hand *after* the mapped chapters, and
+deliberately kept out of the curriculum array.
+
+`.mdx` pages export `metadata` including a `session` number; the slide pages are
+`"use client"` and render `<SlideShell slides={slides} />` from
+`components/slide/SlideShell`. Each `Slide` carries a `script` field — that is
+the **instructor's spoken narration**, not student-facing text, so it should
+read as something a teacher says out loud.
+
+Prop shapes that are easy to get wrong (check the component, don't guess):
+
+- `<CompareBubble left={{ label, color, items: string[] }} right={{…}} />` —
+  not `{title, tone, body}`. `emoji` exists but must stay unset per the emoji
+  rule above.
+- `<Callout type="goal" | "analogy" | "tip" | "important" | "note">` — the
+  heading text lives in the MDX body, the component only tints the box.
+
+The `lesson-converter` agent exists for converting a legacy single-page chapter
+into this shape.
+
+`spaceshipCaptain` was converted in PR #28 (2026-07-27): 17 single long pages,
+whose sidebar entries were ~90 in-page anchors, became 12 chapters. It was a
+regrouping rather than a 1:1 split — five of the old pages were exercise-only
+and got folded into the `task` of the chapter that teaches them. The rationale
+per chapter is in the header comment of `utils/curriculum/spaceshipCaptain.ts`.
+
 ## Commands
 
 ```bash
