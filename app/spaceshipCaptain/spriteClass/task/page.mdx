@@ -1,0 +1,281 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — Player 클래스로 다시 만들기',
+  description: 'Sprite를 상속받은 Player 클래스를 만들고, Group에 넣어 update와 draw 두 줄로 게임 루프를 정리해보자냥!',
+  session: 7,
+}
+
+# 실습 — Player 클래스로 다시 만들기
+
+<NyangSpeech>
+  오늘 실습은 **이미 되던 걸 다시 만드는 작업**이다냥.
+  화면에 보이는 결과는 지난 시간과 똑같다냥.
+  그런데 코드 구조가 완전히 달라진다냥.
+  다 하고 나면 `main()` 함수가 훨씬 짧아진 걸 볼 수 있다냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **오늘의 출발점** — 5강에서 완성한 WASD 조종 코드다냥.
+  우주선이 키보드로 움직이고 화면 밖으로 안 나가야 한다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="Player 클래스 껍데기 만들기" time="8분">
+
+`display_surface` 를 만드는 부분 **아래**, `main()` 함수 **위**에 클래스를 하나 만들자냥.
+
+```python
+class Player(pygame.sprite.______):
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+
+    def update(self):
+        pass
+```
+
+> 힌트: 게임에 등장하는 물체 하나하나의 틀이 되는 클래스 이름이다냥. 대문자로 시작한다냥.
+
+아직 아무것도 안 보인다냥. 껍데기만 만든 것이다냥.
+
+<Callout type="tip">
+  `super().__init__(group)` 이 하는 일을 다시 확인하자냥.
+  부모인 `Sprite` 를 초기화하면서 **그룹까지 넘긴다냥.**
+  이 한 줄 덕분에 객체가 태어나는 순간 그룹에 자동 등록된다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="image와 rect 넣기" time="10분">
+
+이제 그림과 위치를 넣자냥. **이름을 정확히 지켜야 한다냥.**
+
+```python
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.______ = pygame.image.load(Player.path).convert_alpha()
+        self.______ = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self):
+        pass
+```
+
+> 힌트
+> - 첫 번째 빈칸: 파이게임이 **그릴 그림**을 찾을 때 쓰는 이름이다냥.
+> - 두 번째 빈칸: 파이게임이 **그릴 위치**를 찾을 때 쓰는 이름이다냥.
+
+<Callout type="important">
+  `self.player_image` 같은 다른 이름을 쓰면 **아무것도 안 그려진다냥.**
+  파이게임은 정확히 `image` 와 `rect` 라는 이름만 찾는다냥.
+  일부러 이름을 바꿔서 실행해보면 무슨 일이 생기는지 알 수 있다냥.
+</Callout>
+
+`path` 를 클래스 변수로 둔 것에도 이유가 있다냥.
+6강에서 배운 **게시판**이다냥 — 모든 Player가 같은 그림 파일을 쓰니까 공유해도 된다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Group 만들고 화면에 띄우기" time="10분">
+
+`main()` 함수를 크게 바꿀 차례다냥.
+
+먼저 명함첩(그룹)을 만들고 Player를 하나 넣자냥.
+
+```python
+def main():
+    running = True
+    all_sprite_group = pygame.sprite.______()
+    Player(all_sprite_group)
+```
+
+> 힌트: 스프라이트들을 모아두는 바구니 이름이다냥.
+
+<Callout type="tip">
+  `Player(all_sprite_group)` 을 변수에 안 담는 게 이상해 보인다냥?
+  `super().__init__(group)` 이 이미 그룹에 등록해줬기 때문에
+  **변수가 없어도 그룹이 붙잡고 있다냥.**
+</Callout>
+
+그리고 게임 루프에서 기존의 키 입력·위치 갱신·blit 코드를 **전부 지우고** 두 줄로 바꾸자냥.
+
+```python
+        display_surface.blit(bg_surf, (0, 0))
+        all_sprite_group.______(dt)
+        all_sprite_group.______(display_surface)
+        pygame.display.flip()
+```
+
+> 힌트
+> - 첫 번째 빈칸: 상태를 갱신하는 이름이다냥.
+> - 두 번째 빈칸: 화면에 그리는 이름이다냥.
+
+**배경 위에 우주선이 가만히 떠 있으면 성공이다냥.**
+아직 안 움직이는 게 정상이다냥 — `update()` 가 `pass` 니까냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="update로 움직여보기" time="8분">
+
+정말 매 프레임 불리는지 확인해보자냥. `update` 를 이렇게 바꾸자냥.
+
+```python
+    def update(self, dt: float):
+        self.rect.y -= 40 * dt
+```
+
+**우주선이 저절로 위로 올라가면 성공이다냥.**
+
+<Callout type="important">
+  `TypeError: update() takes 1 positional argument but 2 were given` 이 나오냥?
+  `update(self)` 를 `update(self, dt: float)` 로 바꾸지 않은 것이다냥.
+  `all_sprite_group.update(dt)` 가 `dt` 를 넘겨주기 때문에 **받을 자리가 있어야 한다냥.**
+</Callout>
+
+> **확인해보자냥**
+> 우리는 `Player.update()` 를 **한 번도 직접 부르지 않았다냥.**
+> 그런데도 매 프레임 실행된다냥. 누가 부르고 있냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="키보드 조종을 클래스 안으로 옮기기" time="12분">
+
+마지막이다냥. 5강에서 `main()` 에 있던 조종 코드를 **클래스 안으로** 옮기자냥.
+
+먼저 클래스 변수 두 개를 추가하자냥.
+
+```python
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 100
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+```
+
+그리고 `update` 를 채우자냥. 5강 코드와 거의 같지만 **`self.` 가 붙는다냥.**
+
+```python
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.____________()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.________(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+> 힌트: 5강에서 쓴 정규화 함수와 화면에 가두는 함수다냥.
+
+**WASD로 조종되면 성공이다냥.** 5강과 똑같이 동작한다냥.
+
+<Callout type="tip">
+  `main()` 에 남아 있던 `direction` 변수와 `if direction.length() > 0:` 은
+  이제 아무도 안 쓴다냥. **지우자냥.**
+  쓰지 않는 코드를 남겨두면 나중에 읽을 때 헷갈린다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="코드 확인하기"
+  code={`import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 100
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.image.load(Player.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.normalize_ip()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    all_sprite_group = pygame.sprite.Group()
+    Player(all_sprite_group)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.blit(bg_surf, (0, 0))
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `pygame.sprite.Sprite` 를 상속받아 `Player` 클래스를 만들었다.
+  - 약속된 이름 `self.image` 와 `self.rect` 를 지켰다.
+  - `Group` 을 만들어 `update(dt)` 와 `draw(화면)` 두 줄로 루프를 정리했다.
+  - 키보드 조종 코드를 `main()` 에서 클래스 안으로 옮겼다.
+</Callout>
+
+**게임 루프를 다시 보자냥.** 이제 물체가 몇 개로 늘어나도 저 두 줄 그대로다냥.
+그런데 `main.py` 자체는 여전히 길다냥.
+다음 시간에는 이 파일을 **여러 파일로 쪼갠다냥!**
