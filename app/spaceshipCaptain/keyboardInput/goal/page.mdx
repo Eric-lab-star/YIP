@@ -1,0 +1,222 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '방향키로 움직이기 — 입력과 정규화',
+  description: '키보드 상태를 읽는 방법과, 대각선이 더 빨라지는 문제를 벡터 정규화로 잡는 법을 배워보자냥!',
+  session: 5,
+}
+
+# 방향키로 움직이기
+
+<NyangSpeech>
+  드디어 우주선을 **내 손으로 조종**한다냥!
+  그런데 조종을 붙이고 나면 이상한 걸 발견하게 된다냥.
+  **대각선으로 갈 때만 더 빠르다냥.** 오늘은 그 이유와 해결법까지 배운다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `pygame.key.get_pressed()` 가 무엇을 돌려주는지 설명할 수 있다.
+  - 방향 벡터를 **매 프레임 새로 만드는 이유**를 말할 수 있다.
+  - 대각선이 더 빠른 이유와 **정규화**가 그것을 어떻게 해결하는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 키보드 상태 읽기 (6분)
+
+<Callout type="analogy">
+  `pygame.key.get_pressed()` 는 **키보드 전체를 한 장에 찍은 사진**이다냥.
+  지금 이 순간 어떤 키가 눌려 있는지를 전부 담아서 돌려준다냥.
+</Callout>
+
+```python
+keys = pygame.key.get_pressed()
+
+keys[pygame.K_w]    # W가 눌려 있으면 True, 아니면 False
+keys[pygame.K_a]    # A가 눌려 있으면 True
+```
+
+여기서 중요한 건 **"눌려 있는 동안 계속 True"** 라는 점이다냥.
+키를 꾹 누르고 있으면 매 프레임 True가 나온다냥.
+그래서 캐릭터를 **부드럽게 계속 움직일 때** 딱 맞다냥.
+
+<Callout type="note">
+  이벤트로 키를 받는 방법(`pygame.KEYDOWN`)도 있다냥.
+  그건 **누른 순간 딱 한 번**만 반응한다냥.
+  점프나 발사처럼 "한 번만" 일어나야 하는 동작에 쓴다냥.
+  실제로 다음다음 챕터에서 미사일 발사에 그걸 쓴다냥.
+</Callout>
+
+---
+
+## 2단계 · 방향은 매 프레임 새로 정한다냥 (8분)
+
+```python
+direction = pygame.Vector2(0, 0)     # 매 프레임 "정지"에서 시작
+if keys[pygame.K_w]:
+    direction.y = -1
+```
+
+왜 매번 `(0, 0)` 으로 되돌리냥?
+**키에서 손을 떼면 멈춰야 하기 때문**이다냥.
+
+<Callout type="important">
+  방향을 초기화하지 않으면 지난 프레임의 방향이 그대로 남는다냥.
+  W를 눌렀다 떼도 우주선이 계속 위로 날아간다냥.
+
+  매 프레임 **"나는 지금 어디로 가야 하지?"** 를 새로 묻는 구조여야 한다냥.
+</Callout>
+
+### 파이게임의 y는 아래가 커진다냥
+
+W(위)를 눌렀을 때 `direction.y = -1` 인 게 이상해 보인다냥?
+지난 시간에 배운 대로 **화면 맨 위가 y=0** 이고 아래로 갈수록 커진다냥.
+그래서 위로 가려면 **빼야** 한다냥.
+
+---
+
+## 3단계 · if를 뺄셈 한 줄로 (7분)
+
+`if` 를 네 번 쓰는 대신 이렇게 쓸 수 있다냥.
+
+```python
+direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+```
+
+<Callout type="analogy">
+  **줄다리기**라고 생각하면 된다냥.
+  오른쪽 힘에서 왼쪽 힘을 뺀 게 최종 방향이다냥.
+
+  - D만 누름 → `1 - 0 = 1` (오른쪽)
+  - A만 누름 → `0 - 1 = -1` (왼쪽)
+  - 둘 다 누름 → `1 - 1 = 0` (제자리)
+  - 둘 다 안 누름 → `0 - 0 = 0` (제자리)
+</Callout>
+
+`int(True)` 는 `1`, `int(False)` 는 `0` 이라는 성질을 이용한 것이다냥.
+네 줄짜리 `if` 가 한 줄이 되고, **양쪽을 동시에 누르는 경우까지** 저절로 처리된다냥.
+
+---
+
+## 4단계 · 대각선이 더 빠른 이유 (10분)
+
+여기가 오늘의 핵심이다냥.
+
+W와 D를 같이 누르면 `direction` 은 `(1, -1)` 이 된다냥.
+이 화살표의 **길이**가 얼마냥?
+
+```
+가로 1, 세로 1인 직각삼각형의 빗변
+= 약 1.414
+```
+
+<CompareBubble
+  left={{
+    label: '상하좌우로 갈 때',
+    color: 'blue',
+    items: [
+      'direction = (1, 0) 또는 (0, 1)',
+      '화살표 길이 = 1',
+      'speed × 1 만큼 이동',
+      '기준 속도',
+    ],
+  }}
+  right={{
+    label: '대각선으로 갈 때',
+    color: 'red',
+    items: [
+      'direction = (1, -1)',
+      '화살표 길이 = 약 1.414',
+      'speed × 1.414 만큼 이동',
+      '약 41% 더 빠르다!',
+    ],
+  }}
+/>
+
+<Callout type="analogy">
+  **같은 보폭으로 걸어도 대각선으로 가면 더 멀리 간다냥.**
+  정사각형 교실을 가로질러 가는 것과 벽을 따라 가는 것의 차이다냥.
+</Callout>
+
+### 해결: 정규화(normalize)
+
+정규화는 **방향은 그대로 두고 길이만 1로 맞추는** 것이다냥.
+
+```python
+if direction.length() > 0:
+    direction.normalize_ip()
+```
+
+`(1, -1)` 은 `(0.707, -0.707)` 이 된다냥.
+방향은 여전히 오른쪽 위인데, 길이는 1이라 **다른 방향과 속도가 같아진다냥.**
+
+<Callout type="important">
+  `if direction.length() > 0:` 이 꼭 필요하다냥.
+  아무 키도 안 눌렀으면 `direction` 은 `(0, 0)` 이고,
+  **길이 0짜리 화살표는 길이를 1로 만들 수 없다냥.**
+  그냥 정규화하면 오류가 난다냥.
+</Callout>
+
+<Callout type="tip">
+  이름 끝의 `_ip` 는 **in place**, 즉 "그 자리에서 바꾼다" 는 뜻이다냥.
+  새 벡터를 돌려주는 게 아니라 `direction` 자체를 고친다냥.
+  `clamp_ip` 도 같은 규칙이다냥.
+</Callout>
+
+---
+
+## 5단계 · 화면 밖으로 못 나가게 (4분)
+
+```python
+player_rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+`clamp` 는 **가둔다** 는 뜻이다냥.
+우주선 사각형이 화면 사각형 밖으로 나가면 경계에 딱 붙여준다냥.
+지난 시간처럼 튕기는 게 아니라 **더 못 나가게 막는** 것이다냥.
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: 'pygame.key.get_pressed()는 무엇을 돌려주냥?',
+      answer: '지금 이 순간 키보드의 모든 키가 눌려 있는지 아닌지를 담은 목록이다냥. keys[pygame.K_w] 처럼 확인하면 True나 False가 나온다냥.',
+    },
+    {
+      question: '방향 벡터를 매 프레임 (0,0)으로 되돌리는 이유는 뭐냥?',
+      answer: '키에서 손을 뗐을 때 멈추게 하기 위해서다냥. 초기화하지 않으면 지난 프레임의 방향이 남아 계속 움직인다냥.',
+    },
+    {
+      question: 'int(keys[K_d]) - int(keys[K_a]) 는 어떤 원리냥?',
+      answer: 'True는 1, False는 0이 되는 성질을 이용한 줄다리기다냥. D만 누르면 1, A만 누르면 -1, 둘 다 누르면 0이 되어 if 네 줄을 한 줄로 줄인다냥.',
+    },
+    {
+      question: '대각선으로 갈 때 왜 더 빠르냥?',
+      answer: 'direction이 (1,-1)이 되는데 이 화살표의 길이가 약 1.414이기 때문이다냥. 상하좌우일 때는 길이가 1이라서 대각선이 약 41% 빠르다냥.',
+    },
+    {
+      question: 'normalize_ip() 앞에 length() > 0 검사가 필요한 이유는 뭐냥?',
+      answer: '아무 키도 안 누르면 방향이 (0,0)인데, 길이가 0인 벡터는 길이를 1로 만들 수 없어서 오류가 나기 때문이다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame.key.get_pressed](https://pyga.me/docs/ref/key.html#pygame.key.get_pressed)
+2. [Vector2.normalize_ip](https://pyga.me/docs/ref/math.html)
+3. [Rect.clamp_ip](https://pyga.me/docs/ref/rect.html#pygame.Rect.clamp_ip)
