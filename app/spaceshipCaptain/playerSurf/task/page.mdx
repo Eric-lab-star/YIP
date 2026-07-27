@@ -1,0 +1,270 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import DownloadBtn from '@/components/commons/DownloadBtn'
+import VideoPlayer from '@/components/commons/VideoPlayer'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — 우주선을 띄우고 튕기게 만들기',
+  description: '이미지를 저장하고 불러와 화면에 올린 뒤, Frect로 중앙에 배치하고 벽에서 튕기게 만들어보자냥!',
+  session: 3,
+}
+
+# 실습 — 우주선을 띄우고 튕기게 만들기
+
+<NyangSpeech>
+  드디어 진짜 우주선이 나온다냥!
+  먼저 그림 파일을 프로젝트에 넣는 것부터 시작한다냥.
+  파일 위치를 잘못 넣으면 코드가 아무리 맞아도 안 돌아가니
+  **미션 1을 특히 꼼꼼히** 하자냥.
+</NyangSpeech>
+
+---
+
+<MissionCard number={1} title="이미지 내려받아 프로젝트에 넣기" time="7분">
+
+먼저 우주선 그림을 받자냥.
+
+<DownloadBtn eager label="우주선 사진 받기" fileKey="spaceShooter/player.png" />
+
+배경 그림도 미리 받아두자냥. 미션 4에서 쓴다냥.
+
+<DownloadBtn label="우주 배경" fileKey="spaceShooter/background.png" />
+
+프로젝트 폴더 안에 **`images` 폴더를 새로 만들고**, 받은 그림을 그 안에 넣자냥.
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/plyaerImageLocation.png"
+  alt="이미지 저장 위치"
+  className="mx-auto rounded-lg"
+/>
+
+<Callout type="tip">
+  VS Code를 쓴다면 탐색기 창으로 그림 파일을 **드래그 앤 드롭** 하면 바로 들어간다냥.
+</Callout>
+
+> **확인해보자냥**
+> - `space_shooter/images/player.png` 위치가 맞냥?
+> - 폴더 이름이 `image` 가 아니라 **`images`** 냥? (s를 빠뜨리기 쉽다냥)
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="이미지 불러와 화면에 올리기" time="10분">
+
+파일 맨 위에 경로를 만들어주는 도구를 가져오자냥.
+
+```python
+import pygame
+from os.path import ____
+```
+
+그리고 `set_caption` 아래에 이미지를 불러오는 두 줄을 넣자냥.
+
+```python
+player_path = join("images", "________")
+player_surf = pygame.image.____(player_path).____________()
+```
+
+> 힌트
+> - 두 번째 빈칸: 받은 파일 이름 그대로다냥. 확장자까지 써야 한다냥.
+> - 세 번째 빈칸: 파일을 읽어들이는 함수다냥.
+> - 네 번째 빈칸: 투명한 부분을 처리해주는 함수다냥. `alpha` 가 들어간다냥.
+
+이제 게임 루프에서 네모 대신 우주선을 그리자냥.
+
+```python
+        display_surface.fill("gray")
+        display_surface.blit(________, (100, 100))
+```
+
+**회색 배경에 우주선이 보이면 성공이다냥.**
+
+<Callout type="important">
+  `FileNotFoundError` 가 나면 코드가 아니라 **파일 위치 문제**다냥.
+  터미널에서 `uv run main.py` 를 실행하는 위치가 `space_shooter` 폴더 안인지 확인하자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Frect로 정중앙에 배치하기" time="8분">
+
+지금은 `(100, 100)` 에 고정돼 있다냥. 화면 정중앙으로 옮기자냥.
+
+이미지를 불러온 바로 아래에 한 줄 추가하자냥.
+
+```python
+player_rect = player_surf.__________(______=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+```
+
+> 힌트
+> - 첫 번째 빈칸: 소수점을 쓸 수 있는 사각형을 얻는 함수다냥.
+> - 두 번째 빈칸: 사각형의 **중심**을 뜻하는 기준점 이름이다냥.
+
+그리고 `blit` 의 위치 자리에 좌표 대신 이 사각형을 넣자냥.
+
+```python
+        display_surface.blit(player_surf, ___________)
+```
+
+**우주선이 화면 한가운데 오면 성공이다냥.**
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="배경 깔고 좌우로 튕기게 만들기" time="12분">
+
+먼저 배경이다냥. 이미지 불러오는 부분 아래에 추가하자냥.
+
+```python
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.____(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+```
+
+> 힌트: 이미지를 화면 크기에 맞게 **늘려주는** 함수다냥.
+
+이제 움직임이다냥. `def main():` 안, `while` 위에 두 변수를 만들자냥.
+
+```python
+def main():
+    running = True
+    direction = 1
+    speed = 0.5
+```
+
+그리고 루프 안에서 벽을 확인하고 위치를 갱신하자냥.
+
+```python
+        if player_rect.right >= WINDOW_WIDTH or player_rect.____ <= 0:
+            direction *= ____
+
+        player_rect.centerx += speed * direction
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+```
+
+> 힌트
+> - 첫 번째 빈칸: 사각형의 **왼쪽 변**을 뜻한다냥.
+> - 두 번째 빈칸: 부호를 뒤집는 숫자다냥.
+
+<Callout type="tip">
+  배경을 `fill` 대신 쓰기 때문에 `display_surface.fill(...)` 줄은 지워도 된다냥.
+  배경 이미지가 화면 전체를 덮으니 그게 지우개 역할을 한다냥.
+  단, **배경을 먼저 그리고 우주선을 나중에** 그려야 한다냥.
+</Callout>
+
+**우주선이 좌우로 왔다 갔다 하면 성공이다냥.**
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="도전 과제 — 상하좌우로 튕기기" time="12분">
+
+지금은 좌우로만 움직인다냥. 이제 **위아래로도** 움직이게 만들자냥.
+어느 벽에 부딪히든 그 방향만 뒤집히면 된다냥.
+
+<VideoPlayer src="https://r2.kimkyungsub.com/spaceShooter/moveSpaceShipChallengeVideo.mov" />
+
+<Callout type="tip">
+  **힌트다냥**
+
+  - 방향 변수를 `direction` 하나 대신 **`x`, `y` 두 개**로 나눈다냥.
+  - 위아래 벽은 `player_rect.top` 과 `player_rect.bottom` 으로 확인한다냥.
+  - 위치는 `centerx` 와 `centery` 를 각각 갱신한다냥.
+  - 좌우 판정과 상하 판정은 **서로 다른 `if` 문**이어야 한다냥.
+    `elif` 로 묶으면 모서리에서 이상하게 동작한다냥.
+</Callout>
+
+기준점 이름이 헷갈리면 공식 문서를 보자냥.
+[pyga.me에서 Rect 기준점 확인하기](https://pyga.me/docs/ref/rect.html)
+
+<ToggleCodeBlock
+  header="도전 과제 정답 확인하기"
+  code={`import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+player_rect = player_surf.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+
+def main():
+    running = True
+    x = 1
+    y = 1
+    speed = 0.5
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0:
+            x *= -1
+
+        if player_rect.top <= 0 or player_rect.bottom >= WINDOW_HEIGHT:
+            y *= -1
+
+        player_rect.centerx += speed * x
+        player_rect.centery += speed * y
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+</MissionCard>
+
+---
+
+## 더 해보고 싶다면
+
+내가 고른 우주선으로 바꿔보자냥. 이미지를 직접 찾고 편집하는 것도 개발자의 일이다냥.
+AI에게 그려달라고 해도 되고, 직접 그려도 된다냥.
+지금은 코드에 집중하고 싶다면 아래에서 골라 쓰자냥.
+
+<div className="flex flex-wrap gap-4">
+  <DownloadBtn label="보라 우주선" fileKey="spaceShooter/spaceship.png" />
+  <DownloadBtn label="초록 우주선" fileKey="spaceShooter/ship_2.png" />
+  <DownloadBtn label="파랑 우주선" fileKey="spaceShooter/ship_3.png" />
+</div>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `images` 폴더를 만들고 그림 파일을 넣었다.
+  - `join` · `image.load` · `convert_alpha` 로 이미지를 불러왔다.
+  - `get_frect(center=...)` 로 우주선을 화면 정중앙에 배치했다.
+  - 배경을 깔고 우주선을 벽에서 튕기게 만들었다.
+</Callout>
+
+지금은 속도가 컴퓨터 성능에 따라 달라진다냥.
+다음 시간에는 **어느 컴퓨터에서도 같은 속도**가 되게 만든다냥!

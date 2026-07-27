@@ -1,0 +1,284 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '클래스 — 붕어빵 틀과 붕어빵',
+  description: '클래스와 인스턴스, __init__과 self, 메서드와 클래스 변수, 그리고 상속까지 한 번에 정리해보자냥!',
+  session: 6,
+}
+
+# 클래스: 개념
+
+<NyangSpeech>
+  지금 `main.py` 가 꽤 길어졌다냥. 우주선 하나 관리하는 데도 변수가 여러 개인데,
+  **미사일이랑 운석까지 나오면** 어떻게 되겠냥? 변수가 수십 개로 불어난다냥.
+  오늘 배우는 **클래스**가 그 문제를 푸는 열쇠다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **클래스**와 **인스턴스**의 관계를 비유로 설명할 수 있다.
+  - `__init__` 과 `self` 가 각각 무엇인지 말할 수 있다.
+  - **인스턴스 변수**와 **클래스 변수**의 차이를 설명할 수 있다.
+  - **상속**이 무엇이고 `super()` 가 왜 필요한지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 왜 클래스가 필요하냥? (6분)
+
+플레이어 두 명을 변수로 관리해보자냥.
+
+<CompareBubble
+  left={{
+    label: '클래스 없이',
+    color: 'ink',
+    items: [
+      'player1_name = "Alice"',
+      'player1_hp = 100',
+      'player2_name = "Bob"',
+      'player2_hp = 80  ← 10명이면 변수 30개',
+    ],
+  }}
+  right={{
+    label: '클래스로',
+    color: 'blue',
+    items: [
+      'class Player: 를 한 번 만들고',
+      'player1 = Player("Alice", 100)',
+      'player2 = Player("Bob", 80)',
+      '10명이어도 Player()를 10번',
+    ],
+  }}
+/>
+
+클래스는 관련된 **데이터와 기능을 하나로 묶어** 준다냥.
+서랍 하나에 이름·체력·속도를 정리해 넣는 것과 같다냥.
+
+---
+
+## 2단계 · 붕어빵 틀과 붕어빵 (8분)
+
+<Callout type="analogy">
+  **클래스는 붕어빵 틀**이고, **인스턴스는 찍어낸 붕어빵**이다냥.
+
+  틀 하나로 팥 붕어빵, 슈크림 붕어빵을 여러 개 찍어낼 수 있다냥.
+  모양은 같지만 **속은 다르다냥.**
+</Callout>
+
+```python
+class Player:                       # 붕어빵 틀 (설계도)
+    def __init__(self, name, hp):
+        self.name = name
+        self.hp = hp
+
+player1 = Player("Alice", 100)      # 붕어빵 1개
+player2 = Player("Bob", 80)         # 붕어빵 2개
+
+print(player1.name)   # Alice
+print(player2.name)   # Bob   ← 각자 자기 데이터를 가진다냥
+```
+
+설계도는 하나지만 만들어낸 결과물은 여러 개고, **각자 고유한 데이터**를 갖는다냥.
+
+---
+
+## 3단계 · `__init__` 과 `self` (10분)
+
+여기가 처음 배울 때 가장 헷갈리는 부분이다냥. 천천히 가자냥.
+
+<StepCard step="__init__" title="객체가 태어날 때 자동 실행">
+
+`Player("Alice", 100)` 이라고 쓰는 순간 `__init__` 이 **저절로** 불린다냥.
+붕어빵 틀에 반죽과 팥을 넣는 순간이다냥.
+여기서 처음 값들을 정해준다냥.
+
+</StepCard>
+
+<StepCard step="self" title="나 자신">
+
+`self` 는 **"나 자신"** 이라는 뜻이다냥.
+`self.name = name` 은 "내 이름표에 이 값을 붙여라" 는 뜻이다냥.
+
+`self` 를 붙인 것만 **그 객체의 것**이 된다냥.
+안 붙이면 함수가 끝나는 순간 사라지는 임시 변수일 뿐이다냥.
+
+</StepCard>
+
+<Callout type="important">
+  클래스 안 모든 메서드의 **첫 번째 자리는 항상 `self`** 다냥.
+  `def take_damage(self, damage):` 처럼 쓴다냥.
+
+  그런데 부를 때는 `player1.take_damage(30)` 처럼 **self를 안 넘긴다냥.**
+  파이썬이 "누가 불렀는지"를 알아서 `self` 에 넣어주기 때문이다냥.
+</Callout>
+
+```python
+class Player:
+    def __init__(self, name, hp):
+        self.name = name          # 내 이름표
+        self.hp = hp              # 내 체력
+
+    def take_damage(self, damage):
+        self.hp -= damage         # 내 체력을 깎는다냥
+        print(f"{self.name}의 체력: {self.hp}")
+
+    def is_alive(self):
+        return self.hp > 0
+
+player1 = Player("Alice", 100)
+player1.take_damage(30)           # Alice의 체력: 70
+print(player1.is_alive())         # True
+```
+
+**메서드**는 그냥 클래스 안에 들어 있는 함수다냥.
+
+---
+
+## 4단계 · 인스턴스 변수 vs 클래스 변수 (7분)
+
+```python
+class Player:
+    max_players = 4               # 클래스 변수 — 모두가 함께 보는 것
+
+    def __init__(self, name):
+        self.name = name          # 인스턴스 변수 — 각자의 것
+```
+
+<Callout type="analogy">
+  - **클래스 변수**는 **교실 게시판**이다냥. 모든 학생이 같은 걸 본다냥.
+  - **인스턴스 변수**는 **각자의 사물함**이다냥. 사람마다 내용이 다르다냥.
+</Callout>
+
+읽는 방법도 다르다냥.
+
+```python
+print(Player.max_players)   # 클래스 이름으로 → 4
+print(player1.name)         # 객체 이름으로 → Alice
+```
+
+---
+
+## 5단계 · 상속 — 물려받기 (10분)
+
+상속은 이미 만든 클래스의 기능을 **물려받아** 새 클래스를 만드는 것이다냥.
+
+<Callout type="analogy">
+  **스마트폰은 전화기를 상속받았다냥.**
+  통화 기능은 그대로 물려받고, 거기에 카메라와 인터넷을 더한 것이다냥.
+</Callout>
+
+```python
+class Warrior(Player):                        # 괄호 안에 부모 클래스
+    def __init__(self, name, hp, sword):
+        super().__init__(name, hp)            # 부모의 __init__ 재사용
+        self.sword = sword                    # 전사만의 데이터 추가
+
+    def slash(self):                          # 전사만의 기능 추가
+        print(f"{self.name}이 {self.sword}로 공격했습니다.")
+
+    def take_damage(self, damage):            # 부모 기능 덮어쓰기
+        self.hp -= damage // 2                # 전사는 데미지 절반
+        print(f"{self.name}의 체력: {self.hp} (방어력 적용)")
+```
+
+<StepCard step="super()" title="부모의 것을 그대로 쓰기">
+
+`super().__init__(name, hp)` 는 **부모가 이미 써둔 초기화 코드를 재사용**한다냥.
+이게 없으면 `self.name = name` 같은 줄을 자식 클래스에 또 써야 한다냥.
+같은 코드를 두 번 쓰지 않게 해주는 것이다냥.
+
+</StepCard>
+
+<StepCard step="오버라이딩" title="부모 기능 덮어쓰기">
+
+부모와 **같은 이름의 메서드**를 자식에서 다시 쓰면 자식 것이 이긴다냥.
+`Warrior` 의 `take_damage` 는 데미지를 절반만 받는다냥.
+
+</StepCard>
+
+<Callout type="tip">
+  왜 지금 상속을 배우냥?
+  **다음 시간에 배울 파이게임의 `Sprite` 클래스를 상속받아야 하기 때문**이다냥.
+  `class Player(pygame.sprite.Sprite):` 라고 쓰게 된다냥.
+  파이게임이 만들어둔 기능을 통째로 물려받는 것이다냥!
+</Callout>
+
+---
+
+## 심화 — 지금 몰라도 괜찮다냥
+
+<Callout type="note">
+  아래 세 가지는 **심화 내용**이다냥.
+  지금 이해하지 못해도 게임을 만드는 데 전혀 지장 없다냥.
+  어렵게 느껴지면 **건너뛰고** 실습으로 가도 좋다냥. 나중에 다시 봐도 된다냥!
+</Callout>
+
+### private 메서드
+
+```python
+def attack(self):              # public — 밖에서 자유롭게 부른다
+def _helper(self):             # 밑줄 1개 — "밖에서 쓰지 말아주세요" 약속
+def __calculate(self):         # 밑줄 2개 — 클래스 안에서만 쓸 수 있다
+```
+
+카페의 **손님 공간과 직원만 들어가는 주방**의 차이다냥.
+
+### 클래스 변수를 인스턴스로 바꾸면
+
+```python
+player1.max_players = 10    # player1만의 새 변수가 생긴다냥 (게시판은 그대로)
+Player.max_players = 10     # 이게 진짜 게시판을 바꾸는 방법이다냥
+```
+
+인스턴스로 **읽는** 건 되지만, 인스턴스로 **바꾸면** 클래스 변수가 아니라
+그 인스턴스만의 새 변수가 생긴다냥. 헷갈리기 쉬운 함정이다냥.
+
+### 타입 힌트
+
+```python
+def take_damage(self, damage: int) -> None:
+def is_alive(self) -> bool:
+```
+
+서류 양식에 "이름: ___" 처럼 **어떤 값이 들어와야 하는지 미리 적어두는 것**이다냥.
+파이썬이 막지는 않지만 편집기가 자동완성과 경고를 띄워줘서 실수가 줄어든다냥.
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: '클래스와 인스턴스의 관계를 비유로 말해보자냥.',
+      answer: '클래스는 붕어빵 틀이고 인스턴스는 그 틀로 찍어낸 붕어빵이다냥. 틀 하나로 여러 개를 만들 수 있고, 모양은 같지만 속은 각자 다르다냥.',
+    },
+    {
+      question: '__init__은 언제 실행되냥?',
+      answer: 'Player("Alice", 100)처럼 객체를 만드는 순간 자동으로 실행된다냥. 여기서 그 객체의 처음 값들을 정해준다냥.',
+    },
+    {
+      question: 'self.hp와 그냥 hp는 뭐가 다르냥?',
+      answer: 'self가 붙은 것만 그 객체의 데이터로 남는다냥. self 없이 쓰면 함수가 끝나는 순간 사라지는 임시 변수다냥.',
+    },
+    {
+      question: '메서드를 부를 때 왜 self를 안 넘기냥?',
+      answer: 'player1.take_damage(30)처럼 부르면 파이썬이 "누가 불렀는지"를 알아서 self에 넣어주기 때문이다냥.',
+    },
+    {
+      question: '클래스 변수와 인스턴스 변수의 차이는 뭐냥?',
+      answer: '클래스 변수는 교실 게시판처럼 모든 객체가 함께 보는 것이고, 인스턴스 변수는 각자의 사물함처럼 객체마다 다른 것이다냥.',
+    },
+    {
+      question: 'super().__init__()은 왜 쓰냥?',
+      answer: '부모가 이미 써둔 초기화 코드를 재사용하기 위해서다냥. 이게 없으면 같은 코드를 자식 클래스에 또 써야 한다냥.',
+    },
+  ]}
+/>

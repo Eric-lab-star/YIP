@@ -1,0 +1,290 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — main.py를 여러 파일로 나누기',
+  description: 'settings.py와 entity/player.py로 코드를 분리하고, 배경 클래스까지 직접 만들어보자냥!',
+  session: 8,
+}
+
+# 실습 — main.py를 여러 파일로 나누기
+
+<NyangSpeech>
+  오늘 실습도 **화면은 하나도 안 바뀐다냥.**
+  파일만 여러 개로 나뉜다냥. 이게 리팩토링이다냥!
+  다만 파일을 옮기다 보면 `import` 를 빠뜨리기 쉽다냥.
+  에러가 나면 **"이 파일에 필요한 걸 다 가져왔나?"** 를 먼저 확인하자냥.
+</NyangSpeech>
+
+<Callout type="note">
+  **오늘의 출발점** — 7강에서 완성한 `Player` 스프라이트 클래스 코드다냥.
+  파일은 아직 `main.py` 하나뿐이다냥.
+</Callout>
+
+---
+
+<MissionCard number={1} title="settings.py 분리하기" time="8분">
+
+`main.py` 와 **같은 위치**에 `settings.py` 파일을 새로 만들자냥.
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/settings.png"
+  alt="settings.py 파일 위치"
+  className="mx-auto w-80"
+/>
+
+파일 안에는 이 한 줄만 쓰자냥.
+
+```python
+# settings.py
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+```
+
+이제 `main.py` 를 고치자냥. 맨 위에 가져오는 줄을 추가하고,
+
+```python
+import pygame
+from settings import ____________, _____________
+from os.path import join
+```
+
+원래 있던 정의는 **삭제**하자냥.
+
+```python
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720   # <-- 이 줄을 지운다냥
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+**게임이 그대로 돌아가면 성공이다냥.**
+
+<Callout type="tip">
+  이제 창 크기를 바꾸고 싶으면 `main.py` 가 아니라 **`settings.py` 만** 고치면 된다냥.
+  한번 `1280` 을 `800` 으로 바꿔서 실행해보자냥. 창이 작아진다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="entity 패키지와 player.py 만들기" time="12분">
+
+`main.py` 옆에 **`entity` 폴더**를 만들고, 그 안에 **`player.py`** 파일을 만들자냥.
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/playerClassFile.png"
+  alt="player.py 파일 위치"
+  className="mx-auto w-72"
+/>
+
+`main.py` 에 있던 `Player` 클래스를 **통째로 잘라내서** `player.py` 로 옮기자냥.
+
+그런데 그냥 옮기면 에러가 난다냥. **그 파일에도 필요한 걸 가져와야 한다냥.**
+
+```python
+# entity/player.py
+import ______
+from os.path import ____
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+
+
+class Player(pygame.sprite.Sprite):
+    ...  # 7강에서 만든 그대로
+```
+
+> 힌트: `Player` 클래스가 쓰는 것들을 하나씩 짚어보자냥.
+> `pygame.sprite.Sprite`, `join(...)`, `WINDOW_WIDTH` 를 쓰고 있다냥.
+
+그리고 `main.py` 에서 그 클래스를 가져오자냥.
+
+```python
+from entity.player import ______
+```
+
+**게임이 그대로 돌아가면 성공이다냥.**
+
+<Callout type="important">
+  `ModuleNotFoundError: No module named 'settings'` 가 나오냥?
+  터미널이 `space_shooter` 폴더 **안에** 있는지 확인하자냥.
+  파이썬은 **실행한 위치**를 기준으로 모듈을 찾는다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="배경 클래스 직접 만들기" time="15분">
+
+지금 배경은 `main.py` 에서 `bg_surf` 로 따로 관리되고 있다냥.
+이것도 **스프라이트로 만들어서 그룹에 맡기자냥.**
+
+`entity` 폴더 안에 **`bg.py`** 를 만들고, `Background` 클래스를 **직접** 써보자냥.
+
+<Callout type="tip">
+  **힌트다냥**
+
+  1. `player.py` 를 열어놓고 **거의 똑같이** 만들면 된다냥.
+  2. 배경은 화면 전체를 덮어야 하니 `pygame.transform.scale` 로 크기를 맞춘다냥.
+  3. 배경은 **안 움직인다냥.** 그래도 `update` 는 있어야 한다냥 —
+     `group.update(dt)` 가 모든 스프라이트의 `update(dt)` 를 부르기 때문이다냥.
+     그래서 `def update(self, dt: float): pass` 로 둔다냥.
+  4. 위치는 화면 왼쪽 위 `(0, 0)` 이니 `get_frect()` 를 인자 없이 불러도 된다냥.
+</Callout>
+
+만들었으면 `main.py` 에서 쓰자냥. **순서가 중요하다냥!**
+
+```python
+    all_sprite_group = pygame.sprite.Group()
+    ____________(all_sprite_group)     # 먼저 넣는다 → 아래에 깔린다
+    Player(all_sprite_group)           # 나중에 넣는다 → 위에 그려진다
+```
+
+그리고 `main.py` 에서 이제 필요 없어진 것들을 **정리하자냥.**
+
+- `bg_path`, `bg_surf` 를 만드는 코드
+- 루프 안의 `display_surface.fill("gray")`
+- 7강에서 지웠어야 할 `direction` 변수가 아직 남아 있다면 그것도
+
+<Callout type="important">
+  일부러 순서를 **바꿔서** 실행해보자냥.
+  `Player` 를 먼저 넣고 `Background` 를 나중에 넣으면
+  **우주선이 사라진다냥.** 배경이 위에 덮이기 때문이다냥.
+  직접 보고 나면 절대 안 잊는다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="settings.py"
+  code={`WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720`}
+/>
+
+<ToggleCodeBlock
+  header="entity/player.py"
+  code={`import pygame
+from os.path import join
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 100
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.image.load(Player.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.normalize_ip()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/bg.py"
+  code={`import pygame
+from os.path import join
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+
+
+class Background(pygame.sprite.Sprite):
+    path: str = join("images", "background.png")
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.transform.scale(
+            pygame.image.load(Background.path).convert_alpha(),
+            (WINDOW_WIDTH, WINDOW_HEIGHT),
+        )
+        self.rect = self.image.get_frect()
+
+    def update(self, dt: float):
+        pass
+`}
+/>
+
+<ToggleCodeBlock
+  header="main.py"
+  code={`import pygame
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from entity.player import Player
+from entity.bg import Background
+
+pygame.init()
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    all_sprite_group = pygame.sprite.Group()
+
+    Background(all_sprite_group)   # 배경을 먼저 (아래에 깔린다)
+    Player(all_sprite_group)       # 우주선을 나중에 (위에 그려진다)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+---
+
+## main.py를 다시 보자냥
+
+<Callout type="goal">
+  게임 루프가 이렇게 짧아졌다냥.
+
+  - 이벤트 확인
+  - `all_sprite_group.update(dt)`
+  - `all_sprite_group.draw(display_surface)`
+  - `pygame.display.flip()`
+
+  **앞으로 미사일·운석·HUD가 들어와도 이 루프는 그대로다냥.**
+  각자 자기 파일에서 자기 일만 하면 되니까냥.
+</Callout>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `settings.py` 로 설정값을 분리했다.
+  - `entity` 패키지를 만들고 `player.py` 로 클래스를 옮겼다.
+  - `Background` 클래스를 직접 만들어 배경도 스프라이트로 바꿨다.
+  - 그룹에 넣는 **순서**가 그리는 순서라는 걸 직접 확인했다.
+</Callout>
+
+이제 구조가 준비됐다냥.
+다음 시간부터는 **미사일을 발사한다냥!**

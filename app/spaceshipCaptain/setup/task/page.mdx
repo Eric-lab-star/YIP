@@ -1,0 +1,225 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+
+export const metadata = {
+  title: '실습 — 창이 뜨는 main.py 만들기',
+  description: 'uv로 프로젝트를 만들고 pygame-ce를 설치한 뒤, 1280x720 창이 뜨는 main.py를 직접 완성해보자냥!',
+  session: 1,
+}
+
+# 실습 — 창이 뜨는 main.py 만들기
+
+<NyangSpeech>
+  이제 직접 손을 움직일 차례다냥!
+  오늘 실습은 이 과정에서 **가장 까다로운 부분**이다냥.
+  터미널에 명령어를 쳐서 프로그램을 설치하거든냥.
+  잘 안 돼도 실력이 부족한 게 절대 아니다냥.
+  **막히면 옆 사람이나 선생님과 함께** 천천히 가자냥.
+  여기만 넘기면 다음부터는 훨씬 수월하다냥!
+</NyangSpeech>
+
+<Callout type="note">
+  **준비물 체크리스트**
+
+  - 터미널(맥은 Terminal, 윈도우는 PowerShell) 열어두기
+  - 인터넷 연결 확인
+  - 코드를 쓸 편집기(VS Code 등) 준비
+</Callout>
+
+---
+
+<MissionCard number={1} title="uv 설치하기" time="10분">
+
+내 컴퓨터에 맞는 줄을 **한 줄만** 골라서 터미널에 붙여넣자냥.
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+설치가 끝났는지 확인해보자냥.
+
+```bash
+uv --version
+```
+
+버전 번호가 나오면 성공이다냥.
+
+<Callout type="important">
+  `uv를 찾을 수 없습니다` 같은 말이 나오면 **터미널을 완전히 닫았다가 다시 열어보자냥.**
+  설치한 도구를 컴퓨터가 알아보려면 터미널을 새로 켜야 할 때가 있다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="프로젝트 만들고 pygame-ce 설치하기" time="5분">
+
+우주선 게임을 담을 작업실을 만들자냥.
+
+```bash
+uv init space_shooter
+cd space_shooter
+```
+
+이러면 이런 파일들이 생긴다냥.
+
+```
+space_shooter/
+├── main.py            ← 시작점 파이썬 파일
+├── pyproject.toml     ← 프로젝트 정보와 설치한 도구 목록
+├── .python-version    ← 파이썬 버전
+└── .gitignore
+```
+
+이제 파이게임을 주문하자냥.
+
+```bash
+uv add pygame-ce
+```
+
+설치가 끝나면 `pyproject.toml` 을 열어보자냥. 이런 줄이 **자동으로** 생겨 있을 거다냥.
+
+```toml
+[project]
+dependencies = [
+    "pygame-ce>=2.5.3",
+]
+```
+
+> **확인해보자냥**
+> - `space_shooter` 폴더 안에 들어와 있냥? (`cd space_shooter` 했는지 확인)
+> - `pyproject.toml` 에 `pygame-ce` 가 적혀 있냥?
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="main.py 뼈대 채우기" time="10분">
+
+`main.py` 를 열고 아래 코드를 **빈칸을 채워가며** 직접 써보자냥.
+학습 목표에서 배운 네 뼈대(준비 · 창 · 반복 · 종료) 순서 그대로다냥.
+
+<StepCard step="1" title="준비 — 도구 가져오고 켜기">
+
+```python
+import pygame
+
+pygame.____()   # 파이게임의 모든 기능을 켜는 명령이다냥
+```
+
+> 힌트: 오븐을 예열하는 그 명령이다냥.
+
+</StepCard>
+
+<StepCard step="2" title="창 — 도화지 만들기">
+
+```python
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.________((WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+> 힌트: `창의 모드를 정한다`는 뜻의 이름이다냥. 괄호가 두 겹인 것에 주의하자냥 — 가로와 세로를 **한 쌍**으로 묶어서 넘긴다냥.
+
+</StepCard>
+
+<StepCard step="3" title="반복 — 게임 루프 만들기">
+
+```python
+def main():
+    running = True
+    while ________:
+        pass
+    pygame.quit()
+```
+
+> 힌트: "게임을 계속 돌릴까?" 스위치 변수를 그대로 쓰면 된다냥.
+
+</StepCard>
+
+<StepCard step="4" title="이벤트 — 민원 접수함 비우기">
+
+`pass` 자리를 이걸로 바꾸자냥.
+
+```python
+        for event in pygame.event.get():
+            if event.type == pygame.____:
+                running = False
+```
+
+> 힌트: 창의 X 버튼을 눌렀을 때 생기는 사건 이름이다냥. 전부 대문자다냥.
+
+</StepCard>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="실행해서 창 띄우기" time="5분">
+
+맨 아래에 이 두 줄을 더하자냥. 이 파일을 직접 실행했을 때만 `main()` 을 부르라는 뜻이다냥.
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+그리고 실행하자냥.
+
+```bash
+uv run main.py
+```
+
+**검은 창이 뜨고, X 버튼을 누르면 닫히면 성공이다냥!**
+
+<Callout type="tip">
+  창이 떴는데 마우스로 만지면 "응답 없음"이 된다냥?
+  그건 미션 3의 4단계, **이벤트를 꺼내는 `for` 문이 빠졌을 때** 나타나는 증상이다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+빈칸을 다 채우면 이런 모습이다냥. 막혔을 때만 열어보자냥.
+
+```python
+import pygame
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+
+def main():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `uv` 를 설치하고 `space_shooter` 프로젝트를 만들었다.
+  - `pygame-ce` 를 설치했다.
+  - 1280x720 창이 뜨고 X 버튼으로 닫히는 `main.py` 를 완성했다.
+</Callout>
+
+다음 시간에는 이 검은 도화지에 **색을 칠하고 모양을 그린다냥!**

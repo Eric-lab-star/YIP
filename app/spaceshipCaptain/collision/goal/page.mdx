@@ -1,0 +1,283 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '충돌 처리하기 — 그룹을 나누고 부딪히게 하기',
+  description: '충돌 판정이 어떻게 이뤄지는지, spritecollide와 groupcollide의 차이는 무엇인지 배워보자냥!',
+  session: 11,
+}
+
+# 충돌 처리하기
+
+<NyangSpeech>
+  지금 미사일이 운석을 **그냥 뚫고 지나간다냥.**
+  당연하다냥 — 화면에 그려진 그림일 뿐이지 진짜 물체가 아니니까냥.
+  부딪혔는지는 **우리가 코드로 계산해서 알려줘야 한다냥.**
+  오늘은 그 방법과, 그러기 위해 필요한 **그룹 나누기**를 배운다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 파이게임이 충돌을 **어떻게 판단하는지** 설명할 수 있다.
+  - 스프라이트를 **여러 그룹에 동시에** 넣는 이유를 말할 수 있다.
+  - `spritecollide` 와 `groupcollide` 의 차이를 설명할 수 있다.
+  - `dokill` 인자가 무엇을 하는지 말할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 충돌은 사각형 겹침이다냥 (6분)
+
+<Callout type="important">
+  파이게임의 스프라이트는 **진짜 물체가 아니다냥.** 그냥 그림이다냥.
+  그래서 "부딪혔다" 는 건 물리가 아니라 **계산**이다냥.
+
+  각 스프라이트의 `rect`(3강에서 배운 그 사각형)가 **겹치는지**를 본다냥.
+</Callout>
+
+```
+  ┌────────┐
+  │ 운석   │
+  │   ┌────┼────┐
+  └───┼────┘    │      ← 사각형이 겹쳤다냥 = 충돌!
+      │ 미사일 │
+      └────────┘
+```
+
+<Callout type="tip">
+  그래서 그림이 동그래도 판정은 **네모**로 된다냥.
+  운석 모서리 근처에서 "안 맞은 것 같은데 맞았다" 는 일이 생기는 이유다냥.
+  더 정확한 판정 방법도 있지만, 대부분의 게임은 이 정도로 충분하다냥.
+</Callout>
+
+---
+
+## 2단계 · 왜 그룹을 나누냥? (10분)
+
+지금은 **모든 것이 `all_sprite_group` 하나**에 들어 있다냥.
+배경도, 우주선도, 미사일도, 운석도 전부다냥.
+
+그런데 충돌을 확인하려면 이렇게 물어봐야 한다냥.
+
+> "우주선이 **운석들**과 부딪혔냥?"
+
+`all_sprite_group` 에 물어보면 **배경이랑도 부딪혔다** 고 나온다냥.
+그래서 **운석만 모아둔 그룹**이 따로 필요하다냥.
+
+<Callout type="important">
+  한 스프라이트는 **여러 그룹에 동시에 들어갈 수 있다냥.**
+
+  운석은
+  - `all_sprite_group` 에 → 그려지기 위해
+  - `meteor_sprite_group` 에 → 충돌 판정을 위해
+
+  둘 다 들어간다냥. 명함을 **두 개의 명함첩에 꽂아두는 것**이다냥.
+</Callout>
+
+```python
+super().__init__((all_sprite_group, meteor_sprite_group))   # 튜플로 넘긴다냥
+```
+
+`Sprite` 의 초기화는 그룹을 **여러 개 받을 수 있다냥.**
+괄호로 묶어서 넘기면 전부 등록된다냥.
+
+---
+
+## 3단계 · 두 가지 충돌 함수 (12분)
+
+<CompareBubble
+  left={{
+    label: 'spritecollide — 하나 vs 그룹',
+    color: 'blue',
+    items: [
+      '우주선 하나가 운석들과 부딪혔나?',
+      'spritecollide(우주선, 운석그룹, dokill)',
+      '부딪힌 운석들의 리스트를 돌려준다',
+      '아무것도 없으면 빈 리스트',
+    ],
+  }}
+  right={{
+    label: 'groupcollide — 그룹 vs 그룹',
+    color: 'purple',
+    items: [
+      '미사일들과 운석들이 부딪혔나?',
+      'groupcollide(운석그룹, 미사일그룹, k1, k2)',
+      '모든 짝을 한 번에 검사한다',
+      '미사일 10발 x 운석 30개도 한 줄',
+    ],
+  }}
+/>
+
+<StepCard step="spritecollide" title="주인공 하나가 무리와 부딪혔나">
+
+```python
+collision = pygame.sprite.spritecollide(player, meteor_sprite_group, False)
+if collision:
+    running = False        # 게임 오버!
+```
+
+**리스트를 돌려준다냥.** 파이썬에서 빈 리스트는 `False` 취급이라
+`if collision:` 이라고만 써도 "부딪힌 게 있으면" 이 된다냥.
+
+</StepCard>
+
+<StepCard step="groupcollide" title="무리와 무리가 부딪혔나">
+
+```python
+pygame.sprite.groupcollide(meteor_sprite_group, missile_sprite_group, True, True)
+```
+
+미사일 하나하나, 운석 하나하나를 **직접 짝지어 비교할 필요가 없다냥.**
+이 한 줄이 전부 처리한다냥.
+
+</StepCard>
+
+---
+
+## 4단계 · dokill — 부딪히면 없앨까? (8분)
+
+두 함수 모두 마지막에 **`dokill`** 이라는 참/거짓 인자를 받는다냥.
+
+```python
+spritecollide(player, meteor_group, False)
+#                                   └── 부딪힌 운석을 없앨까? 아니오
+```
+
+<CompareBubble
+  left={{
+    label: 'dokill = False',
+    color: 'ink',
+    items: [
+      '부딪혀도 그대로 둔다',
+      '우주선 vs 운석에 쓴다',
+      '운석은 계속 날아가고',
+      '우리는 게임을 끝낼 뿐',
+    ],
+  }}
+  right={{
+    label: 'dokill = True',
+    color: 'red',
+    items: [
+      '부딪히면 kill()해서 없앤다',
+      '미사일 vs 운석에 쓴다',
+      '미사일도 사라지고 운석도 터진다',
+      '9강에서 배운 kill()을 대신 불러준다',
+    ],
+  }}
+/>
+
+`groupcollide` 는 **양쪽 다** 정할 수 있어서 인자가 두 개다냥.
+
+```python
+groupcollide(meteor_group, missile_group, True, True)
+#                                          └앞  └뒤
+#                            운석을 없앨까?  미사일을 없앨까?
+```
+
+<Callout type="tip">
+  `True, False` 로 하면 어떻게 되냥?
+  **운석만 터지고 미사일은 살아남는다냥.** 관통 미사일이 되는 것이다냥!
+  실습에서 직접 바꿔보자냥.
+</Callout>
+
+---
+
+## 5단계 · 그룹 전달 지옥과 리팩토링 (10분)
+
+여기서 문제가 하나 생긴다냥.
+
+미사일도 `missile_sprite_group` 에 넣어야 하는데,
+**미사일을 만드는 건 우주선**이다냥(9강).
+
+```
+main.py가 그룹을 만들고
+  → Player에게 그룹을 넘기고
+    → Player가 그걸 들고 있다가
+      → Missile에게 다시 넘긴다
+```
+
+그룹이 세 개가 되면 **인자가 줄줄이 늘어난다냥.** 코드가 지저분해진다냥.
+
+<Callout type="analogy">
+  택배를 받을 때마다 **옆집을 거쳐서** 받는 것과 같다냥.
+  옆집은 아무 상관도 없는데 계속 짐을 들고 있어야 한다냥.
+</Callout>
+
+### 해결: 그룹을 settings.py로 옮긴다냥
+
+```python
+# settings.py
+all_sprite_group = pygame.sprite.Group()
+meteor_sprite_group = pygame.sprite.Group()
+missile_sprite_group = pygame.sprite.Group()
+```
+
+그러면 **필요한 클래스가 직접 가져다 쓴다냥.**
+
+```python
+# entity/missile.py
+from settings import all_sprite_group, missile_sprite_group
+
+class Missile(pygame.sprite.Sprite):
+    def __init__(self, pos):                              # group 인자가 사라졌다냥!
+        super().__init__((all_sprite_group, missile_sprite_group))
+```
+
+<Callout type="important">
+  10강에서 `display_surface` 를 `settings.py` 로 옮긴 것과 **같은 이유**다냥.
+  여러 곳에서 함께 쓰는 것은 한곳에 두고 **필요한 쪽이 직접 가져가는 게** 깔끔하다냥.
+
+  덕분에 `main.py` 도 짧아진다냥.
+
+  ```python
+  Background()          # 인자가 없다냥
+  player = Player()
+  Meteor.spawn(3)
+  ```
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: '파이게임은 충돌을 어떻게 판단하냥?',
+      answer: '스프라이트의 rect, 즉 사각형이 겹치는지를 계산한다냥. 진짜 물체가 부딪히는 게 아니라 그림일 뿐이라 좌표로 계산해야 한다냥.',
+    },
+    {
+      question: '운석을 두 그룹에 동시에 넣는 이유는 뭐냥?',
+      answer: 'all_sprite_group에는 화면에 그려지기 위해 넣고, meteor_sprite_group에는 충돌 판정을 위해 넣는다냥. 명함을 명함첩 두 개에 꽂아두는 것과 같다냥.',
+    },
+    {
+      question: 'spritecollide와 groupcollide는 언제 각각 쓰냥?',
+      answer: 'spritecollide는 우주선 하나가 운석 그룹과 부딪혔는지처럼 하나 대 그룹일 때 쓰고, groupcollide는 미사일 그룹과 운석 그룹처럼 그룹 대 그룹일 때 쓴다냥.',
+    },
+    {
+      question: 'dokill 인자는 무엇을 하냥?',
+      answer: '부딪힌 스프라이트를 kill()로 없앨지 정한다냥. 우주선과 운석은 False로 두고, 미사일과 운석은 True로 둬서 둘 다 사라지게 한다냥.',
+    },
+    {
+      question: 'groupcollide에서 True, False로 주면 어떻게 되냥?',
+      answer: '앞 그룹인 운석만 사라지고 뒤 그룹인 미사일은 살아남는다냥. 관통 미사일이 되는 것이다냥.',
+    },
+    {
+      question: '그룹을 settings.py로 옮기면 뭐가 좋아지냥?',
+      answer: 'main.py가 Player에게, Player가 다시 Missile에게 그룹을 넘겨주는 전달 지옥이 사라진다냥. 필요한 클래스가 직접 가져다 쓰면 되고 main.py도 짧아진다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame.sprite.spritecollide](https://pyga.me/docs/ref/sprite.html#pygame.sprite.spritecollide)
+2. [pygame.sprite.groupcollide](https://pyga.me/docs/ref/sprite.html#pygame.sprite.groupcollide)

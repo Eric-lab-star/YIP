@@ -1,0 +1,248 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — WASD로 우주선 조종하기',
+  description: '키보드 입력을 받아 우주선을 조종하고, 화면 밖으로 못 나가게 막고, 대각선 속도까지 맞춰보자냥!',
+  session: 5,
+}
+
+# 실습 — WASD로 우주선 조종하기
+
+<NyangSpeech>
+  오늘은 **직접 조종**이다냥! 미션 1에서 키가 눌리는 걸 눈으로 확인하고,
+  미션 2에서 실제로 움직이게 만든다냥.
+  미션 4에서는 대각선이 빠른 걸 **직접 느껴본 뒤** 고친다냥.
+  느껴보는 게 중요하니 건너뛰지 말자냥!
+</NyangSpeech>
+
+---
+
+<MissionCard number={1} title="키가 눌리는지 확인하기" time="6분">
+
+먼저 키보드가 읽히는지부터 보자냥.
+게임 루프 안, `for event` 문 **아래**에 두 줄을 넣자냥.
+
+```python
+        keys = pygame.key.____________()
+        print(keys[pygame.K_w])
+```
+
+> 힌트: "눌려 있는 것들을 가져온다" 는 뜻의 함수다냥.
+
+실행하고 **W를 눌렀다 뗐다** 해보자냥.
+터미널에 `True` 와 `False` 가 쏟아지면 성공이다냥.
+
+<Callout type="tip">
+  터미널이 너무 빨리 흘러가서 안 보이냥?
+  정상이다냥 — 1초에 수십 번 출력되고 있으니까냥.
+  W를 꾹 누르고 있으면 `True` 만 계속 나오는 걸 확인할 수 있다냥.
+</Callout>
+
+확인했으면 `print` 줄은 지우자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="WASD로 움직이기" time="10분">
+
+이제 실제로 조종해보자냥. `print` 자리에 이렇게 쓰자냥.
+
+```python
+        keys = pygame.key.get_pressed()
+        direction = pygame.Vector2(0, 0)
+
+        if keys[pygame.K_w]:
+            direction.y = ____
+        elif keys[pygame.K_s]:
+            direction.y = ____
+
+        if keys[pygame.K_d]:
+            direction.x = ____
+        elif keys[pygame.K_a]:
+            direction.x = ____
+
+        player_rect.center += direction * speed * dt
+```
+
+> 힌트
+> - 파이게임의 y는 **아래가 커진다냥.** 위로 가려면 어떤 부호냥?
+> - x는 오른쪽이 커진다냥.
+
+그리고 `main()` 안의 `speed` 를 숫자 하나로 바꾸자냥.
+이제 방향은 `direction` 이 담당하니 `speed` 는 크기만 있으면 된다냥.
+
+```python
+    speed = 200
+```
+
+**WASD로 우주선이 움직이면 성공이다냥.**
+
+<Callout type="important">
+  키에서 손을 뗐는데 계속 움직이냥?
+  `direction = pygame.Vector2(0, 0)` 줄이 **루프 안**에 있는지 확인하자냥.
+  루프 밖에 있으면 초기화가 안 돼서 계속 날아간다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="if를 뺄셈 한 줄로 줄이기" time="8분">
+
+방금 쓴 여덟 줄짜리 `if` 를 두 줄로 줄여보자냥.
+
+```python
+        direction.x = int(keys[pygame.K_d]) - int(keys[pygame.____])
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.____])
+```
+
+> 힌트: 각각 반대 방향 키다냥. 오른쪽의 반대, 아래쪽의 반대다냥.
+
+<Callout type="tip">
+  이렇게 바꾸면 `direction = pygame.Vector2(0, 0)` 을 매 프레임 새로 만들 필요가 없다냥.
+  `.x` 와 `.y` 에 **항상 값을 덮어쓰기** 때문이다냥.
+  그래서 이 줄은 `main()` 시작 부분으로 옮겨도 된다냥.
+</Callout>
+
+**아까와 똑같이 움직이면 성공이다냥.** 코드만 짧아진 것이다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="대각선 문제 느껴보고 고치기" time="12분">
+
+먼저 **문제를 직접 느껴보자냥.**
+
+> **실험해보자냥**
+> 1. D만 눌러서 우주선이 화면 오른쪽 끝까지 가는 데 걸리는 시간을 세어보자냥.
+> 2. 이번엔 W와 D를 **같이** 눌러 대각선으로 가보자냥.
+> 3. 확실히 더 빠르지 않냥?
+
+대각선일 때 방향 화살표의 길이가 약 **1.414** 라서 그렇다냥.
+길이를 1로 맞춰주자냥.
+
+```python
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+        if direction.________() > 0:
+            direction.____________()
+        player_rect.center += direction * speed * dt
+```
+
+> 힌트
+> - 첫 번째 빈칸: 벡터의 **길이**를 재는 함수다냥.
+> - 두 번째 빈칸: 길이를 1로 맞추는 함수다냥. 끝에 `_ip` 가 붙는다냥.
+
+**이제 어느 방향으로 가든 속도가 같으면 성공이다냥.**
+
+<Callout type="important">
+  `if direction.length() > 0:` 을 빼면 어떻게 되는지도 확인해보자냥.
+  아무 키도 안 누른 순간 **바로 오류가 나면서 게임이 꺼진다냥.**
+  길이 0짜리 화살표는 길이를 1로 만들 수 없기 때문이다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="화면 밖으로 못 나가게 막기" time="5분">
+
+지금은 우주선이 화면 밖으로 사라진다냥. 가둬주자냥.
+
+위치를 갱신한 **바로 다음 줄**에 넣자냥.
+
+```python
+        player_rect.center += direction * speed * dt
+        player_rect.________(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+```
+
+> 힌트: "가둔다" 는 뜻의 단어에 `_ip` 가 붙는다냥.
+
+**우주선이 화면 가장자리에 딱 붙어서 멈추면 성공이다냥.**
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="코드 확인하기"
+  code={`import pygame
+from os.path import join
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+pos = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+player_rect = player_surf.get_frect(center=pos)
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    speed = 200
+    direction = pygame.Vector2(0, 0)
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        keys = pygame.key.get_pressed()
+        direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+        if direction.length() > 0:
+            direction.normalize_ip()
+
+        player_rect.center += direction * speed * dt
+        player_rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+---
+
+## 더 해보고 싶다면
+
+- 방향키(`pygame.K_UP`, `K_DOWN`, `K_LEFT`, `K_RIGHT`)로도 조종되게 만들어보자냥.
+  줄다리기 식이라 `int(keys[K_d]) + int(keys[K_RIGHT])` 처럼 더하면 된다냥.
+- `speed` 를 바꿔가며 조종감이 어떻게 달라지는지 느껴보자냥.
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `pygame.key.get_pressed()` 로 키보드 상태를 읽었다.
+  - WASD로 우주선을 조종하고, `if` 여덟 줄을 뺄셈 두 줄로 줄였다.
+  - 대각선이 빠른 문제를 **직접 느껴보고** 정규화로 해결했다.
+  - `clamp_ip` 로 화면 밖으로 못 나가게 막았다.
+</Callout>
+
+지금 `main.py` 가 꽤 길어졌다냥.
+다음 시간부터는 **클래스**를 배워서 이 코드를 정리한다냥!

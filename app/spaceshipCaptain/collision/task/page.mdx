@@ -1,0 +1,467 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import VideoPlayer from '@/components/commons/VideoPlayer'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — 부딪히면 터지게 만들기',
+  description: '운석 그룹을 나누고 충돌을 감지해서, 우주선이 맞으면 게임이 끝나고 미사일이 맞으면 운석이 터지게 만들어보자냥!',
+  session: 11,
+}
+
+# 실습 — 부딪히면 터지게 만들기
+
+<NyangSpeech>
+  오늘 실습은 **중간에 리팩토링이 한 번 들어간다냥.**
+  미션 1~3으로 우주선 충돌까지 만들고,
+  미션 4에서 구조를 정리한 뒤, 미션 5에서 미사일 충돌을 붙인다냥.
+  리팩토링을 먼저 하지 않으면 코드가 감당이 안 된다냥!
+</NyangSpeech>
+
+---
+
+<MissionCard number={1} title="운석 전용 그룹 만들기" time="12분">
+
+지금은 모든 것이 `all_sprite_group` 하나에 들어 있다냥.
+**운석만 모아둔 그룹**을 하나 더 만들자냥.
+
+`main()` 안에 그룹을 추가하고, `Player` 를 변수에 담자냥.
+
+```python
+def main():
+    running = True
+    all_sprite_group = pygame.sprite.Group()
+    meteor_sprite_group = pygame.sprite.Group()
+    Background(all_sprite_group)
+    ______ = Player(all_sprite_group)
+```
+
+> 힌트: 나중에 "이 우주선이 부딪혔나?" 를 물어보려면 **변수에 담아둬야** 한다냥.
+
+운석을 만들 때 **두 그룹 모두** 넘기자냥.
+
+```python
+            if event.type == meteor_event:
+                Meteor.spawn((all_sprite_group, meteor_sprite_group), 3)
+```
+
+`meteor.py` 도 튜플을 받도록 고치자냥.
+
+```python
+from typing import Tuple
+
+    def __init__(self, group: Tuple[pygame.sprite.Group, pygame.sprite.Group]):
+        super().__init__(group)
+
+    @classmethod
+    def spawn(cls, group: Tuple[pygame.sprite.Group, pygame.sprite.Group], n: int):
+```
+
+<Callout type="tip">
+  `Tuple[...]` 은 6강에서 배운 **타입 힌트**다냥.
+  없어도 동작하지만, "여기엔 그룹 두 개짜리 튜플이 온다" 고 적어두면
+  나중에 읽을 때 훨씬 편하다냥.
+</Callout>
+
+**화면은 안 바뀐다냥.** 운석이 그룹 두 개에 들어갔을 뿐이다냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="충돌을 눈으로 확인하기" time="10분">
+
+정말 충돌이 감지되는지 **먼저 출력해서 보자냥.**
+
+게임 루프 안, `update` 를 부르기 **전에** 두 줄을 넣자냥.
+
+```python
+        collision = pygame.sprite.____________(player, meteor_sprite_group, False)
+        print(collision)
+```
+
+> 힌트: **스프라이트 하나**가 그룹과 부딪혔는지 보는 함수다냥.
+
+실행하고 우주선을 운석 쪽으로 몰고 가보자냥.
+
+<VideoPlayer src="https://r2.kimkyungsub.com/spaceShooter/collisionResult.mp4" />
+
+**부딪히는 순간 터미널에 리스트가 찍히면 성공이다냥.**
+
+<Callout type="tip">
+  안 부딪혔을 때는 `[]` (빈 리스트)가 나온다냥.
+  부딪히면 `[<Meteor Sprite...>]` 처럼 **부딪힌 운석들**이 담겨 나온다냥.
+  운석 두 개에 동시에 부딪히면 두 개가 나온다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="부딪히면 게임 끝내기" time="6분">
+
+빈 리스트는 파이썬에서 `False` 취급이라 **조건문에 바로 넣을 수 있다냥.**
+
+```python
+        if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+            running = ______
+```
+
+> 힌트: 게임 루프를 멈추는 값이다냥.
+
+`print` 줄은 지우자냥.
+
+**운석에 부딪히면 창이 닫히면 성공이다냥.**
+
+<Callout type="important">
+  세 번째 인자가 `False` 인 것에 주목하자냥.
+  `True` 로 하면 **부딪힌 운석이 사라진다냥.**
+  지금은 어차피 게임이 끝나니 상관없어 보이지만,
+  나중에 목숨 개념을 넣으면 달라진다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="리팩토링 — 그룹을 settings.py로" time="15분">
+
+미사일 충돌을 붙이기 **전에** 구조를 정리하자냥.
+안 그러면 그룹을 `main` → `Player` → `Missile` 로 계속 넘겨야 한다냥.
+
+### 4-1. settings.py에 그룹을 모은다냥
+
+```python
+# settings.py 맨 아래에 추가
+all_sprite_group = pygame.sprite.Group()
+meteor_sprite_group = pygame.sprite.Group()
+missile_sprite_group = pygame.sprite.Group()
+```
+
+### 4-2. 각 클래스가 직접 가져다 쓴다냥
+
+`bg.py`, `player.py`, `meteor.py`, `missile.py` 를 각각 고치자냥.
+**`group` 인자를 없애고** 필요한 그룹을 직접 가져온다냥.
+
+```python
+# entity/bg.py
+from settings import all_sprite_group
+
+class Background(pygame.sprite.Sprite):
+    def __init__(self):                       # group 인자 삭제
+        super().__init__(all_sprite_group)
+```
+
+```python
+# entity/meteor.py
+from settings import all_sprite_group, meteor_sprite_group
+
+    def __init__(self):
+        super().__init__((all_sprite_group, meteor_sprite_group))
+
+    @classmethod
+    def spawn(cls, n: int):                   # group 인자 삭제
+        if n <= 0:
+            raise ValueError("n must be greater than 0")
+        for _ in range(n):
+            Meteor()
+```
+
+```python
+# entity/missile.py
+from settings import all_sprite_group, missile_sprite_group
+
+    def __init__(self, pos: pygame.Vector2):  # group 인자 삭제
+        super().__init__((all_sprite_group, missile_sprite_group))
+```
+
+`player.py` 도 마찬가지다냥. **`self.group` 도 이제 필요 없다냥** —
+미사일이 알아서 자기 그룹을 찾아가니까냥.
+
+```python
+    def spawn_missile(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE]:
+            Missile(pygame.Vector2(self.rect.midtop))   # 그룹을 안 넘긴다냥
+```
+
+### 4-3. main.py가 짧아진다냥
+
+```python
+from settings import (
+    display_surface,
+    all_sprite_group,
+    meteor_sprite_group,
+    missile_sprite_group,
+)
+
+def main():
+    running = True
+    Background()
+    player = Player()
+    meteor_event = pygame.event.custom_type()
+    pygame.time.set_timer(meteor_event, 400)
+
+    while running:
+        ...
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+```
+
+**게임은 똑같이 돌아가야 한다냥.** 리팩토링이니까냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="미사일로 운석 터뜨리기" time="10분">
+
+드디어 진짜 슈팅 게임이다냥. 게임 루프에 **한 줄**만 추가하면 된다냥.
+
+```python
+        pygame.sprite.____________(
+            meteor_sprite_group, missile_sprite_group, ____, ____
+        )
+```
+
+> 힌트
+> - 첫 번째 빈칸: **그룹 대 그룹**을 검사하는 함수다냥.
+> - 두 번째·세 번째 빈칸: 부딪힌 운석과 미사일을 **없앨까?**
+
+**미사일이 운석에 맞으면 둘 다 사라지면 성공이다냥!**
+
+<Callout type="tip">
+  **실험해보자냥**
+
+  마지막 두 인자를 `True, False` 로 바꿔보자냥.
+  운석만 터지고 미사일은 계속 날아간다냥 — **관통 미사일**이다냥!
+  `False, True` 로 하면? 미사일만 사라지고 운석은 멀쩡하다냥.
+
+  어떤 게 더 재미있냥? 자기 게임에 맞게 정하면 된다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="settings.py"
+  code={`import pygame
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+
+pygame.init()
+display_surface: pygame.Surface = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
+pygame.display.set_caption("space shooter")
+
+all_sprite_group = pygame.sprite.Group()
+meteor_sprite_group = pygame.sprite.Group()
+missile_sprite_group = pygame.sprite.Group()
+`}
+/>
+
+<ToggleCodeBlock
+  header="main.py"
+  code={`import pygame
+from settings import (
+    display_surface,
+    all_sprite_group,
+    meteor_sprite_group,
+    missile_sprite_group,
+)
+from entity.bg import Background
+from entity.meteor import Meteor
+from entity.player import Player
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    Background()
+    player = Player()
+
+    meteor_event = pygame.event.custom_type()
+    pygame.time.set_timer(meteor_event, 400)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+            running = False
+
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/meteor.py"
+  code={`from os.path import join
+import random
+import pygame
+from settings import (
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+    all_sprite_group,
+    meteor_sprite_group,
+)
+
+
+class Meteor(pygame.sprite.Sprite):
+    path: str = join("images", "meteor.png")
+    surf: pygame.Surface = pygame.image.load(path).convert_alpha()
+
+    def __init__(self):
+        super().__init__((all_sprite_group, meteor_sprite_group))
+        self.image = Meteor.surf
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(random.randint(0, WINDOW_WIDTH), random.randint(-100, 0))
+        )
+        self.speed: float = random.randint(300, 500)
+        self.direction: pygame.Vector2 = pygame.Vector2(random.randint(-1, 1), 1)
+
+    @classmethod
+    def spawn(cls, n: int):
+        if n <= 0:
+            raise ValueError("n must be greater than 0")
+        for _ in range(n):
+            Meteor()
+
+    def update(self, dt: float):
+        self.rect.center += self.direction * dt * self.speed
+        if self.rect.top > WINDOW_HEIGHT:
+            self.kill()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/missile.py"
+  code={`import pygame
+from os.path import join
+from settings import all_sprite_group, missile_sprite_group
+
+
+class Missile(pygame.sprite.Sprite):
+    path: str = join("images", "missile.png")
+    surf: pygame.Surface = pygame.image.load(path).convert_alpha()
+    speed: float = 200
+
+    def __init__(self, pos: pygame.Vector2):
+        super().__init__((all_sprite_group, missile_sprite_group))
+        self.image = Missile.surf
+        self.rect: pygame.FRect = self.image.get_frect(midbottom=pos)
+
+    def update(self, dt: float):
+        self.rect.centery -= dt * Missile.speed
+        if self.rect.bottom < 0:
+            self.kill()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/player.py"
+  code={`import pygame
+from os.path import join
+from entity.missile import Missile
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 200
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200
+    missile_timer: float = 0
+
+    def __init__(self):
+        super().__init__(all_sprite_group)
+        self.image = pygame.image.load(Player.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def spawn_missile(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE]:
+            Missile(pygame.Vector2(self.rect.midtop))
+            Player.missile_timer = pygame.time.get_ticks()
+
+    def handleMissile(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Player.missile_timer > Player.missile_cooldown:
+            self.spawn_missile()
+
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.normalize_ip()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        self.handleMissile()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/bg.py"
+  code={`import pygame
+from os.path import join
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
+
+
+class Background(pygame.sprite.Sprite):
+    path: str = join("images", "background.png")
+
+    def __init__(self):
+        super().__init__(all_sprite_group)
+        self.image = pygame.transform.scale(
+            pygame.image.load(Background.path).convert_alpha(),
+            (WINDOW_WIDTH, WINDOW_HEIGHT),
+        )
+        self.rect = self.image.get_frect()
+
+    def update(self, dt: float):
+        pass
+`}
+/>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - 운석 전용 그룹을 만들어 스프라이트를 **여러 그룹에 동시 등록**했다.
+  - `spritecollide` 로 우주선과 운석의 충돌을 감지해 게임을 끝냈다.
+  - 그룹을 `settings.py` 로 옮겨 **전달 지옥**을 없앴다.
+  - `groupcollide` 로 미사일과 운석이 서로 터지게 했다.
+</Callout>
+
+이제 게임의 규칙이 다 생겼다냥!
+그런데 부딪히면 **창이 그냥 꺼져버린다냥.**
+다음 시간에는 **게임 오버 화면과 재시작**을 만들어 게임을 완성한다냥!

@@ -1,0 +1,242 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: 'Sprite 클래스 — 명함 양식과 명함첩',
+  description: '파이게임의 Sprite와 Group이 무엇인지, image와 rect라는 약속이 왜 중요한지 이해해보자냥!',
+  session: 7,
+}
+
+# Sprite 클래스
+
+<NyangSpeech>
+  지난 시간에 배운 **상속**을 드디어 써먹는다냥!
+  파이게임이 이미 만들어둔 `Sprite` 클래스를 물려받아
+  우주선을 다시 만든다냥. 지금은 우주선 하나뿐이라 별로 안 좋아 보일 수도 있다냥.
+  하지만 **운석이 수십 개 날아다니기 시작하면** 이게 없으면 감당이 안 된다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - `pygame.sprite.Sprite` 와 `Group` 이 각각 무엇인지 설명할 수 있다.
+  - Sprite가 반드시 가져야 하는 두 가지 **`image`** 와 **`rect`** 를 말할 수 있다.
+  - `group.update()` 와 `group.draw()` 가 무슨 일을 하는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 지금 코드의 문제 (5분)
+
+지금 `main.py` 는 우주선 하나를 이렇게 관리하고 있다냥.
+
+```python
+player_surf = ...          # 이미지
+player_rect = ...          # 위치
+direction = ...            # 방향
+speed = 200                # 속도
+# 그리고 루프 안에서 키 입력 처리 + 위치 갱신 + blit
+```
+
+우주선 하나에 변수 네 개와 코드 여러 줄이다냥.
+여기에 **미사일과 운석이 수십 개** 추가되면 어떻게 되겠냥?
+
+<Callout type="important">
+  운석이 30개면 `meteor_surf1`, `meteor_rect1`, `meteor_surf2` ... 이렇게 갈 수 없다냥.
+  6강에서 배운 대로 **클래스로 묶어야** 한다냥.
+  그런데 파이게임은 아예 **게임용 클래스를 미리 만들어뒀다냥.**
+</Callout>
+
+---
+
+## 2단계 · Sprite와 Group (10분)
+
+<Callout type="analogy">
+  - **`Sprite`** 는 회사의 **직원 명함 양식**이다냥. 게임에 등장하는 물체 하나하나의 틀이다냥.
+  - **`Group`** 은 그 명함들을 전부 꽂아두는 **명함첩**이다냥.
+
+  명함첩을 흔들면 **모든 명함이 한꺼번에** 움직인다냥.
+  그게 `group.update()` 와 `group.draw()` 다냥.
+</Callout>
+
+```python
+class Player(pygame.sprite.Sprite):    # Sprite를 상속받는다냥
+    def __init__(self, group):
+        super().__init__(group)        # 태어나자마자 명함첩에 꽂힌다냥
+```
+
+<StepCard step="super().__init__(group)" title="태어나면서 그룹에 등록">
+
+6강에서 배운 `super()` 다냥.
+부모인 `Sprite` 의 초기화를 부르면서 **그룹까지 같이 넘긴다냥.**
+그러면 이 객체는 만들어지는 순간 자동으로 그 그룹에 들어간다냥.
+
+`Player(all_sprites)` 라고만 써도 등록이 끝난다냥.
+변수에 담아둘 필요조차 없다냥!
+
+</StepCard>
+
+---
+
+## 3단계 · image와 rect — 반드시 지켜야 할 약속 (10분)
+
+여기가 오늘 가장 중요한 부분이다냥.
+
+`Group` 이 스프라이트들을 자동으로 그려주려면
+**"그림은 어디 있고 위치는 어디냐"** 를 알아야 한다냥.
+그래서 파이게임은 **이름을 딱 정해뒀다냥.**
+
+<CompareBubble
+  left={{
+    label: 'self.image',
+    color: 'blue',
+    items: [
+      '그릴 그림 (Surface)',
+      'group.draw()가 이 이름을 찾는다',
+      '이름이 다르면 안 그려진다',
+      '예: self.image = pygame.image.load(...)',
+    ],
+  }}
+  right={{
+    label: 'self.rect',
+    color: 'purple',
+    items: [
+      '그릴 위치 (Rect / FRect)',
+      'group.draw()가 이 이름을 찾는다',
+      '이름이 다르면 오류가 난다',
+      '예: self.rect = self.image.get_frect(...)',
+    ],
+  }}
+/>
+
+<Callout type="important">
+  `self.player_image` 나 `self.position` 처럼 **다른 이름을 쓰면 안 된다냥.**
+  파이게임이 정확히 `image` 와 `rect` 라는 이름을 찾기 때문이다냥.
+  이건 우리가 정하는 게 아니라 **파이게임과의 약속**이다냥.
+</Callout>
+
+```python
+class Player(pygame.sprite.Sprite):
+    path = join("images", "player.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = pygame.image.load(Player.path).convert_alpha()
+        self.rect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+```
+
+---
+
+## 4단계 · update() — 매 프레임 자동 호출 (8분)
+
+`Sprite` 에는 `update()` 라는 또 하나의 약속된 이름이 있다냥.
+
+```python
+    def update(self, dt):
+        self.rect.y -= 40 * dt      # 매 프레임 위로 조금씩
+```
+
+<Callout type="analogy">
+  `update()` 는 **시계 초침**이다냥.
+  게임 루프가 한 바퀴 돌 때마다 저절로 한 번씩 불린다냥.
+  우리가 직접 부르는 게 아니다냥.
+</Callout>
+
+부르는 쪽은 이렇게 된다냥.
+
+```python
+all_sprites.update(dt)          # 그룹 안 모든 스프라이트의 update(dt)를 호출
+all_sprites.draw(display_surface)   # 그룹 안 모든 스프라이트의 image를 rect 위치에 그림
+```
+
+<StepCard step="update()" title="상태를 바꾼다">
+
+위치를 옮기고, 키 입력을 확인하고, 애니메이션을 넘긴다냥.
+**계산만** 하는 단계다냥.
+
+</StepCard>
+
+<StepCard step="draw()" title="화면에 그린다">
+
+각 스프라이트의 `image` 를 `rect` 위치에 `blit` 해준다냥.
+우리가 `blit` 을 직접 부를 필요가 없어진다냥.
+
+</StepCard>
+
+<Callout type="tip">
+  `update(dt)` 에 넘긴 `dt` 는 그룹이 **그대로 각 스프라이트에 전달해준다냥.**
+  그래서 `Player.update(self, dt)` 의 두 번째 자리로 들어온다냥.
+</Callout>
+
+---
+
+## 5단계 · 이게 왜 좋냥? (5분)
+
+<CompareBubble
+  left={{
+    label: '지금까지 (직접 관리)',
+    color: 'ink',
+    items: [
+      '물체마다 변수 여러 개',
+      '루프 안에서 하나씩 위치 갱신',
+      '루프 안에서 하나씩 blit',
+      '운석 30개면 코드가 폭발한다',
+    ],
+  }}
+  right={{
+    label: 'Sprite + Group',
+    color: 'blue',
+    items: [
+      '물체마다 클래스 하나',
+      'group.update(dt) 한 줄',
+      'group.draw(화면) 한 줄',
+      '운석이 30개여도 두 줄 그대로',
+    ],
+  }}
+/>
+
+**물체가 몇 개로 늘어나든 메인 루프는 두 줄이다냥.**
+이게 오늘 Sprite를 배우는 이유다냥.
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: 'Sprite와 Group을 비유로 설명해보자냥.',
+      answer: 'Sprite는 직원 명함 양식이고 Group은 명함들을 꽂아두는 명함첩이다냥. 명함첩을 흔들면 모든 명함이 한꺼번에 움직인다냥.',
+    },
+    {
+      question: 'Sprite가 반드시 가져야 하는 두 가지는 뭐냥?',
+      answer: 'self.image(그릴 그림)와 self.rect(그릴 위치)다냥. 파이게임이 정확히 이 이름을 찾기 때문에 다른 이름을 쓰면 그려지지 않거나 오류가 난다냥.',
+    },
+    {
+      question: 'super().__init__(group)은 무슨 일을 하냥?',
+      answer: '부모인 Sprite의 초기화를 부르면서 그룹까지 넘긴다냥. 그러면 이 객체가 만들어지는 순간 자동으로 그 그룹에 등록된다냥.',
+    },
+    {
+      question: 'update()는 누가 부르냥?',
+      answer: '우리가 직접 부르는 게 아니라 group.update(dt)를 부르면 그룹이 안에 있는 모든 스프라이트의 update를 대신 불러준다냥.',
+    },
+    {
+      question: 'Sprite를 쓰면 운석이 30개가 되어도 메인 루프가 안 길어지는 이유는 뭐냥?',
+      answer: '개수와 상관없이 group.update(dt)와 group.draw(화면) 두 줄이면 전부 처리되기 때문이다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [pygame.sprite.Sprite](https://pyga.me/docs/ref/sprite.html#pygame.sprite.Sprite)
+2. [pygame.sprite.Group](https://pyga.me/docs/ref/sprite.html#pygame.sprite.Group)

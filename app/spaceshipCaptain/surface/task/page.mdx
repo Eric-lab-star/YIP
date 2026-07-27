@@ -1,0 +1,200 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+
+export const metadata = {
+  title: '실습 — 화면에 색과 모양 올리기',
+  description: '창 제목을 붙이고 배경을 칠하고 Surface를 blit한 뒤, 색이 계속 바뀌는 화면까지 만들어보자냥!',
+  session: 2,
+}
+
+# 실습 — 화면에 색과 모양 올리기
+
+<NyangSpeech>
+  지난 시간에 만든 `main.py` 를 그대로 이어서 고친다냥.
+  새 파일을 만들 필요 없다냥!
+  미션 1~3까지가 기본이고, 미션 4는 스스로 풀어보는 **도전 과제**다냥.
+</NyangSpeech>
+
+<Callout type="note">
+  **시작 코드** — 지난 시간에 완성한 `main.py` 다냥.
+
+  ```python
+  import pygame
+
+  pygame.init()
+  WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+  display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+
+  def main():
+      running = True
+      while running:
+          for event in pygame.event.get():
+              if event.type == pygame.QUIT:
+                  running = False
+      pygame.quit()
+
+
+  if __name__ == "__main__":
+      main()
+  ```
+</Callout>
+
+---
+
+<MissionCard number={1} title="창에 이름 붙이기" time="3분">
+
+`set_mode` 바로 아랫줄에 제목을 붙이자냥.
+
+```python
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.____________("space shooter")
+```
+
+> 힌트: `caption` 은 사진 아래 붙는 설명글이라는 뜻이다냥.
+
+실행해서 창 맨 위 제목이 바뀌었는지 확인하자냥.
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="배경 칠하고 화면에 내보내기" time="7분">
+
+게임 루프 안, `for` 문 **아래**에 두 줄을 추가하자냥.
+순서가 중요하다냥 — 칠하고 나서 내보낸다냥.
+
+```python
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.____((250, 250, 0))   # 노란색으로 배경 칠하기
+        pygame.display.____()                 # 화면에 내보내기
+```
+
+> 힌트
+> - 첫 번째 빈칸: 도화지를 한 가지 색으로 덧칠하는 함수다냥.
+> - 두 번째 빈칸: 캔버스를 뒤집어 관객에게 보여주는 그 함수다냥.
+
+**노란 창이 뜨면 성공이다냥.**
+
+<Callout type="tip">
+  창이 계속 검은색이냥? `flip()` 을 빠뜨렸거나, 게임 루프 **바깥**에 썼을 가능성이 크다냥.
+  두 줄 모두 `while running:` 안쪽에 들여쓰기 되어 있는지 확인하자냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="Surface 만들어 붙이기" time="10분">
+
+이제 그림 조각을 하나 만들어서 화면에 올리자냥.
+
+`def main():` 안, `while` 문 **위**에 이 두 줄을 넣자냥.
+반복문 안에 넣으면 매 프레임 새로 만들어져서 낭비다냥.
+
+```python
+def main():
+    running = True
+    surf = pygame.________((100, 150))   # 100x150 그림 조각 만들기
+    surf.fill("orange")                  # 주황색으로 칠하기
+    while running:
+```
+
+그리고 루프 안에서 배경을 칠한 **다음**에 붙이자냥.
+
+```python
+        display_surface.fill((0, 0, 0))
+        display_surface.____(surf, (100, 100))   # (100,100) 위치에 붙이기
+        pygame.display.flip()
+```
+
+> 힌트
+> - 첫 번째 빈칸: 그림 조각을 만드는 클래스 이름이다냥. 대문자로 시작한다냥.
+> - 두 번째 빈칸: 색종이를 게시판에 붙이는 그 동작이다냥.
+
+**검은 배경에 주황색 네모가 보이면 성공이다냥.**
+
+<Callout type="important">
+  `blit` 을 `fill` 보다 **먼저** 쓰면 네모가 안 보인다냥.
+  배경으로 덮여버리기 때문이다냥. 순서는 항상 **지우기 → 그리기 → 내보내기** 다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="도전 과제 — 색이 계속 바뀌는 화면" time="10분">
+
+지금까지 배운 것만으로 아래 세 가지를 직접 해보자냥.
+
+1. 창의 제목을 `colors` 로 바꾸자냥.
+2. `display_surface` 의 배경색이 **매 프레임 랜덤한 색**으로 바뀌게 하자냥.
+3. `surf` 의 색을 **흰색**으로 바꾸자냥.
+
+<Callout type="tip">
+  2번 힌트다냥.
+
+  - 파일 맨 위에 `import random` 을 추가한다냥.
+  - `random.randint(0, 255)` 는 0~255 사이 숫자를 하나 뽑아준다냥.
+  - `fill()` 에는 `(R, G, B)` 세 개가 필요하다냥.
+  - 매 프레임 바뀌어야 하니 이 코드는 **while 루프 안**에 있어야 한다냥.
+</Callout>
+
+> **생각해보자냥**
+> 화면이 너무 심하게 깜빡여서 눈이 아프냥?
+> 그건 매 프레임(1초에 수십 번) 색이 완전히 달라지기 때문이다냥.
+> 다음 시간에 배울 **FPS**로 속도를 조절하면 이런 것도 다룰 수 있다냥.
+
+</MissionCard>
+
+---
+
+## 완성 코드 (미션 1~3)
+
+막혔을 때만 열어보자냥.
+
+```python
+import pygame
+
+pygame.init()
+WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+
+def main():
+    running = True
+    surf = pygame.Surface((100, 150))
+    surf.fill("orange")
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        display_surface.fill((0, 0, 0))
+        display_surface.blit(surf, (100, 100))
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `set_caption()` 으로 창에 이름을 붙였다.
+  - `fill()` 과 `flip()` 을 게임 루프 안에서 매 프레임 호출했다.
+  - `Surface` 를 만들어 `blit()` 으로 화면에 올렸다.
+  - 랜덤 색 배경 과제로 반복문 안과 밖의 차이를 확인했다.
+</Callout>
+
+다음 시간에는 네모 대신 **진짜 우주선 그림**을 올린다냥!

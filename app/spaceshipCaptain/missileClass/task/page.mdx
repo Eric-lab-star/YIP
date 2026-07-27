@@ -1,0 +1,335 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import DownloadBtn from '@/components/commons/DownloadBtn'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — 스페이스바로 미사일 발사하기',
+  description: '미사일 클래스를 만들어 화면에 띄우고, 우주선에서 발사되게 하고, 쿨다운으로 연사를 막아보자냥!',
+  session: 9,
+}
+
+# 실습 — 스페이스바로 미사일 발사하기
+
+<NyangSpeech>
+  오늘은 **한 번에 다 만들지 않는다냥.**
+  먼저 미사일을 화면 아무 데나 띄워서 "보이는지" 확인하고,
+  그다음에 움직이게 하고, 마지막에 발사되게 한다냥.
+  **한 단계씩 확인하면서 가는 게** 오늘 실습의 핵심이다냥!
+</NyangSpeech>
+
+---
+
+<MissionCard number={1} title="미사일 이미지 받고 클래스 만들기" time="10분">
+
+먼저 미사일 그림을 받아서 `images` 폴더에 넣자냥.
+
+<DownloadBtn label="미사일 이미지 저장하기" fileKey="spaceShooter/missile.png" eager={true} />
+
+`entity` 폴더에 **`missile.py`** 를 만들자냥.
+8강에서 만든 `bg.py` 와 거의 같은 모양이다냥.
+
+```python
+# entity/missile.py
+import pygame
+from os.path import join
+
+
+class Missile(pygame.sprite.Sprite):
+    path: str = join("images", "missile.png")
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.image.load(Missile.path).convert_alpha()
+        self.rect = self.image.get_frect(center=(100, 100))
+
+    def update(self, dt: float):
+        pass
+```
+
+그리고 `main.py` 에서 하나 만들어보자냥.
+
+```python
+from entity.missile import Missile
+
+    Background(all_sprite_group)
+    Player(all_sprite_group)
+    Missile(all_sprite_group)
+```
+
+**화면 왼쪽 위쯤에 미사일이 보이면 성공이다냥.**
+
+<img
+  src="https://r2.kimkyungsub.com/spaceShooter/missileResult100x100.png"
+  alt="미사일이 화면에 나온 결과"
+  className="mx-auto"
+/>
+
+<Callout type="tip">
+  일부러 `(100, 100)` 이라는 엉뚱한 위치에 고정해뒀다냥.
+  지금은 **"클래스가 제대로 만들어졌나"** 만 확인하는 단계다냥.
+  위치는 다음 미션에서 고친다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="미사일을 위로 날리고 사라지게 하기" time="12분">
+
+이제 미사일을 움직이자냥. `missile.py` 를 고치자냥.
+
+```python
+class Missile(pygame.sprite.Sprite):
+    path: str = join("images", "missile.png")
+    speed: float = 200
+
+    def __init__(self, group: pygame.sprite.Group, pos: pygame.Vector2):
+        super().__init__(group)
+        self.image = pygame.image.load(Missile.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(__________=pos)
+
+    def update(self, dt: float):
+        self.rect.centery ___ dt * Missile.speed
+        if self.rect.______ < 0:
+            self.______()
+```
+
+> 힌트
+> - 첫 번째 빈칸: 미사일의 **아래쪽 변 가운데**를 받은 위치에 맞춘다냥.
+>   우주선 코앞에서 나오게 하려면 이 기준점이 맞다냥.
+> - 두 번째 빈칸: 위로 가려면 y를 더해야 하냥 빼야 하냥?
+> - 세 번째 빈칸: 미사일의 **아래쪽 변**이 화면 위로 넘어갔는지 본다냥.
+> - 네 번째 빈칸: 그룹에서 빼내는 메서드다냥.
+
+이제 `__init__` 이 위치를 받으니 `main.py` 도 고쳐야 한다냥.
+
+```python
+    Missile(all_sprite_group, pygame.Vector2(640, 700))
+```
+
+**미사일이 아래에서 위로 날아가서 사라지면 성공이다냥.**
+
+<Callout type="important">
+  `kill()` 이 정말 일하는지 확인해보자냥.
+  `if self.rect.bottom < 0:` 부분을 잠깐 주석 처리하고,
+  미사일을 여러 개 만들어서 한참 두면 어떻게 되는지 보자냥.
+  화면 밖에서도 계속 살아 있다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="우주선이 미사일을 만들게 하기" time="15분">
+
+이제 진짜 발사다냥. `player.py` 를 고치자냥.
+
+먼저 미사일 클래스를 가져오고, 클래스 변수 두 개를 추가하자냥.
+
+```python
+from entity.missile import Missile
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 200
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200      # 0.2초
+    missile_timer: float = 0           # 마지막으로 쏜 시각
+```
+
+`__init__` 에서 **그룹을 기억**해두자냥.
+
+```python
+        self.group: pygame.sprite.Group = ______
+```
+
+> 힌트: `__init__` 이 받은 매개변수 이름 그대로다냥.
+
+그리고 메서드 두 개를 추가하자냥.
+
+```python
+    def spawn_missile(self):
+        keys = pygame.key.________________()
+        if keys[pygame.K_SPACE]:
+            Missile(self.group, pygame.Vector2(self.rect.________))
+            Player.missile_timer = pygame.time.get_ticks()
+
+    def handleMissile(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Player.missile_timer > Player.missile_cooldown:
+            self.spawn_missile()
+```
+
+> 힌트
+> - 첫 번째 빈칸: **누른 순간에만** True인 함수다냥.
+> - 두 번째 빈칸: 우주선의 **위쪽 변 가운데** 기준점이다냥.
+
+마지막으로 `update` 맨 끝에서 이걸 부르자냥.
+
+```python
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.____________()
+```
+
+**스페이스바를 누르면 우주선에서 미사일이 나가면 성공이다냥!**
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="쿨다운 값 바꿔보며 느껴보기" time="8분">
+
+쿨다운이 정말 일하는지 실험해보자냥.
+
+> **실험해보자냥**
+> 1. `missile_cooldown` 을 **1000** 으로 바꾸고 연타해보자냥. 1초에 한 발만 나간다냥.
+> 2. **50** 으로 바꾸고 연타해보자냥. 우수수 쏟아진다냥.
+> 3. `get_just_pressed()` 를 `get_pressed()` 로 바꾸고 스페이스바를 **꾹 눌러보자냥.**
+
+<Callout type="tip">
+  3번 실험이 재미있다냥.
+  `get_pressed()` 로 바꾸면 누르고 있는 동안 계속 발사되려고 하지만,
+  **쿨다운이 막아준다냥.** 그래서 일정 간격으로 연사가 된다냥.
+  게임에 따라 이게 더 좋을 수도 있다냥 — 어떤 게 더 재미있냥?
+</Callout>
+
+실험이 끝나면 원하는 값으로 정하자냥. **정답은 없다냥.**
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="entity/missile.py"
+  code={`import pygame
+from os.path import join
+
+
+class Missile(pygame.sprite.Sprite):
+    path: str = join("images", "missile.png")
+    speed: float = 200
+
+    def __init__(self, group: pygame.sprite.Group, pos: pygame.Vector2):
+        super().__init__(group)
+        self.image = pygame.image.load(Missile.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(midbottom=pos)
+
+    def update(self, dt: float):
+        self.rect.centery -= dt * Missile.speed
+        if self.rect.bottom < 0:
+            self.kill()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/player.py"
+  code={`import pygame
+from os.path import join
+from entity.missile import Missile
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+
+
+class Player(pygame.sprite.Sprite):
+    path: str = join("images", "player.png")
+    speed: float = 200
+    velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200
+    missile_timer: float = 0
+
+    def __init__(self, group: pygame.sprite.Group):
+        super().__init__(group)
+        self.image = pygame.image.load(Player.path).convert_alpha()
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+        self.group: pygame.sprite.Group = group
+
+    def spawn_missile(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE]:
+            Missile(self.group, pygame.Vector2(self.rect.midtop))
+            Player.missile_timer = pygame.time.get_ticks()
+
+    def handleMissile(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Player.missile_timer > Player.missile_cooldown:
+            self.spawn_missile()
+
+    def update(self, dt: float):
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+        if self.velocity.length() > 0:
+            self.velocity.normalize_ip()
+
+        self.rect.center += self.velocity * Player.speed * dt
+        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        self.handleMissile()
+`}
+/>
+
+<ToggleCodeBlock
+  header="main.py"
+  code={`import pygame
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from entity.player import Player
+from entity.bg import Background
+
+pygame.init()
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("space shooter")
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    all_sprite_group = pygame.sprite.Group()
+
+    Background(all_sprite_group)
+    Player(all_sprite_group)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        all_sprite_group.update(dt)
+        all_sprite_group.draw(display_surface)
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+<Callout type="note">
+  `main.py` 에서 미션 1에 넣었던 `Missile(all_sprite_group)` 은 **지웠다냥.**
+  이제 미사일은 우주선이 만들기 때문에 `main.py` 는 몰라도 된다냥.
+  `from entity.missile import Missile` 도 `main.py` 에서는 필요 없다냥.
+</Callout>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `Missile` 스프라이트 클래스를 만들었다.
+  - `kill()` 로 화면을 벗어난 미사일을 정리했다.
+  - `get_just_pressed()` 로 "누른 순간"만 잡아냈다.
+  - `get_ticks()` 로 쿨다운을 만들어 연사를 조절했다.
+</Callout>
+
+이제 쏠 수 있다냥. 그런데 **맞출 게 없다냥!**
+다음 시간에는 **운석**을 만든다냥.
