@@ -1,0 +1,419 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import DownloadBtn from '@/components/commons/DownloadBtn'
+import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
+
+export const metadata = {
+  title: '실습 — 게임 오버 화면과 재시작 만들기',
+  description: 'game_over 상태를 만들고, HUD로 글자를 띄우고, R키로 다시 시작할 수 있게 해서 게임을 완성해보자냥!',
+  session: 12,
+}
+
+# 실습 — 게임 오버 화면과 재시작 만들기
+
+<NyangSpeech>
+  **마지막 실습이다냥!**
+  오늘 이걸 끝내면 게임이 완성된다냥.
+  상태를 나누고, 글자를 띄우고, 되돌리는 순서로 간다냥.
+  다 하고 나면 **친구에게 보여줄 수 있는 게임**이 된다냥!
+</NyangSpeech>
+
+---
+
+<MissionCard number={1} title="game_over 상태 만들기" time="12분">
+
+먼저 `main()` 에 상태 변수를 하나 두자냥. 그리고 배경도 변수에 담자냥.
+
+```python
+def main():
+    running = True
+    game_over = ______
+    bg = Background()          # 변수에 담는다냥
+    player = Player()
+```
+
+> 힌트: 게임을 시작할 때는 아직 안 끝난 상태다냥.
+
+이제 게임 루프의 뒷부분을 **두 갈래로** 나누자냥.
+
+```python
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if not game_over:
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = ______
+            all_sprite_group.update(dt)
+            all_sprite_group.draw(display_surface)
+        else:
+            player.kill()
+            meteor_sprite_group.empty()
+            display_surface.blit(bg.image)
+
+        pygame.display.flip()
+```
+
+> 힌트: 부딪혔으면 게임이 끝난 상태가 된다냥.
+
+<Callout type="important">
+  전에는 `running = False` 였다냥. 이제는 **창을 닫지 않는다냥.**
+  창은 계속 살아 있고 **보여주는 화면만** 바뀐다냥.
+</Callout>
+
+**운석에 부딪히면 우주선과 운석이 사라지고 배경만 남으면 성공이다냥.**
+아직 글자는 없다냥.
+
+<Callout type="tip">
+  `bg` 를 변수에 담은 이유가 여기 있다냥.
+  게임 오버일 때는 그룹을 안 쓰고 **배경만 직접 `blit`** 해야 하니
+  배경 객체를 손에 들고 있어야 한다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={2} title="HUD 클래스로 글자 띄우기" time="15분">
+
+`entity/hud.py` 를 만들자냥. 먼저 **글자가 나오는지부터** 확인하자냥.
+
+```python
+import pygame
+from settings import all_sprite_group, WINDOW_WIDTH, WINDOW_HEIGHT
+
+
+class Hud(pygame.sprite.Sprite):
+    font = pygame.font.Font(size=100)
+
+    def __init__(self):
+        super().__init__(all_sprite_group)
+        self.image: pygame.Surface = Hud.font.______("Game Over", True, "white")
+        self.rect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def update(self, dt: float):
+        pass
+```
+
+> 힌트: 글자를 **그림(Surface)으로 굽는** 함수다냥.
+
+`main.py` 에서 하나 만들자냥.
+
+```python
+from entity.hud import Hud
+
+    bg = Background()
+    player = Player()
+    hud = Hud()
+```
+
+**화면 한가운데에 "Game Over" 가 계속 보이면 성공이다냥.**
+지금은 항상 보이는 게 정상이다냥 — 다음 미션에서 고친다냥.
+
+<Callout type="important">
+  `pygame.font.Font(...)` 도 **클래스 변수**라 `import` 하는 순간 실행된다냥.
+  10강에서 배운 그 함정이다냥.
+  `settings.py` 에서 `pygame.init()` 을 이미 했으니 괜찮다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={3} title="게임 오버일 때만 보이게 하기" time="12분">
+
+지금은 글자가 항상 보인다냥. **필요할 때만** 그리도록 바꾸자냥.
+
+`hud.py` 의 `__init__` 에서 글자를 비우고,
+
+```python
+    def __init__(self, msg=""):
+        super().__init__(all_sprite_group)
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+```
+
+**직접 그리는 메서드**를 추가하자냥. `display_surface` 를 가져와야 한다냥.
+
+```python
+from settings import all_sprite_group, display_surface, WINDOW_WIDTH, WINDOW_HEIGHT
+
+    def draw(self, msg: str):
+        self.image = Hud.font.render(msg, True, "white")
+        self.rect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+        display_surface.______(self.image, self.rect)
+```
+
+> 힌트: 2강에서 배운, Surface를 화면에 붙이는 함수다냥.
+
+그리고 `main.py` 의 게임 오버 갈래에서 부르자냥.
+
+```python
+        else:
+            player.kill()
+            meteor_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
+```
+
+**평소엔 안 보이다가 부딪히면 "Game Over" 가 뜨면 성공이다냥!**
+
+</MissionCard>
+
+---
+
+<MissionCard number={4} title="폰트 바꾸기" time="8분">
+
+기본 폰트는 밋밋하다냥. 게임에 어울리는 픽셀 폰트로 바꾸자냥.
+
+<DownloadBtn eager={false} label="갈무리 폰트" fileKey="spaceShooter/Galmuri9.ttf" />
+
+받은 `Galmuri9.ttf` 를 `images` 폴더에 넣자냥.
+
+`hud.py` 를 고치자냥.
+
+```python
+from os.path import join
+
+
+class Hud(pygame.sprite.Sprite):
+    font_path: str = join("images", "________")
+    font = pygame.font.Font(________, size=100)
+```
+
+> 힌트
+> - 첫 번째 빈칸: 받은 폰트 파일 이름이다냥. 확장자까지 써야 한다냥.
+> - 두 번째 빈칸: 방금 만든 경로 변수다냥.
+
+**글자 모양이 픽셀 폰트로 바뀌면 성공이다냥!**
+
+<Callout type="tip">
+  다른 폰트를 써도 된다냥. `.ttf` 파일이면 뭐든 된다냥.
+  자기 게임에 어울리는 폰트를 직접 찾아보는 것도 좋다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={5} title="R키로 다시 시작하기" time="15분">
+
+마지막이다냥! 게임 오버 화면에서 **R을 누르면 다시 시작**되게 하자냥.
+
+### 5-1. 게임 오버일 때 전부 비운다냥
+
+```python
+        else:
+            all_sprite_group.______()
+            meteor_sprite_group.empty()
+            missile_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
+```
+
+> 힌트: 그룹을 통째로 비우는 메서드다냥. `player.kill()` 은 이제 지워도 된다냥.
+
+### 5-2. Player에 reset 메서드를 만든다냥
+
+```python
+# entity/player.py
+    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.____(self)
+```
+
+> 힌트: 그룹에 **다시 넣는** 메서드다냥.
+
+### 5-3. R키를 이벤트로 받는다냥
+
+이벤트 루프에 갈래를 하나 추가하자냥.
+
+```python
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+            if event.type == pygame.KEYDOWN and event.key == pygame.____:
+                if game_over:
+                    all_sprite_group.add(bg)
+                    player.reset()
+                    hud.kill()
+                    game_over = ______
+```
+
+> 힌트
+> - 첫 번째 빈칸: R키를 뜻하는 상수다냥.
+> - 두 번째 빈칸: 다시 플레이 상태로 돌아간다냥.
+
+**게임 오버 화면에서 R을 누르면 처음부터 다시 시작되면 성공이다냥!**
+
+<Callout type="important">
+  `if game_over:` 를 빼고 실행해보자냥.
+  **게임 도중에 R을 눌러도 화면이 초기화된다냥!**
+  조건이 왜 필요한지 바로 알 수 있다냥.
+</Callout>
+
+</MissionCard>
+
+---
+
+## 완성 코드
+
+<ToggleCodeBlock
+  header="entity/hud.py"
+  code={`import pygame
+from os.path import join
+from settings import (
+    all_sprite_group,
+    display_surface,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
+)
+
+
+class Hud(pygame.sprite.Sprite):
+    font_path: str = join("images", "Galmuri9.ttf")
+    font = pygame.font.Font(font_path, size=100)
+
+    def __init__(self, msg: str = ""):
+        super().__init__(all_sprite_group)
+        self.image: pygame.Surface = Hud.font.render(msg, True, "white")
+        self.rect: pygame.FRect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+
+    def draw(self, msg: str):
+        self.image = Hud.font.render(msg, True, "white")
+        self.rect = self.image.get_frect(
+            center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        )
+        display_surface.blit(self.image, self.rect)
+
+    def update(self, dt: float):
+        pass
+`}
+/>
+
+<ToggleCodeBlock
+  header="main.py"
+  code={`import pygame
+from settings import (
+    display_surface,
+    all_sprite_group,
+    meteor_sprite_group,
+    missile_sprite_group,
+)
+from entity.bg import Background
+from entity.meteor import Meteor
+from entity.player import Player
+from entity.hud import Hud
+
+clock = pygame.time.Clock()
+
+
+def main():
+    running = True
+    game_over = False
+
+    bg = Background()
+    player = Player()
+    hud = Hud()
+
+    meteor_event = pygame.event.custom_type()
+    pygame.time.set_timer(meteor_event, 400)
+
+    while running:
+        dt = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == meteor_event:
+                Meteor.spawn(3)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                if game_over:
+                    all_sprite_group.add(bg)
+                    player.reset()
+                    hud.kill()
+                    game_over = False
+
+        pygame.sprite.groupcollide(
+            meteor_sprite_group, missile_sprite_group, True, True
+        )
+
+        if not game_over:
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.update(dt)
+            all_sprite_group.draw(display_surface)
+        else:
+            all_sprite_group.empty()
+            meteor_sprite_group.empty()
+            missile_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
+
+        pygame.display.flip()
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
+`}
+/>
+
+<ToggleCodeBlock
+  header="entity/player.py (reset 추가)"
+  code={`    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.add(self)
+`}
+/>
+
+---
+
+## 더 만들어보고 싶다면
+
+게임이 완성됐다냥! 여기서 더 나아가고 싶다면 이런 것들을 해보자냥.
+
+<Callout type="tip">
+  - **점수**를 세어보자냥. 운석을 맞출 때마다 `score += 1` 하고 `hud.draw(f"점수: {score}")` 로 보여준다냥.
+  - **목숨**을 만들어보자냥. 부딪히면 바로 게임 오버 대신 목숨을 하나 줄인다냥.
+  - **난이도**를 올려보자냥. 시간이 지날수록 `set_timer` 간격을 줄인다냥.
+  - **소리**를 넣어보자냥. `pygame.mixer` 를 찾아보자냥.
+  - 게임 오버 화면에 **최고 점수**를 보여줘도 좋다냥.
+</Callout>
+
+---
+
+## 오늘 한 일
+
+<Callout type="goal">
+  - `game_over` 상태로 게임 흐름을 두 갈래로 나눴다.
+  - `Font.render()` 로 글자를 Surface로 구워 화면에 그렸다.
+  - 폰트 파일을 적용해 게임에 어울리는 글자로 바꿨다.
+  - `empty()` 와 `add()` 로 재시작을 구현했다.
+</Callout>
+
+---
+
+## 우주선 게임 완성이다냥!
+
+<NyangSpeech>
+  12강 동안 정말 수고 많았다냥!
+  창 하나 띄우는 것부터 시작해서 **진짜 게임 하나를 완성했다냥.**
+
+  클래스, 상속, 모듈과 패키지, 리팩토링, 최적화까지 —
+  오늘 쓴 기술은 게임뿐 아니라 **어떤 프로그램을 만들 때도 쓰인다냥.**
+
+  이제 이 게임을 친구에게 보여주자냥!
+  그리고 위의 "더 만들어보고 싶다면" 을 하나씩 해보자냥.
+  여기서부터는 **네 게임이다냥!**
+</NyangSpeech>

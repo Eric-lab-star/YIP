@@ -1,0 +1,297 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '게임 오버와 재시작 — 상태로 게임 만들기',
+  description: '게임에 상태를 두고, 글자를 화면에 그리고, 그룹을 비웠다 되돌려 재시작을 만들어보자냥!',
+  session: 12,
+}
+
+# 게임 오버와 재시작
+
+<NyangSpeech>
+  드디어 **마지막 시간**이다냥!
+  지금은 운석에 부딪히면 **창이 그냥 꺼져버린다냥.**
+  게임이라면 "게임 오버" 를 보여주고 다시 할 기회를 줘야 한다냥.
+  오늘 이걸 만들면 **게임이 완성된다냥!**
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - **상태 변수**로 게임의 흐름을 나누는 방법을 설명할 수 있다.
+  - 글자를 화면에 그리려면 왜 **Surface로 바꿔야** 하는지 말할 수 있다.
+  - `empty()` 와 `add()` 로 그룹을 비우고 되돌리는 법을 설명할 수 있다.
+  - 재시작이 **무엇을 되돌리는 일인지** 말할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 게임에 "상태" 를 준다냥 (8분)
+
+지금 코드는 부딪히면 `running = False` 로 **게임 자체를 끝낸다냥.**
+그런데 진짜 게임은 끝나도 창은 살아 있다냥.
+
+<Callout type="analogy">
+  게임을 **TV 채널**이라고 생각하면 된다냥.
+  TV(창)는 계속 켜져 있고, **채널(상태)만 바뀐다냥.**
+
+  - 플레이 중 채널 → 우주선이 날고 운석이 떨어진다
+  - 게임 오버 채널 → 검은 배경에 글자만 보인다
+</Callout>
+
+그래서 **상태 변수**를 하나 둔다냥.
+
+```python
+game_over = False        # 지금 어느 채널이냥?
+
+while running:
+    ...
+    if not game_over:
+        # 플레이 중 화면
+    else:
+        # 게임 오버 화면
+```
+
+<Callout type="important">
+  `running` 과 `game_over` 는 **다른 것**이다냥.
+
+  - `running` → 창을 닫을까? (프로그램 자체)
+  - `game_over` → 지금 어느 화면을 보여줄까? (게임 안의 상태)
+
+  이 둘을 헷갈리면 재시작을 만들 수 없다냥.
+</Callout>
+
+---
+
+## 2단계 · 글자도 그림이다냥 (10분)
+
+파이게임은 **글자를 바로 그릴 수 없다냥.**
+글자를 먼저 **그림(Surface)으로 구워야** 한다냥.
+
+<Callout type="analogy">
+  **도장을 찍는 것**과 같다냥.
+  글자라는 모양을 종이에 찍어서 **이미지로 만든 다음** 벽에 붙이는 것이다냥.
+</Callout>
+
+<StepCard step="1" title="폰트를 준비한다냥">
+
+```python
+font = pygame.font.Font(size=100)
+```
+
+크기 100짜리 기본 폰트다냥. 6강에서 배운 **클래스 변수**로 두면
+모든 HUD가 폰트 하나를 함께 쓴다냥(10강의 이미지 공유와 같은 이유다냥).
+
+</StepCard>
+
+<StepCard step="2" title="글자를 Surface로 굽는다냥">
+
+```python
+self.image = Hud.font.render("Game Over", True, "white")
+```
+
+- 첫 번째: 그릴 글자
+- 두 번째: 부드럽게 다듬을까? (`True` 로 두면 예쁘다냥)
+- 세 번째: 글자 색
+
+돌려받은 건 **2강에서 배운 그 Surface** 다냥. 그러니 `blit` 으로 붙이면 된다냥!
+
+</StepCard>
+
+<StepCard step="3" title="위치를 잡는다냥">
+
+```python
+self.rect = self.image.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+```
+
+3강에서 배운 **기준점**이다냥. 화면 정중앙에 놓는다냥.
+
+</StepCard>
+
+---
+
+## 3단계 · HUD는 왜 그룹에 안 맡기냥? (7분)
+
+지금까지 스프라이트는 전부 `group.draw()` 가 알아서 그려줬다냥.
+그런데 HUD는 조금 다르다냥.
+
+<CompareBubble
+  left={{
+    label: '우주선·운석·미사일',
+    color: 'blue',
+    items: [
+      '항상 화면에 있어야 한다',
+      '그룹에 넣어두면 알아서 그려진다',
+      'group.draw()가 전부 처리',
+      '개수가 계속 바뀐다',
+    ],
+  }}
+  right={{
+    label: 'HUD (게임 오버 글자)',
+    color: 'purple',
+    items: [
+      '게임 오버일 때만 보여야 한다',
+      '내용도 바뀔 수 있다 (점수 등)',
+      '필요한 순간에 직접 blit 한다',
+      '하나뿐이다',
+    ],
+  }}
+/>
+
+그래서 `Hud` 에는 **직접 그리는 메서드**를 만든다냥.
+
+```python
+    def draw(self, msg: str):
+        self.image = Hud.font.render(msg, True, "white")
+        self.rect = self.image.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+        display_surface.blit(self.image, self.rect)
+```
+
+<Callout type="tip">
+  `msg` 를 받아서 매번 다시 굽는다냥.
+  그래서 나중에 `hud.draw(f"점수: {score}")` 처럼 **바뀌는 글자**도 그릴 수 있다냥.
+</Callout>
+
+---
+
+## 4단계 · 재시작은 "되돌리기" 다냥 (10분)
+
+게임 오버가 되면 화면을 **깨끗하게 비운다냥.**
+
+```python
+all_sprite_group.empty()        # 전부 비운다
+meteor_sprite_group.empty()
+missile_sprite_group.empty()
+display_surface.blit(bg.image)  # 배경만 직접 그린다
+hud.draw("Game Over")
+```
+
+<Callout type="important">
+  `empty()` 는 **그룹을 통째로 비운다냥.**
+  9강에서 배운 `kill()` 은 스프라이트 하나가 스스로 빠지는 것이고,
+  `empty()` 는 그룹이 전부 내보내는 것이다냥.
+</Callout>
+
+그럼 재시작은 **비운 것을 되돌리는 일**이다냥.
+
+<StepCard step="1" title="배경을 다시 넣는다냥">
+
+```python
+all_sprite_group.add(bg)
+```
+
+`bg` 변수는 살아 있다냥. 그룹에서만 빠졌을 뿐이다냥.
+다시 넣어주면 된다냥.
+
+</StepCard>
+
+<StepCard step="2" title="우주선을 되돌린다냥">
+
+```python
+    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.add(self)
+```
+
+위치를 **가운데로** 옮기고 그룹에 다시 넣는다냥.
+새로 만드는 게 아니라 **원래 있던 것을 되돌리는** 것이다냥.
+
+</StepCard>
+
+<StepCard step="3" title="글자를 치우고 상태를 되돌린다냥">
+
+```python
+hud.kill()
+game_over = False       # 다시 플레이 채널로!
+```
+
+</StepCard>
+
+---
+
+## 5단계 · 키 입력의 세 번째 방법 (5분)
+
+재시작 키(`R`)는 **또 다른 방법**으로 받는다냥.
+
+```python
+for event in pygame.event.get():
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+        if game_over:
+            ...
+```
+
+<Callout type="note">
+  키 입력 방법을 정리하면 이렇다냥.
+
+  - `get_pressed()` — 누르는 동안 계속 (이동, 5강)
+  - `get_just_pressed()` — 누른 프레임에만 (발사, 9강)
+  - `KEYDOWN` **이벤트** — 누른 순간 이벤트로 들어온다 (재시작, 오늘)
+
+  뒤의 두 개는 결과가 비슷하다냥.
+  다만 `KEYDOWN` 은 **이벤트 접수함**을 통해 오기 때문에
+  창 닫기나 타이머와 **같은 자리에서 처리**할 수 있다냥.
+</Callout>
+
+<Callout type="important">
+  `if game_over:` 조건을 꼭 넣어야 한다냥.
+  안 그러면 **게임 도중에 R을 눌러도 초기화된다냥!**
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: 'running과 game_over는 뭐가 다르냥?',
+      answer: 'running은 창을 닫을지를 정하는 프로그램 자체의 상태고, game_over는 지금 어느 화면을 보여줄지를 정하는 게임 안의 상태다냥. TV로 치면 전원과 채널이다냥.',
+    },
+    {
+      question: '글자를 화면에 그리려면 왜 render()가 필요하냥?',
+      answer: '파이게임은 글자를 바로 그릴 수 없고 그림(Surface)만 그릴 수 있기 때문이다냥. render가 글자를 도장 찍듯 Surface로 구워준다냥.',
+    },
+    {
+      question: 'HUD는 왜 group.draw()에 맡기지 않고 직접 blit 하냥?',
+      answer: '게임 오버일 때만 보여야 하고 내용도 바뀔 수 있기 때문이다냥. 항상 그려져야 하는 우주선이나 운석과는 성격이 다르다냥.',
+    },
+    {
+      question: 'kill()과 empty()의 차이는 뭐냥?',
+      answer: 'kill()은 스프라이트 하나가 자기가 속한 그룹들에서 스스로 빠지는 것이고, empty()는 그룹이 안에 있는 것들을 전부 내보내는 것이다냥.',
+    },
+    {
+      question: '재시작할 때 우주선을 새로 만들지 않고 reset()을 쓰는 이유는 뭐냥?',
+      answer: '우주선 객체는 변수에 살아 있고 그룹에서만 빠진 상태라서, 위치를 가운데로 옮기고 그룹에 다시 넣어주면 되기 때문이다냥.',
+    },
+    {
+      question: 'R키 처리에 if game_over: 를 넣지 않으면 어떻게 되냥?',
+      answer: '게임 도중에 R을 눌러도 화면이 초기화된다냥. 재시작은 게임이 끝난 상태에서만 되어야 한다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 우주선 게임, 여기까지다냥!
+
+<NyangSpeech>
+  12강 동안 정말 많은 걸 배웠다냥.
+  창 하나 띄우는 것부터 시작해서 **진짜 게임 하나를 완성했다냥!**
+  클래스, 상속, 모듈, 최적화까지 — 이건 게임뿐 아니라
+  **어떤 프로그램을 만들 때도 쓰는 기술**이다냥.
+  정말 수고했다냥!
+</NyangSpeech>
+
+---
+
+## 관련 자료
+
+1. [pygame.font.Font](https://pyga.me/docs/ref/font.html#pygame.font.Font)
+2. [Font.render](https://pyga.me/docs/ref/font.html#pygame.font.Font.render)
+3. [Group.empty](https://pyga.me/docs/ref/sprite.html#pygame.sprite.Group.empty)
