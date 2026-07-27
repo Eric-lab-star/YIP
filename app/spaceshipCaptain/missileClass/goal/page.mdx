@@ -1,0 +1,256 @@
+import { Callout } from '@/components/mdx/Callout'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { CompareBubble } from '@/components/mdx/CompareBubble'
+import { StepCard } from '@/components/mdx/StepCard'
+import { QuizCard } from '@/components/mdx/QuizCard'
+
+export const metadata = {
+  title: '미사일 클래스 — 태어나고 사라지는 것',
+  description: '미사일이 어디서 태어나 어떻게 움직이다 언제 사라지는지, 그리고 연사를 막는 쿨다운을 이해해보자냥!',
+  session: 9,
+}
+
+# 미사일 클래스
+
+<NyangSpeech>
+  이제 공격이다냥! 미사일은 지금까지 만든 것들과 **결정적으로 다르다냥.**
+  우주선과 배경은 게임 시작할 때 하나씩 만들어놓고 끝이지만,
+  미사일은 **계속 새로 태어나고 계속 사라진다냥.**
+  오늘은 그 "태어나고 사라지는" 것을 다루는 법을 배운다냥!
+</NyangSpeech>
+
+---
+
+## 오늘의 학습 목표
+
+<Callout type="goal">
+  - 미사일이 **어디서 태어나** 어떻게 움직이다 **언제 사라지는지** 설명할 수 있다.
+  - `kill()` 이 무엇을 하는지 말할 수 있다.
+  - `get_pressed()` 와 `get_just_pressed()` 의 차이를 설명할 수 있다.
+  - **쿨다운**이 왜 필요하고 어떻게 구현하는지 설명할 수 있다.
+</Callout>
+
+---
+
+## 1단계 · 미사일의 일생 (7분)
+
+<StepCard step="태어남" title="스페이스바를 누른 순간, 우주선 코앞에서">
+
+미사일은 우주선의 **위쪽 끝**에서 나와야 자연스럽다냥.
+3강에서 배운 **기준점**을 여기서 쓴다냥.
+
+```python
+Missile(group, pygame.Vector2(self.rect.midtop))
+```
+
+우주선의 `midtop`(위쪽 변 가운데)에서 태어나게 한다냥.
+
+</StepCard>
+
+<StepCard step="살아감" title="매 프레임 위로">
+
+```python
+def update(self, dt):
+    self.rect.centery -= dt * Missile.speed
+```
+
+위로 가야 하니 `y` 를 **뺀다냥**(파이게임의 y는 아래가 커진다냥).
+`dt` 를 곱하는 것도 잊지 말자냥.
+
+</StepCard>
+
+<StepCard step="사라짐" title="화면 위로 벗어나면">
+
+```python
+if self.rect.bottom < 0:
+    self.kill()
+```
+
+미사일의 **아래쪽 변**이 화면 맨 위(`y=0`)보다 위로 올라갔다는 건
+완전히 화면 밖으로 나갔다는 뜻이다냥.
+
+</StepCard>
+
+---
+
+## 2단계 · kill() — 왜 꼭 필요하냥? (8분)
+
+<Callout type="important">
+  `kill()` 은 그 스프라이트를 **자기가 속한 모든 그룹에서 빼내는** 메서드다냥.
+  그룹에서 빠지면 `update` 도 `draw` 도 더 이상 안 불린다냥.
+  즉 **존재하지 않는 것처럼 된다냥.**
+</Callout>
+
+이걸 안 하면 어떻게 되냥?
+
+<CompareBubble
+  left={{
+    label: 'kill() 없이',
+    color: 'red',
+    items: [
+      '화면 밖으로 나간 미사일이 계속 남는다',
+      '1분만 쏴도 수백 개가 쌓인다',
+      '보이지도 않는데 매 프레임 update 된다',
+      '점점 느려지다가 결국 버벅인다',
+    ],
+  }}
+  right={{
+    label: 'kill() 있으면',
+    color: 'blue',
+    items: [
+      '화면을 벗어나는 순간 사라진다',
+      '살아 있는 건 화면 안의 몇 개뿐',
+      '몇 시간을 쏴도 똑같이 부드럽다',
+      '메모리도 정리된다',
+    ],
+  }}
+/>
+
+<Callout type="analogy">
+  `kill()` 은 **명함첩에서 명함을 빼는 것**이다냥.
+  7강에서 배운 그 명함첩이다냥.
+  명함첩에서 빠지면 아무도 그 사람을 부르지 않는다냥.
+</Callout>
+
+---
+
+## 3단계 · 누르고 있기 vs 누른 순간 (8분)
+
+5강에서 예고했던 게 드디어 나온다냥.
+
+<CompareBubble
+  left={{
+    label: 'get_pressed() — 이동에 쓴다',
+    color: 'ink',
+    items: [
+      '누르고 있는 동안 계속 True',
+      '매 프레임 반응한다',
+      '우주선 이동에 딱 맞다',
+      '미사일에 쓰면? 1초에 수십 발!',
+    ],
+  }}
+  right={{
+    label: 'get_just_pressed() — 발사에 쓴다',
+    color: 'blue',
+    items: [
+      '누른 그 프레임에만 True',
+      '꾹 눌러도 한 번만',
+      '발사·점프처럼 한 번짜리 동작에',
+      '떼었다 다시 눌러야 또 True',
+    ],
+  }}
+/>
+
+```python
+keys = pygame.key.get_just_pressed()
+if keys[pygame.K_SPACE]:
+    Missile(...)          # 누른 순간 딱 한 발
+```
+
+---
+
+## 4단계 · 쿨다운 — 연사 막기 (10분)
+
+`get_just_pressed()` 를 써도 문제가 남는다냥.
+**스페이스바를 빠르게 연타하면** 미사일이 우수수 나간다냥.
+게임 밸런스가 무너진다냥.
+
+그래서 **쿨다운**을 둔다냥.
+
+<Callout type="analogy">
+  쿨다운은 **엘리베이터 버튼**과 같다냥.
+  아무리 빨리 여러 번 눌러도 일정 시간이 지나야 다시 반응한다냥.
+</Callout>
+
+```python
+missile_cooldown = 200      # 0.2초 (밀리초 단위)
+missile_timer = 0           # 마지막으로 쏜 시각
+
+def handleMissile(self):
+    current_time = pygame.time.get_ticks()
+    if current_time - Player.missile_timer > Player.missile_cooldown:
+        self.spawn_missile()
+```
+
+<StepCard step="get_ticks()" title="게임이 시작된 뒤 흐른 시간">
+
+`pygame.time.get_ticks()` 는 게임이 시작된 순간부터 **지금까지 몇 밀리초 지났는지**를 돌려준다냥.
+스톱워치라고 생각하면 된다냥.
+
+</StepCard>
+
+<StepCard step="현재 - 마지막 > 쿨다운" title="충분히 기다렸나?">
+
+`지금 시각 - 마지막으로 쏜 시각` 이 **얼마나 지났는지**다냥.
+이게 쿨다운보다 크면 "이제 쏴도 된다" 는 뜻이다냥.
+
+</StepCard>
+
+<Callout type="tip">
+  `dt` 를 쓰지 않고 밀리초를 쓰는 이유가 있다냥.
+  쿨다운은 **"몇 초에 한 번"** 이라는 절대 시간이라서
+  프레임과 상관없이 시계로 재는 게 더 간단하다냥.
+</Callout>
+
+---
+
+## 5단계 · 우주선이 그룹을 들고 있어야 하는 이유 (5분)
+
+미사일을 만드는 건 **우주선**이다냥. 그런데 미사일도 그룹에 들어가야 그려진다냥.
+
+```python
+class Player(pygame.sprite.Sprite):
+    def __init__(self, group):
+        super().__init__(group)
+        ...
+        self.group = group        # 그룹을 기억해둔다냥
+
+    def spawn_missile(self):
+        Missile(self.group, ...)  # 같은 그룹에 넣는다냥
+```
+
+<Callout type="important">
+  `super().__init__(group)` 은 **우주선 자신**만 그룹에 넣어준다냥.
+  나중에 미사일을 만들 때 그 그룹을 다시 써야 하니
+  `self.group = group` 으로 **따로 기억해둬야 한다냥.**
+</Callout>
+
+---
+
+## 복습 퀴즈
+
+<QuizCard
+  items={[
+    {
+      question: '미사일을 우주선 위쪽 끝에서 나오게 하려면 어떤 기준점을 쓰냥?',
+      answer: '우주선 rect의 midtop, 즉 위쪽 변의 가운데다냥. 그리고 미사일 자신은 midbottom을 그 위치에 맞춘다냥.',
+    },
+    {
+      question: 'kill()은 무슨 일을 하냥?',
+      answer: '그 스프라이트를 자기가 속한 모든 그룹에서 빼낸다냥. 그룹에서 빠지면 update도 draw도 안 불려서 존재하지 않는 것처럼 된다냥.',
+    },
+    {
+      question: 'kill()을 안 쓰면 어떻게 되냥?',
+      answer: '화면 밖으로 나간 미사일이 계속 쌓인다냥. 보이지도 않는데 매 프레임 update되니 점점 느려지다가 결국 게임이 버벅인다냥.',
+    },
+    {
+      question: 'get_pressed()와 get_just_pressed()의 차이는 뭐냥?',
+      answer: 'get_pressed는 누르고 있는 동안 계속 True라서 이동에 쓰고, get_just_pressed는 누른 그 프레임에만 True라서 발사처럼 한 번짜리 동작에 쓴다냥.',
+    },
+    {
+      question: '쿨다운은 왜 필요하고 어떻게 재냥?',
+      answer: '연타로 미사일이 우수수 나가는 걸 막기 위해서다냥. get_ticks()로 지금 시각을 재서, 마지막으로 쏜 시각과의 차이가 쿨다운보다 클 때만 발사한다냥.',
+    },
+    {
+      question: 'Player가 self.group = group 을 따로 저장하는 이유는 뭐냥?',
+      answer: 'super().__init__(group)은 우주선 자신만 그룹에 넣어준다냥. 나중에 미사일을 만들어 같은 그룹에 넣으려면 그 그룹을 기억해둬야 한다냥.',
+    },
+  ]}
+/>
+
+---
+
+## 관련 자료
+
+1. [Sprite.kill](https://pyga.me/docs/ref/sprite.html#pygame.sprite.Sprite.kill)
+2. [pygame.time.get_ticks](https://pyga.me/docs/ref/time.html#pygame.time.get_ticks)
