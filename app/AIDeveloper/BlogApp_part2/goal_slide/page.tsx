@@ -12,7 +12,7 @@ const slides: Slide[] = [
   { title: "코드 미리보기: 이미지 묘사 생성", bg: "from-indigo-50 to-violet-50", script: "실습에서 사용할 코드를 미리 살펴보겠습니다. topic 변수에 주제를 넣고, AI에게 그 주제의 대표 이미지를 묘사하는 영어 문장을 만들어달라고 요청합니다. AI가 'warm and cozy home cafe with wooden table'과 같은 영어 묘사문을 생성하면, 이 묘사문을 이번엔 진짜로 그림을 그려주는 모델에게 그대로 넘겨줄 것입니다.", content: (<div className="flex flex-col gap-5"><CodeBlock>{`topic = "초보자를 위한 홈카페 만들기"
 
 image_desc_prompt = f"""
-'{'{topic}'}'이라는 블로그 글의 대표 이미지를 만들려고 해.
+'{topic}'이라는 블로그 글의 대표 이미지를 만들려고 해.
 이미지 생성 AI에게 전달할 영어 묘사문을
 한 문장으로 만들어줘.
 따뜻하고 아늑한 분위기를 담아줘.

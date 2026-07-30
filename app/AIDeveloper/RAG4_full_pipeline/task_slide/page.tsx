@@ -68,13 +68,13 @@ collection.upsert(documents=chunks, ids=ids)`}</CodeBlock><div className="bg-whi
     context = "\\n".join(results["documents"][0])
 
     prompt = f"""
-    너는 {'{____}'} 역할을 맡은 AI 도우미야.
+    너는 {____} 역할을 맡은 AI 도우미야.
     아래 [참고 자료]만을 근거로 답해줘.
     참고 자료에 없으면 "자료에서 찾을 수 없습니다"라고 답해줘.
     [참고 자료]
-    {'{context}'}
+    {context}
     [질문]
-    {'{question}'}
+    {question}
     """
     response = genai_client.models.generate_content(
         model="gemini-3.5-flash", contents=prompt

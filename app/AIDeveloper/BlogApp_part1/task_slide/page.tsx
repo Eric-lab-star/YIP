@@ -13,8 +13,8 @@ print("준비 완료!")`}</CodeBlock></div>) },
   { title: "미션 2: 블로그 구조 생성 (10~12분)", bg: "from-violet-50 to-purple-50", script: "두 번째 미션입니다. AI에게 글의 설계도, 즉 제목과 소제목 3개를 만들게 합니다. 빈칸에는 말투를 넣으면 됩니다. '친근한', '전문적인', '유머러스한' 중에서 골라보세요. 실행하면 제목 1개와 소제목 3개가 깔끔하게 나와야 합니다. 완료한 분들은 topic을 본인이 쓰고 싶은 주제로 바꿔보시기 바랍니다. 10~12분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> AI에게 블로그 글의 구조(제목 + 소제목 3개)를 생성시킵니다.</p></div><CodeBlock>{`topic = "초보자를 위한 홈카페 만들기"
 
 structure_prompt = f"""
-너는 {'{____}'} 말투의 블로거야.
-'{'{topic}'}'이라는 주제로 블로그 글을 쓰려고 해.
+너는 {____} 말투의 블로거야.
+'{topic}'이라는 주제로 블로그 글을 쓰려고 해.
 다음 형식으로 구조만 먼저 만들어줘:
 
 제목: (눈길을 끄는 제목 1개)
@@ -35,18 +35,18 @@ print(structure)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p cla
     "소제목3 내용을 여기에",
 ]
 
-full_post = f"[주제: {'{topic}'}]\\n\\n"
+full_post = f"[주제: {topic}]\\n\\n"
 
 for subtitle in subtitles:
     body_prompt = f"""
-    '{'{topic}'}' 블로그 글의 '{'{subtitle}'}' 부분 본문을 써줘.
-    {'{____}'} 분량으로, 친근한 말투로 작성해줘.
+    '{topic}' 블로그 글의 '{subtitle}' 부분 본문을 써줘.
+    {____} 분량으로, 친근한 말투로 작성해줘.
     """
     body = client.models.generate_content(
         model="gemini-3.5-flash",
         contents=body_prompt
     ).text
-    full_post += f"## {'{subtitle}'}\\n{'{body}'}\\n\\n"
+    full_post += f"## {subtitle}\\n{body}\\n\\n"
 
 print(full_post)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">빈칸: &quot;3문장&quot;, &quot;200자&quot; 등 구체적 분량</p></div></div>) },
   { title: "미션 3 해설", bg: "from-teal-50 to-emerald-50", script: "미션 3의 핵심 포인트입니다. 좋은 작가는 책을 쓸 때 먼저 목차를 정하고, 각 챕터를 하나씩 써내려갑니다. 우리 앱도 동일한 방식으로 작동합니다. AI에게 목차를 먼저 만들게 한 뒤, 그 목차를 하나씩 건네주며 본문을 요청합니다. 이렇게 일을 나누면 각 부분에 더 집중하여 질 좋은 글을 생산할 수 있습니다.", content: (<div className="flex flex-col gap-6"><p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p><div className="bg-white/70 rounded-xl p-5"><p className="text-xl text-gray-700">목차 먼저 → 챕터별 본문 요청 = <strong>각 부분에 집중하여 품질 향상</strong></p></div><div className="bg-green-50 rounded-xl p-4"><p className="text-lg text-gray-600">분량을 구체적으로 지정하면 원하는 길이의 글을 얻을 수 있습니다.</p></div></div>) },
