@@ -159,7 +159,7 @@ collection.upsert(documents=chunks, ids=ids)`}
   {
     title: "PDF는 어떻게 넣을까: pypdf",
     bg: "from-lime-50 to-emerald-50",
-    script: "여기서 꼭 나오는 질문이 있습니다. 내 자료는 txt가 아니라 PDF인데 어떻게 하느냐는 것입니다. 교재나 안내 책자처럼 실제 자료는 대부분 PDF입니다. 결론부터 말하면, 바뀌는 것은 맨 앞의 '읽는 방법' 하나뿐입니다. pypdf라는 도구를 설치하고, PdfReader로 PDF를 연 다음, 페이지를 하나씩 돌면서 extract_text로 글자를 뽑아 이어붙입니다. 이때 페이지 사이에 빈 줄을 끼워두는 것이 요령입니다. 그러면 우리가 쓰는 빈 줄 기준 청킹이 그대로 통하기 때문입니다. 글자를 뽑아낸 다음부터는 txt와 완전히 똑같습니다. 벡터DB에 들어가는 것은 결국 똑같은 텍스트 청크이기 때문입니다. 주의할 점이 두 가지 있습니다. 첫째, extract_text는 글자로 된 PDF에서만 동작합니다. 스캔하거나 사진을 찍어 만든 PDF는 안에 있는 것이 글자가 아니라 그림이라서 빈 문자열이 나옵니다. 그럴 때는 글자가 살아있는 PDF를 쓰거나, 나중에 그림 속 글자를 읽어내는 OCR 기술을 배워야 합니다. 둘째, txt로 넣은 청크와 같은 ids를 쓰면 upsert가 기존 내용을 덮어써버립니다. PDF 청크는 pdf_chunk_0처럼 이름을 다르게 붙여주시기 바랍니다. 실습 미션 1의 마지막 보너스에서 직접 해볼 수 있습니다.",
+    script: "여기서 꼭 나오는 질문이 있습니다. 내 자료는 txt가 아니라 PDF인데 어떻게 하느냐는 것입니다. 교재나 안내 책자처럼 실제 자료는 대부분 PDF입니다. 결론부터 말하면, 바뀌는 것은 맨 앞의 '읽는 방법' 하나뿐입니다. pypdf라는 도구를 설치하고, PdfReader로 PDF를 연 다음, 페이지를 하나씩 돌면서 extract_text로 글자를 뽑아 이어붙입니다. 글자를 뽑아낸 다음부터는 txt와 완전히 똑같습니다. 벡터DB에 들어가는 것은 결국 똑같은 텍스트 청크이기 때문입니다. 여기서 절대 빼먹으면 안 되는 것이 extraction_mode 옵션에 layout을 주는 부분입니다. extract_text를 그냥 부르면 PDF에서 눈에 보이던 문단 사이 빈 줄이 사라집니다. 줄바꿈만 남고 빈 줄은 하나도 만들어지지 않아서, 빈 줄 기준으로 잘라도 페이지 한 장이 통째로 청크 하나가 되어버립니다. 문단 기준으로 자르기로 해놓고 거대한 덩어리 하나를 넣는 셈입니다. layout 모드는 글자의 화면상 위치를 보고 뽑기 때문에 문단 사이가 벌어져 있으면 그만큼 빈 줄을 남겨줍니다. 실제로 네 개 절이 담긴 한 쪽짜리 안내문으로 확인해보면, 기본 모드는 청크가 한 개, layout 모드는 다섯 개로 갈립니다. 그 밖에 주의할 점이 두 가지 더 있습니다. 첫째, extract_text는 글자로 된 PDF에서만 동작합니다. 스캔하거나 사진을 찍어 만든 PDF는 안에 있는 것이 글자가 아니라 그림이라서 빈 문자열이 나옵니다. 그럴 때는 글자가 살아있는 PDF를 쓰거나, 나중에 그림 속 글자를 읽어내는 OCR 기술을 배워야 합니다. 둘째, txt로 넣은 청크와 같은 ids를 쓰면 upsert가 기존 내용을 덮어써버립니다. PDF 청크는 pdf_chunk_0처럼 이름을 다르게 붙여주시기 바랍니다. 실습 미션 1의 마지막 보너스에서 직접 해볼 수 있습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -178,10 +178,12 @@ from pypdf import PdfReader
 
 reader = PdfReader("school_guide.pdf")
 
-# 페이지마다 글자를 뽑아 이어붙이기 (페이지 사이는 빈 줄로 구분)
+# 페이지마다 글자를 뽑아 이어붙이기 (layout 모드가 핵심!)
 document = ""
 for page in reader.pages:
-    document += page.extract_text() + "\\n\\n"
+    document += page.extract_text(
+        extraction_mode="layout"
+    ) + "\\n\\n"
 
 # 여기부터는 .txt와 똑같다 — 빈 줄 기준 청킹 후 upsert
 paragraphs = document.split("\\n\\n")
@@ -189,6 +191,7 @@ chunks = [p.strip() for p in paragraphs if p.strip()]`}
         </CodeBlock>
         <div className="bg-white/60 rounded-xl p-4">
           <p className="text-lg text-gray-800 text-center">바뀌는 건 <strong>맨 앞의 &ldquo;읽는 방법&rdquo;</strong> 하나뿐 — 청킹과 저장은 그대로</p>
+          <p className="text-base text-gray-600 mt-2"><code className="font-mono">extraction_mode=&quot;layout&quot;</code>을 빼면 문단 사이 빈 줄이 사라져 <strong>페이지 한 장이 청크 하나</strong>가 된다 (같은 안내문 기준 1개 vs 5개)</p>
           <p className="text-base text-gray-600 mt-2">주의: 스캔한 PDF는 글자가 아니라 <strong>그림</strong>이라 안 뽑힌다 (OCR 필요) · <code className="font-mono">ids</code>는 <code className="font-mono">pdf_chunk_i</code>처럼 다르게</p>
         </div>
       </div>

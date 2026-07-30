@@ -164,15 +164,18 @@ print(f"{collection.count()}개의 청크가 저장되었습니다.")
   reader = PdfReader("school_guide.pdf")
 
   # 페이지마다 글자를 뽑아 이어붙이기 (페이지 사이는 빈 줄로 구분해두자냥)
+  # extraction_mode="layout" 을 꼭 넣자냥! 빼면 문단 사이 빈 줄이 사라진다냥.
   document = ""
   for page in reader.pages:
-      document += page.extract_text() + "\n\n"
+      document += page.extract_text(extraction_mode="layout") + "\n\n"
 
   print(f"PDF에서 뽑은 글자 수: {len(document)}자")
   ```
 
-  이어서 아래 두 가지만 챙기자냥.
+  이어서 아래 세 가지만 챙기자냥.
 
+  - 청크 개수가 **페이지 수만큼밖에 안 나온다면** `extraction_mode="layout"`을
+    빼먹은 것이다냥. 그러면 페이지 한 장이 통째로 청크 하나가 된다냥.
   - `ids`를 `f"pdf_chunk_{i}"`로 바꿔주자냥. `.txt` 청크와 **같은 `ids`를 쓰면
     `upsert`가 기존 내용을 덮어써버린다냥.**
   - 글자 수가 `0`으로 나오면 **스캔해서 만든 PDF**라냥. 그 안에 있는 건 글자가 아니라

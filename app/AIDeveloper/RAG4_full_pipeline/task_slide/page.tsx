@@ -46,21 +46,23 @@ ids = [f"chunk_{i}" for i in range(len(chunks))]
 # upsert = 없으면 추가, 있으면 덮어쓰기 (다시 실행해도 안전)
 collection.upsert(documents=chunks, ids=ids)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">힌트: open에는 파일 이름 &quot;school_guide.txt&quot;, split 앞에는 읽어온 텍스트 변수 document</p></div></div>) },
   { title: "미션 1 해설", bg: "from-lime-50 to-emerald-50", script: "미션 1의 핵심 포인트입니다. 문서를 읽고, 청킹으로 잘게 나누고, 벡터DB에 저장하는 준비 과정을 인덱싱이라고 부릅니다. 도서관에 비유하면 손님을 맞이하기 전에 신간 도서를 입고하는 작업입니다. 두 가지 선택이 검색 품질을 좌우합니다. 첫째, 청킹은 빈 줄, 즉 문단 기준으로 잘라서 문장이 중간에 끊기지 않게 합니다. 둘째, 임베딩은 한국어를 잘 이해하는 제미나이 임베딩을 연결합니다. Chroma 기본 임베딩은 영어 위주라 한국어 질문에 엉뚱한 청크를 꺼내오기도 합니다. 그리고 인덱싱은 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문이 들어올 때마다 검색과 생성만 반복됩니다. 어떤 문서라도 이렇게 넣어주면 AI가 그 문서의 전문가가 됩니다.", content: (<div className="flex flex-col gap-6"><p className="text-2xl text-gray-800 font-semibold">핵심 포인트</p><div className="space-y-4"><div className="bg-white/70 rounded-xl p-5"><p className="text-xl text-gray-700">인덱싱 = <strong>파일 읽기 → 청킹 → 벡터DB 저장</strong></p></div><div className="bg-white/70 rounded-xl p-5"><p className="text-lg text-gray-700">청킹은 <strong>문단 기준</strong>으로, 임베딩은 <strong>제미나이</strong>로 — 한국어 검색 품질을 지키는 두 가지 선택입니다.</p></div><div className="bg-green-50 rounded-xl p-5 border-l-4 border-green-400"><p className="text-lg text-gray-700"><strong>인덱싱은 한 번, 질문은 여러 번!</strong> 문서가 바뀌지 않는 한 다시 할 필요가 없습니다.</p></div></div></div>) },
-  { title: "미션 1 보너스: 내 PDF로 해보기 (선택, 3~5분)", bg: "from-emerald-50 to-teal-50", script: "미션 1을 일찍 끝낸 분들을 위한 보너스입니다. 교재나 안내 책자처럼 실제 자료는 대부분 PDF입니다. 개념 강의에서 본 대로, 바뀌는 것은 맨 앞의 '읽는 방법' 하나뿐입니다. 먼저 pip install pypdf로 설치하고, PdfReader로 PDF를 연 다음, 페이지를 하나씩 돌면서 extract_text로 글자를 뽑아 이어붙입니다. 페이지 사이에 빈 줄을 끼워두면 빈 줄 기준 청킹이 그대로 통합니다. 미션 1 코드에서 open 부분만 이 코드로 바꾸면 되고, 청킹과 저장은 손댈 필요가 없습니다. 두 가지만 챙기시면 됩니다. 첫째, ids를 pdf_chunk_i로 바꿔주세요. txt 청크와 같은 ids를 쓰면 upsert가 기존 내용을 덮어써버립니다. 둘째, 뽑은 글자 수가 0으로 나오면 스캔해서 만든 PDF입니다. 안에 있는 것이 글자가 아니라 그림이라서 뽑을 글자가 없는 것이니, 글자가 살아있는 다른 PDF로 바꿔보시기 바랍니다. 시간이 부족하면 넘어가도 괜찮습니다. 실습 페이지의 도전 미션에 남겨두었으니 나중에 해보셔도 됩니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 미션 1의 <code className="font-mono">open(...)</code> 부분만 바꿔서 PDF를 인덱싱해보기 (청킹·저장은 그대로)</p></div><CodeBlock>{`# pip install pypdf
+  { title: "미션 1 보너스: 내 PDF로 해보기 (선택, 3~5분)", bg: "from-emerald-50 to-teal-50", script: "미션 1을 일찍 끝낸 분들을 위한 보너스입니다. 교재나 안내 책자처럼 실제 자료는 대부분 PDF입니다. 개념 강의에서 본 대로, 바뀌는 것은 맨 앞의 '읽는 방법' 하나뿐입니다. 먼저 pip install pypdf로 설치하고, PdfReader로 PDF를 연 다음, 페이지를 하나씩 돌면서 extract_text로 글자를 뽑아 이어붙입니다. 미션 1 코드에서 open 부분만 이 코드로 바꾸면 되고, 청킹과 저장은 손댈 필요가 없습니다. 세 가지만 챙기시면 됩니다. 첫째, extraction_mode에 layout을 주는 것을 빼먹지 마세요. 빼면 문단 사이 빈 줄이 사라져서 페이지 한 장이 통째로 청크 하나가 됩니다. 청크 개수가 페이지 수만큼밖에 안 나온다면 이것을 빼먹은 것입니다. 둘째, ids를 pdf_chunk_i로 바꿔주세요. txt 청크와 같은 ids를 쓰면 upsert가 기존 내용을 덮어써버립니다. 셋째, 뽑은 글자 수가 0으로 나오면 스캔해서 만든 PDF입니다. 안에 있는 것이 글자가 아니라 그림이라서 뽑을 글자가 없는 것이니, 글자가 살아있는 다른 PDF로 바꿔보시기 바랍니다. 시간이 부족하면 넘어가도 괜찮습니다. 실습 페이지의 도전 미션에 남겨두었으니 나중에 해보셔도 됩니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 미션 1의 <code className="font-mono">open(...)</code> 부분만 바꿔서 PDF를 인덱싱해보기 (청킹·저장은 그대로)</p></div><CodeBlock>{`# pip install pypdf
 from pypdf import PdfReader
 
 reader = PdfReader("school_guide.pdf")
 
-# 페이지마다 글자를 뽑아 이어붙이기 (페이지 사이는 빈 줄로 구분)
+# 페이지마다 글자를 뽑아 이어붙이기 (layout 모드가 핵심!)
 document = ""
 for page in reader.pages:
-    document += page.extract_text() + "\\n\\n"
+    document += page.extract_text(
+        extraction_mode="layout"
+    ) + "\\n\\n"
 
 print(f"PDF에서 뽑은 글자 수: {len(document)}자")
 
 # 이후 청킹은 그대로, ids만 다르게!
 ids = [f"pdf_chunk_{i}" for i in range(len(chunks))]
-collection.upsert(documents=chunks, ids=ids)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">주의: <code className="font-mono">ids</code>를 그대로 두면 <code className="font-mono">.txt</code> 청크를 덮어쓴다 · 글자 수가 0이면 <strong>스캔 PDF</strong>(OCR 필요)</p></div></div>) },
+collection.upsert(documents=chunks, ids=ids)`}</CodeBlock><div className="bg-white/70 rounded-xl p-4"><p className="text-lg text-gray-600">청크가 <strong>페이지 수만큼만</strong> 나오면 <code className="font-mono">extraction_mode</code>를 빼먹은 것 · <code className="font-mono">ids</code>를 그대로 두면 <code className="font-mono">.txt</code> 청크를 덮어쓴다 · 글자 수가 0이면 <strong>스캔 PDF</strong>(OCR 필요)</p></div></div>) },
   { title: "미션 2: RAG 함수 만들기 (8~10분)", bg: "from-rose-50 to-orange-50", script: "두 번째 미션입니다. 검색과 생성을 한 함수 안에서 합쳐봅니다. 빈칸이 두 군데 있습니다. 첫째, prompt 안의 역할 빈칸입니다. 어떤 도우미인지 적으면 됩니다. 예를 들어 '친절한 도서관 사서'와 같이 작성합니다. 둘째, question 변수에 테스트할 질문을 문자열로 넣으면 됩니다. 특히 prompt에 '참고 자료에 없는 내용이면 자료에서 찾을 수 없습니다라고 답해줘'라는 조건을 넣어야 합니다. 이것이 AI의 환각을 방지하는 핵심 장치입니다. 8~10분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 검색(벡터DB) + 생성(제미나이)을 합친 RAG 함수 완성</p></div><CodeBlock>{`def rag_answer(question):
     results = collection.query(
         query_texts=[question], n_results=2
