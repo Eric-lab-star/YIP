@@ -24,7 +24,6 @@ clock = pygame.time.Clock()
 
 def main():
     running = True
-    direction = pygame.Vector2(0, 0)
     game_over = False
 
     bg = Background()
@@ -35,7 +34,7 @@ def main():
     pygame.time.set_timer(meteor_event, 400)
 
     while running:
-        dt = clock.tick(30) / 1000
+        dt = clock.tick(60) / 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -47,9 +46,6 @@ def main():
                     player.reset()
                     hud.kill()
                     game_over = False
-
-        if direction.length() > 0:
-            direction.normalize_ip()
 
         pygame.sprite.groupcollide(
             meteor_sprite_group, missile_sprite_group, True, True

@@ -51,8 +51,10 @@ class Missile(pygame.sprite.Sprite):
 그리고 `main.py` 에서 하나 만들어보자냥.
 
 ```python
-from entity.missile import Missile
+from entity.missile import Missile          # 파일 맨 위에 추가한다냥
 
+def main():
+    # ...만들던 것들 아래에...
     Background(all_sprite_group)
     Player(all_sprite_group)
     Missile(all_sprite_group)
@@ -134,7 +136,7 @@ from entity.missile import Missile
 
 class Player(pygame.sprite.Sprite):
     path: str = join("images", "player.png")
-    speed: float = 200
+    speed: float = 100
     velocity: pygame.Vector2 = pygame.Vector2(0, 0)
     missile_cooldown: float = 200      # 0.2초
     missile_timer: float = 0           # 마지막으로 쏜 시각
@@ -236,7 +238,7 @@ from settings import WINDOW_WIDTH, WINDOW_HEIGHT
 
 class Player(pygame.sprite.Sprite):
     path: str = join("images", "player.png")
-    speed: float = 200
+    speed: float = 100
     velocity: pygame.Vector2 = pygame.Vector2(0, 0)
     missile_cooldown: float = 200
     missile_timer: float = 0
