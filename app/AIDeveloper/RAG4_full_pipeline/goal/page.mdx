@@ -204,9 +204,10 @@ from pypdf import PdfReader
 reader = PdfReader("school_guide.pdf")
 
 # 2) 페이지마다 글자를 뽑아 이어붙이기 (페이지 사이는 빈 줄로 구분)
+#    layout 모드로 뽑아야 문단 사이의 빈 줄이 살아있다냥!
 document = ""
 for page in reader.pages:
-    document += page.extract_text() + "\n\n"
+    document += page.extract_text(extraction_mode="layout") + "\n\n"
 
 # 3) 여기부터는 .txt와 똑같다냥 — 빈 줄 기준 청킹 후 저장
 paragraphs = document.split("\n\n")
@@ -216,7 +217,28 @@ chunks = [p.strip() for p in paragraphs if p.strip()]
 <Callout type="tip">
   **핵심은 이거다냥!** PDF든 `.txt`든, 벡터DB에 들어가는 건 결국 **똑같은 텍스트 청크**라냥.
   그래서 바뀌는 건 **맨 앞의 "읽는 방법"** 하나뿐이고, 청킹과 저장은 손댈 필요가 없다냥.
-  페이지를 이어붙일 때 `"\n\n"`을 끼워두면, 우리가 쓰는 **빈 줄 기준 청킹이 그대로 통한다냥.**
+</Callout>
+
+<Callout type="important">
+  **`extraction_mode="layout"`을 빼먹으면 안 된다냥!**
+
+  `extract_text()`를 그냥 부르면, PDF에서 눈에 보이던 **문단 사이 빈 줄이 사라진다냥.**
+  줄바꿈(`\n`)만 남고 빈 줄(`\n\n`)은 하나도 안 만들어져서, `split("\n\n")`으로 잘라도
+  **페이지 한 장이 통째로 청크 하나**가 되어버린다냥. 기껏 문단 기준으로 자르기로 해놓고
+  거대한 덩어리 하나를 넣는 셈이라냥.
+
+  `extraction_mode="layout"`은 글자의 **화면상 위치**를 보고 뽑기 때문에, 문단 사이가
+  벌어져 있으면 그만큼 빈 줄을 남겨준다냥. 그래서 우리가 쓰는 빈 줄 기준 청킹이 통한다냥.
+
+  실제로 4개 절이 담긴 한 쪽짜리 안내문으로 확인해보면 이렇게 갈린다냥.
+
+  | 방식 | 결과 |
+  |---|---|
+  | `extract_text()` | 청크 **1개** (412자, 페이지 통째로) |
+  | `extract_text(extraction_mode="layout")` | 청크 **5개** (18 · 79 · 107 · 101 · 103자) |
+
+  빈 줄이 여러 개 연달아 나오기도 하지만, 우리 코드에는 `if p.strip()`이 있어서
+  빈 조각은 알아서 걸러진다냥.
 </Callout>
 
 <Callout type="note">
@@ -324,7 +346,11 @@ def rag_answer(question):
     },
     {
       question: 'PDF 파일을 벡터DB에 넣을 때, .txt와 달라지는 부분은 어디까지냥?',
-      answer: '맨 앞의 "읽는 방법"만 달라진다냥. pypdf의 PdfReader로 PDF를 열고, 페이지마다 page.extract_text()로 글자를 뽑아 이어붙이면 끝이다냥. 그 뒤의 청킹과 벡터DB 저장은 .txt와 완전히 똑같다냥. 벡터DB에 들어가는 건 결국 똑같은 텍스트 청크니까 그렇다냥!',
+      answer: '맨 앞의 "읽는 방법"만 달라진다냥. pypdf의 PdfReader로 PDF를 열고, 페이지마다 page.extract_text(extraction_mode="layout")으로 글자를 뽑아 이어붙이면 끝이다냥. 그 뒤의 청킹과 벡터DB 저장은 .txt와 완전히 똑같다냥. 벡터DB에 들어가는 건 결국 똑같은 텍스트 청크니까 그렇다냥!',
+    },
+    {
+      question: 'PDF에서 글자를 뽑을 때 extraction_mode="layout"을 빼면 무슨 일이 생기냥?',
+      answer: '문단 사이의 빈 줄이 사라진다냥. 줄바꿈은 남지만 빈 줄이 하나도 안 만들어져서, split("\\n\\n")으로 잘라도 페이지 한 장이 통째로 청크 하나가 되어버린다냥. layout 모드는 글자의 화면상 위치를 보고 뽑기 때문에 문단 사이 빈 줄을 남겨준다냥!',
     },
     {
       question: '스캔해서 만든 PDF를 넣었더니 청크가 하나도 안 만들어졌다냥. 왜 그럴까냥?',
