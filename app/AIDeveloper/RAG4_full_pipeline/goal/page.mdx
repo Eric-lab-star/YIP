@@ -6,7 +6,7 @@ import { QuizCard } from '@/components/mdx/QuizCard'
 
 export const metadata = {
   title: '검색 + 생성 합체! RAG 챗봇 완성하기',
-  description: '실제 문서 파일을 벡터DB에 넣는 인덱싱부터, 검색(Retrieval)과 생성(Generation)을 하나로 합쳐 진짜 RAG 챗봇을 완성하는 흐름까지 배워보자냥!',
+  description: '실제 문서 파일(.txt와 PDF)을 벡터DB에 넣는 인덱싱부터, 검색(Retrieval)과 생성(Generation)을 하나로 합쳐 진짜 RAG 챗봇을 완성하는 흐름까지 배워보자냥!',
   session: 10,
 }
 
@@ -28,6 +28,7 @@ export const metadata = {
 <Callout type="goal">
   - 검색(**Retrieval**)과 생성(**Generation**)을 연결하는 전체 **RAG 흐름**을 이해한다.
   - **실제 문서 파일**을 읽어 청킹하고 벡터DB에 저장하는 **인덱싱(문서 준비)** 과정을 안다.
+  - **PDF 파일**도 `pypdf`로 글자를 뽑아내면 `.txt`와 **똑같이** 인덱싱할 수 있다는 걸 안다.
   - 지난 3차시 동안 만든 결과물(**임베딩 · 청킹 · 벡터DB**)을 하나의 앱으로 통합한다.
   - 검색 결과를 prompt에 잘 넣는 것이 답변 품질을 좌우한다는 걸 안다.
 </Callout>
@@ -185,6 +186,50 @@ collection.upsert(documents=chunks, ids=ids)
   그대로 남아있게 한다냥. 연결하는 코드는 실습 페이지에서 직접 만나볼 거다냥!
 </Callout>
 
+### PDF는 어떻게 넣냥?
+
+<NyangSpeech>
+  여기서 손이 번쩍 올라올 것 같다냥. "선생님, 제 자료는 `.txt`가 아니라 **PDF**인데요?"
+  좋은 질문이다냥! 교재, 가정통신문, 안내 책자 같은 진짜 자료는 대부분 PDF라냥.
+  그런데 걱정할 필요 없다냥 — **글자만 뽑아내면 그 다음은 위와 완전히 똑같다냥!**
+</NyangSpeech>
+
+`pypdf`라는 도구를 쓰면 PDF에서 글자를 꺼낼 수 있다냥. `.txt`는 `open()`으로 바로 읽었지만, PDF는 **페이지를 하나씩 돌면서** 글자를 뽑아 이어붙이는 한 걸음이 더 붙는 것뿐이라냥.
+
+```python
+# 먼저 설치가 필요하다냥: pip install pypdf
+from pypdf import PdfReader
+
+# 1) PDF 열기
+reader = PdfReader("school_guide.pdf")
+
+# 2) 페이지마다 글자를 뽑아 이어붙이기 (페이지 사이는 빈 줄로 구분)
+document = ""
+for page in reader.pages:
+    document += page.extract_text() + "\n\n"
+
+# 3) 여기부터는 .txt와 똑같다냥 — 빈 줄 기준 청킹 후 저장
+paragraphs = document.split("\n\n")
+chunks = [p.strip() for p in paragraphs if p.strip()]
+```
+
+<Callout type="tip">
+  **핵심은 이거다냥!** PDF든 `.txt`든, 벡터DB에 들어가는 건 결국 **똑같은 텍스트 청크**라냥.
+  그래서 바뀌는 건 **맨 앞의 "읽는 방법"** 하나뿐이고, 청킹과 저장은 손댈 필요가 없다냥.
+  페이지를 이어붙일 때 `"\n\n"`을 끼워두면, 우리가 쓰는 **빈 줄 기준 청킹이 그대로 통한다냥.**
+</Callout>
+
+<Callout type="note">
+  **주의 두 가지다냥.**
+
+  1. `extract_text()`는 **글자로 된 PDF**에서만 글자를 뽑을 수 있다냥. 사진을 찍거나
+     스캔해서 만든 PDF는 글자가 아니라 **그림**이라서 아무것도 안 나온다냥
+     (빈 문자열이 나온다냥). 그럴 땐 글자가 살아있는 PDF를 쓰거나, 나중에
+     **OCR**(그림 속 글자를 읽어내는 기술)을 배우면 된다냥.
+  2. `.txt`로 넣은 청크와 **같은 `ids`**를 쓰면 `upsert`가 기존 내용을 덮어써버린다냥.
+     PDF는 `pdf_chunk_0`처럼 **이름을 다르게** 붙여주자냥.
+</Callout>
+
 <Callout type="important">
   **인덱싱은 한 번, 질문은 여러 번!**
 
@@ -276,6 +321,14 @@ def rag_answer(question):
     {
       question: '실제 문서 파일을 RAG에 넣으려면 어떤 준비 과정을 거치냥? 그 과정의 이름은 뭐냥?',
       answer: '파일을 읽고(open) → 청킹으로 잘게 나누고 → 벡터DB에 저장(add)한다냥. 이 준비 과정을 인덱싱(indexing)이라고 부른다냥. 문서가 바뀌지 않는 한 한 번만 해두면 되고, 그 뒤로는 질문할 때마다 검색과 생성만 반복된다냥!',
+    },
+    {
+      question: 'PDF 파일을 벡터DB에 넣을 때, .txt와 달라지는 부분은 어디까지냥?',
+      answer: '맨 앞의 "읽는 방법"만 달라진다냥. pypdf의 PdfReader로 PDF를 열고, 페이지마다 page.extract_text()로 글자를 뽑아 이어붙이면 끝이다냥. 그 뒤의 청킹과 벡터DB 저장은 .txt와 완전히 똑같다냥. 벡터DB에 들어가는 건 결국 똑같은 텍스트 청크니까 그렇다냥!',
+    },
+    {
+      question: '스캔해서 만든 PDF를 넣었더니 청크가 하나도 안 만들어졌다냥. 왜 그럴까냥?',
+      answer: '스캔한 PDF 안에 있는 것은 글자가 아니라 그림이라서, extract_text()가 뽑아낼 글자가 없기 때문이다냥. 글자가 살아있는 PDF를 쓰거나, 그림 속 글자를 읽어내는 OCR 기술을 써야 한다냥!',
     },
     {
       question: '우리는 Chroma의 기본 임베딩 대신 제미나이 임베딩을 연결해서 쓴다냥. 왜일까냥?',
