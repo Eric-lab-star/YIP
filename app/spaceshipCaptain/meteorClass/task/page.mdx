@@ -40,8 +40,10 @@ export const metadata = {
 `main.py` 에서 하나 만들어서 확인하자냥.
 
 ```python
-from entity.meteor import Meteor
+from entity.meteor import Meteor           # 파일 맨 위에 추가한다냥
 
+def main():
+    # ...만들던 것들 아래에...
     Background(all_sprite_group)
     Meteor(all_sprite_group)
     Player(all_sprite_group)

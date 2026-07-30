@@ -157,7 +157,8 @@ class Background(pygame.sprite.Sprite):
 # entity/meteor.py
 from settings import all_sprite_group, meteor_sprite_group
 
-    def __init__(self):
+class Meteor(pygame.sprite.Sprite):
+    def __init__(self):                       # group 인자 삭제
         super().__init__((all_sprite_group, meteor_sprite_group))
 
     @classmethod
@@ -172,6 +173,7 @@ from settings import all_sprite_group, meteor_sprite_group
 # entity/missile.py
 from settings import all_sprite_group, missile_sprite_group
 
+class Missile(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2):  # group 인자 삭제
         super().__init__((all_sprite_group, missile_sprite_group))
 ```
@@ -390,7 +392,7 @@ from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
 
 class Player(pygame.sprite.Sprite):
     path: str = join("images", "player.png")
-    speed: float = 200
+    speed: float = 100
     velocity: pygame.Vector2 = pygame.Vector2(0, 0)
     missile_cooldown: float = 200
     missile_timer: float = 0
