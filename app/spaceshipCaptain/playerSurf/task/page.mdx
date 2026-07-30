@@ -2,6 +2,7 @@ import { Callout } from '@/components/mdx/Callout'
 import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import DownloadBtn from '@/components/commons/DownloadBtn'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 import VideoPlayer from '@/components/commons/VideoPlayer'
 import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
 
@@ -19,6 +20,8 @@ export const metadata = {
   파일 위치를 잘못 넣으면 코드가 아무리 맞아도 안 돌아가니
   **미션 1을 특히 꼼꼼히** 하자냥.
 </NyangSpeech>
+
+<PackageInstall packages={["pygame-ce"]} tool="uv" />
 
 ---
 

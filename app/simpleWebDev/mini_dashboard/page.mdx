@@ -1,6 +1,7 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import { MissionCard } from '@/components/mdx/MissionCard'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 
 export const metadata = {
   title: "미니 프로젝트 · 데이터 대시보드",
@@ -26,6 +27,8 @@ export const metadata = {
   - 필터로 원하는 부분만 걸러내고
   - 그래프로 한눈에 보이게 하는 **대시보드**를 완성한다.
 </Callout>
+
+<PackageInstall packages={["pandas", "streamlit"]} />
 
 <Callout type="note">
   **데이터 준비**

@@ -1,6 +1,7 @@
 import { Callout } from '@/components/mdx/Callout'
 import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 import { StepCard } from '@/components/mdx/StepCard'
 
 export const metadata = {
@@ -25,6 +26,8 @@ export const metadata = {
   - 지난 시간(11차시)에 만든 **글 생성 코드** 백업 또는 공유
   - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
 </Callout>
+
+<PackageInstall packages={["streamlit", "google-genai"]} />
 
 <Callout type="important">
   **오늘 쓰는 이미지 모델은 일반 API 키로도 잘 작동한다냥!**
