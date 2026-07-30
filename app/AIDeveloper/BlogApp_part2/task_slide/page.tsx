@@ -8,10 +8,10 @@ const slides: Slide[] = [
   { title: "미션 1: 진짜 표지 이미지 만들기 (10~13분)", bg: "from-rose-50 to-orange-50", script: "첫 번째 미션입니다. 주제를 받아 대표 이미지 묘사문을 AI에게 생성시킨 뒤, 그 묘사문으로 진짜 표지 이미지까지 그립니다. 빈칸에는 글의 분위기를 나타내는 단어를 넣으면 됩니다. '따뜻하고 아늑한', '차분하고 깔끔한' 같은 느낌 단어입니다. 이미지를 그리는 부분은 gemini-3.5-flash가 아닌 gemini-3.1-flash-lite-image라는 이미지 전용 모델을 쓰고, response_modalities 설정이 필요합니다. 이 부분은 그대로 복사해서 쓰면 됩니다. 실행한 폴더에 cover.jpg 파일이 새로 생기는지 확인해보시기 바랍니다. 10~13분 드리겠습니다.", content: (<div className="flex flex-col gap-5"><div className="bg-white/60 rounded-xl p-4"><p className="text-lg text-gray-600"><strong>목표:</strong> 이미지 묘사문을 만들고, 진짜 표지 이미지까지 생성합니다.</p></div><CodeBlock>{`topic = "초보자를 위한 홈카페 만들기"
 
 image_desc_prompt = f"""
-'{'{topic}'}'이라는 블로그 글의 대표 이미지를 만들려고 해.
+'{topic}'이라는 블로그 글의 대표 이미지를 만들려고 해.
 이미지 생성 AI에게 전달할 영어 묘사문을
 한 문장으로 만들어줘.
-{'{____}'} 분위기를 담아줘.
+{____} 분위기를 담아줘.
 """
 image_description = client.models.generate_content(
     model="gemini-3.5-flash",
@@ -41,8 +41,8 @@ tone = st.selectbox("말투", ["친근한", "전문적인", "유머러스한"])
 
 if st.button("블로그 글 생성하기"):
     post_prompt = f"""
-    너는 {'{tone}'} 말투의 블로거야.
-    '{'{topic}'}' 주제로 제목, 소제목 3개와 본문, 마무리를 써줘.
+    너는 {tone} 말투의 블로거야.
+    '{topic}' 주제로 제목, 소제목 3개와 본문, 마무리를 써줘.
     """
     with st.spinner("글을 쓰는 중..."):
         post = client.models.generate_content(

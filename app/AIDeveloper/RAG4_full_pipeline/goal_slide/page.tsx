@@ -192,9 +192,9 @@ collection.upsert(documents=chunks, ids=ids)`}
     prompt = f"""
     아래 [참고 자료]만을 근거로 답해줘.
     [참고 자료]
-    {'{context}'}
+    {context}
     [질문]
-    {'{question}'}
+    {question}
     """
 
     # 3) 제미나이가 답변 생성
