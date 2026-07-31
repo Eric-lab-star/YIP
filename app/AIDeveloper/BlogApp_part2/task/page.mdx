@@ -55,30 +55,56 @@ topic = "초보자를 위한 홈카페 만들기"
 image_desc_prompt = f"""
 '{topic}'이라는 블로그 글의 대표 이미지를 만들려고 해.
 이미지 생성 AI에게 전달할 영어 묘사문을 한 문장으로 만들어줘.
-{____} 분위기를 담아줘.
+____ 분위기를 담아줘.
+
+중요: 설명이나 인사말 없이, 영어 묘사문 한 문장만 출력해.
 """
 image_description = client.models.generate_content(model="gemini-3.5-flash", contents=image_desc_prompt).text
 print("이미지 묘사:", image_description)
 
 # 2) 이미지 묘사문을 진짜 그림으로 바꾸기 (그대로 복사!)
 # gemini-3.5-flash는 글자만 만들 수 있어서, 그림을 그리는 전용 모델을 따로 쓴다
-image_response = client.models.generate_content(
-    model="gemini-3.1-flash-lite-image",
-    contents=image_description,
-    config=types.GenerateContentConfig(
-        response_modalities=["TEXT", "IMAGE"],
-    ),
-)
+try:
+    image_response = client.models.generate_content(
+        model="gemini-3.1-flash-lite-image",
+        contents=image_description,
+        config=types.GenerateContentConfig(
+            response_modalities=["TEXT", "IMAGE"],
+        ),
+    )
 
-for part in image_response.parts:
-    if image := part.as_image():
-        image.save("cover.jpg")
-        print("표지 이미지를 저장했습니다: cover.jpg")
+    saved = False
+    for part in image_response.parts or []:
+        if image := part.as_image():
+            image.save("cover.jpg")
+            print("표지 이미지를 저장했습니다: cover.jpg")
+            saved = True
+
+    if not saved:
+        print("그림 대신 글자만 돌아왔어요. 1)의 묘사문이 영어 한 문장인지 확인해보세요!")
+        print("돌아온 내용:", image_response.text)
+except Exception as e:
+    print("이미지 생성에 실패했어요:", e)
 ```
 
 > **확인해보자냥 (빈칸 힌트)**
-> - `{____}` 자리에는 글의 **분위기**를 나타내는 단어를 넣으면 된다냥. 예를 들어 "따뜻하고 아늑한", "차분하고 깔끔한" 같은 느낌 단어다냥!
+> - `____` 자리에는 글의 **분위기**를 나타내는 단어를 넣으면 된다냥. 예를 들어 "따뜻하고 아늑한", "차분하고 깔끔한" 같은 느낌 단어다냥!
+> - `____`를 **지우고 그 자리에 단어만** 쓰면 된다냥. 중괄호 `{ }`를 씌우면 안 된다냥 — f-string 안에서 `{ }`는 "여기에 변수 값을 넣어라"는 뜻이라, `{따뜻하고 아늑한}`처럼 쓰면 `NameError`가 난다냥!
 > - 실행한 폴더에 `cover.jpg` 파일이 새로 생겼냥? 직접 열어서 확인해보자냥!
+
+<Callout type="important">
+  **"영어 묘사문 한 문장만 출력해"가 진짜 중요하다냥!**
+
+  이 한 줄을 빼면 `gemini-3.5-flash`가 이렇게 친절하게 답한다냥 —
+  *"블로그 대표 이미지로 쓰기 좋은 묘사문입니다. 이미지 생성 AI에 복사해서
+  쓰세요. ### 추천 묘사문 (영어) ..."* 이 **한국어 설명 덩어리**가 그대로
+  그림 모델에게 넘어가면, 그림 모델은 이걸 그림 주문이 아니라 **대화로 읽고**
+  한국어로 답장만 한다냥. 에러도 안 나고 그냥 그림이 없다냥!
+
+  6차시에서 배운 원리 그대로다냥 — **원하는 출력 형식을 콕 집어 말해주기.**
+  이게 두 AI를 연결할 때는 특히 중요하다냥. 앞 AI의 출력이 곧 뒤 AI의
+  입력이니까, 앞에서 군더더기가 붙으면 뒤에서 통째로 망가진다냥!
+</Callout>
 
 <Callout type="tip">
   **`part.as_image()`는 뭐하는 애냥?**
@@ -93,10 +119,16 @@ for part in image_response.parts:
 `topic`을 `"가을에 떠나기 좋은 국내 여행지"`, `"집에서 하는 간단한 홈트레이닝"` 등으로 바꿔가며 어떤 이미지가 나오는지 비교해보자냥!
 
 <Callout type="important">
-  **이미지가 안 나온다면?** 결제(billing)가 활성화되지 않은 API 키라면
-  `image_response.parts`에 그림 조각이 없거나, 에러가 날 수 있다냥. 그럴 땐
-  당황하지 말고 선생님께 손을 들어 확인받거나, 글 생성 기능(미션 2)에 먼저
-  집중해도 괜찮다냥!
+  **이미지가 안 나온다면?** 순서대로 확인해보자냥.
+
+  1. **"그림 대신 글자만 돌아왔어요"가 떴냥?** 가장 흔한 경우다냥.
+     `print("이미지 묘사:", image_description)` 결과를 보자냥 — 영어 한 문장이
+     아니라 한국어 설명이 잔뜩 붙어 있으면, 1)의 프롬프트에서 **"영어 묘사문
+     한 문장만 출력해"** 줄이 빠졌거나 약한 거다냥.
+  2. **에러 메시지가 떴냥?** 결제(billing)가 활성화되지 않은 API 키일 수
+     있다냥. 선생님께 손을 들어 확인받자냥.
+
+  어느 쪽이든 당황하지 말고, 글 생성 기능(미션 2)에 먼저 집중해도 괜찮다냥!
 </Callout>
 
 </MissionCard>
@@ -159,20 +191,22 @@ if st.button("블로그 글 생성하기"):
                 config=types.GenerateContentConfig(response_modalities=["TEXT", "IMAGE"]),
             )
             saved = False
-            for part in image_response.parts:
+            for part in image_response.parts or []:
                 if image := part.as_image():
                     image.save("cover.jpg")
                     st.image("cover.jpg", caption="AI가 그린 표지 이미지")
                     saved = True
             if not saved:
-                st.info("이번엔 이미지를 만들지 못했어요. 다시 시도해보세요!")
+                st.info("그림 대신 글자만 돌아왔어요. 이미지 묘사 프롬프트에 "
+                        "'설명 없이 영어 한 문장만 출력해'를 넣었는지 확인해보세요!")
         except Exception:
             st.warning("표지 이미지를 그리지 못했습니다. (이미지 생성은 결제가 활성화된 API 키가 필요해요)")
 ```
 
 > **확인해보자냥 (빈칸 힌트)**
 > - `image_desc_prompt = ____` 자리에는 미션 1에서 만든 **이미지 묘사 프롬프트**를 넣으면 된다냥! `f"""..."""` 문자열 안에 `{topic}`을 활용하는 게 핵심이다냥.
-> - 예를 들면 `image_desc_prompt = f"'{topic}' 글에 어울리는 대표 이미지를 영어 한 문장으로 묘사해줘."` 처럼 작성하면 된다냥.
+> - 예를 들면 `image_desc_prompt = f"'{topic}' 글에 어울리는 대표 이미지를 영어로 묘사해줘. 설명이나 인사말 없이, 영어 묘사문 한 문장만 출력해."` 처럼 작성하면 된다냥.
+> - **"설명 없이 영어 한 문장만"을 꼭 넣자냥!** 미션 1에서 배운 그대로다냥 — 이게 없으면 표지 이미지가 안 나온다냥.
 
 <Callout type="tip">
   **`try` / `except`는 왜 감싸는 거냥?**

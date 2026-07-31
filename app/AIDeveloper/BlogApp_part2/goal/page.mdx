@@ -126,12 +126,30 @@ image_desc_prompt = f"""
 '{topic}'이라는 블로그 글의 대표 이미지를 만들려고 해.
 이미지 생성 AI에게 전달할 영어 묘사문을 한 문장으로 만들어줘.
 따뜻하고 아늑한 분위기를 담아줘.
+
+중요: 설명이나 인사말 없이, 영어 묘사문 한 문장만 출력해.
 """
 image_description = client.models.generate_content(model="gemini-3.5-flash", contents=image_desc_prompt).text
 print("이미지 묘사:", image_description)
 ```
 
 이렇게 하면 AI가 주제를 보고 **"warm and cozy home cafe with wooden table and small plants..."** 같은 영어 묘사문을 만들어준다냥. 이 묘사문을 이번엔 **진짜로 그림을 그려주는 모델**에게 그대로 넘겨줄 거다냥!
+
+<Callout type="important">
+  **마지막 "중요:" 줄이 오늘의 진짜 핵심이다냥!**
+
+  이 줄이 없으면 AI가 친절함을 발휘해서 이렇게 답한다냥 —
+  *"블로그 대표 이미지로 쓰기 좋은 묘사문입니다. 미드저니나 DALL-E에 복사해서
+  쓰세요. ### 추천 묘사문 (영어) ..."*
+
+  사람이 읽기엔 더 친절하지만, 이 **한국어 설명 덩어리**가 그대로 그림 모델에게
+  넘어가면 그림 모델은 이걸 그림 주문이 아니라 **말 걸기**로 알아듣는다냥.
+  그래서 그림 대신 한국어 답장만 돌아온다냥 — 에러도 안 나서 더 헷갈린다냥!
+
+  **AI 두 개를 연결할 때는 앞 AI의 출력이 곧 뒤 AI의 입력**이라, 앞에서 붙은
+  군더더기가 뒤를 통째로 망가뜨린다냥. 그래서 원하는 **출력 형식을 콕 집어
+  말해주는 것**(6차시!)이 특히 중요하다냥.
+</Callout>
 
 ### 기본 코드 예시 — 진짜로 이미지 그리기
 
@@ -154,7 +172,7 @@ image_response = client.models.generate_content(
 )
 
 # 응답 안에서 이미지 조각을 찾아 파일로 저장한다
-for part in image_response.parts:
+for part in image_response.parts or []:
     if image := part.as_image():
         image.save("cover.jpg")
         print("표지 이미지를 저장했습니다: cover.jpg")
@@ -224,6 +242,10 @@ for part in image_response.parts:
     {
       question: '이미지를 그릴 때는 왜 gemini-3.5-flash가 아닌 다른 모델을 쓰냥?',
       answer: 'gemini-3.5-flash는 글자(텍스트)만 만드는 모델이기 때문이다냥! 그림을 그리려면 gemini-3.1-flash-lite-image처럼 이미지 생성 전용 모델을 쓰고, response_modalities에 "IMAGE"를 넣어줘야 한다냥.',
+    },
+    {
+      question: '이미지 묘사 프롬프트에 "설명 없이 영어 한 문장만 출력해"를 왜 꼭 넣어야 하냥?',
+      answer: '이 줄이 없으면 AI가 친절하게 한국어 설명까지 붙여서 답하는데, 그 설명 덩어리가 그대로 그림 모델에게 넘어가면 그림 모델이 그림 주문이 아니라 말 걸기로 알아듣는다냥. 그래서 그림 대신 한국어 답장만 돌아온다냥 — 에러도 안 나서 더 헷갈린다냥! AI를 연결할 때는 앞 AI의 출력이 곧 뒤 AI의 입력이라, 출력 형식을 콕 집어 말해줘야 한다냥.',
     },
   ]}
 />
