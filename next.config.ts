@@ -97,9 +97,15 @@ const nextConfig: NextConfig = {
 
 // Pass remark plugins as serializable string names — required because Next 16
 // runs on Turbopack, which serializes the config and can't take function refs.
+//
+// remark-cjk-friendly implements the CommonMark CJK extension. Without it,
+// `**강조(부연)**은` renders the asterisks literally: CommonMark only lets a
+// closing `**` run close when it is right-flanking, and a run preceded by
+// punctuation (`)`, `"`, `` ` ``) and followed by a letter — which is exactly
+// what a Korean particle after a parenthesis is — fails that test.
 const withMDX = createMDX({
 	options: {
-		remarkPlugins: [['remark-gfm']],
+		remarkPlugins: [['remark-gfm'], ['remark-cjk-friendly']],
 	},
 });
 
