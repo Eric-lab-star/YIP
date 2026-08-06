@@ -46,10 +46,15 @@ def is_node(pid):
 
 
 # Dev-server range we plausibly used; avoids flagging unrelated services.
+# The upper bound was 3099, which silently excluded :3100 — the port this hook
+# was written for. A server sat there for hours across two sessions and was
+# never reported. Keep the ceiling above every port we actually reach for.
+# The judge stack (Piston 2000, formatter 2100, LSP 2200) stays below 3000 and
+# is deliberately out of range.
 stray = [
     (port, pid)
     for port, pid in sorted(listeners().items())
-    if 3001 <= port <= 3099 and port != EXPECTED_PORT and is_node(pid)
+    if 3001 <= port <= 3999 and port != EXPECTED_PORT and is_node(pid)
 ]
 
 if stray:
