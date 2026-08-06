@@ -56,9 +56,14 @@ const slides: Slide[] = [
           <p className="text-lg text-gray-600"><strong>목표:</strong> AI에게 존재하지 않는 것을 질문하여 환각을 관찰합니다.</p>
         </div>
         <CodeBlock>
-          {`from google import genai
+          {`import os
+from dotenv import load_dotenv
+from google import genai
 
-client = genai.Client(api_key="API 키 입력")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 # 환각을 유도하는 질문
 hallucination_prompt = "2024년에 출판된 책 \\

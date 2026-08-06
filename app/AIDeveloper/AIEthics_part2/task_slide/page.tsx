@@ -55,9 +55,14 @@ const slides: Slide[] = [
           </p>
         </div>
         <CodeBlock>
-          {`from google import genai
+          {`import os
+from dotenv import load_dotenv
+from google import genai
 
-client = genai.Client(api_key="여기에 API 키 입력")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 jobs = ["간호사", "프로그래머", "유치원 교사", "건설 노동자"]
 

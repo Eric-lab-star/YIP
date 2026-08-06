@@ -12,7 +12,7 @@ export const metadata = {
 
 # 블로그 글쓰기 앱 실습 — 구조 짓고 본문 채우기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, **주제 → 구조 생성 → 본문 채우기**
   순서로 블로그 글을 만드는 앱을 직접 완성해볼 거다냥. 빈칸(`____`, `___`)을 채워가며
   한 단계씩 가보자냥! 천천히, 즐겁게 해보자냥
@@ -32,7 +32,30 @@ export const metadata = {
 
 <MissionCard number={1} title="환경 준비 — API 키 확인하기" time="5분">
 
-먼저 `google-genai` 패키지가 잘 깔렸는지, 제미나이 API 키가 준비됐는지 확인해보자냥. 새 파일을 만들고 아래 코드가 에러 없이 실행되는지 점검해보자냥.
+먼저 `google-genai` 패키지가 잘 깔렸는지, 제미나이 API 키가 준비됐는지 확인해보자냥. 터미널에서 아래 명령어로 설치하면 된다냥.
+
+```bash
+pip install google-genai
+```
+
+이미 깔려 있으면 `Requirement already satisfied`라고 나온다냥. 정상이니 그냥 넘어가자냥!
+
+<Callout type="important">
+  **가상환경 주의냥**
+
+  `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서
+  설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면
+  **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신
+  `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+</Callout>
+
+<Callout type="tip">
+  **설치 이름 ≠ 코드 이름이라냥**
+
+  설치할 때는 하이픈이 들어간 **`google-genai`**로 깔지만, 코드에서는 **`from google import genai`**라고 쓴다냥. 코드에서 본 이름(`google.genai`)을 그대로 설치 명령에 넣으면 안 된다냥 — 설치는 언제나 하이픈이라냥!
+</Callout>
+
+이제 새 파일을 만들고 아래 코드가 에러 없이 실행되는지 점검해보자냥.
 
 ```python
 from google import genai
@@ -237,7 +260,7 @@ print(full_post)
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 환경 준비하고 API 키 확인하기

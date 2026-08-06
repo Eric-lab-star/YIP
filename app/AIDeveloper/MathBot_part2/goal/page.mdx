@@ -12,7 +12,7 @@ export const metadata = {
 
 # 사진을 보고 푸는 수학 봇 (2부)
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 나 코딩냥이다냥! 지난 시간에 우리는 **텍스트 메시지를 받아서 답장하는 봇**을
   완성했지? 오늘은 한 걸음 더 나아간다냥. **사진 속 수학 문제를 직접 "보고"**,
   그걸 **"머리로 풀어서"** 단계별로 설명해주는 핵심 기능을 만들어볼 거다냥!
@@ -27,13 +27,14 @@ export const metadata = {
   - 이미지(사진)를 AI(**제미나이 비전**)에게 전달해 내용을 인식하는 방법을 이해한다.
   - 사진 속 수학 문제를 인식하고, **단계별 풀이**를 생성하는 핵심 기능의 원리를 안다.
   - "단계별로 설명하라"는 **프롬프트**가 풀이 품질을 크게 높인다는 점을 이해한다.
+  - 만든 풀이 기능을 **Streamlit 화면**에 얹으면, 파이썬을 몰라도 쓸 수 있는 앱이 된다는 것을 안다.
 </Callout>
 
 ---
 
 ## 1단계 · 지난 시간 복습 + 오늘 목표 (5분)
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   지난 시간 우리 봇은 **글로 된 메시지**를 받아서 답장만 할 수 있었다냥.
   오늘은 그 봇에게 줄 새로운 능력을 따로 만들어볼 거다냥 — 바로 **사진을 읽는 눈**이다냥!
 </NyangSpeech>
@@ -43,7 +44,7 @@ export const metadata = {
 | 언제 | 봇이 할 수 있는 일 |
 |---|---|
 | 지난 시간 | **글자 메시지**를 받아서 답장하기 (대화의 통로) |
-| 오늘 | **사진 속 수학 문제**를 읽고, 단계별로 풀이 만들기 (눈 + 두뇌) |
+| 오늘 | **사진 속 수학 문제**를 읽고, 단계별로 풀이 만들기 (눈 + 두뇌) + Streamlit 화면에 띄우기 |
 | 다음 시간 | 이 풀이 기능을 봇에 **연결**해서 완성형 앱 만들기 |
 
 오늘은 봇 연결까지는 안 한다냥. **"사진 → 풀이"** 핵심 기능부터 차근차근 만들어보자냥!
@@ -54,7 +55,7 @@ export const metadata = {
 
 ## 2단계 · 멀티모달 인식이 뭐냥? (5~7분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   10차시에서 우리는 **이미지 인식**을 배웠지? 제미나이에게 **이미지와 질문을 함께**
   전달하면, AI가 그 사진을 분석해서 답해준다냥. 이렇게 글자만이 아니라 사진까지
   같이 다루는 걸 **멀티모달 인식**이라고 부른다냥!
@@ -99,7 +100,7 @@ export const metadata = {
 
 ### 풀이를 잘 만드는 프롬프트의 비밀
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   그런데 사진만 보여준다고 풀이를 잘 해주는 건 아니다냥. AI에게 **어떻게 풀어달라고
   부탁하느냐**가 정말 중요하다냥! 수학 풀이에 딱 좋은 마법의 주문이 있다냥
 </NyangSpeech>
@@ -116,7 +117,7 @@ export const metadata = {
 
 ## 3단계 · 기본 코드 살펴보기 (3분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   실습에서 직접 써볼 코드를 먼저 눈으로 살펴보자냥. 딱 두 가지만 기억하면 된다냥 —
   **사진 불러오기**와 **사진+지시문 함께 보내기**다냥!
 </NyangSpeech>
@@ -124,10 +125,14 @@ export const metadata = {
 ### 사진을 AI에게 보여주는 기본 구조
 
 ```python
+import os
+
+from dotenv import load_dotenv
 from google import genai
 import PIL.Image
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()                                                # .env에서 비밀 값을 읽어온다
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])  # 코드에는 키를 적지 않는다
 
 # 수학 문제 사진 불러오기
 image = PIL.Image.open("math_problem.jpg")
@@ -143,11 +148,23 @@ print(response.text)
   `client.models.generate_content(contents=[지시문, image])` 처럼 **글자(지시문)와 사진(image)을 리스트로 함께** 넣어주는 게 멀티모달의 핵심이다냥. 사진만 보내는 게 아니라, "이 사진으로 뭘 해줘"라는 부탁도 같이 보내는 거다냥!
 </Callout>
 
+<Callout type="important">
+  **제미나이 API 키도 열쇠다냥 — 13차시처럼 `.env`에 넣자냥**
+
+  13차시에서 봇 토큰을 **`.env`라는 비밀 서랍**에 숨겼던 걸 기억하냥? 제미나이 API 키도 **똑같이 소중한 열쇠**라서, 코드에 직접 적으면 코드를 보여주는 순간 열쇠까지 넘어간다냥.
+
+  그래서 코드에는 `os.environ["GEMINI_API_KEY"]` 라고만 적고, 진짜 키는 `.env`에 한 줄로 넣어둔다냥.
+
+  ```text
+  GEMINI_API_KEY=여기에 제미나이 API 키 붙여넣기
+  ```
+</Callout>
+
 ---
 
 ## 4단계 · AI도 실수할 수 있다냥 (강조)
 
-<NyangSpeech>
+<NyangSpeech mood="OOPS">
   마지막으로 정말 중요한 이야기를 하나 할 거다냥. AI는 똑똑하지만 **완벽하지 않다냥!**
 </NyangSpeech>
 
@@ -163,7 +180,7 @@ print(response.text)
 
 ## 오늘 배운 내용 정리
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
   "정답 보기"를 눌러서 맞는지 확인해보자냥!
 </NyangSpeech>
@@ -191,7 +208,7 @@ print(response.text)
 
 ---
 
-<NyangSpeech>
+<NyangSpeech mood="CHEER">
   오늘은 우리 봇에게 줄 **눈(인식)과 머리(풀이)**를 따로 완성하는 날이다냥!
   다음 시간에는 이 능력들을 봇에 연결해서, 진짜로 사진을 보내면 풀이를 답장해주는
   완성된 앱을 만들어볼 거다냥. 자, 이제 실습 페이지에서 직접 만들어보자냥~

@@ -12,7 +12,7 @@ export const metadata = {
 
 # 한 번 정리하면 끝! 벡터DB가 뭐냥?
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 나 코딩냥이다냥! 지난 시간 우리는 문서를 잘게 쪼개고(청킹),
   임베딩으로 바꿔서 비슷한 내용을 찾는 검색기를 만들었다냥. 그런데… 코드를
   실행할 때마다 **모든 청크를 처음부터 다시 임베딩**해야 했지? API도 매번
@@ -34,7 +34,7 @@ export const metadata = {
 
 ## 1단계 · 지난 시간의 답답함, 기억나냥? (5분)
 
-<NyangSpeech>
+<NyangSpeech mood="THINK">
   지난 시간에 만든 검색기를 떠올려보자냥. 질문 하나를 할 때마다 우리는
   **모든 청크를 다시 임베딩**하고, **유사도를 처음부터 다시 계산**했다냥.
   책이 몇 개일 땐 괜찮지만, 책이 100권 1000권이 되면 어떻게 될까냥?
@@ -50,7 +50,7 @@ export const metadata = {
 
 ## 2단계 · 벡터DB가 뭐냥? (5~7분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   벡터DB는 임베딩(벡터)들을 **미리 저장해두고**, 필요할 때 **빠르게 검색**할 수
   있게 해주는 "전용 창고이자 데이터베이스"다냥. 오늘 우리가 쓸 도구는
   가볍고 무료로 쓸 수 있는 **Chroma**라는 벡터DB다냥!
@@ -110,7 +110,7 @@ export const metadata = {
 
 ## 3단계 · Chroma 기본 사용법 (7~10분)
 
-<NyangSpeech>
+<NyangSpeech mood="CHEER">
   이제 Chroma를 어떻게 쓰는지 알려줄 거다냥. 딱 세 가지 동작만 기억하면
   된다냥 — **창고 열기 → 문서 넣기(add) → 질문으로 꺼내기(query)**!
   생각보다 진짜 간단하다냥
@@ -225,7 +225,7 @@ print(results["documents"][0])
 
 ## 오늘 배운 내용 정리
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
   "정답 보기"를 눌러서 맞는지 확인해보자냥!
 </NyangSpeech>
@@ -255,7 +255,7 @@ print(results["documents"][0])
 
 ## 거의 다 완성된 우리만의 도서관
 
-<NyangSpeech>
+<NyangSpeech mood="WRAP">
   오늘로 우리는 책을 분류해서 정리하고, 빠르게 찾아 꺼낼 수 있는
   **자동 도서관 시스템**을 거의 완성했다냥! 이제 마지막으로 남은 건,
   이 도서관에서 찾아온 자료를 바탕으로 **친절한 설명까지 덧붙여주는 AI 사서**를

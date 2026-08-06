@@ -181,14 +181,14 @@ solve_prompt = """
   {
     title: "완성 봇의 전체 구조",
     bg: "from-indigo-50 to-violet-50",
-    script: `완성될 봇의 전체 구조를 정리하겠습니다. 봇은 크게 네 가지 부품으로 구성됩니다. 첫째, 연결 도구 불러오기 — 텔레그램 도구, 제미나이 AI 도구, 이미지 도구인 PIL을 import합니다. 둘째, 열쇠 준비 — 봇 토큰과 제미나이 API 키를 설정합니다. 셋째, 기존 기능 — /start 인사 기능과 풀이 프롬프트를 재사용합니다. 넷째, 오늘의 핵심인 사진 핸들러 — 사진을 받아서 저장하고, AI에 전달하고, 풀이 결과를 답장하는 함수를 새로 작성합니다. 이 구조를 이해하고 있으면, 실습에서 코드를 조립할 때 큰 그림이 보일 것입니다.`,
+    script: `완성될 봇의 전체 구조를 정리하겠습니다. 봇은 크게 네 가지 부품으로 구성됩니다. 첫째, 연결 도구 불러오기 — 텔레그램 도구, 제미나이 AI 도구, 이미지 도구인 PIL을 import합니다. 둘째, 열쇠 꺼내오기 — 봇 토큰과 제미나이 API 키를 점 env 파일에서 꺼내옵니다. 13차시에서 봇 토큰을 점 env에 숨기는 법을 배웠는데, 오늘은 열쇠가 두 개이므로 같은 파일에 GEMINI_API_KEY 한 줄을 더 추가합니다. 코드에는 열쇠를 한 글자도 적지 않습니다. 셋째, 기존 기능 — /start 인사 기능과 풀이 프롬프트를 재사용합니다. 넷째, 오늘의 핵심인 사진 핸들러 — 사진을 받아서 저장하고, AI에 전달하고, 풀이 결과를 답장하는 함수를 새로 작성합니다. 이 구조를 이해하고 있으면, 실습에서 코드를 조립할 때 큰 그림이 보일 것입니다.`,
     content: (
       <div className="flex flex-col gap-5">
         <p className="text-xl text-gray-700">완성 봇에 들어갈 네 가지 부품</p>
         <div className="space-y-3">
           {[
             { label: "연결 도구 불러오기", desc: "텔레그램, 제미나이 AI, PIL(이미지) 도구 import" },
-            { label: "열쇠 준비", desc: "봇 토큰, 제미나이 API 키 설정" },
+            { label: "열쇠 꺼내오기", desc: ".env에서 봇 토큰 + 제미나이 API 키 (코드에 직접 적지 않음)" },
             { label: "기존 기능 재사용", desc: "/start 인사 기능 + 풀이 프롬프트" },
             { label: "사진 핸들러 (NEW!)", desc: "사진 받기 → 파일 저장 → AI 풀이 → 답장 전송" },
           ].map((item, i) => (
@@ -215,7 +215,8 @@ solve_prompt = """
           </p>
         </div>
         <CodeBlock>{`# photo[-1] = 배열의 마지막 = 가장 고화질
-photo_file = await update.message.photo[-1].get_file()`}</CodeBlock>
+message = update.effective_message
+photo_file = await message.photo[-1].get_file()`}</CodeBlock>
         <div className="grid grid-cols-3 gap-3 text-center">
           <div className="bg-gray-100 rounded-xl p-3">
             <p className="text-sm text-gray-500">photo[0]</p>

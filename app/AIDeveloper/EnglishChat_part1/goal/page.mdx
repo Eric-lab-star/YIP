@@ -12,7 +12,7 @@ export const metadata = {
 
 # 대화를 기억하는 AI 영어 선생님 만들기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 나 코딩냥이다냥! 지금까지 우리가 만든 챗봇은 한 번 질문하면
   딱 한 번 답하고 끝이었다냥. 그런데 진짜 친구랑 영어로 수다 떨듯이,
   **이어지는 대화**를 하려면 뭐가 필요할까냥? 오늘은 AI가 우리가 한 말을
@@ -33,7 +33,7 @@ export const metadata = {
 
 ## 1단계 · AI는 사실 깜빡깜빡한다냥? (5~7분)
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   깜짝 놀랄 비밀 하나 알려줄까냥? AI는 사실 **이전 대화를 기억하지 못한다냥!**
   방금 내가 한 말도 다음 순간이면 까맣게 잊어버린다냥. 그럼 어떻게 대화를
   이어갈 수 있을까냥? 비밀은 바로… **수첩**에 있다냥!
@@ -88,7 +88,7 @@ AI는 사실 대화를 나눌 때마다 기억이 사라지는 사람과 같다�
 
 ## 2단계 · 페르소나로 "나만의 영어 선생님" 임명하기 (5분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   수첩만 있으면 끝이 아니다냥! AI에게 **어떤 역할**을 맡길지도 정해줘야 한다냥.
   이걸 **페르소나(persona)**라고 부른다냥. "너는 친절한 영어 회화 선생님이야"라고
   미리 알려주면, AI가 그 역할에 맞춰 대화해준다냥!
@@ -110,10 +110,14 @@ AI는 사실 대화를 나눌 때마다 기억이 사라지는 사람과 같다�
 ### 기본 코드 예시 — 페르소나 설정하기
 
 ```python
+import os
+
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()                                                # .env에서 비밀 값을 읽어온다
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])  # 코드에는 키를 적지 않는다
 
 system_instruction = "너는 친절한 영어 회화 선생님이야. 초급 학습자에게 쉬운 단어로 천천히 영어로 말해주고, 학생이 실수하면 자연스럽게 고쳐줘. 답변 끝에 한국어로 짧은 설명을 덧붙여줘."
 
@@ -136,7 +140,7 @@ print(response.text)
 
 ## 3단계 · 대화 기록을 유지하면 연속극이 된다냥 (3분)
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   자, 이제 수첩(히스토리)과 페르소나를 합치면 어떤 일이 생길까냥?
   바로 **연속극처럼 이어지는 대화**가 만들어진다냥!
 </NyangSpeech>
@@ -158,7 +162,7 @@ print(response.text)
 
 ## 오늘 배운 내용 정리
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
   "정답 보기"를 눌러서 맞는지 확인해보자냥!
 </NyangSpeech>
@@ -182,7 +186,7 @@ print(response.text)
 
 ---
 
-<NyangSpeech>
+<NyangSpeech mood="CHEER">
   오늘은 AI가 우리 말을 **기억**하게 만드는 비밀(수첩!)과, **나만의 영어 선생님**을
   임명하는 법을 배웠다냥. 다음은 실습 페이지에서 직접 페르소나를 설정하고,
   대화를 여러 번 주고받는 코드를 완성해볼 차례다냥. 발톱 준비됐냥? 가보자냥~

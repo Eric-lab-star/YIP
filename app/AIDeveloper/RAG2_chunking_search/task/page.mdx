@@ -12,7 +12,7 @@ export const metadata = {
 
 # 청킹 & 검색 실습 — 나만의 문서 검색기 만들기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 긴 문서를 **청크로 나누고**
   각 청크를 **임베딩**해서, 질문과 가장 비슷한 조각을 찾아주는 **검색기**를
   직접 만들어볼 거다냥. 빈칸을 하나씩 채우면서 천천히, 즐겁게 가보자냥!
@@ -28,6 +28,12 @@ export const metadata = {
 </Callout>
 
 <PackageInstall packages={["numpy", "google-genai"]} />
+
+<Callout type="tip">
+  **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+
+  설치할 때는 **`google-genai`**로 깔고, 코드에서는 **`from google import genai`**라고 쓴다냥. 이름이 달라서 헷갈리기 쉽다냥! (`numpy`는 설치 이름과 코드 이름이 같다냥.)
+</Callout>
 
 ---
 
@@ -200,7 +206,7 @@ for r in results:
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 긴 문서를 **청크로 쪼개기**

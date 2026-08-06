@@ -1,18 +1,29 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { ink, cream, doodleBoxImage } from "./doodle";
+import { nyangMoodSrc, type NyangMood } from "./nyangMood";
 
 const CAT_IMG = "https://r2.kimkyungsub.com/AIDeveloper/Coolonfident.png";
 
 /**
  * 코딩냥(고양이 선생님)의 말풍선. MDX 본문에 캐릭터의 설명 대사를 넣을 때 쓴다.
  * children 은 마크다운으로 작성하면 되고, 좌측 아바타 + 손그림 말풍선으로 렌더된다.
+ *
+ * `mood` 로 대사 상황에 맞는 표정을 고를 수 있다(`nyangMood.ts` 참고). 생략하면
+ * 기존 전신 일러스트가 그대로 나오므로, 아직 표정을 배정하지 않은 섹션은
+ * 손대지 않아도 지금 모습을 유지한다.
  */
-export function NyangSpeech({ children }: { children: ReactNode }) {
+export function NyangSpeech({
+  children,
+  mood,
+}: {
+  children: ReactNode;
+  mood?: NyangMood;
+}) {
   return (
     <div className="my-7 flex items-start gap-3">
       <Image
-        src={CAT_IMG}
+        src={mood ? nyangMoodSrc[mood] : CAT_IMG}
         alt="코딩냥"
         width={100}
         height={100}

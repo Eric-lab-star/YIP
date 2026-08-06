@@ -12,7 +12,7 @@ export const metadata = {
 
 # 영어 대화 앱 완성 실습 — 채팅 화면과 교정 기능
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지난 시간에 만든 **페르소나 대화
   코드**를 Streamlit 채팅 화면으로 옮겨볼 거다냥. 미션 1(채팅 화면)을 먼저 완성하고,
   여유가 있으면 미션 2(교정 기능)에 도전해보자냥. 천천히, 즐겁게 가보자냥!
@@ -21,12 +21,25 @@ export const metadata = {
 <Callout type="note">
   **준비물 체크리스트**
 
-  - `streamlit`, `google-genai` 패키지 설치 확인
+  - `streamlit`, `google-genai`, `python-dotenv` 패키지 설치 확인
+  - 제미나이 API 키를 적어둔 **`.env` 파일** (16차시에 쓰던 걸 그대로 써도 좋다냥!)
   - 지난 시간(16차시)에 만든 **페르소나 / 대화 코드**
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 파일)
 </Callout>
 
 <PackageInstall packages={["streamlit", "google-genai"]} />
+
+<Callout type="tip">
+  **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+
+  **설치할 때 이름과 코드에서 쓰는 이름이 다르다냥.**
+
+  | 설치할 때 | 코드에서 쓸 때 |
+  |---|---|
+  | `streamlit` | `import streamlit as st` (이름 같다냥) |
+  | `google-genai` | `from google import genai` |
+  | `python-dotenv` | `from dotenv import load_dotenv` |
+</Callout>
 
 ---
 
@@ -35,11 +48,15 @@ export const metadata = {
 먼저 `streamlit` 패키지가 잘 깔렸는지 확인하고, 지난 시간에 만든 **페르소나 설정 코드**를 떠올려보자냥. 새 파일 `app.py`를 만들고, 페르소나가 적용된 모델을 준비해보자냥.
 
 ```python
+import os
+
 import streamlit as st
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 st.title("나의 영어 대화 선생님")
 
@@ -69,11 +86,15 @@ streamlit run app.py
 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
+import os
+
 import streamlit as st
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 st.title("나의 영어 대화 선생님")
 
@@ -181,7 +202,7 @@ def correct_english(text):
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는 Streamlit으로
 
   1. 페르소나가 적용된 영어 선생님 **모델 준비하기**

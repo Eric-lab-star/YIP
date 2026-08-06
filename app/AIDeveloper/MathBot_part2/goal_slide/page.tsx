@@ -146,17 +146,22 @@ const slides: Slide[] = [
   {
     title: "기본 코드 구조 살펴보기",
     bg: "from-cyan-50 to-blue-50",
-    script: `이제 실습에서 사용할 코드의 기본 구조를 살펴보겠습니다. 핵심은 딱 두 가지입니다. 첫째, PIL.Image.open으로 사진 파일을 불러옵니다. 둘째, generate_content의 contents 매개변수에 지시문과 이미지를 리스트로 함께 전달합니다. 이것이 멀티모달의 핵심입니다. 사진만 보내는 것이 아니라, '이 사진으로 무엇을 해달라'는 지시문도 함께 보내는 것입니다. contents에 문자열과 이미지를 리스트로 묶어서 전달하는 이 한 줄이 가장 중요한 부분입니다.`,
+    script: `이제 실습에서 사용할 코드의 기본 구조를 살펴보겠습니다. 맨 위의 load_dotenv와 os.environ은 13차시에서 배운 것과 같습니다. 제미나이 API 키도 봇 토큰과 똑같이 소중한 열쇠이므로, 코드에 직접 적지 않고 점 env 파일에 GEMINI_API_KEY라는 이름으로 넣어둡니다. 코드에는 서랍에서 꺼내오라는 한 줄만 적습니다. 그다음 핵심은 딱 두 가지입니다. 첫째, PIL.Image.open으로 사진 파일을 불러옵니다. 둘째, generate_content의 contents 매개변수에 지시문과 이미지를 리스트로 함께 전달합니다. 이것이 멀티모달의 핵심입니다. 사진만 보내는 것이 아니라, '이 사진으로 무엇을 해달라'는 지시문도 함께 보내는 것입니다. contents에 문자열과 이미지를 리스트로 묶어서 전달하는 이 한 줄이 가장 중요한 부분입니다.`,
     content: (
       <div className="flex flex-col gap-5">
         <p className="text-xl text-gray-700">
           핵심은 딱 두 가지: <strong>사진 불러오기</strong>와 <strong>지시문 + 사진 함께 보내기</strong>
         </p>
         <CodeBlock>
-          {`from google import genai
+          {`import os
+from dotenv import load_dotenv
+from google import genai
 import PIL.Image
 
-client = genai.Client(api_key="API 키")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 # 1. 수학 문제 사진 불러오기
 image = PIL.Image.open("math_problem.jpg")

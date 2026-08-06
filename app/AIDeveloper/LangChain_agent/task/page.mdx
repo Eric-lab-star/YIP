@@ -12,7 +12,7 @@ export const metadata = {
 
 # LangChain 실습 — 스스로 날씨를 찾는 AI 만들기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지난 시간에 만든 **날씨 API 함수**를
   LangChain의 **Tool**로 등록하고, 제미나이 **Agent**가 스스로 그 도구를 호출하도록
   만들어볼 거다냥. 천천히, 즐겁게 가보자냥!
@@ -50,6 +50,15 @@ export const metadata = {
 ```bash
 pip install langchain langchain-google-genai requests
 ```
+
+<Callout type="important">
+  **가상환경 주의냥**
+
+  `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서
+  설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면
+  **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신
+  `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+</Callout>
 
 > **확인해보자냥**
 > - 설치가 에러 없이 끝났냥?
@@ -183,7 +192,7 @@ print(result["messages"][-1].content)
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 날씨 함수를 LangChain **Tool**로 등록하고

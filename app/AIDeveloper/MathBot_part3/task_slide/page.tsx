@@ -23,15 +23,16 @@ const slides: Slide[] = [
   {
     title: "실습 전 준비 사항",
     bg: "from-yellow-50 to-amber-50",
-    script: "미션을 시작하기 전에 준비물을 확인하겠습니다. 첫째, python-telegram-bot, google-genai, Pillow 패키지가 설치되어 있어야 합니다. 둘째, 13차시 봇 코드와 14차시 풀이 코드를 준비해주시기 바랍니다. 셋째, 봇 토큰과 제미나이 API 키가 필요합니다. 넷째, 테스트용 수학 문제 사진을 미리 준비해주시기 바랍니다. 다섯째, 빈칸이 포함된 코드 템플릿을 열어두시기 바랍니다.",
+    script: "미션을 시작하기 전에 준비물을 확인하겠습니다. 첫째, python-telegram-bot, python-dotenv, google-genai, Pillow 패키지가 설치되어 있어야 합니다. 둘째, 13차시 봇 코드와 14차시 풀이 코드를 준비해주시기 바랍니다. 셋째, 봇 토큰과 제미나이 API 키가 필요합니다. 오늘은 열쇠가 두 개이므로, 점 env 파일에 두 줄로 적어둘 것입니다. 넷째, 테스트용 수학 문제 사진을 미리 준비해주시기 바랍니다. 다섯째, 빈칸이 포함된 코드 템플릿을 열어두시기 바랍니다.",
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { text: "python-telegram-bot, google-genai, Pillow 설치 확인" },
+            { text: "python-telegram-bot, python-dotenv, google-genai, Pillow 설치 확인" },
             { text: "13차시 봇 코드 + 14차시 풀이 코드 준비" },
             { text: "봇 토큰, 제미나이 API 키 준비" },
+            { text: ".env 파일에 열쇠 두 줄 (TELEGRAM_TOKEN, GEMINI_API_KEY)" },
             { text: "테스트용 수학 문제 사진 준비" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
@@ -43,9 +44,9 @@ const slides: Slide[] = [
     ),
   },
   {
-    title: "미션 1: 코드 합치기 준비 (5분)",
+    title: "미션 1: 코드 합치기 준비 + 열쇠 두 개 (5~7분)",
     bg: "from-blue-50 to-indigo-50",
-    script: "첫 번째 미션입니다. 우리가 합칠 두 부품을 정리하겠습니다. 13차시에서 만든 봇 코드는 텔레그램에서 메시지를 받아 답장하는 부분이고, 14차시에서 만든 풀이 코드는 사진을 AI에 보내 풀이를 만드는 부분입니다. 이 둘을 하나의 .py 파일에 모으는 것이 첫걸음입니다. 완성 봇에 들어갈 부품을 확인합니다. 연결 도구(텔레그램, 제미나이, PIL 임포트), 열쇠(봇 토큰, API 키), 풀이 프롬프트, /start 인사 기능, 그리고 오늘 새로 추가할 사진 핸들러입니다. 5분 드리겠습니다.",
+    script: "첫 번째 미션입니다. 우리가 합칠 두 부품을 정리하겠습니다. 13차시에서 만든 봇 코드는 텔레그램에서 메시지를 받아 답장하는 부분이고, 14차시에서 만든 풀이 코드는 사진을 AI에 보내 풀이를 만드는 부분입니다. 이 둘을 하나의 .py 파일에 모으는 것이 첫걸음입니다. 완성 봇에 들어갈 부품을 확인합니다. 연결 도구(텔레그램, 제미나이, PIL 임포트), 열쇠 꺼내오기, 풀이 프롬프트, /start 인사 기능, 그리고 오늘 새로 추가할 사진 핸들러입니다. 오늘은 열쇠가 두 개입니다. 13차시에서 봇 토큰을 점 env에 숨기는 법을 배웠으니, 오늘은 같은 파일에 GEMINI_API_KEY 한 줄을 더 추가하면 됩니다. 등호 앞뒤에 띄어쓰기를 넣지 말고, 점 env 파일은 파이 파일과 같은 폴더에 두어야 합니다. 5~7분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-6">
         <div className="bg-white/60 rounded-xl p-4">
@@ -55,7 +56,7 @@ const slides: Slide[] = [
           <p className="text-xl text-gray-700 font-semibold">완성 봇에 들어갈 부품들</p>
           {[
             { text: "연결 도구: 텔레그램, 제미나이, PIL 임포트" },
-            { text: "열쇠: 봇 토큰, 제미나이 API 키" },
+            { text: "열쇠 꺼내오기: .env에서 봇 토큰, 제미나이 API 키" },
             { text: "풀이 프롬프트: 14차시에서 만든 명령서 재사용" },
             { text: "/start 인사 기능" },
             { text: "사진 핸들러: 오늘 새로 추가할 핵심 부품!" },
@@ -64,6 +65,12 @@ const slides: Slide[] = [
               <p className="text-lg text-gray-700">{item.text}</p>
             </div>
           ))}
+        </div>
+        <div className="bg-green-50 rounded-xl p-4 border-l-4 border-green-400">
+          <p className="text-lg text-gray-700 mb-2"><strong>오늘은 열쇠가 두 개 → <code>.env</code>에 두 줄</strong></p>
+          <CodeBlock>{`TELEGRAM_TOKEN=봇 토큰
+GEMINI_API_KEY=제미나이 API 키`}</CodeBlock>
+          <p className="text-base text-gray-600 mt-2"><code>.py</code>와 같은 폴더에 | <code>=</code> 앞뒤 띄어쓰기 금지</p>
         </div>
       </div>
     ),
@@ -95,7 +102,7 @@ const slides: Slide[] = [
   {
     title: "미션 2: 사진 핸들러 추가 (12~15분)",
     bg: "from-violet-50 to-purple-50",
-    script: "두 번째 미션입니다. 오늘의 핵심인 사진 핸들러를 추가하겠습니다. 화면의 코드에서 두 개의 빈칸을 채워주시기 바랍니다. 첫 번째 빈칸에는 AI에게 줄 풀이 명령서, 즉 위에서 정의한 변수 이름이 들어갑니다. s로 시작하는 변수입니다. 두 번째 빈칸에는 AI가 만들어준 풀이 결과 텍스트가 들어갑니다. response에서 텍스트만 꺼내는 방법을 생각해보시기 바랍니다. 참고로, photo[-1]은 텔레그램이 사진을 여러 크기로 전송할 때 그중 가장 고화질인 마지막 것을 선택한다는 의미입니다. 12~15분 드리겠습니다.",
+    script: "두 번째 미션입니다. 오늘의 핵심인 사진 핸들러를 추가하겠습니다. 맨 앞의 두 줄은 13차시에서 배운 것과 같습니다. update.effective_message로 메시지를 먼저 꺼내고, 비어 있을 수 있으므로 if message is None으로 막아준 뒤 사용합니다. 화면의 코드에서 두 개의 빈칸을 채워주시기 바랍니다. 첫 번째 빈칸에는 AI에게 줄 풀이 명령서, 즉 위에서 정의한 변수 이름이 들어갑니다. s로 시작하는 변수입니다. 두 번째 빈칸에는 AI가 만들어준 풀이 결과 텍스트가 들어갑니다. response에서 텍스트만 꺼내는 방법을 생각해보시기 바랍니다. 참고로, photo[-1]은 텔레그램이 사진을 여러 크기로 전송할 때 그중 가장 고화질인 마지막 것을 선택한다는 의미입니다. 핸들러를 filters.PHOTO로 등록했기 때문에 이 함수 안에서는 사진이 반드시 들어 있다는 것이 보장되며, 그래서 photo 대괄호 마이너스 1을 바로 꺼내 써도 안전합니다. 12~15분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
@@ -103,11 +110,15 @@ const slides: Slide[] = [
         </div>
         <CodeBlock>
           {`async def handle_photo(update, context):
-    await update.message.reply_text(
+    message = update.effective_message
+    if message is None:
+        return
+
+    await message.reply_text(
         "문제를 푸는 중이에요..."
     )
 
-    photo_file = await update.message.photo[
+    photo_file = await message.photo[
         -1
     ].get_file()
     await photo_file.download_to_drive(
@@ -120,7 +131,7 @@ const slides: Slide[] = [
         contents=[____, image]
     )
 
-    await update.message.reply_text(____)`}
+    await message.reply_text(____)`}
         </CodeBlock>
         <div className="bg-white/70 rounded-xl p-4 space-y-2">
           <p className="text-base text-gray-600"><strong>힌트 1:</strong> 첫 번째 빈칸 = 풀이 프롬프트 변수 (s로 시작)</p>
@@ -161,7 +172,7 @@ const slides: Slide[] = [
   {
     title: "미션 3: 실제 테스트 (8~10분)",
     bg: "from-emerald-50 to-green-50",
-    script: "세 번째 미션입니다. 봇을 실행하고 실제로 작동하는지 확인해보겠습니다. 터미널에서 python 파일이름.py를 실행하면 '수학 풀이 봇이 실행 중입니다'라는 메시지가 나타납니다. 텔레그램을 열어 봇에게 수학 문제 사진을 보내보시기 바랍니다. 사진을 보내자마자 '잠시만 기다려주세요' 메시지가 먼저 오는지, 그리고 잠시 후 단계별 풀이와 정답이 답장으로 오는지 확인해주시기 바랍니다. 문제가 발생할 경우 자주 나는 오류 세 가지를 확인해보시기 바랍니다. 핸들러 등록 누락, 토큰과 키 혼동, 들여쓰기 오류입니다. 8~10분 드리겠습니다.",
+    script: "세 번째 미션입니다. 봇을 실행하고 실제로 작동하는지 확인해보겠습니다. 터미널에서 python 파일이름.py를 실행하면 '수학 풀이 봇이 실행 중입니다'라는 메시지가 나타납니다. 텔레그램을 열어 봇에게 수학 문제 사진을 보내보시기 바랍니다. 사진을 보내자마자 '잠시만 기다려주세요' 메시지가 먼저 오는지, 그리고 잠시 후 단계별 풀이와 정답이 답장으로 오는지 확인해주시기 바랍니다. 문제가 발생할 경우 자주 나는 오류 네 가지를 확인해보시기 바랍니다. 첫째, KeyError입니다. TELEGRAM_TOKEN이나 GEMINI_API_KEY를 못 찾았다는 뜻이므로 점 env 파일의 위치와 이름, 철자를 확인합니다. 둘째, 핸들러 등록 누락입니다. 셋째, 토큰과 키 혼동입니다. 점 env의 두 줄을 서로 바꿔 적으면 에러 없이 이상하게만 동작해서 찾기 어렵습니다. 넷째, 들여쓰기 오류입니다. 8~10분 드리겠습니다.",
     content: (
       <div className="flex flex-col gap-5">
         <div className="bg-white/60 rounded-xl p-4">
@@ -178,8 +189,9 @@ const slides: Slide[] = [
         <div className="bg-red-50 rounded-xl p-5">
           <p className="font-semibold text-red-700 mb-2">자주 나는 오류</p>
           <ul className="text-base text-gray-600 space-y-1">
+            <li>• KeyError: .env 위치 / 파일 이름 / 두 줄의 철자 확인</li>
             <li>• 핸들러 등록 누락: MessageHandler(filters.PHOTO, ...) 확인</li>
-            <li>• 토큰/키 혼동: 봇 토큰과 API 키 자리 확인</li>
+            <li>• 토큰/키 혼동: .env 두 줄을 서로 바꿔 적지 않았는지 확인</li>
             <li>• 들여쓰기 오류: async def 안쪽 줄 정렬 확인</li>
           </ul>
         </div>

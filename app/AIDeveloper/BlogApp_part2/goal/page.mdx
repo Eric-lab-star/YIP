@@ -12,7 +12,7 @@ export const metadata = {
 
 # 글에 그림까지! 블로그 앱 완성하기 (2부)
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 나 코딩냥이다냥! 지난 시간엔 주제만 주면 **제목 → 소제목 → 본문**까지
   척척 써주는 글 생성 기능을 만들었지냥. 그런데 글만 있으면 어쩐지 좀 허전하지 않냥?
   오늘은 그 글에 딱 어울리는 **대표 이미지(표지)**까지 AI로 진짜로 그려서, 진짜
@@ -44,7 +44,7 @@ export const metadata = {
 
 ## 1단계 · 지난 시간 복습 + 오늘 할 일 (5분)
 
-<NyangSpeech>
+<NyangSpeech mood="THINK">
   먼저 지난 시간을 떠올려보자냥. 우리는 **주제 하나**만 입력하면 AI가
   제목과 소제목을 정하고, 본문까지 줄줄 써주는 글 생성 기능을 완성했지냥!
   오늘은 거기에 한 가지를 더 얹는다냥. 바로 글의 분위기에 어울리는 **대표 이미지**다냥.
@@ -75,7 +75,7 @@ export const metadata = {
 
 ## 2단계 · 이미지 생성 프롬프트 설계하기 (5~7분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   6차시 프롬프트 수업에서 배운 원리 기억나냥? 원하는 결과를 얻으려면 **구체적으로
   묘사**해야 한다냥! "고양이"라고만 하면 AI도 막막하지만, "햇살 드는 창가에서 낮잠
   자는 노란 고양이, 따뜻하고 포근한 분위기"라고 하면 훨씬 원하는 느낌에 가까워지지냥.
@@ -184,7 +184,7 @@ for part in image_response.parts or []:
 
 ## 3단계 · 글과 그림을 한 화면에 (3분)
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   이제 마지막 그림을 그려보자냥. 글 생성 기능과 이미지 생성 기능을
   **하나의 Streamlit 화면**에서 합치는 거다냥. 주제 하나만 입력하면 →
   완성된 블로그 글 + 어울리는 표지 이미지가 화면에 짠! 하고 나오는 거지냥!
@@ -220,7 +220,7 @@ for part in image_response.parts or []:
 
 ## 오늘 배운 내용 정리
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
   "정답 보기"를 눌러서 맞는지 확인해보자냥!
 </NyangSpeech>
@@ -252,7 +252,7 @@ for part in image_response.parts or []:
 
 ---
 
-<NyangSpeech>
+<NyangSpeech mood="CHEER">
   오늘은 글만 쓰던 우리 앱이 드디어 **진짜 그림까지 그리는 1인 출판사**로 한 단계
   자라난 날이다냥! 이제 실습 페이지에서 직접 표지 이미지를 만들고, 글과 그림을
   한 화면에 합쳐보자냥. 발톱 준비됐냥? 가보자냥~
