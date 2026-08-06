@@ -2,6 +2,7 @@ import { Callout } from '@/components/mdx/Callout'
 import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import DownloadBtn from '@/components/commons/DownloadBtn'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
 
 export const metadata = {
@@ -19,6 +20,8 @@ export const metadata = {
   미션 5의 최적화는 **화면이 안 바뀌는 작업**이지만
   게임이 느려지지 않게 하는 중요한 단계다냥!
 </NyangSpeech>
+
+<PackageInstall packages={["pygame-ce"]} tool="uv" />
 
 ---
 

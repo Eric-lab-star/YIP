@@ -1,6 +1,7 @@
 import { Callout } from '@/components/mdx/Callout'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import { MissionCard } from '@/components/mdx/MissionCard'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 
 export const metadata = {
   title: "미니 프로젝트 · BMI 계산기",
@@ -26,6 +27,8 @@ export const metadata = {
   - 결과에 따라 **다른 메시지**를 보여준다.
   - 화면을 **보기 좋게** 정리한다.
 </Callout>
+
+<PackageInstall packages={["streamlit"]} />
 
 <Callout type="note">
   **BMI 가 뭐냥?**

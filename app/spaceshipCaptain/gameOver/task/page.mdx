@@ -2,6 +2,7 @@ import { Callout } from '@/components/mdx/Callout'
 import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import DownloadBtn from '@/components/commons/DownloadBtn'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 import ToggleCodeBlock from '@/components/commons/table/ToggleBlock'
 
 export const metadata = {
@@ -18,6 +19,8 @@ export const metadata = {
   상태를 나누고, 글자를 띄우고, 되돌리는 순서로 간다냥.
   다 하고 나면 **친구에게 보여줄 수 있는 게임**이 된다냥!
 </NyangSpeech>
+
+<PackageInstall packages={["pygame-ce"]} tool="uv" />
 
 ---
 

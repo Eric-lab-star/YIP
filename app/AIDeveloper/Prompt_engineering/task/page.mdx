@@ -1,6 +1,7 @@
 import { Callout } from '@/components/mdx/Callout'
 import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { PackageInstall } from '@/components/mdx/PackageInstall'
 import { StepCard } from '@/components/mdx/StepCard'
 
 export const metadata = {
@@ -26,6 +27,8 @@ export const metadata = {
   - 빈칸이 포함된 프롬프트 비교 코드 템플릿 (`.py` 또는 `.ipynb`)
   - "역할 / 맥락 / 지시 / 형식" 네 가지 요소 메모
 </Callout>
+
+<PackageInstall packages={["langchain", "langchain-google-genai"]} />
 
 ---
 
