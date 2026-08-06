@@ -63,6 +63,12 @@ function htmlLimitedBots(): RegExp {
 
 const nextConfig: NextConfig = {
 	env: {},
+	// Pin the workspace root. Turbopack otherwise infers it by walking up for
+	// lockfiles, and any stray package.json/package-lock.json in a parent
+	// directory (e.g. a `npm i prettier` run in the home folder) wins — module
+	// resolution then starts from there, `@import "tailwindcss"` in globals.css
+	// fails to resolve, and every page request hangs on the retry loop.
+	turbopack: { root: import.meta.dirname },
 	reactStrictMode: false,
 	htmlLimitedBots: htmlLimitedBots(),
 	// Rewrite barrel-file imports (e.g. `import { X } from "lucide-react"`) to
