@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { listProblems } from "@/app/lib/mongo/problems";
 import { AlgorithmCurriculum } from "@/utils/curriculum/Algorithm";
+import { simpleWebDevCurriculum } from "@/utils/curriculum/simpleWebDev";
 
 const SITE_URL = "https://yipcode.xyz";
 
@@ -23,16 +24,14 @@ type Entry = {
 // disallowed in robots.ts. Other auth-gated routes (chat, dashBoard, editor,
 // login, students, /problems/*/solutions, /problems/new) are excluded too.
 //
-// /Algorithm is the exception: it is deliberately left ungated so its chapters
-// can be found in search, so its pages belong in the sitemap. They are derived
-// from the curriculum below rather than listed by hand, so a new chapter is
-// crawlable as soon as it is added.
-// /simpleWebDev is deliberately absent: the page is still a placeholder that
-// renders a single word. Submitting it would only earn a thin-content strike.
-// Add it back once it has real material.
+// /Algorithm and /simpleWebDev are the exceptions: both are deliberately left
+// ungated so their chapters can be found in search, so their pages belong in
+// the sitemap. Both are derived from their curriculum below rather than listed
+// by hand, so a new chapter is crawlable as soon as it is added.
 const STATIC_ROUTES: Entry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/Algorithm", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/simpleWebDev", changeFrequency: "weekly", priority: 0.8 },
   { path: "/problems", changeFrequency: "weekly", priority: 0.8 },
   { path: "/games/vamsurlike", changeFrequency: "monthly", priority: 0.5 },
 ];
@@ -68,6 +67,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
   );
 
+  // simpleWebDev chapters. Unlike Algorithm there is no goal/task split — one
+  // page per chapter — and the curriculum is grouped into 부, so this flattens
+  // the parts before mapping.
+  const simpleWebDevEntries: MetadataRoute.Sitemap = simpleWebDevCurriculum
+    .flatMap(({ lessons }) => lessons)
+    .map(({ slug }) => ({
+      url: `${SITE_URL}/simpleWebDev/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+
   // Problem detail pages are public and live in MongoDB. Failing to reach the
   // DB (e.g. during a build without network) shouldn't break the whole sitemap.
   let problemEntries: MetadataRoute.Sitemap = [];
@@ -83,5 +94,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     problemEntries = [];
   }
 
-  return [...staticEntries, ...algorithmEntries, ...problemEntries];
+  return [
+    ...staticEntries,
+    ...algorithmEntries,
+    ...simpleWebDevEntries,
+    ...problemEntries,
+  ];
 }

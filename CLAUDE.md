@@ -122,7 +122,8 @@ Numbers alone miss overlap and squeezing, so look at it too.
 ## Lesson Content
 
 Lesson pages (`app/AIDeveloper`, `app/tourOfPython`, `app/Algorithm`,
-`app/spaceshipCaptain`) and the components that render them
+`app/spaceshipCaptain`, `app/PublicDataViz`, `app/simpleWebDev`) and the
+components that render them
 (`components/mdx/`) must not use emoji — including in 코딩냥이's dialogue,
 headings, and card labels. Use plain text, or `CatIcon` when a character
 image is wanted.
@@ -142,8 +143,23 @@ several appear inside Python examples, where removing them breaks the code.
 
 ## Lesson Section Structure
 
-`AIDeveloper`, `PublicDataViz`, `tourOfPython`, and `spaceshipCaptain` all use
-the same **four routes per chapter**:
+Six sections carry lesson content, and they do **not** all have the same shape.
+Check the section's tree module before assuming:
+
+| section | routes per chapter | curriculum type |
+|---|---|---|
+| `AIDeveloper`, `PublicDataViz`, `tourOfPython`, `spaceshipCaptain` | goal / goal_slide / task / task_slide | flat `Lesson[]` |
+| `Algorithm` | `goal/page.mdx` + `task/page.mdx` only — no slides | flat `Lesson[]` |
+| `simpleWebDev` | one `page.mdx` per chapter | `Part[]` of `{ name, lessons }` |
+
+`simpleWebDev` (32강, Streamlit) is the odd one out on purpose, and its
+curriculum header says why: Piston runs pure Python only, so Streamlit apps are
+never judged, which removes the reason to split 개념/실습 into separate routes.
+Its chapters are grouped into 부 (parts), so the sidebar has one folder per part
+rather than one per chapter.
+
+The four sections that do share the shape use the same **four routes per
+chapter**:
 
 ```
 app/<section>/<slug>/goal/page.mdx        개념 — 학습 목표
@@ -180,6 +196,14 @@ Prop shapes that are easy to get wrong (check the component, don't guess):
   rule above.
 - `<Callout type="goal" | "analogy" | "tip" | "important" | "note">` — the
   heading text lives in the MDX body, the component only tints the box.
+- `<NyangSpeech mood="WELCOME" | "TEACH" | "ASK" | …>` — the avatar's
+  expression. `components/mdx/nyangMood.ts` documents which mood belongs on
+  which kind of line and holds the R2 URLs; omitting `mood` falls back to the
+  default face.
+
+Every `.mdx` route renders through `mdx-components.tsx`, which maps the base
+elements (headings, lists, code, tables) to the hand-drawn doodle style. Style a
+lesson by using those elements, not by adding per-page classes.
 
 The `lesson-converter` agent exists for converting a legacy single-page chapter
 into this shape.
@@ -251,6 +275,8 @@ Optional: `TOKEN_MAX_AGE_HOURS` (default `6`) sets the auth-token lifetime in ho
 
 Optional (must be set together to enable): `PHONE_ENC_KEY` + `PHONE_INDEX_KEY` turn on reversible encryption of the student phone number at rest (`app/lib/auth/phoneCrypto.ts`). `PHONE_ENC_KEY` is a 32-byte AES-256 key as base64 or 64 hex chars; `PHONE_INDEX_KEY` is any non-empty HMAC secret used to build the searchable blind index login queries by. **Opt-in and dual-mode**: with the keys unset the number is stored/read as plaintext exactly as before, so deploying changes nothing until you set the keys AND run `scripts/migrate-phone-encryption.mjs` (which encrypts existing rows and adds their blind index). During migration the app reads both legacy-plaintext and encrypted rows, so the safe order is: set keys → deploy → migrate. Losing `PHONE_ENC_KEY` makes stored numbers unrecoverable; losing/rotating `PHONE_INDEX_KEY` breaks login lookups until re-migrated — treat both as durable secrets.
 
+Optional rate-limit overrides, all with working defaults — set them only to tune a limit, never to enable one: `LOGIN_MAX_ATTEMPTS_PER_IP` / `LOGIN_MAX_ATTEMPTS_PER_NAME` (10-minute window), `JUDGE_SUBMIT_LIMIT_PER_MIN` (default 20), `JUDGE_HINT_LIMIT_PER_MIN` (default 10).
+
 `IMAGE_BASE_URL` in `app/lib/r2/utils.ts` switches between the production domain and the R2 dev public URL based on `NODE_ENV`.
 
 ## Architecture
@@ -266,7 +292,15 @@ All database writes go through **Server Actions** (`app/actions/`) which validat
 - `proxy.ts` (Next 16's middleware, Edge runtime) verifies the token **signature** on the gated route matcher using `jose`. It only checks the signature — never merely the cookie's presence — and clears a rejected cookie.
 - Server-side, `validateToken()` (`app/lib/auth/login.ts`) is called in API routes, Server Actions, and via `requireAuth()` (`app/lib/auth/requireAuth.ts`) in the gated section layouts. It verifies the signature with `jsonwebtoken` **and** checks the revocation list (`app/lib/mongo/revocation.ts`): a deleted/disabled user's still-valid token is rejected. `deleteStudentAction` calls `revokeUserTokens`.
 
-Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed.
+Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `PublicDataViz`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed. `/dashBoard` is on the proxy matcher but has no layout of its own.
+
+**`Algorithm` and `simpleWebDev` are deliberately ungated** — absent from the proxy matcher, and `app/simpleWebDev/layout.tsx` has no `requireAuth()` on purpose. Adding one would 307 every search visitor to `/login`, and both are in `sitemap.ts` precisely so their chapters are crawlable. If you add a lesson section, decide gating first: gated sections are excluded from the sitemap and disallowed in `robots.ts`.
+
+Both sitemap entries are **derived from the curriculum array**, not listed by hand, so a new chapter becomes crawlable the moment it is declared. Keep it that way — `/simpleWebDev` spent time crawlable-but-unlisted because a stale "it's still a placeholder" comment held it out of the sitemap long after the 32 chapters landed.
+
+`requireAuth()` proves *who* the user is, never *what they may do*. Admin authorization is a separate, per-page check — `app/dashBoard/page.tsx` loads the student and tests `student.role !== "admin"` in the body. Adding an admin page means writing that check again; there is no layout doing it for you.
+
+Login itself is brute-force limited (`app/lib/mongo/authRateLimit.ts`): credentials are name + phone number with no password, so an unthrottled endpoint would let anyone who knows a student's name walk the phone-number space. Only *failed* attempts count and a success clears the counter. Judge submissions and AI hints have their own per-minute caps (`judgeRateLimit.ts`). All of these live in Mongo rather than process memory because Vercel functions share no state.
 
 ### Key Patterns
 
@@ -283,6 +317,8 @@ Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `chat`
 ### Content Routes
 
 MDX is enabled as a page extension (`pageExtensions` includes `md`, `mdx`), so `.mdx` files under `app/` are treated as routes. Remark plugins must be passed as serializable string names (not function refs) because Turbopack serializes the config.
+
+Two plugins are loaded: `remark-gfm`, and `remark-cjk-friendly` — the latter is not optional here. CommonMark only closes a `**` run when it is right-flanking, and a Korean particle after a closing paren (`**강조(부연)**은`) fails that test, so without the plugin the asterisks render literally. Any bold-next-to-Hangul bug is this.
 
 ### Algorithm Course & Problem Seeds
 
@@ -324,5 +360,7 @@ Problem-solving UI is `/problems` and `/problems/[slug]` (Monaco editor, 실행/
 ### Config Notes
 
 - `reactStrictMode` is **off** — intentional, not a mistake.
-- `dns.setDefaultResultOrder('ipv4first')` is set in `next.config.ts` to avoid IPv6 connection issues with MongoDB Atlas.
+- `dns.setDefaultResultOrder('ipv4first')` is set in `next.config.ts` to avoid IPv6 connection issues with MongoDB Atlas. A second DNS workaround sits next to it, for Windows dev only: Node 24's c-ares can fail to enumerate resolvers when two adapters are active and falls back to `127.0.0.1`, where nothing listens — every `mongodb+srv://` SRV lookup then dies with `ECONNREFUSED`. When that dead default is detected, the real resolvers are read from the OS via PowerShell. If Mongo suddenly can't resolve locally, look here.
+- `htmlLimitedBots` is extended with `Daumoa|NaverBot|kakaotalk-scrap|Yeti`. When `generateMetadata` awaits (e.g. `/problems/[slug]` hitting Mongo), Next streams the shell first and emits meta tags in the body — fine for JS-running bots, useless for the Korean crawlers that drive KakaoTalk link previews and Naver/Daum indexing. It **replaces** Next's default list, so the default pattern is spliced back in from an internal import guarded by a fallback.
+- `optimizePackageImports` rewrites barrel imports (`lucide-react`, Radix, `date-fns`) to per-module ones so a route bundles only the icons it uses.
 - MongoDB (`app/lib/mongo/db.ts`) connects to the `yipDB` database with a shared client pool (`attachDatabasePool` from `@vercel/functions`, cached on `global` in dev). Stable API `strict` stays **false** on purpose — Atlas Search/Vector Search commands (`createSearchIndex`, `$vectorSearch`) aren't part of Stable API v1 and the semantic cache depends on them.
