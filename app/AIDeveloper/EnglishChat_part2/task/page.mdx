@@ -27,7 +27,7 @@ export const metadata = {
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿 (`.py` 파일)
 </Callout>
 
-<PackageInstall packages={["streamlit", "google-genai"]} />
+<PackageInstall packages={["streamlit", "google-genai", "python-dotenv"]} />
 
 <Callout type="tip">
   **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
