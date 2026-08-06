@@ -53,11 +53,16 @@ const slides: Slide[] = [
           <p className="text-lg text-gray-600"><strong>목표:</strong> app.py를 만들고 페르소나가 적용된 기본 코드를 작성합니다.</p>
         </div>
         <CodeBlock>
-          {`import streamlit as st
+          {`import os
+import streamlit as st
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="API 키 입력")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 st.title("나의 영어 대화 선생님")
 

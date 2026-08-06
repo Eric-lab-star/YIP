@@ -21,6 +21,8 @@
  *   4.0 에 들어왔고, 5.x 가 현재 유지되는 계열이다.
  * - `pygame-ce` 2.5.3 — 우주선 선장 만들기 1강의 `pyproject.toml` 에 적힌 값과
  *   같은 값이다.
+ * - `python-dotenv` 1.0 — 교재가 쓰는 `load_dotenv()` 는 0.x 에도 있으므로 API
+ *   때문에 올린 하한이 아니다. 1.x 가 현재 유지되는 계열이라 맞춘 것이다.
  *
  * PyPI 최신 버전 확인 시점: 2026-07-31.
  */
@@ -94,6 +96,13 @@ export const PYTHON_PACKAGES = {
     what: "제미나이 API 부르기",
     check:
       "from importlib.metadata import version; print(version('google-genai'))",
+  },
+  "python-dotenv": {
+    pip: "python-dotenv",
+    min: "1.0",
+    what: "API 키를 `.env` 파일에서 읽어오기",
+    check:
+      "from importlib.metadata import version; print(version('python-dotenv'))",
   },
   chromadb: {
     pip: "chromadb",

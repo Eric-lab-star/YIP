@@ -12,7 +12,7 @@ export const metadata = {
 
 # 블로그 앱 실습 (2부) — 글과 그림 합치기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 지난 시간 만든 **글 생성 기능**에
   **이미지 생성**을 합쳐서 완성형 블로그 앱을 만들어볼 거다냥. 미션 1로 표지 이미지를
   먼저 만들고, 미션 2에서 하나의 Streamlit 앱으로 통합해보자냥. 천천히, 즐겁게 가보자냥!
@@ -28,6 +28,12 @@ export const metadata = {
 </Callout>
 
 <PackageInstall packages={["streamlit", "google-genai"]} />
+
+<Callout type="tip">
+  **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+
+  설치할 때는 **`google-genai`**로 깔고, 코드에서는 **`from google import genai`**라고 쓴다냥. 이름이 달라서 헷갈리기 쉬우니 주의하자냥!
+</Callout>
 
 <Callout type="important">
   **오늘 쓰는 이미지 모델은 일반 API 키로도 잘 작동한다냥!**
@@ -261,7 +267,7 @@ if st.button("블로그 글 생성하기"):
 
 </StepCard>
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 주제에서 이미지 묘사를 뽑아내고, **진짜 표지 이미지**까지 그리기

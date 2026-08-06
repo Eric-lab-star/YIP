@@ -6,28 +6,44 @@ import { StepCard } from '@/components/mdx/StepCard'
 
 export const metadata = {
   title: '수학 봇 실습 (2부) — 사진을 읽고 풀이 만들기',
-  description: '수학 문제 사진을 제미나이에 전달해 문제를 인식하고, 단계별 풀이를 생성하는 핵심 기능을 직접 완성해보자냥!',
+  description: '수학 문제 사진을 제미나이에 전달해 문제를 인식하고, 단계별 풀이를 생성한 뒤, Streamlit으로 브라우저 화면까지 만들어보자냥!',
   session: 14,
 }
 
 # 수학 봇 실습 (2부) — 사진을 읽고 풀이 만들기
 
-<NyangSpeech>
-  안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 사진 속 수학 문제를 AI에게
-  보여주고 풀이를 받아내는 핵심 기능을 직접 만들어볼 거다냥. 미션 1(사진 인식)을
-  먼저 완성하고, 미션 2(풀이 생성)로 이어가자냥. 천천히, 즐겁게 가보자냥!
+<NyangSpeech mood="WELCOME">
+  안녕, 코딩냥이다냥! 지금부터 약 35~40분 동안, 사진 속 수학 문제를 AI에게
+  보여주고 풀이를 받아내는 핵심 기능을 직접 만들어볼 거다냥. 사진 준비 → 문제 인식
+  → 단계별 풀이까지 만든 다음, 마지막 미션 4에서는 그 풀이를 **브라우저 화면**에
+  띄워볼 거다냥. 천천히, 즐겁게 가보자냥!
 </NyangSpeech>
 
 <Callout type="note">
   **준비물 체크리스트**
 
-  - `google-genai`, `Pillow(PIL)` 패키지 설치 확인
+  - `google-genai`, `Pillow(PIL)`, `python-dotenv`, `streamlit` 패키지 설치 확인
   - 수학 문제 예시 이미지 여러 개 (간단한 사칙연산 ~ 방정식, 난이도별)
   - 10차시 이미지 인식 코드 복습 자료
+  - 3차시 Streamlit 복습 자료 (미션 4에서 쓴다냥)
+  - 제미나이 API 키를 적어둘 **`.env` 파일**
   - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
 </Callout>
 
-<PackageInstall packages={["google-genai", "pillow"]} />
+<PackageInstall packages={["google-genai", "pillow", "streamlit", "python-dotenv"]} />
+
+<Callout type="tip">
+  **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+
+  **설치할 때 이름과 코드에서 쓰는 이름이 다르다냥** — 특히 `Pillow`는 코드에서 `PIL`이라고 쓴다냥!
+
+  | 설치할 때 | 코드에서 쓸 때 |
+  |---|---|
+  | `google-genai` | `from google import genai` |
+  | `Pillow` | `import PIL.Image` |
+  | `python-dotenv` | `from dotenv import load_dotenv` |
+  | `streamlit` | `import streamlit as st` |
+</Callout>
 
 ---
 
@@ -53,13 +69,29 @@ export const metadata = {
 
 이미지를 제미나이에 전달해서, **"무슨 문제인지" 글자로 읽어보게** 만들어볼 거다냥.
 
+<Callout type="important">
+  **먼저 `.env`에 제미나이 키를 넣자냥**
+
+  13차시에서 봇 토큰을 **`.env`라는 비밀 서랍**에 숨기는 법을 배웠지냥? 제미나이 API 키도 **똑같이 소중한 열쇠**라서, 코드에 직접 적으면 안 된다냥.
+
+  오늘 쓸 `.py` 파일과 같은 폴더에 `.env`를 만들고 한 줄 적어두자냥. (`=` 앞뒤에 띄어쓰기 금지라냥!)
+
+  ```text
+  GEMINI_API_KEY=여기에 제미나이 API 키 붙여넣기
+  ```
+</Callout>
+
 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
+import os
+
+from dotenv import load_dotenv
 from google import genai
 import PIL.Image
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()                                                # .env에서 비밀 값을 읽어온다냥
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])  # 서랍에서 키 꺼내기
 
 # 수학 문제 사진 불러오기
 image = PIL.Image.open("math_problem.jpg")
@@ -77,6 +109,12 @@ print("인식된 문제:", response.text)
 
 **직접 해보기**
 실행해서, AI가 사진 속 문제를 글자로 잘 읽어내는지 확인해보자냥. 또렷한 사진과 흐릿한 사진을 **둘 다** 넣어보고 결과가 어떻게 다른지 비교해보자냥!
+
+<Callout type="tip">
+  **`KeyError: 'GEMINI_API_KEY'` 라고 뜨냥?**
+
+  비밀 서랍을 못 찾았다는 뜻이라냥. `.env`가 `.py`와 **같은 폴더**에 있는지, 파일 이름이 정확히 **`.env`**인지, 안에 적은 이름이 **`GEMINI_API_KEY`**로 코드와 똑같은지 확인해보자냥!
+</Callout>
 
 </MissionCard>
 
@@ -132,6 +170,111 @@ AI에게도 **"정답만 말하지 말고, 단계별로 풀이를 보여줘"**�
 
 ---
 
+<MissionCard number={4} title="풀이를 브라우저 화면에 띄우기 " time="10~12분">
+
+지금까지 풀이는 **터미널에 `print`로만** 나왔다냥. 나 혼자 보기엔 괜찮지만, 친구에게 "이거 써봐" 하고 건네주기엔 좀 아쉽지냥?
+
+3차시에서 배운 **Streamlit**을 꺼낼 차례다냥! 사진을 올리면 → 화면에 사진이 뜨고 → 버튼을 누르면 → 풀이가 브라우저에 나타나는 앱을 만들어보자냥.
+
+<Callout type="analogy">
+  **`print`는 나만 보는 연습장, 화면은 모두가 보는 칠판이다냥**
+
+  터미널에 찍힌 풀이는 **코드를 실행한 사람만** 볼 수 있다냥. 연습장에 적은 답 같은 거지냥.
+
+  Streamlit으로 브라우저에 띄우면, 그건 **칠판에 크게 적은 풀이**가 된다냥. 파이썬을 모르는 친구도 사진만 올리면 풀이를 볼 수 있게 되는 거다냥!
+</Callout>
+
+새 파일 **`math_app.py`**를 만들고, 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
+
+```python
+import os
+
+import streamlit as st
+from dotenv import load_dotenv
+from google import genai
+import PIL.Image
+
+load_dotenv()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+st.title("사진으로 푸는 수학 봇")
+st.write("수학 문제 사진을 올리면 AI가 단계별로 풀어준다냥!")
+
+uploaded = st.file_uploader("수학 문제 사진을 올려주세요", type=["jpg", "jpeg", "png"])
+
+if uploaded:
+    image = PIL.Image.open(uploaded)          # 올린 파일을 그대로 열 수 있다냥
+    st.image(image, caption="올린 문제 사진")
+
+    if st.button("풀이 보기"):
+        # 미션 3에서 완성한 풀이 프롬프트를 그대로 가져와보세요
+        solve_prompt = ____
+
+        with st.spinner("AI가 문제를 푸는 중..."):
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=[solve_prompt, image],
+            )
+
+        st.write("### AI가 만든 풀이")
+        st.write(response.text)
+        st.warning("AI도 계산 실수를 할 수 있어요. 풀이를 꼭 직접 검토해보세요!")
+```
+
+터미널에서 아래 명령어로 실행하자냥.
+
+```bash
+streamlit run math_app.py
+```
+
+> **확인해보자냥 (빈칸 힌트)**
+> - `solve_prompt = ____` 자리에는 **미션 3에서 완성한 그 프롬프트**를 그대로 넣으면 된다냥! 새로 만들 필요 없다냥.
+> - `solve_prompt = """너는 친절한 수학 선생님이야. ... """` 처럼 따옴표 세 개로 감싼 여러 줄 문자열을 그대로 붙여넣자냥.
+
+> **확인해보자냥 (화면 점검)**
+> - 웹 브라우저가 자동으로 열렸냥?
+> - 사진을 올리면 화면에 **사진이 바로** 보이냥?
+> - **풀이 보기** 버튼을 누르면 잠깐 빙글빙글 돌다가 풀이가 나타나냥?
+
+<StepCard step="구조" title="이 코드가 하는 일을 한 줄씩 보자냥">
+
+| 코드 | 하는 일 |
+|---|---|
+| `st.title` / `st.write` | 화면에 제목과 안내 문구를 띄운다 |
+| `st.file_uploader` | 사용자가 **사진을 올릴 상자**를 만든다 |
+| `PIL.Image.open(uploaded)` | 올린 파일을 **미션 2와 똑같은 이미지**로 연다 |
+| `st.image` | 올린 사진을 화면에 보여준다 |
+| `st.button` | 눌렀을 때만 AI를 부르게 한다 (돈과 시간을 아낀다냥!) |
+| `st.spinner` | 기다리는 동안 "작업 중"을 표시한다 |
+| `st.write(response.text)` | 제미나이의 답변을 화면에 출력한다 |
+
+미션 2·3과 **AI를 부르는 부분은 하나도 안 바뀌었다냥.** `print` 자리에 `st.write`가 들어가고, 파일 이름을 코드에 적는 대신 `st.file_uploader`로 받게 된 것뿐이다냥!
+
+</StepCard>
+
+<Callout type="important">
+  **화면이 안 뜨면 여기부터 확인하자냥**
+
+  - 실행 명령어가 `streamlit run math_app.py`가 맞냥? `python math_app.py`로 실행하면 화면이 **안 뜬다냥!** (3차시에서 배운 그거다냥)
+  - `.env` 파일이 `math_app.py`와 **같은 폴더**에 있냥? 없으면 `KeyError: 'GEMINI_API_KEY'`가 뜬다냥.
+  - `ModuleNotFoundError: No module named 'streamlit'`이 뜨면 `pip install streamlit`을 안 한 거다냥.
+</Callout>
+
+<Callout type="tip">
+  **버튼을 누를 때만 AI를 부르는 이유가 있다냥**
+
+  Streamlit은 화면에서 뭔가 바뀔 때마다 코드를 **처음부터 다시** 실행한다냥. 그래서 `if st.button(...)` 안에 넣지 않으면, 사진을 올리자마자 AI가 불려가고 화면을 조금만 건드려도 또 불려간다냥.
+
+  API 호출은 **공짜가 아니다냥.** "버튼을 눌렀을 때만 실행"은 앱을 만들 때 아주 중요한 습관이다냥!
+</Callout>
+
+**직접 해보기**
+미션 1에서 준비한 사진들을 하나씩 올려보자냥. 이번엔 **파일 이름을 코드에 적지 않아도** 되니까, 여러 장을 훨씬 빠르게 시험해볼 수 있다냥. 옆 친구에게 브라우저를 넘겨주고 직접 사진을 올려보게 해보자냥 — 그게 바로 **앱을 만든다는 것**이다냥!
+
+</MissionCard>
+
+---
+
 <MissionCard number="도전" title="시간이 남는다면? " time="선택">
 
 빠르게 끝낸 친구들을 위한 보너스 미션이다냥!
@@ -139,6 +282,8 @@ AI에게도 **"정답만 말하지 말고, 단계별로 풀이를 보여줘"**�
 - [ ] 일부러 **흐릿한 사진**과 **또렷한 사진**의 인식 결과를 나란히 비교해서 정리해보기
 - [ ] 풀이 프롬프트에 "**그림이나 표로** 설명해줘" 같은 조건을 추가해 결과 비교해보기
 - [ ] 친구가 만든 풀이를 서로 **검토**해보고, AI가 실수한 부분이 있는지 찾아보기
+- [ ] 화면에 `st.selectbox`로 **설명 수준**(초등학생용 / 중학생용 / 고등학생용)을 고르게 만들고, 고른 값을 `solve_prompt`에 넣어보기
+- [ ] 미션 2의 **문제 인식** 결과도 `st.write`로 함께 띄워서, AI가 사진을 제대로 읽었는지 화면에서 바로 확인하게 만들기
 
 > 그리고 한 가지 생각해보자냥 — **"AI 풀이가 틀릴 수도 있다는 점"을 사용자에게 어떻게 알려주면 좋을까냥?** 다음 시간에 봇과 연결할 때 꼭 필요한 고민이다냥!
 
@@ -148,14 +293,16 @@ AI에게도 **"정답만 말하지 말고, 단계별로 풀이를 보여줘"**�
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 수학 문제 **사진 준비**하기
   2. 사진을 제미나이에 전달해 **문제 인식**하기
   3. **단계별 풀이**를 생성하는 프롬프트 완성하기
+  4. Streamlit으로 풀이를 **브라우저 화면**에 띄우기
 
-  까지 해봤다냥! 이제 우리 봇에게 줄 **눈(인식)과 머리(풀이)**가 완성된 거다냥.
-  다음 시간에는 이 능력을 13차시 텔레그램 봇에 **연결**해서, 진짜로 사진을 보내면
-  풀이가 답장으로 오는 **완성형 앱**을 만들어볼 거다냥. 다들 멋지게 해냈다냥 냐옹~
+  까지 해봤다냥! 이제 우리 봇에게 줄 **눈(인식)과 머리(풀이)**에 더해, 누구나 쓸 수
+  있는 **얼굴(화면)**까지 생긴 거다냥. 다음 시간에는 이 능력을 13차시 텔레그램 봇에
+  **연결**해서, 진짜로 사진을 보내면 풀이가 답장으로 오는 **완성형 앱**을 만들어볼
+  거다냥. 다들 멋지게 해냈다냥 냐옹~
 </NyangSpeech>

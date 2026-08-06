@@ -12,7 +12,7 @@ export const metadata = {
 
 # 영어 대화 앱 실습 — 기억하는 선생님 만들기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, 우리만의 **영어 회화 선생님**을
   코드로 만들어볼 거다냥. 먼저 페르소나를 설정해 한 번 대화해보고(미션 2),
   그다음 대화를 기억하며 여러 번 주고받게 만들어볼 거다냥(미션 3). 천천히,
@@ -22,12 +22,13 @@ export const metadata = {
 <Callout type="note">
   **준비물 체크리스트**
 
-  - `google-genai` 패키지 설치 및 **제미나이 API 키** 확인
+  - `google-genai`, `python-dotenv` 패키지 설치 확인
+  - **제미나이 API 키**를 적어둔 `.env` 파일 (13차시에서 배운 방식이라냥!)
   - 빈칸(`____`, `___`)이 포함된 코드 템플릿
   - 대화 예시 시나리오 떠올려보기 (자기소개, 취미, 여행 등)
 </Callout>
 
-<PackageInstall packages={["google-genai"]} />
+<PackageInstall packages={["google-genai", "python-dotenv"]} />
 
 ---
 
@@ -36,18 +37,35 @@ export const metadata = {
 먼저 제미나이를 쓸 준비가 되었는지 확인해보자냥. 패키지가 깔려 있어야 하고, 본인의 **API 키**가 필요하다냥.
 
 ```bash
-pip install google-genai
+pip install google-genai python-dotenv
+```
+
+<Callout type="important">
+  **가상환경 주의냥**
+
+  `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서
+  설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면
+  **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신
+  `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+</Callout>
+
+그리고 13차시에서 배운 대로, **API 키는 코드에 적지 않고 `.env`에 넣어둔다냥.** 오늘 만들 `.py` 파일과 같은 폴더에 `.env`를 만들고 한 줄만 적자냥. (`=` 앞뒤 띄어쓰기 금지라냥!)
+
+```text
+GEMINI_API_KEY=여기에 제미나이 API 키 붙여넣기
 ```
 
 > **확인해보자냥**
-> - `google-genai` 패키지가 설치되었냥?
-> - 본인의 **제미나이 API 키**를 손에 들고 있냥?
+> - `google-genai`, `python-dotenv` 패키지가 설치되었냥?
+> - `.env`가 `.py` 파일과 **같은 폴더**에 있고, 안에 `GEMINI_API_KEY` 한 줄이 적혀 있냥?
 
 <Callout type="important">
   **API 키는 비밀이다냥!**
 
-  API 키는 나만의 열쇠 같은 거라냥. 코드를 친구에게 보여줄 때는 키가 적힌 부분을
-  지우거나 가려주자냥. 다른 사람이 내 키를 함부로 쓰면 안 된다냥!
+  API 키는 나만의 열쇠 같은 거라냥. 코드에 직접 적어두면 코드를 보여주는 순간
+  열쇠까지 같이 넘어간다냥. 그래서 `.env`라는 **비밀 서랍**에 따로 넣어두고,
+  코드에는 `os.environ["GEMINI_API_KEY"]` 라고만 적는 거다냥.
+  **`.env` 파일은 절대 남에게 보내면 안 된다냥!**
 </Callout>
 
 </MissionCard>
@@ -59,10 +77,14 @@ pip install google-genai
 먼저 AI에게 **영어 선생님 역할(페르소나)**을 부여하고, 한 번 대화를 나눠볼 거다냥. 아래 템플릿에서 **빈칸(`____`)을 직접 채워보자냥.**
 
 ```python
+import os
+
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 # 페르소나(시스템 지시)를 직접 작성해보세요
 system_instruction = ____
@@ -149,7 +171,7 @@ while True:
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 제미나이 **환경을 준비**하고

@@ -12,7 +12,7 @@ export const metadata = {
 
 # 환각 실험실 — AI를 안전벨트 채워 길들이기
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, AI의 **환각을 직접 유도**해서
   관찰하고, **프롬프트**와 **RAG**으로 환각을 줄이는 방법을 실험해볼 거다냥.
   마지막엔 친구들과 함께 "우리 앱에 어떤 안전장치를 넣을까냥?" 토론도 해볼 거다냥.
@@ -22,13 +22,25 @@ export const metadata = {
 <Callout type="note">
   **준비물 체크리스트**
 
-  - `google-genai` 패키지 설치 및 **API 키** 확인
+  - `google-genai`, `python-dotenv` 패키지 설치 확인
+  - **API 키**를 적어둔 `.env` 파일 (13차시부터 쓰던 방식 그대로라냥!)
   - 환각 유도용 질문 예시 (존재하지 않는 책/영화/인물처럼 **검증 가능한** 주제)
   - 빈칸이 포함된 코드 템플릿 (`.py` 파일)
   - 모둠 토론용 질문지
 </Callout>
 
-<PackageInstall packages={["google-genai"]} />
+<PackageInstall packages={["google-genai", "python-dotenv"]} />
+
+<Callout type="tip">
+  **가상환경 주의냥** — `.venv` 같은 가상환경을 쓴다면, 터미널 줄 맨 앞에 `(.venv)`가 보이는 상태에서 설치해야 한다냥. 설치는 됐다는데 코드에서 `ModuleNotFoundError`가 뜬다면 **설치한 파이썬과 실행한 파이썬이 다른 것**이라냥. 그럴 땐 `pip` 대신 `python -m pip install ...`로 하면 확실하다냥! (자세한 건 3차시 실습에 있다냥)
+
+  **설치할 때 이름과 코드에서 쓰는 이름이 다르다냥** — 헷갈리기 쉬우니 잘 보자냥.
+
+  | 설치할 때 | 코드에서 쓸 때 |
+  |---|---|
+  | `google-genai` | `from google import genai` |
+  | `python-dotenv` | `from dotenv import load_dotenv` |
+</Callout>
 
 ---
 
@@ -37,9 +49,13 @@ export const metadata = {
 먼저 AI가 **존재하지 않는 것**에 대해 질문받으면 어떻게 반응하는지 직접 관찰해보자냥. 아래 코드를 그대로 실행해보자냥.
 
 ```python
+import os
+
+from dotenv import load_dotenv
 from google import genai
 
-client = genai.Client(api_key="여기에 본인의 제미나이 API 키 입력")
+load_dotenv()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 # 1) 환각을 유도하는 질문 (존재하지 않을 법한 것)
 hallucination_prompt = "2024년에 출판된 책 '용감한 코딩 고양이의 모험'의 줄거리를 알려줘."
@@ -113,7 +129,7 @@ print(client.models.generate_content(model="gemini-3.5-flash", contents=safe_pro
 
 ## ★ 핵심 비유: "안전벨트를 채운 자동차"
 
-<NyangSpeech>
+<NyangSpeech mood="OOPS">
   실습을 하면서 느꼈냥? AI는 정말 편리하지만, 가끔 사고(환각)를 낸다냥.
   그렇다고 안 쓸 수는 없으니, 우리만의 **안전벨트**를 채워주는 거라냥!
 </NyangSpeech>
@@ -136,7 +152,7 @@ print(client.models.generate_content(model="gemini-3.5-flash", contents=safe_pro
 
 ## 함께 정리하기
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   실습을 마무리하면서, 오늘 배운 걸 한 번 더 정리해보자냥. "AI의 답을 더 믿을 수
   있게 만들려면 어떤 방법들이 있었냥?"
 </NyangSpeech>
@@ -174,7 +190,7 @@ print(client.models.generate_content(model="gemini-3.5-flash", contents=safe_pro
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="CELEBRATE">
   오늘 우리는
 
   1. 일부러 **환각을 유도**해서 AI가 지어내는 모습을 관찰하고

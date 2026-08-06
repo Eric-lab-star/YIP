@@ -12,7 +12,7 @@ export const metadata = {
 
 # 책을 챕터로 쪼개기! 청킹과 유사도 검색이 뭐냥?
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 나 코딩냥이다냥! 지난 시간에 우리는 문장을 **벡터(숫자 좌표)**로 바꾸고,
   두 문장이 얼마나 비슷한지 **유사도**로 비교하는 법을 배웠다냥.
   오늘은 한 걸음 더 나아가서, **아주 긴 문서**를 AI에게 참고시키는 방법을 배워볼 거다냥.
@@ -33,7 +33,7 @@ export const metadata = {
 
 ## 1단계 · 잠깐, 책 한 권을 통째로 임베딩해도 되냥? (5분)
 
-<NyangSpeech>
+<NyangSpeech mood="THINK">
   지난 시간에는 짧은 **문장 하나**를 벡터로 바꿔봤지? 그런데 여기서 질문이 하나 생긴다냥.
   "AI에게 참고시킬 자료가 **책 한 권처럼 아주 길다면**, 그 전체를 한 번에
   임베딩해도 괜찮을까냥?" 같이 생각해보자냥.
@@ -54,7 +54,7 @@ export const metadata = {
 
 ## 2단계 · 청킹(Chunking)이 뭐냥? (5~7분)
 
-<NyangSpeech>
+<NyangSpeech mood="TEACH">
   그래서 등장하는 게 바로 **청킹(Chunking)**이다냥! 어려운 말 같지만
   뜻은 아주 간단하다냥. 긴 문서를 **작은 조각(청크)으로 잘게 나누는 작업**이라냥.
 </NyangSpeech>
@@ -113,7 +113,7 @@ export const metadata = {
 
 ## 3단계 · 오늘 만들 것 — "검색기"가 뭐냥? (3분)
 
-<NyangSpeech>
+<NyangSpeech mood="DISCOVER">
   자, 오늘 우리가 직접 만들어볼 건 바로 **"검색기"**다냥. 긴 텍스트를 청크로 나누고,
   각 청크를 임베딩한 다음, 질문과 **가장 유사한 청크**를 찾아내는 도구라냥!
 </NyangSpeech>
@@ -155,7 +155,7 @@ def split_into_chunks(text, chunk_size=200):
 
 ## 오늘 배운 내용 정리
 
-<NyangSpeech>
+<NyangSpeech mood="ASK">
   배운 걸 머릿속에 콕! 박아넣을 시간이다냥. 아래 질문에 먼저 스스로 답해보고,
   "정답 보기"를 눌러서 맞는지 확인해보자냥!
 </NyangSpeech>
@@ -183,7 +183,7 @@ def split_into_chunks(text, chunk_size=200):
 
 ---
 
-<NyangSpeech>
+<NyangSpeech mood="CHEER">
   오늘은 책을 챕터로 쪼개서 책장에 정리하고, 질문에 가장 가까운 챕터를 찾아주는
   **검색의 원리**를 배웠다냥! 이제 실습 페이지에서 직접 **청킹 함수**와
   **검색기**를 만들어볼 차례다냥. 발톱 준비됐냥? 가보자냥~

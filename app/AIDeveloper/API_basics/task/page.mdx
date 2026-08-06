@@ -14,7 +14,7 @@ export const metadata = {
 
 
 
-<NyangSpeech>
+<NyangSpeech mood="WELCOME">
   안녕, 코딩냥이다냥! 지금부터 약 25~30분 동안, **날씨 API**와 **제미나이 API**를
   직접 코드로 연결해볼 거다냥. 빈칸(`____`, `___`)을 채워가며 한 단계씩 가보자냥!
   천천히, 즐겁게 해보자냥
@@ -23,13 +23,62 @@ export const metadata = {
 <Callout type="note">
   **준비물 체크리스트**
 
-  - `requests` 패키지 설치 (`pip install requests`)
-  - `google-genai` 패키지 설치 (`pip install google-genai`)
+  - `requests`, `google-genai` 패키지 설치 확인
   - 선생님이 나눠준 **날씨 API 키**와 **제미나이 API 키** 확인
   - 새 파이썬 파일 (`.py`) 하나 열어두기
 </Callout>
 
 <PackageInstall packages={["requests", "google-genai"]} />
+
+<Callout type="important">
+  **가상환경 주의사항 — 이번 수업에서 딱 한 번만 설명한다냥!**
+
+  앞으로 모든 수업에서 패키지를 깔게 되는데, **가장 많이 겪는 사고가 이거라냥.**
+  분명히 설치했는데 코드를 돌리면 이렇게 나오는 거다냥.
+
+  ```text
+  ModuleNotFoundError: No module named 'requests'
+  ```
+
+  **왜 이러냥?** 컴퓨터에는 파이썬이 여러 개 깔려 있을 수 있다냥. **패키지를 설치한
+  파이썬**과 **코드를 실행한 파이썬**이 서로 다르면, 설치는 성공했는데 코드는 못 찾는
+  일이 벌어진다냥. 서랍 A에 넣어두고 서랍 B를 뒤지는 셈이라냥!
+
+  ### 1. 가상환경을 쓰고 있다면, 먼저 켜져 있는지 보자냥
+
+  `.venv` 같은 가상환경을 쓴다면, 터미널 줄 **맨 앞에 `(.venv)`가 보여야** 한다냥.
+
+  ```text
+  (.venv) C:\Users\나\myproject>
+   ↑ 이게 보이면 가상환경이 켜진 상태라냥!
+  ```
+
+  안 보이면 먼저 켜고 나서 설치하자냥.
+
+  ```bash
+  .venv\Scripts\activate
+  ```
+
+  ### 2. 그래도 안 되면, 이 방법이 가장 확실하다냥
+
+  `pip` 대신 **`python -m pip`**를 쓰면, **"지금 이 파이썬에" 설치하라**는 뜻이 되어서
+  엉뚱한 곳에 깔릴 일이 없다냥.
+
+  ```bash
+  python -m pip install requests google-genai
+  ```
+
+  ### 3. 어디에 깔렸는지 직접 확인해보자냥
+
+  헷갈릴 땐 파이썬에게 직접 물어보면 된다냥.
+
+  ```bash
+  python -c "import sys; print(sys.executable)"
+  ```
+
+  여기 나오는 경로가 **내가 코드를 실행하는 파이썬**이라냥. 이 파이썬으로
+  `python -m pip install`을 하면 100% 맞는 자리에 설치된다냥!
+</Callout>
 
 ---
 
@@ -177,7 +226,7 @@ print(f"\n🐱 코딩냥의 한마디:\n{____}")
 
 ## 오늘의 실습, 정말 잘했다냥!
 
-<NyangSpeech>
+<NyangSpeech mood="WRAP">
   오늘 우리는
 
   1. **날씨 API**로 실시간 날씨 데이터 가져오기

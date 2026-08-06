@@ -151,10 +151,15 @@ const slides: Slide[] = [
     content: (
       <div className="flex flex-col gap-5">
         <CodeBlock>
-          {`from google import genai
+          {`import os
+from dotenv import load_dotenv
+from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="API 키")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 system_instruction = "너는 친절한 영어 회화 선생님이야. \\
 초급 학습자에게 쉬운 단어로 천천히 영어로 말해주고, \\

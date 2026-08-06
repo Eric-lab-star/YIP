@@ -25,14 +25,14 @@ const slides: Slide[] = [
   {
     title: "실습 전 준비 사항",
     bg: "from-yellow-50 to-amber-50",
-    script: `미션을 시작하기 전에 실습 환경을 확인하겠습니다. 첫째, google-genai 패키지가 설치되어 있어야 합니다. 둘째, 본인의 제미나이 API 키가 준비되어 있어야 합니다. 셋째, 대화 예시 시나리오를 미리 떠올려보시기 바랍니다. 자기소개, 취미, 여행 등 영어로 대화할 주제를 하나 정해두면 실습이 더 수월합니다. 모든 준비가 확인되면 첫 번째 미션을 시작하겠습니다.`,
+    script: `미션을 시작하기 전에 실습 환경을 확인하겠습니다. 첫째, google-genai와 python-dotenv 패키지가 설치되어 있어야 합니다. 둘째, 본인의 제미나이 API 키를 13차시에서 배운 대로 점 env 파일에 GEMINI_API_KEY라는 이름으로 적어두어야 합니다. 셋째, 대화 예시 시나리오를 미리 떠올려보시기 바랍니다. 자기소개, 취미, 여행 등 영어로 대화할 주제를 하나 정해두면 실습이 더 수월합니다. 모든 준비가 확인되면 첫 번째 미션을 시작하겠습니다.`,
     content: (
       <div className="flex flex-col gap-6">
         <p className="text-xl text-gray-700">미션을 시작하기 전에 아래 사항을 확인합니다.</p>
         <div className="space-y-4">
           {[
-            { text: "google-genai 패키지가 설치되어 있는가?" },
-            { text: "본인의 제미나이 API 키가 준비되어 있는가?" },
+            { text: "google-genai, python-dotenv 패키지가 설치되어 있는가?" },
+            { text: ".env 파일에 GEMINI_API_KEY 한 줄이 적혀 있는가?" },
             { text: "대화 시나리오를 떠올려보았는가? (자기소개, 취미, 여행 등)" },
           ].map((item, i) => (
             <div key={i} className="bg-white/70 rounded-xl p-5 flex items-center gap-4">
@@ -41,7 +41,7 @@ const slides: Slide[] = [
           ))}
         </div>
         <div className="bg-red-50 rounded-xl p-4 border-l-4 border-red-400">
-          <p className="text-base text-gray-700">API 키는 비밀입니다. 코드를 공유할 때는 키를 반드시 가려주시기 바랍니다.</p>
+          <p className="text-base text-gray-700">API 키는 비밀입니다. 13차시처럼 <code>.env</code>에 넣고, <code>.env</code>는 절대 공유하지 않습니다.</p>
         </div>
       </div>
     ),
@@ -49,18 +49,22 @@ const slides: Slide[] = [
   {
     title: "미션 1: 환경 준비하기 (5분)",
     bg: "from-cyan-50 to-blue-50",
-    script: `첫 번째 미션입니다. 제미나이를 사용할 준비가 되었는지 확인합니다. 터미널에서 pip install google-genai 명령어로 패키지를 설치하시기 바랍니다. 설치가 완료되면, 본인의 API 키가 정상적으로 작동하는지 간단한 테스트를 해보시기 바랍니다. 5분 드리겠습니다.`,
+    script: `첫 번째 미션입니다. 제미나이를 사용할 준비가 되었는지 확인합니다. 터미널에서 pip install google-genai python-dotenv 명령어로 패키지 두 개를 설치하시기 바랍니다. 그다음, 13차시에서 배운 대로 파이 파일과 같은 폴더에 점 env 파일을 만들고 GEMINI_API_KEY 등호 그리고 본인의 키를 한 줄로 적습니다. 등호 앞뒤에 띄어쓰기를 넣으면 안 됩니다. 코드에는 키를 직접 적지 않습니다. 5분 드리겠습니다.`,
     content: (
       <div className="flex flex-col gap-6">
         <div className="bg-white/60 rounded-xl p-4">
-          <p className="text-lg text-gray-600"><strong>목표:</strong> 제미나이 패키지 설치 및 API 키 동작 확인</p>
+          <p className="text-lg text-gray-600"><strong>목표:</strong> 패키지 설치 + API 키를 <code>.env</code>에 넣기</p>
         </div>
-        <CodeBlock>{`pip install google-genai`}</CodeBlock>
+        <CodeBlock>{`pip install google-genai python-dotenv`}</CodeBlock>
+        <div className="bg-white/70 rounded-xl p-4">
+          <p className="text-base text-gray-600"><strong>.env</strong> 파일을 <strong>.py와 같은 폴더</strong>에 만들고 한 줄 작성:</p>
+        </div>
+        <CodeBlock>{`GEMINI_API_KEY=본인의 제미나이 API 키`}</CodeBlock>
         <div className="bg-white/70 rounded-xl p-5 space-y-3">
           <p className="font-semibold text-lg text-gray-800">확인 사항</p>
           <ul className="text-lg text-gray-600 space-y-2">
-            <li>• google-genai 패키지가 설치되었는가?</li>
-            <li>• 본인의 제미나이 API 키를 확보했는가?</li>
+            <li>• google-genai, python-dotenv 패키지가 설치되었는가?</li>
+            <li>• .env가 .py와 같은 폴더에 있고, = 앞뒤 띄어쓰기가 없는가?</li>
           </ul>
         </div>
       </div>
@@ -94,10 +98,15 @@ const slides: Slide[] = [
           <p className="text-lg text-gray-600"><strong>목표:</strong> 페르소나를 설정하고 AI와 한 번 대화합니다.</p>
         </div>
         <CodeBlock>
-          {`from google import genai
+          {`import os
+from dotenv import load_dotenv
+from google import genai
 from google.genai import types
 
-client = genai.Client(api_key="API 키 입력")
+load_dotenv()
+client = genai.Client(
+    api_key=os.environ["GEMINI_API_KEY"]
+)
 
 # 페르소나를 직접 작성해보세요
 system_instruction = ____
