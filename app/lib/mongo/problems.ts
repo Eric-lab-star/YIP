@@ -17,6 +17,8 @@ export interface Problem {
 	/** Markdown problem statement. */
 	description: string;
 	difficulty: Difficulty;
+	/** 소속 주제의 slug (`topics` 컬렉션). 미분류면 없음. */
+	topicSlug?: string;
 	/** Allowed language slugs (must exist in the judge language registry). */
 	languages: string[];
 	/** Per-language starter code, keyed by language slug. */
@@ -109,6 +111,26 @@ export async function updateProblem(
 		if (result.matchedCount === 0) {
 			return { ok: false, error: "not found" };
 		}
+		return { ok: true };
+	} catch (e) {
+		return { ok: false, error: e instanceof Error ? e.message : String(e) };
+	}
+}
+
+/** 문제의 주제만 바꾼다. null 을 주면 미분류로 되돌린다. */
+export async function updateProblemTopic(
+	slug: string,
+	topicSlug: string | null
+): Promise<{ ok: true } | { ok: false; error: string }> {
+	try {
+		const c = await col();
+		const r = await c.updateOne(
+			{ slug },
+			topicSlug
+				? { $set: { topicSlug, updatedAt: new Date() } }
+				: { $unset: { topicSlug: "" }, $set: { updatedAt: new Date() } }
+		);
+		if (r.matchedCount === 0) return { ok: false, error: "not found" };
 		return { ok: true };
 	} catch (e) {
 		return { ok: false, error: e instanceof Error ? e.message : String(e) };

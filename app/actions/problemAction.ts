@@ -46,6 +46,7 @@ function prepare(
 			testcases: p.testcases,
 			timeLimit: p.timeLimit,
 			memoryLimit: p.memoryLimit,
+			topicSlug: p.topicSlug ? p.topicSlug : undefined,
 		},
 	};
 }
