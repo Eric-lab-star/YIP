@@ -68,6 +68,21 @@ const nextConfig: NextConfig = {
 	// directory (e.g. a `npm i prettier` run in the home folder) wins — module
 	// resolution then starts from there, `@import "tailwindcss"` in globals.css
 	// fails to resolve, and every page request hangs on the retry loop.
+	//
+	// This pin alone does NOT recover a project that already hit the bug: on
+	// 16.2.1 the wrong root is baked into the `.next` persistent cache, and
+	// every fix is inert while that cache survives. Measured 2026-08-16 — with
+	// `.next` kept, deleting the stray home files, pinning the root, and
+	// passing `base` to @tailwindcss/postcss each left the failure completely
+	// unchanged; `rm -rf .next` fixed it on the first try. So the recovery step
+	// is `rm -rf .next`, and this pin only keeps it from happening again.
+	//
+	// The failure mode is worth recognising: the retry loop respawns the
+	// `.next/dev/build/postcss.js` worker without bound. One page request took
+	// node from 4 processes to 413 and commit charge from 43% to 96% in six
+	// seconds, which is enough to take the machine down — it reads as a memory
+	// leak, but every process is small and there are hundreds of them.
+	// Upstream: vercel/next.js#92978, fixed by #96159, shipped in 16.3.0.
 	turbopack: { root: import.meta.dirname },
 	reactStrictMode: false,
 	htmlLimitedBots: htmlLimitedBots(),
