@@ -14,9 +14,17 @@ export type ListedProblem = {
 	slug: string;
 	title: string;
 	difficulty: string;
+	/** 소속 주제. 미분류면 없음. */
+	topicSlug?: string;
 };
 
 type ApiProblem = ListedProblem & { solved: boolean };
+// Task 1 의 PublicTopic 과 같은 모양이다. 클라이언트 쪽에 따로 두는 이유는
+// 이 파일이 "use client" 라 mongo 모듈에서 타입을 끌어오면 그 파일의
+// import 사슬(mongodb 드라이버)이 눈에 띄지 않게 따라붙기 때문이다. 타입만
+// 쓰면 컴파일에서 지워지긴 하지만, 경계를 흐리지 않는 쪽을 택한다.
+type ApiTopic = { slug: string; name: string; order: number };
+type ApiResponse = { topics: ApiTopic[]; problems: ApiProblem[] };
 
 const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 	easy: { label: "쉬움", tone: "bg-green-600 text-white" },
@@ -27,7 +35,7 @@ const DIFFICULTY: Record<string, { label: string; tone: string }> = {
 /** Teaching order, hardest last. Anything unrecognised sorts after these. */
 const DIFFICULTY_ORDER = ["easy", "medium", "hard"];
 
-async function fetcher(url: string): Promise<ApiProblem[]> {
+async function fetcher(url: string): Promise<ApiResponse> {
 	const res = await fetch(url);
 	if (!res.ok) throw new Error(String(res.status));
 	return res.json();
@@ -108,7 +116,7 @@ export function ProblemRows({ problems }: { problems: ListedProblem[] }) {
 	const data = useProblems();
 
 	const solved = useMemo(
-		() => new Set((data ?? []).filter((p) => p.solved).map((p) => p.slug)),
+		() => new Set((data?.problems ?? []).filter((p) => p.solved).map((p) => p.slug)),
 		[data]
 	);
 
@@ -229,7 +237,7 @@ export function ProblemRows({ problems }: { problems: ListedProblem[] }) {
  */
 export function ClientProblemList() {
 	const data = useProblems();
-	if (!data) {
+	if (!data?.problems) {
 		return (
 			<ul className="flex flex-col divide-y overflow-hidden rounded-md border">
 				{[0, 1, 2].map((i) => (
@@ -238,7 +246,7 @@ export function ClientProblemList() {
 			</ul>
 		);
 	}
-	return <ProblemRows problems={data} />;
+	return <ProblemRows problems={data.problems} />;
 }
 
 /**
