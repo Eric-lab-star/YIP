@@ -364,3 +364,13 @@ Problem-solving UI is `/problems` and `/problems/[slug]` (Monaco editor, 실행/
 - `htmlLimitedBots` is extended with `Daumoa|NaverBot|kakaotalk-scrap|Yeti`. When `generateMetadata` awaits (e.g. `/problems/[slug]` hitting Mongo), Next streams the shell first and emits meta tags in the body — fine for JS-running bots, useless for the Korean crawlers that drive KakaoTalk link previews and Naver/Daum indexing. It **replaces** Next's default list, so the default pattern is spliced back in from an internal import guarded by a fallback.
 - `optimizePackageImports` rewrites barrel imports (`lucide-react`, Radix, `date-fns`) to per-module ones so a route bundles only the icons it uses.
 - MongoDB (`app/lib/mongo/db.ts`) connects to the `yipDB` database with a shared client pool (`attachDatabasePool` from `@vercel/functions`, cached on `global` in dev). Stable API `strict` stays **false** on purpose — Atlas Search/Vector Search commands (`createSearchIndex`, `$vectorSearch`) aren't part of Stable API v1 and the semantic cache depends on them.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
