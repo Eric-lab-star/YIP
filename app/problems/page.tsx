@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { listProblems } from "@/app/lib/mongo/problems";
+import { listTopics } from "@/app/lib/mongo/topics";
 import {
 	ClientProblemList,
 	NewProblemButton,
@@ -28,12 +29,16 @@ export default async function ProblemsPage() {
 	// the same reason. `null` means "could not load here", and the list is
 	// fetched in the browser instead of baking an empty page into the cache.
 	let problems: ListedProblem[] | null = null;
+	let topics: { slug: string; name: string; order: number }[] = [];
 	try {
-		problems = (await listProblems()).map((p) => ({
+		const [ps, ts] = await Promise.all([listProblems(), listTopics()]);
+		problems = ps.map((p) => ({
 			slug: p.slug,
 			title: p.title,
 			difficulty: p.difficulty,
+			topicSlug: p.topicSlug,
 		}));
+		topics = ts;
 	} catch (e) {
 		console.warn("[/problems] could not load problems at render time:", e);
 	}
@@ -50,7 +55,7 @@ export default async function ProblemsPage() {
 			</div>
 
 			{problems ? (
-				<ProblemRows problems={problems} />
+				<ProblemRows problems={problems} topics={topics} />
 			) : (
 				<ClientProblemList />
 			)}

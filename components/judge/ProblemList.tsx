@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useUser from "@/components/SWR/auth/user";
+import { TopicSection } from "@/components/judge/TopicSection";
 
 export type ListedProblem = {
 	slug: string;
@@ -68,7 +69,7 @@ function Rows({
 	solved: Set<string>;
 }) {
 	return (
-		<ul className="flex flex-col divide-y overflow-hidden rounded-md border">
+		<ul className="flex flex-col divide-y">
 			{problems.map((p) => {
 				const d = DIFFICULTY[p.difficulty] ?? { label: p.difficulty, tone: "" };
 				return (
@@ -106,7 +107,13 @@ function Rows({
  * Rendered on the server in the normal case, so the initial state must be the
  * unfiltered list — which is also what a visitor with JS disabled keeps.
  */
-export function ProblemRows({ problems }: { problems: ListedProblem[] }) {
+export function ProblemRows({
+	problems,
+	topics,
+}: {
+	problems: ListedProblem[];
+	topics: ApiTopic[];
+}) {
 	const [query, setQuery] = useState("");
 	const [difficulty, setDifficulty] = useState("all");
 	const [status, setStatus] = useState("all");
@@ -143,6 +150,25 @@ export function ProblemRows({ problems }: { problems: ListedProblem[] }) {
 			return true;
 		});
 	}, [problems, query, difficulty, status, solved]);
+
+	const filterActive = query.trim() !== "" || difficulty !== "all" || status !== "all";
+
+	// 주제 순서대로, 마지막에 미분류. 일치하는 문제가 없는 섹션은 숨긴다.
+	const grouped = useMemo(() => {
+		const byTopic = new Map<string, ListedProblem[]>();
+		for (const p of shown) {
+			const key = p.topicSlug ?? "";
+			const arr = byTopic.get(key);
+			if (arr) arr.push(p);
+			else byTopic.set(key, [p]);
+		}
+		const sections = topics
+			.map((t) => ({ slug: t.slug, name: t.name, items: byTopic.get(t.slug) ?? [] }))
+			.filter((s) => s.items.length > 0);
+		const loose = byTopic.get("") ?? [];
+		if (loose.length) sections.push({ slug: "", name: "미분류", items: loose });
+		return sections;
+	}, [shown, topics]);
 
 	if (problems.length === 0) return EMPTY;
 
@@ -215,7 +241,19 @@ export function ProblemRows({ problems }: { problems: ListedProblem[] }) {
 					조건에 맞는 문제가 없습니다. 검색어나 필터를 바꿔 보세요.
 				</p>
 			) : (
-				<Rows problems={shown} solved={solved} />
+				<div className="flex flex-col gap-2">
+					{grouped.map((s) => (
+						<TopicSection
+							key={s.slug || "__none"}
+							name={s.name}
+							total={s.items.length}
+							solvedCount={s.items.filter((p) => solved.has(p.slug)).length}
+							forceOpen={filterActive}
+						>
+							<Rows problems={s.items} solved={solved} />
+						</TopicSection>
+					))}
+				</div>
 			)}
 		</div>
 	);
@@ -246,7 +284,7 @@ export function ClientProblemList() {
 			</ul>
 		);
 	}
-	return <ProblemRows problems={data.problems} />;
+	return <ProblemRows problems={data.problems} topics={data.topics} />;
 }
 
 /**
