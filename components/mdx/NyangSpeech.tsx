@@ -21,13 +21,22 @@ export function NyangSpeech({
   mood?: NyangMood;
 }) {
   return (
-    <div className="my-7 flex items-start gap-3">
+    <div className="my-7 flex items-start gap-2 sm:gap-3">
+      {/*
+        The avatar is `shrink-0`, so below `sm` it was taking 100px of a 266px
+        content column and leaving the bubble 153px — about 7 Korean characters
+        per line at `text-lg`, which turned the opening speech on
+        MathBot_part2/task into a 985px-tall ribbon at 320px. Halving it here
+        (and trimming the bubble's own padding and type below `sm`) roughly
+        doubles the line length. Stacking would give more room still, but the
+        tail below is positioned to point at the avatar beside it.
+      */}
       <Image
         src={mood ? nyangMoodSrc[mood] : CAT_IMG}
         alt="코딩냥"
         width={100}
         height={100}
-        className="mt-1 shrink-0 rounded-full object-cover"
+        className="mt-1 size-[56px] shrink-0 rounded-full object-cover sm:size-[100px]"
         aria-hidden
       />
       {/*
@@ -38,7 +47,7 @@ export function NyangSpeech({
         shrink, `break-words` splits the chip rather than overflowing.
       */}
       <div
-        className="relative min-w-0 flex-1 px-5 py-4 text-lg leading-[1.8] break-words"
+        className="relative min-w-0 flex-1 px-3 py-3 text-base leading-[1.8] break-words sm:px-5 sm:py-4 sm:text-lg"
         style={{
           ...doodleBoxImage,
           backgroundColor: cream,
