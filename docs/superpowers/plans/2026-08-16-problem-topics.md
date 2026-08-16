@@ -299,7 +299,6 @@ Expected: `new false` / `topics false` / `ok-slug true`
 
 `tsx`가 없으면 `npx tsx`가 받아온다. 그것도 막히면 이 확인은 Task 7 Step 3의
 브라우저 확인으로 미룬다 — **미루더라도 확인 자체를 건너뛰지는 않는다.**
-```
 
 - [ ] **Step 6: 커밋**
 
