@@ -1,7 +1,7 @@
 "use server";
 
 import { validateToken } from "../lib/auth/login";
-import { createProblem, deleteProblem, updateProblem } from "../lib/mongo/problems";
+import { createProblem, deleteProblem, updateProblem, updateProblemTopic } from "../lib/mongo/problems";
 import { isSupportedLanguage } from "../lib/judge0/languages";
 import { problemFormSchema, type ProblemFormInput } from "../lib/zod/problemFormSchema";
 import { revalidatePath } from "next/cache";
@@ -46,6 +46,7 @@ function prepare(
 			testcases: p.testcases,
 			timeLimit: p.timeLimit,
 			memoryLimit: p.memoryLimit,
+			topicSlug: p.topicSlug ? p.topicSlug : undefined,
 		},
 	};
 }
@@ -99,6 +100,14 @@ export async function updateProblemAction(
 				: "문제 수정에 실패했습니다.",
 		};
 	}
+
+	// The mongodb driver defaults to ignoreUndefined: true, so the
+	// `topicSlug: undefined` inside updateProblem's $set above is dropped from
+	// the update document entirely — it neither sets nor unsets the field, so
+	// an existing topicSlug would silently survive clearing it via the form.
+	// updateProblemTopic issues an explicit $unset when passed null, so call
+	// it here as a second write to actually clear (or set) the topic.
+	await updateProblemTopic(originalSlug, prepared.fields.topicSlug || null);
 
 	revalidatePath("/problems");
 	revalidatePath(`/problems/${originalSlug}`);

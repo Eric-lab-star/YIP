@@ -18,11 +18,11 @@ const DIFFICULTY_DOT: Record<string, string> = {
 	hard: "bg-red-500",
 };
 
-const fetcher = (url: string): Promise<ProblemItem[]> =>
+const fetcher = (url: string): Promise<{ problems: ProblemItem[] }> =>
 	fetch(url).then((r) => r.json());
 
 export default function ProblemSidebarList() {
-	const { data, isLoading } = useSWR<ProblemItem[]>("/api/problems", fetcher);
+	const { data, isLoading } = useSWR<{ problems: ProblemItem[] }>("/api/problems", fetcher);
 	const pathname = usePathname();
 
 	if (isLoading) {
@@ -33,7 +33,7 @@ export default function ProblemSidebarList() {
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data?.problems || data.problems.length === 0) {
 		return (
 			<div className="px-4 py-3 text-sm text-muted-foreground">
 				등록된 문제가 없습니다.
@@ -43,7 +43,7 @@ export default function ProblemSidebarList() {
 
 	return (
 		<nav className="flex flex-col">
-			{data.map((p) => {
+			{data.problems.map((p) => {
 				const active = pathname === `/problems/${p.slug}`;
 				return (
 					<Link

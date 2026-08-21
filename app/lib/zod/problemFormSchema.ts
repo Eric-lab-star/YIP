@@ -10,14 +10,24 @@ export const testcaseSchema = z.object({
 	hidden: z.boolean(),
 });
 
+// 정적 라우트가 [slug] 를 이긴다. 이 slug 를 가진 문제는 페이지가 열리지
+// 않으므로 애초에 만들 수 없게 막는다. app/problems/ 아래 정적 세그먼트를
+// 추가하면 여기에도 더해야 한다.
+export const RESERVED_PROBLEM_SLUGS = ["new", "topics"] as const;
+
 export const problemFormSchema = z.object({
 	title: z.string().min(1, "제목을 입력하세요").max(200, "제목이 너무 깁니다"),
 	slug: z
 		.string()
 		.min(1, "slug를 입력하세요")
 		.max(200)
-		.regex(/^[a-z0-9-]+$/, "영문 소문자·숫자·하이픈만 사용하세요"),
+		.regex(/^[a-z0-9-]+$/, "영문 소문자·숫자·하이픈만 사용하세요")
+		.refine((s) => !RESERVED_PROBLEM_SLUGS.includes(s as (typeof RESERVED_PROBLEM_SLUGS)[number]), {
+			message: `예약된 slug 입니다 (${RESERVED_PROBLEM_SLUGS.join(", ")})`,
+		}),
 	difficulty: z.enum(["easy", "medium", "hard"]),
+	/** 빈 문자열은 "주제 없음". 액션에서 undefined 로 바꾼다. */
+	topicSlug: z.string().regex(/^[a-z0-9-]*$/, "주제 slug 형식이 아닙니다").optional(),
 	description: z
 		.string()
 		.min(1, "문제 설명을 입력하세요")
