@@ -288,15 +288,20 @@ export function ClientProblemList() {
 }
 
 /**
- * Admin-only "새 문제" link. Rendered into a slot that already reserves its
- * height, so appearing after the auth check does not shift the page.
+ * Admin-only links. Rendered into a slot that already reserves its height, so
+ * appearing after the auth check does not shift the page.
  */
-export function NewProblemButton() {
+export function ProblemAdminLinks() {
 	const { user } = useUser();
 	if (!(user?.success && user.role === "admin")) return null;
 	return (
-		<Button asChild>
-			<Link href="/problems/new">새 문제</Link>
-		</Button>
+		<div className="flex items-center gap-2">
+			<Button asChild variant="outline">
+				<Link href="/problems/topics">주제 관리</Link>
+			</Button>
+			<Button asChild>
+				<Link href="/problems/new">새 문제</Link>
+			</Button>
+		</div>
 	);
 }
