@@ -1,4 +1,5 @@
 import { validateToken } from "@/app/lib/auth/login";
+import { listTopics } from "@/app/lib/mongo/topics";
 import ProblemForm from "@/components/judge/ProblemForm";
 
 export const dynamic = "force-dynamic";
@@ -11,5 +12,6 @@ export default async function NewProblemPage() {
 	if (auth.role !== "admin") {
 		return <div className="px-4 py-8">권한이 없습니다.</div>;
 	}
-	return <ProblemForm />;
+	const topics = await listTopics();
+	return <ProblemForm topics={topics} />;
 }
