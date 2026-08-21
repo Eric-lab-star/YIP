@@ -42,12 +42,19 @@ function slugify(s: string): string {
 		.slice(0, 200);
 }
 
+// Radix 는 value="" 인 SelectItem 을 거부한다("must have a value prop that is
+// not an empty string"). "주제 없음" 에 센티넬을 쓰고, 폼 값은 계속 "" 로 두어
+// 액션이 undefined 로 정규화하게 한다.
+const NO_TOPIC = "__none";
+
 export default function ProblemForm({
 	mode = "create",
 	initial,
+	topics = [],
 }: {
 	mode?: "create" | "edit";
 	initial?: ProblemFormInput;
+	topics?: { slug: string; name: string }[];
 }) {
 	const router = useRouter();
 	const isEdit = mode === "edit";
@@ -65,6 +72,7 @@ export default function ProblemForm({
 			title: "",
 			slug: "",
 			difficulty: "easy",
+			topicSlug: "",
 			description: "",
 			languages: [],
 			starterCode: {},
@@ -167,6 +175,34 @@ export default function ProblemForm({
 							</Select>
 						)}
 					/>
+				</Field>
+
+				{/* 주제 — 목록 페이지의 섹션이 된다. 비워두면 미분류로 간다. */}
+				<Field data-invalid={!!errors.topicSlug}>
+					<FieldLabel>주제</FieldLabel>
+					<Controller
+						control={control}
+						name="topicSlug"
+						render={({ field }) => (
+							<Select
+								value={field.value ? field.value : NO_TOPIC}
+								onValueChange={(v) => field.onChange(v === NO_TOPIC ? "" : v)}
+							>
+								<SelectTrigger className="w-48" aria-label="주제">
+									<SelectValue placeholder="주제 없음" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value={NO_TOPIC}>주제 없음</SelectItem>
+									{topics.map((t) => (
+										<SelectItem key={t.slug} value={t.slug}>
+											{t.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						)}
+					/>
+					{errors.topicSlug && <FieldError errors={[errors.topicSlug]} />}
 				</Field>
 
 				{/* 설명 (마크다운) */}

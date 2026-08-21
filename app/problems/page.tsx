@@ -3,7 +3,7 @@ import { listProblems } from "@/app/lib/mongo/problems";
 import { listTopics } from "@/app/lib/mongo/topics";
 import {
 	ClientProblemList,
-	NewProblemButton,
+	ProblemAdminLinks,
 	ProblemRows,
 	type ListedProblem,
 } from "@/components/judge/ProblemList";
@@ -51,7 +51,7 @@ export default async function ProblemsPage() {
 			    already looked like. */}
 			<div className="mb-6 flex min-h-9 items-center justify-between">
 				<h1 className="text-2xl font-bold">문제</h1>
-				<NewProblemButton />
+				<ProblemAdminLinks />
 			</div>
 
 			{problems ? (

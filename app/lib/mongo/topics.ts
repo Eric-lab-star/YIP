@@ -112,3 +112,29 @@ export async function deleteTopic(
 		return { ok: false, error: e instanceof Error ? e.message : String(e) };
 	}
 }
+
+/**
+ * 주어진 순서대로 order 를 0..n-1 로 다시 매긴다.
+ *
+ * 이웃끼리 order 를 맞바꾸는 방식은 쓰기가 두 번이라, 사이에서 실패하면 두
+ * 주제가 같은 order 를 갖고 목록 순서가 렌더마다 달라진다. 전체를 한 번의
+ * bulkWrite 로 다시 매기면 그 중간 상태가 없고, 이미 어긋나 있던 order 도
+ * 이 호출로 정리된다.
+ */
+export async function reorderTopics(
+	slugsInOrder: string[]
+): Promise<{ ok: true } | { ok: false; error: string }> {
+	try {
+		if (slugsInOrder.length === 0) return { ok: true };
+		const c = await col();
+		const now = new Date();
+		await c.bulkWrite(
+			slugsInOrder.map((slug, order) => ({
+				updateOne: { filter: { slug }, update: { $set: { order, updatedAt: now } } },
+			}))
+		);
+		return { ok: true };
+	} catch (e) {
+		return { ok: false, error: e instanceof Error ? e.message : String(e) };
+	}
+}
