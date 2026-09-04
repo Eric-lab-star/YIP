@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { Check, Copy } from "lucide-react";
-import { saveWorksheetAction } from "@/app/actions/worksheetAction";
 import { doodleBox, ink, sky } from "./doodle";
 
 export interface WorksheetField {
@@ -86,11 +85,17 @@ export function Worksheet({
 		pending.current = {};
 		if (Object.keys(patch).length === 0) return;
 		setStatus("saving");
-		const r = await saveWorksheetAction(pageId, patch);
-		if (r.success) {
+		try {
+			const res = await fetch("/api/worksheet", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ pageId, answers: patch }),
+			});
+			if (!res.ok) throw new Error(String(res.status));
+			const { savedAt } = (await res.json()) as { savedAt: number };
 			setStatus("saved");
-			setSavedAt(r.savedAt);
-		} else {
+			setSavedAt(savedAt);
+		} catch {
 			// 실패한 칸은 다시 대기열에 넣는다. 다음 타이핑이나 이탈 직전
 			// 저장에서 함께 올라간다 — 조용히 잃는 것보다 낫다.
 			pending.current = { ...patch, ...pending.current };
@@ -202,7 +207,7 @@ export function Worksheet({
 				)}
 				{!isLoading && status === "error" && (
 					<span style={{ color: "#DC2626" }}>
-						저장하지 못했습니다. 인터넷을 확인하고 한 글자 더 써보세요 — 다시 저장을 시도합니다.
+						아직 저장되지 않았습니다. 한 글자 더 쓰면 다시 시도합니다 — 이 글씨가 계속 보이면 새로고침해 주세요.
 					</span>
 				)}
 				{!isLoading && status === "idle" && "쓰는 대로 자동 저장됩니다."}
