@@ -94,6 +94,36 @@ export async function saveWorksheetFields(
 	}
 }
 
+/**
+ * 지정한 칸만 지운다.
+ *
+ * 문서를 통째로 지우지 않는 이유가 있다 — 문서 하나에 페이지의 활동지가 전부
+ * 들어 있어서, 한 블록의 초기화가 다른 블록까지 날리면 안 된다. 그래서
+ * 저장과 같은 점 표기를 쓰고 필드 단위로 `$unset` 한다.
+ *
+ * 값을 빈 문자열로 덮지 않고 키 자체를 없앤다. 교사 화면이 "채워진 칸"을 셀 때
+ * 빈 문자열도 키로는 남아 있어서, 지운 칸과 쓴 적 없는 칸이 구분되지 않는다.
+ */
+export async function clearWorksheetFields(
+	userId: string,
+	pageId: string,
+	fieldIds: string[]
+): Promise<{ ok: true } | { ok: false; error: string }> {
+	try {
+		if (fieldIds.length === 0) return { ok: true };
+		const c = await col();
+		const unset: Record<string, ""> = {};
+		for (const id of fieldIds) unset[`answers.${id}`] = "";
+		await c.updateOne(
+			{ userId, pageId },
+			{ $unset: unset, $set: { updatedAt: new Date() } }
+		);
+		return { ok: true };
+	} catch (e) {
+		return { ok: false, error: e instanceof Error ? e.message : String(e) };
+	}
+}
+
 export interface WorksheetSubmission {
 	userId: string;
 	userName: string;

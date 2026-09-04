@@ -47,3 +47,18 @@ export const worksheetSaveSchema = z.object({
 });
 
 export type WorksheetSaveInput = z.infer<typeof worksheetSaveSchema>;
+
+/**
+ * 초기화 요청. 지울 칸을 **명시적으로** 받는다.
+ *
+ * "이 페이지 전부 지워" 같은 형태를 받지 않는 이유다 — 그런 요청이 한 번
+ * 잘못 나가면 학생이 몇 주 동안 쓴 활동지가 통째로 사라진다. 화면에서 누른
+ * 블록의 칸 목록만 오면, 사고가 나도 그 블록에서 멈춘다.
+ */
+export const worksheetClearSchema = z.object({
+	pageId,
+	fieldIds: z
+		.array(fieldId)
+		.min(1, "지울 칸이 없습니다.")
+		.max(FIELDS_PER_REQUEST_MAX, `한 번에 ${FIELDS_PER_REQUEST_MAX}칸까지 지울 수 있습니다.`),
+});

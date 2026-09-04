@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, RotateCcw } from "lucide-react";
 import { SaveStatusLine, useWorksheetStore } from "./useWorksheetStore";
 import { doodleBox, ink, sky } from "./doodle";
 
@@ -37,11 +37,14 @@ export function Worksheet({
 	fields: WorksheetField[];
 }) {
 	const fieldIds = useMemo(() => fields.map((f) => f.id), [fields]);
-	const { values, setField, status, savedAt, isLoading } = useWorksheetStore(
-		pageId,
-		fieldIds
-	);
+	const { values, setField, clearAll, status, savedAt, isLoading } =
+		useWorksheetStore(pageId, fieldIds);
 	const [copied, setCopied] = useState(false);
+
+	// 초기화는 되돌릴 수 없으니 한 번 더 묻는다. `confirm()` 대신 인라인으로
+	// 묻는 이유는, 브라우저 기본 대화상자가 페이지를 멈춰 세우는 데다 학생이
+	// 습관적으로 확인을 눌러버리기 쉬워서다.
+	const [confirming, setConfirming] = useState(false);
 
 	async function copyAll() {
 		const text = fields
@@ -64,16 +67,56 @@ export function Worksheet({
 						{title}
 					</span>
 				)}
-				<button
-					type="button"
-					onClick={copyAll}
-					className="ml-auto flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
-					style={{ borderColor: sky, color: sky }}
-					aria-label={copied ? "복사됨" : "활동지 전체 복사"}
-				>
-					{copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-					{copied ? "복사됨" : "전체 복사"}
-				</button>
+				<div className="ml-auto flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={copyAll}
+						className="flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
+						style={{ borderColor: sky, color: sky }}
+						aria-label={copied ? "복사됨" : "활동지 전체 복사"}
+					>
+						{copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+						{copied ? "복사됨" : "전체 복사"}
+					</button>
+
+					{confirming ? (
+						<>
+							<span className="text-sm" style={{ color: "#DC2626" }}>
+								이 활동지의 내용을 모두 지울까냥?
+							</span>
+							<button
+								type="button"
+								onClick={async () => {
+									await clearAll();
+									setConfirming(false);
+								}}
+								className="rounded-md px-2 py-1 text-sm font-bold text-white"
+								style={{ backgroundColor: "#DC2626" }}
+							>
+								지우기
+							</button>
+							<button
+								type="button"
+								onClick={() => setConfirming(false)}
+								className="rounded-md border px-2 py-1 text-sm"
+								style={{ borderColor: "#CBD5E1", color: ink }}
+							>
+								취소
+							</button>
+						</>
+					) : (
+						<button
+							type="button"
+							onClick={() => setConfirming(true)}
+							className="flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
+							style={{ borderColor: "#CBD5E1", color: "#6B7280" }}
+							aria-label="이 활동지 초기화"
+						>
+							<RotateCcw className="size-3.5" />
+							초기화
+						</button>
+					)}
+				</div>
 			</div>
 
 			<div className="flex flex-col gap-4">

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import useSWR from "swr";
-import { Check, Copy, Sparkles } from "lucide-react";
+import useSWR, { mutate } from "swr";
+import { Check, Copy, RotateCcw, Sparkles } from "lucide-react";
 import { doodleBox, ink, sky } from "./doodle";
 import {
 	FINAL_PROJECT_PAGE_ID,
@@ -68,6 +68,27 @@ export function PromptComposer() {
 		}
 	}
 
+	/**
+	 * 만들어 둔 프롬프트만 지운다. 1-A·1-B 에 쓴 내용은 건드리지 않는다 —
+	 * 여기서 지우고 싶은 건 "AI가 뱉은 결과"이지 재료가 아니다.
+	 */
+	async function clearGenerated() {
+		setPrompt(null);
+		setSource(null);
+		setNote(null);
+		await fetch("/api/worksheet", {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				pageId: FINAL_PROJECT_PAGE_ID,
+				fieldIds: [GENERATED_PROMPT_FIELD_ID],
+			}),
+		}).catch(() => {});
+		void mutate(
+			`/api/worksheet?pageId=${encodeURIComponent(FINAL_PROJECT_PAGE_ID)}`
+		);
+	}
+
 	async function copy() {
 		if (!shown) return;
 		try {
@@ -126,6 +147,16 @@ export function PromptComposer() {
 						>
 							{copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
 							{copied ? "복사됨" : "복사"}
+						</button>
+						<button
+							type="button"
+							onClick={clearGenerated}
+							className="flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
+							style={{ borderColor: "#CBD5E1", color: "#6B7280" }}
+							aria-label="만든 프롬프트 지우기"
+						>
+							<RotateCcw className="size-3.5" />
+							지우기
 						</button>
 					</div>
 

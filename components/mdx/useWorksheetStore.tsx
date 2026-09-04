@@ -100,6 +100,37 @@ export function useWorksheetStore(pageId: string, fieldIds: string[]) {
 		[flush]
 	);
 
+	/**
+	 * 이 블록의 칸을 모두 지운다.
+	 *
+	 * 대기 중인 저장을 **먼저 버린다.** 안 그러면 디바운스가 남아 있다가 방금
+	 * 지운 칸을 옛날 값으로 되살린다.
+	 */
+	const clearAll = useCallback(async () => {
+		if (timer.current) clearTimeout(timer.current);
+		pending.current = {};
+		setStatus("saving");
+		try {
+			const res = await fetch("/api/worksheet", {
+				method: "DELETE",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ pageId, fieldIds }),
+			});
+			if (!res.ok) throw new Error(String(res.status));
+			setValues(Object.fromEntries(fieldIds.map((id) => [id, ""])));
+			setStatus("saved");
+			setSavedAt(Date.now());
+			void globalMutate(key);
+			return true;
+		} catch {
+			setStatus("error");
+			return false;
+		}
+		// fieldIds 는 매 렌더 새 배열이라 그대로 의존성에 두면 콜백이 계속 바뀐다.
+		// 내용이 같으면 같은 콜백이 되도록 문자열로 비교한다.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pageId, key, fieldKey]);
+
 	// 타이핑하다 바로 탭을 닫으면 디바운스가 아직 안 끝났다. 그 마지막 한 번을
 	// 흘리지 않도록 화면이 숨겨질 때 밀어 넣는다.
 	useEffect(() => {
@@ -116,7 +147,7 @@ export function useWorksheetStore(pageId: string, fieldIds: string[]) {
 		};
 	}, [flush]);
 
-	return { values, setField, status, savedAt, isLoading };
+	return { values, setField, clearAll, status, savedAt, isLoading };
 }
 
 /** 저장 상태 한 줄. 활동지와 프롬프트가 같은 문구를 쓴다. */

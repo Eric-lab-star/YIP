@@ -1,6 +1,13 @@
 import { validateToken } from "@/app/lib/auth/login";
-import { getWorksheet, saveWorksheetFields } from "@/app/lib/mongo/worksheets";
-import { worksheetSaveSchema } from "@/app/lib/zod/worksheetSchema";
+import {
+	clearWorksheetFields,
+	getWorksheet,
+	saveWorksheetFields,
+} from "@/app/lib/mongo/worksheets";
+import {
+	worksheetClearSchema,
+	worksheetSaveSchema,
+} from "@/app/lib/zod/worksheetSchema";
 
 /**
  * 학생 본인의 활동지 답안을 돌려준다.
@@ -85,4 +92,45 @@ export async function POST(req: Request) {
 	// 저장 시각은 서버가 찍는다. 클라이언트 시계로 찍으면 요청이 실패했는데도
 	// 방금 저장된 것처럼 보일 수 있다.
 	return Response.json({ savedAt: Date.now() });
+}
+
+/**
+ * 활동지 한 블록 초기화. 지울 칸을 본문으로 받는다.
+ *
+ * 저장과 마찬가지로 userId 는 토큰에서만 온다 — 남의 답안은 지울 수 없다.
+ * 지울 범위도 요청이 명시한 칸으로 한정된다(`worksheetClearSchema` 주석 참고).
+ */
+export async function DELETE(req: Request) {
+	const auth = await validateToken();
+	if (!auth.success) {
+		return Response.json({ error: "로그인이 필요합니다." }, { status: 401 });
+	}
+
+	let body: unknown;
+	try {
+		body = await req.json();
+	} catch {
+		return Response.json({ error: "잘못된 요청입니다." }, { status: 400 });
+	}
+
+	const parsed = worksheetClearSchema.safeParse(body);
+	if (!parsed.success) {
+		return Response.json(
+			{ error: parsed.error.issues[0]?.message ?? "입력을 확인해 주세요." },
+			{ status: 400 }
+		);
+	}
+
+	const r = await clearWorksheetFields(
+		auth.id,
+		parsed.data.pageId,
+		parsed.data.fieldIds
+	);
+	if (!r.ok) {
+		return Response.json(
+			{ error: "지우지 못했습니다. 잠시 후 다시 시도해 주세요." },
+			{ status: 500 }
+		);
+	}
+	return Response.json({ cleared: parsed.data.fieldIds.length });
 }
