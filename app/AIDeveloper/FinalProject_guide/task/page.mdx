@@ -3,7 +3,7 @@ import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import { PackageInstall } from '@/components/mdx/PackageInstall'
 import { StepCard } from '@/components/mdx/StepCard'
-import { PromptBlock } from '@/components/mdx/PromptBlock'
+import { PromptComposer } from '@/components/mdx/PromptComposer'
 import { WorksheetBlock } from '@/components/mdx/WorksheetBlock'
 
 export const metadata = {
@@ -59,11 +59,13 @@ AI는 나를 모른다냥. 내가 누구인지, 뭘 불편해하는지 알려주
 
 ### 1-B · 발산 — AI에게 아이디어를 넓게 뽑게 하기 (8분)
 
-아래 프롬프트의 **파란 칸을 직접 채우면** 된다냥. 1-A에서 이미 적은 재료 세 줄은 자동으로 들어와 있다냥 — 시간만 채우면 끝이다냥. 다 채웠으면 오른쪽 위 **프롬프트 복사**를 눌러 **제미나이 앱**(코드가 아니라 채팅으로 쓰는 쪽이다냥)에 붙여넣자냥.
+이번엔 프롬프트를 **내가 직접 쓴다냥.** 6차시에서 배운 **역할 · 맥락 · 지시 · 형식** 네 가지를 아래 칸에 하나씩 채워보자냥. 완성된 문장으로 안 써도 된다냥 — 생각나는 대로 적으면 된다냥!
 
-이 프롬프트에는 6차시에서 배운 **역할 · 맥락 · 지시 · 형식** 네 가지가 전부 들어 있다냥. 보내기 전에 어디가 어느 요소인지 한 번 찾아보라냥!
+네 칸을 다 채웠으면, 그 아래 **프롬프트 생성하기** 버튼을 누르면 된다냥. 1-A에 쓴 재료까지 함께 읽어서 **제미나이가 알아듣기 좋은 프롬프트 하나로 합쳐준다냥.** 같은 내용을 두 번 쓸 필요가 없다냥!
 
-<PromptBlock prompt="1-B" />
+<WorksheetBlock block="1-B" />
+
+<PromptComposer />
 
 <Callout type="tip">
   **한 번 묻고 끝내지 말자냥.** 기획은 대화다냥. 답이 시원찮으면 이렇게 이어가면

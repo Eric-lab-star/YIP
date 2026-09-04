@@ -47,6 +47,43 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 		],
 	},
 	{
+		// 6차시의 역할·맥락·지시·형식을 학생이 직접 쓴다. 완성된 프롬프트를
+		// 주고 빈칸만 채우게 하면 네 요소를 "봤다" 로 끝나는데, 직접 쓰면
+		// 그게 연습이 된다. 합치는 일은 아래 프롬프트 생성기가 맡는다.
+		id: "1-B",
+		title: "1-B · 프롬프트의 네 요소 직접 쓰기",
+		fields: [
+			{
+				id: "1b-role",
+				label: "역할 — AI를 누구라고 부를까냥?",
+				hint: "예: 너는 코딩을 처음 배우는 사람을 오래 가르쳐 온 선생님이야",
+				multiline: true,
+				rows: 2,
+			},
+			{
+				id: "1b-context",
+				label: "맥락 — AI가 알아야 할 내 상황은?",
+				hint: "내가 배운 기술, 쓸 수 있는 시간처럼 답이 달라지는 조건을 적자냥",
+				multiline: true,
+				rows: 4,
+			},
+			{
+				id: "1b-instruction",
+				label: "지시 — 무엇을 어떻게 해달라고 할까냥?",
+				hint: "예: 아이디어를 10개 제안해줘 / 흔한 아이디어는 빼줘",
+				multiline: true,
+				rows: 3,
+			},
+			{
+				id: "1b-format",
+				label: "형식 — 어떤 모양으로 받고 싶냥?",
+				hint: "예: 표로. 열은 [번호 | 앱 이름 | 한 줄 설명 | 필요한 기술]",
+				multiline: true,
+				rows: 2,
+			},
+		],
+	},
+	{
 		id: "1-C",
 		title: "1-C · 필터를 통과한 후보 3개",
 		fields: [
@@ -306,58 +343,31 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 ];
 
 /**
- * 빈칸을 그 자리에서 채우는 AI 프롬프트.
+ * 프롬프트 합성기가 읽는 칸의 순서.
  *
- * 템플릿의 `{{필드id}}` 자리에 입력칸이 들어간다. 재료 세 칸은 **1-A 와 같은
- * 필드 id** 를 쓴다 — 학생이 같은 내용을 두 번 쓰지 않게 하려는 것이고, 1-A 를
- * 채우면 이 프롬프트에도 그대로 나타난다.
+ * 1-A(재료)와 1-B(프롬프트 4요소)를 합쳐 하나의 프롬프트를 만든다. 서버가
+ * 라벨까지 함께 읽어야 학생이 무슨 뜻으로 쓴 칸인지 알 수 있으므로, 화면과
+ * 서버가 이 목록 하나를 공유한다.
  */
-export interface PromptDef {
-	id: string;
-	title: string;
-	template: string;
-	fields: WorksheetField[];
-}
+export const PROMPT_SOURCE_FIELD_IDS = [
+	"1a-trouble",
+	"1a-interest",
+	"1a-who",
+	"1b-role",
+	"1b-context",
+	"1b-instruction",
+	"1b-format",
+] as const;
 
-export const FINAL_PROJECT_PROMPTS: PromptDef[] = [
-	{
-		id: '1-B',
-		title: '1-B · 발산 프롬프트 — 빈칸을 채우고 복사해서 AI에게 보내자냥',
-		fields: [
-			{ id: '1b-time', label: '쓸 수 있는 시간' },
-			{ id: '1a-trouble', label: '평소에 불편했던 일' },
-			{ id: '1a-interest', label: '관심 있는 분야' },
-			{ id: '1a-who', label: '도와주고 싶은 사람' },
-		],
-		template: [
-			'[역할] 너는 코딩을 처음 배우는 사람을 오래 가르쳐 온 선생님이야.',
-			'',
-			'[맥락] 나는 파이썬으로 아래 기술만 배웠어.',
-			'- 제미나이 API로 텍스트 생성하기',
-			'- 이미지 인식 / 이미지 생성',
-			'- Streamlit으로 웹 화면 만들기',
-			'- LangChain으로 도구 연결하기',
-			'- RAG(내가 가진 문서를 검색해서 답하기)',
-			'- 텔레그램 봇으로 메시지 보내기',
-			'',
-			'이 프로젝트에 쓸 수 있는 시간: {{1b-time}}',
-			'',
-			'내가 평소에 불편했던 일: {{1a-trouble}}',
-			'내가 관심 있는 분야: {{1a-interest}}',
-			'도와주고 싶은 사람: {{1a-who}}',
-			'',
-			'[지시] 위 재료를 조합해서 AI 앱 아이디어를 10개 제안해줘.',
-			'- 10개 중 절반 이상은 내가 적은 "불편했던 일"을 해결하는 것으로 해줘.',
-			'- 아주 흔한 아이디어(단순 번역기, 단순 계산기, 단순 챗봇)는 빼줘.',
-			'- 위에 적은 기술 목록 밖의 기술이 필요한 아이디어는 제안하지 마.',
-			'',
-			'[형식] 표로 만들어줘. 열은 [번호 | 앱 이름 | 한 줄 설명 | 필요한 기술].',
-		].join("\n"),
-	},
-];
+/** 합성 결과를 저장하는 칸. 다시 들어와도 만든 프롬프트가 남아 있게 한다. */
+export const GENERATED_PROMPT_FIELD_ID = "1b-generated";
 
-export function getPrompt(id: string): PromptDef | undefined {
-	return FINAL_PROJECT_PROMPTS.find((p) => p.id === id);
+/** 위 id 들의 라벨. 서버 프롬프트에 그대로 실린다. */
+export function promptSourceFields(): WorksheetField[] {
+	const all = FINAL_PROJECT_BLOCKS.flatMap((b) => b.fields);
+	return PROMPT_SOURCE_FIELD_IDS.map(
+		(id) => all.find((f) => f.id === id) ?? { id, label: id }
+	);
 }
 
 export function getWorksheetBlock(id: string): WorksheetBlockDef | undefined {
