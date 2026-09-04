@@ -389,6 +389,54 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 		generatedFieldId: "1b-generated",
 	},
 	{
+		id: "2-A",
+		title: "내 한 줄 설명을 AI가 되묻게 하는 프롬프트 만들기",
+		description:
+			"위에 쓴 한 줄 설명을 읽어서, AI가 **답 대신 질문 3개**를 던지게 하는 프롬프트를 만들어 준다냥. 그 질문에 내가 답해야 내 기획서가 된다냥!",
+		sourceFieldIds: ["2a-draft"],
+		requiredAnyOf: ["2a-draft"],
+		requiredMessage: "2-A에 한 줄 설명 초안을 먼저 적어 주세요.",
+		generatedFieldId: "2a-generated",
+	},
+	{
+		id: "2-B",
+		title: "기능을 쪼개 달라고 하는 프롬프트 만들기",
+		description:
+			"2-A에서 다듬은 한 줄 설명과 내 상황을 읽어서, 필요한 기능을 전부 꺼낸 뒤 필수/선택으로 나눠 달라는 프롬프트를 만들어 준다냥.",
+		sourceFieldIds: ["2a-final", "2a-draft", "1a-who", "1b-context"],
+		requiredAnyOf: ["2a-final", "2a-draft"],
+		requiredMessage: "2-A의 한 줄 설명을 먼저 적어 주세요.",
+		generatedFieldId: "2b-generated",
+	},
+	{
+		id: "2-C",
+		title: "핵심 기능에 기술을 짝지어 달라는 프롬프트 만들기",
+		description:
+			"2-B에서 정한 핵심 기능을 읽어서, 배운 기술 안에서만 짝지어 달라는 프롬프트를 만들어 준다냥. 울타리는 자동으로 들어간다냥!",
+		sourceFieldIds: ["2a-final", "2b-p1", "2b-p2", "2b-p3", "1b-context"],
+		requiredAnyOf: ["2b-p1", "2b-p2", "2b-p3"],
+		requiredMessage: "2-B에 핵심 기능을 먼저 적어 주세요.",
+		generatedFieldId: "2c-generated",
+	},
+	{
+		id: "2-E",
+		title: "내 계획의 위험을 짚어 달라는 프롬프트 만들기",
+		description:
+			"지금까지 쓴 앱·기능·기술·상황을 읽어서, 어디서 넘어질지 미리 짚어 달라는 프롬프트를 만들어 준다냥.",
+		sourceFieldIds: [
+			"2a-final",
+			"2b-p1",
+			"2b-p2",
+			"2b-p3",
+			"2f-stack",
+			"1b-context",
+		],
+		requiredAnyOf: ["2a-final", "2b-p1"],
+		requiredMessage:
+			"2-A의 한 줄 설명이나 2-B의 핵심 기능을 먼저 적어 주세요.",
+		generatedFieldId: "2e-generated",
+	},
+	{
 		id: "1-D",
 		title: "1-C의 후보 3개로 비교 프롬프트 만들기",
 		description:
