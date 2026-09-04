@@ -133,16 +133,34 @@ export interface WorksheetSubmission {
 	filledCount: number;
 }
 
-/** 한 페이지의 제출 현황. 교사(관리자) 화면 전용. */
-export async function listWorksheets(pageId: string): Promise<WorksheetSubmission[]> {
+/**
+ * 한 페이지의 제출 현황. 교사(관리자) 화면 전용.
+ *
+ * `countable` 은 "몇 칸 중 몇 칸"의 분모가 되는 필드 목록이다. 넘기지 않으면
+ * 저장된 키를 전부 센다.
+ *
+ * 이걸 받는 이유가 있다 — 문서에는 학생이 채운 활동지 칸 말고도 AI 가 만들어 준
+ * 프롬프트(`*-generated`)가 함께 들어 있다. 그냥 다 세면 분자에는 그것들이
+ * 포함되는데 분모(활동지 칸 수)에는 없어서, 프롬프트를 만든 학생이 "78 / 72칸"
+ * 처럼 말이 안 되는 숫자로 보인다.
+ */
+export async function listWorksheets(
+	pageId: string,
+	countable?: readonly string[]
+): Promise<WorksheetSubmission[]> {
 	const c = await col();
 	const docs = await c.find({ pageId }).sort({ updatedAt: -1 }).toArray();
-	return docs.map((d) => ({
-		userId: d.userId,
-		userName: d.userName ?? "(이름 없음)",
-		answers: d.answers ?? {},
-		updatedAt: d.updatedAt,
-		filledCount: Object.values(d.answers ?? {}).filter((v) => v.trim() !== "")
-			.length,
-	}));
+	const allowed = countable ? new Set(countable) : null;
+	return docs.map((d) => {
+		const answers = d.answers ?? {};
+		return {
+			userId: d.userId,
+			userName: d.userName ?? "(이름 없음)",
+			answers,
+			updatedAt: d.updatedAt,
+			filledCount: Object.entries(answers).filter(
+				([id, v]) => (!allowed || allowed.has(id)) && v.trim() !== ""
+			).length,
+		};
+	});
 }

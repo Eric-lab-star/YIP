@@ -167,6 +167,29 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 		],
 	},
 	{
+		// AI 가 짝지어 준 것을 적어 둘 자리다. 이 칸이 없으면 2-E(위험 점검)와
+		// 2-F(기획서)가 "무슨 기술을 쓰기로 했는지"를 알 수 없어서, 학생이
+		// 채팅창을 다시 뒤져 옮겨 적어야 한다.
+		id: "2-C",
+		title: "2-C · 기능에 짝지은 기술 적어두기",
+		fields: [
+			{
+				id: "2c-stack",
+				label: "기능별로 쓰기로 한 기술",
+				hint: "예: 목차 만들기 → 제미나이 API / 화면 → Streamlit. AI 답을 그대로 베끼지 말고 내가 정한 것만 적자냥",
+				multiline: true,
+				rows: 3,
+			},
+			{
+				id: "2c-rejected",
+				label: "AI가 추천했지만 쓰지 않기로 한 것 (있다면)",
+				hint: "배운 목록에 없어서 뺐다면 그것도 적어두면 발표에서 쓸 수 있다냥",
+				multiline: true,
+				rows: 2,
+			},
+		],
+	},
+	{
 		id: "2-D",
 		title: "2-D · 화면 흐름 — 입력 → 처리 → 출력",
 		fields: [
@@ -224,7 +247,7 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 			{
 				id: "2f-stack",
 				label: "사용할 기술 스택",
-				hint: "제미나이 API / 이미지 인식·생성 / LangChain / RAG / Streamlit / 텔레그램 봇 중에서",
+				hint: "2-C에서 정한 것을 옮겨 적자냥",
 				multiline: true,
 				rows: 2,
 			},
@@ -428,7 +451,7 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 			"2b-p1",
 			"2b-p2",
 			"2b-p3",
-			"2f-stack",
+			"2c-stack",
 			"1b-context",
 		],
 		requiredAnyOf: ["2a-final", "2b-p1"],

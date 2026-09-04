@@ -18,7 +18,12 @@ export default async function WorksheetsPage() {
 	const auth = await validateToken();
 	if (!(auth.success && auth.role === "admin")) redirect("/");
 
-	const submissions = await listWorksheets(FINAL_PROJECT_PAGE_ID);
+	// 분모는 활동지 칸만이다. AI 가 만들어 준 프롬프트까지 세면 분자가 분모를
+	// 넘어선다 — `listWorksheets` 주석 참고.
+	const submissions = await listWorksheets(
+		FINAL_PROJECT_PAGE_ID,
+		ALL_FIELDS.map((f) => f.id)
+	);
 
 	return (
 		<div className="mx-auto w-full max-w-4xl px-4 py-8">
