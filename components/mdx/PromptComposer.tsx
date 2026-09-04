@@ -4,24 +4,25 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Check, Copy, RotateCcw, Sparkles } from "lucide-react";
 import { doodleBox, ink, sky } from "./doodle";
-import {
-	FINAL_PROJECT_PAGE_ID,
-	GENERATED_PROMPT_FIELD_ID,
-} from "@/utils/worksheets/finalProject";
+import { FINAL_PROJECT_PAGE_ID, getRecipe } from "@/utils/worksheets/finalProject";
 
 /**
- * 1-A(재료)와 1-B(네 요소)를 읽어 프롬프트 하나로 합쳐 주는 버튼.
+ * 활동지에 쓴 칸을 읽어 프롬프트 하나로 합쳐 주는 버튼.
  *
- * 학생이 두 곳에 나눠 쓴 것을 손으로 다시 조립하게 하면, 그게 곧 "같은 걸 또
- * 쓰는" 일이 된다. 조립은 기계가 하고 학생은 재료와 네 요소를 쓰는 데만
- * 집중한다.
+ * 학생이 여러 블록에 나눠 쓴 것을 손으로 다시 조립하게 하면, 그게 곧 "같은 걸
+ * 또 쓰는" 일이 된다. 조립은 기계가 하고 학생은 쓰는 데만 집중한다. 무엇을
+ * 읽어 무엇을 만드는지는 레시피가 정한다(`utils/worksheets/finalProject.ts`).
  *
  * 값을 클라이언트에서 모아 보내지 않고 **서버가 저장된 답안을 직접 읽는다.**
  * 화면에 마운트되지 않은 블록(스크롤로 아직 안 지나온 곳)의 값도 함께 써야
  * 하기 때문이고, 보낼 내용을 브라우저가 고르지 않으니 남의 답안을 끼워 넣을
  * 방법도 없다.
  */
-export function PromptComposer() {
+export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
+	const recipe = getRecipe(recipeId);
+	// 훅은 조건 없이 돌아야 하므로, 레시피가 없을 때도 안전한 키를 쓴다.
+	// 실제 오류 표시는 훅을 다 부른 뒤에 한다.
+	const generatedFieldId = recipe?.generatedFieldId ?? "__unknown-recipe";
 	const [prompt, setPrompt] = useState<string | null>(null);
 	const [note, setNote] = useState<string | null>(null);
 	const [source, setSource] = useState<"ai" | "fallback" | null>(null);
@@ -45,14 +46,18 @@ export function PromptComposer() {
 	);
 
 	// 이번에 만든 것이 있으면 그것을, 없으면 저장돼 있던 것을 보여준다.
-	const shown = prompt ?? data?.answers?.[GENERATED_PROMPT_FIELD_ID] ?? null;
+	const shown = prompt ?? data?.answers?.[generatedFieldId] ?? null;
 
 	async function generate() {
 		setBusy(true);
 		setError(null);
 		setNote(null);
 		try {
-			const res = await fetch("/api/worksheet/prompt", { method: "POST" });
+			const res = await fetch("/api/worksheet/prompt", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ recipe: recipeId }),
+			});
 			const data = await res.json();
 			if (!res.ok) {
 				setError(data.error ?? "프롬프트를 만들지 못했습니다.");
@@ -81,7 +86,7 @@ export function PromptComposer() {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				pageId: FINAL_PROJECT_PAGE_ID,
-				fieldIds: [GENERATED_PROMPT_FIELD_ID],
+				fieldIds: [generatedFieldId],
 			}),
 		}).catch(() => {});
 		void mutate(
@@ -100,14 +105,22 @@ export function PromptComposer() {
 		}
 	}
 
+	if (!recipe) {
+		return (
+			<div className="my-7 rounded-md border-2 border-red-400 px-4 py-3 text-red-700">
+				프롬프트 레시피 <code>{recipeId}</code> 을 찾을 수 없습니다. (
+				<code>utils/worksheets/finalProject.ts</code> 확인)
+			</div>
+		);
+	}
+
 	return (
 		<div className="my-7 px-6 py-5" style={{ ...doodleBox, backgroundColor: "#fff" }}>
 			<div className="mb-2 text-lg font-bold" style={{ color: ink }}>
-				1-A와 1-B를 합쳐 프롬프트 만들기
+				{recipe.title}
 			</div>
 			<p className="mb-4 text-base" style={{ color: "#6B7280" }}>
-				위에 쓴 재료(1-A)와 네 요소(1-B)를 읽어서, 제미나이가 알아듣기 좋은 프롬프트
-				하나로 만들어 준다냥. 마음에 안 들면 위를 고치고 다시 누르면 된다냥!
+				{recipe.description}
 			</p>
 
 			<button

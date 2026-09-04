@@ -343,29 +343,79 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 ];
 
 /**
- * 프롬프트 합성기가 읽는 칸의 순서.
+ * 프롬프트 생성 레시피.
  *
- * 1-A(재료)와 1-B(프롬프트 4요소)를 합쳐 하나의 프롬프트를 만든다. 서버가
- * 라벨까지 함께 읽어야 학생이 무슨 뜻으로 쓴 칸인지 알 수 있으므로, 화면과
- * 서버가 이 목록 하나를 공유한다.
+ * 학생이 활동지에 쓴 칸을 읽어 AI 에게 보낼 프롬프트 하나로 합친다. 어떤 칸을
+ * 읽는지·무엇이 최소 조건인지·결과를 어디에 저장하는지를 한곳에 모아, 화면과
+ * 서버가 같은 정의를 본다. 서버가 라벨까지 읽어야 학생이 무슨 뜻으로 쓴 칸인지
+ * 알 수 있으므로 라벨도 여기서 나온다.
+ *
+ * 말투와 지시문(system)은 서버에만 둔다 — 화면이 알 필요가 없고, 바꿔 보낼
+ * 여지도 남기지 않는다.
  */
-export const PROMPT_SOURCE_FIELD_IDS = [
-	"1a-trouble",
-	"1a-interest",
-	"1a-who",
-	"1b-role",
-	"1b-context",
-	"1b-instruction",
-	"1b-format",
-] as const;
+export interface PromptRecipe {
+	id: string;
+	/** 생성기 카드의 제목. */
+	title: string;
+	/** 카드 설명 한 줄. */
+	description: string;
+	/** 합칠 때 읽는 칸. 순서대로 모델에 실린다. */
+	sourceFieldIds: string[];
+	/** 이 중 하나도 안 차 있으면 AI 를 부르지 않는다. */
+	requiredAnyOf: string[];
+	/** 위 조건을 못 채웠을 때 학생에게 보여줄 말. */
+	requiredMessage: string;
+	/** 결과를 저장하는 칸. 다시 들어와도 만든 프롬프트가 남아 있게 한다. */
+	generatedFieldId: string;
+}
 
-/** 합성 결과를 저장하는 칸. 다시 들어와도 만든 프롬프트가 남아 있게 한다. */
-export const GENERATED_PROMPT_FIELD_ID = "1b-generated";
+export const PROMPT_RECIPES: PromptRecipe[] = [
+	{
+		id: "1-B",
+		title: "1-A와 1-B를 합쳐 프롬프트 만들기",
+		description:
+			"위에 쓴 재료(1-A)와 네 요소(1-B)를 읽어서, 제미나이가 알아듣기 좋은 프롬프트 하나로 만들어 준다냥. 마음에 안 들면 위를 고치고 다시 누르면 된다냥!",
+		sourceFieldIds: [
+			"1a-trouble",
+			"1a-interest",
+			"1a-who",
+			"1b-role",
+			"1b-context",
+			"1b-instruction",
+			"1b-format",
+		],
+		requiredAnyOf: ["1b-role", "1b-context", "1b-instruction", "1b-format"],
+		requiredMessage: "1-B의 역할·맥락·지시·형식 중 최소 한 칸은 먼저 채워 주세요.",
+		generatedFieldId: "1b-generated",
+	},
+	{
+		id: "1-D",
+		title: "1-C의 후보 3개로 비교 프롬프트 만들기",
+		description:
+			"1-C에 남긴 후보와 이유를 읽어서, AI에게 셋을 저울질해 달라고 부탁하는 프롬프트를 만들어 준다냥. 1-B에 쓴 내 상황(맥락)도 같이 넣어준다냥!",
+		sourceFieldIds: [
+			"1c-a",
+			"1c-a-why",
+			"1c-b",
+			"1c-b-why",
+			"1c-c",
+			"1c-c-why",
+			"1b-context",
+		],
+		requiredAnyOf: ["1c-a", "1c-b", "1c-c"],
+		requiredMessage: "1-C에 후보를 최소 하나는 먼저 적어 주세요.",
+		generatedFieldId: "1d-generated",
+	},
+];
 
-/** 위 id 들의 라벨. 서버 프롬프트에 그대로 실린다. */
-export function promptSourceFields(): WorksheetField[] {
+export function getRecipe(id: string): PromptRecipe | undefined {
+	return PROMPT_RECIPES.find((r) => r.id === id);
+}
+
+/** 레시피가 읽는 칸들의 라벨. 서버 프롬프트에 그대로 실린다. */
+export function recipeFields(recipe: PromptRecipe): WorksheetField[] {
 	const all = FINAL_PROJECT_BLOCKS.flatMap((b) => b.fields);
-	return PROMPT_SOURCE_FIELD_IDS.map(
+	return recipe.sourceFieldIds.map(
 		(id) => all.find((f) => f.id === id) ?? { id, label: id }
 	);
 }
