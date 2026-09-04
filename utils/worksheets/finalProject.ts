@@ -425,8 +425,23 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 		id: "2-B",
 		title: "기능을 쪼개 달라고 하는 프롬프트 만들기",
 		description:
-			"2-A에서 다듬은 한 줄 설명과 내 상황을 읽어서, 필요한 기능을 전부 꺼낸 뒤 필수/선택으로 나눠 달라는 프롬프트를 만들어 준다냥.",
-		sourceFieldIds: ["2a-final", "2a-draft", "1a-who", "1b-context"],
+			"2-A에서 다듬은 한 줄 설명과 **AI의 질문에 내가 답한 내용**까지 읽어서, 필요한 기능을 전부 꺼낸 뒤 필수/선택으로 나눠 달라는 프롬프트를 만들어 준다냥.",
+		// 질문·답 여섯 칸이 여기 들어가는 이유가 있다. 2-A 의 요점은 한 줄
+		// 설명이 말하지 않은 것을 질문으로 끄집어내는 것인데, 그 답을 다시 한
+		// 줄로 압축하면 방금 건진 구체적인 내용이 떨어져 나간다. 한 줄만
+		// 넘기면 학생이 2-A 에서 한 일이 기능 목록에 반영되지 않는다.
+		sourceFieldIds: [
+			"2a-final",
+			"2a-draft",
+			"2a-q1",
+			"2a-a1",
+			"2a-q2",
+			"2a-a2",
+			"2a-q3",
+			"2a-a3",
+			"1a-who",
+			"1b-context",
+		],
 		requiredAnyOf: ["2a-final", "2a-draft"],
 		requiredMessage: "2-A의 한 줄 설명을 먼저 적어 주세요.",
 		generatedFieldId: "2b-generated",
