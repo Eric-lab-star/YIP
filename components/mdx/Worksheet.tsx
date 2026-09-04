@@ -60,7 +60,7 @@ export function Worksheet({
 	}
 
 	return (
-		<div className="my-7 px-6 py-5" style={{ ...doodleBox, backgroundColor: "#fff" }}>
+		<div className="my-7 px-3 py-5 sm:px-6" style={{ ...doodleBox, backgroundColor: "#fff" }}>
 			<div className="mb-4 flex flex-wrap items-center gap-2">
 				{title && (
 					<span className="text-lg font-bold" style={{ color: ink }}>
