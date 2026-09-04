@@ -1,0 +1,86 @@
+import { Callout } from '@/components/mdx/Callout'
+import { MissionCard } from '@/components/mdx/MissionCard'
+import { NyangSpeech } from '@/components/mdx/NyangSpeech'
+import { StepCard } from '@/components/mdx/StepCard'
+import { WorksheetBlock } from '@/components/mdx/WorksheetBlock'
+import { PartNav } from '@/components/mdx/PartNav'
+
+export const metadata = {
+  title: '최종 프로젝트 · 발표와 회고 — 가게 문을 여는 날',
+  description: '발표를 준비해 시연하고, 1차시부터 걸어온 여정 전체를 되돌아보자냥!',
+  session: 20,
+}
+
+# 발표와 회고 — 가게 문을 여는 날
+
+> 최종 프로젝트 실습 6/6 · 30~32차시
+
+<MissionCard number={8} title="개업식 초청장 준비 — 발표 준비 (30차시)" time="25~30분">
+
+가게를 열기 전, 손님들에게 무엇을 어떤 순서로 보여줄지 정하는 시간이다냥. 너무 많은 걸 보여주려 하지 말고, **가장 자신 있는 부분**을 잘 보여주는 게 중요하다냥!
+
+아래 발표 구성 시트를 채우고, 짝과 **리허설**까지 해보자냥.
+
+<WorksheetBlock block="M8" />
+
+<Callout type="important">
+  **시연 실패를 줄이는 꿀팁!** 시연 때 보여줄 **입력값을 미리 정해두자냥.**
+  잘 동작하는 게 확인된 예시를 준비해두면, 발표 중에 당황할 일이 줄어든다냥!
+</Callout>
+
+</MissionCard>
+
+---
+
+<MissionCard number={9} title="가게 개업식 — 발표하기 (31~32차시)" time="1인 5분 내외">
+
+드디어 그동안 준비한 가게의 **문을 여는 날**이다냥! 내가 만든 것을 친구들에게 보여주고, 다른 친구들의 가게도 둘러보며 많이 배우는 시간이다냥.
+
+- **발표할 때** — 준비한 4가지(문제 → 방법 → 시연 → 배운 점) 순서대로 차분하게 보여주자냥.
+- **들을 때** — 경청하고, 박수 쳐주고, **질문 1개씩** 준비해두자냥.
+- 발표를 들으며 인상 깊었던 점을 메모해두면 회고에 도움이 된다냥.
+
+> 떨려도 괜찮다냥! 여기까지 온 것만으로도 정말 대단한 거다냥. 자신 있게 가보자냥!
+
+</MissionCard>
+
+---
+
+<MissionCard number="회고" title="긴 여정 되돌아보기 (32차시 마무리)" time="10~15분">
+
+1차시부터 32차시까지, 우리는 정말 긴 길을 걸어왔다냥. `.ipynb` → API → Streamlit → LangChain → 프롬프트 → RAG → 응용 앱 → 윤리 → 프로젝트까지! 그 여정 전체를 자랑스러워해도 좋다냥.
+
+아래 최종 회고 시트를 채우며, 나의 성장을 되돌아보자냥.
+
+<WorksheetBlock block="RETRO" />
+
+</MissionCard>
+
+---
+
+## 최종 제출 체크리스트
+
+<StepCard step="제출" title="발표 전, 이것만은 꼭 확인하자냥!">
+
+- [ ] 기획서를 작성하고, 핵심 기능을 1~3개로 정했다.
+- [ ] 기획서를 **내 말로** 썼고, **AI를 어떻게 썼는지** 밝혀 적었다. (2-F)
+- [ ] 핵심 기능이 실제로 **동작**한다. (여러 입력값으로 테스트 완료)
+- [ ] 동료 피드백을 받아 **우선순위가 높은 부분을 반영**했다.
+- [ ] AI 윤리 항목을 점검했다. (예: AI 결과임을 표시했는가?)
+- [ ] 최종본을 **저장/백업**했다.
+- [ ] 발표 구성 시트를 작성하고, **시연 입력값**을 정해뒀다.
+
+</StepCard>
+
+---
+
+## 모두 정말 수고 많았다냥!
+
+<NyangSpeech mood="CELEBRATE">
+  처음 `.ipynb` 파일을 열었던 그 첫날부터 지금까지, 여러분은 정말 긴 여정을
+  걸어왔다냥. 그리고 마침내 **나만의 작은 가게(AI 앱)**를 직접 차려냈다냥!
+  완벽하지 않아도 괜찮다냥 — 스스로 기획하고, 만들고, 보완하고, 발표한 그
+  **과정 전체**가 여러분의 가장 큰 보물이다냥. 정말 자랑스럽다냥, 냐옹~
+</NyangSpeech>
+
+<PartNav prev={{ name: '중간 점검', url: '/AIDeveloper/FinalProject_guide/task/review' }} />
