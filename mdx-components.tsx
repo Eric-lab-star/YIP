@@ -62,15 +62,26 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			</p>
 		),
 
-		a: ({ children, ...props }: ComponentPropsWithoutRef<"a">) => (
-			<a
-				className="underline decoration-2 underline-offset-4"
-				style={{ color: sky, textDecorationColor: sky }}
-				{...props}
-			>
-				{children}
-			</a>
-		),
+		// External links leave the lesson, so they open in a new tab — a learner
+		// following a reference should not lose their place mid-chapter. Internal
+		// links (#anchors, /routes) keep default in-tab navigation. Defaults come
+		// before the spread so an explicit target/rel in the MDX still wins.
+		a: ({ children, href, ...props }: ComponentPropsWithoutRef<"a">) => {
+			const external = /^https?:\/\//.test(href ?? "");
+			return (
+				<a
+					className="underline decoration-2 underline-offset-4"
+					style={{ color: sky, textDecorationColor: sky }}
+					href={href}
+					{...(external
+						? { target: "_blank", rel: "noopener noreferrer" }
+						: {})}
+					{...props}
+				>
+					{children}
+				</a>
+			);
+		},
 
 		strong: ({ children, ...props }: ComponentPropsWithoutRef<"strong">) => (
 			<strong className="font-bold" style={{ color: ink }} {...props}>
