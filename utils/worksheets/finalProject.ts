@@ -148,8 +148,13 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 			{ id: "2a-q3", label: "AI가 던진 질문 3" },
 			{ id: "2a-a3", label: "내 대답 3", multiline: true, rows: 2 },
 			{
+				// 답 세 개를 한 문장으로 압축하는 건 초안을 쓰는 것보다 어렵다 —
+				// 요약은 상위 기술이다. 빈칸만 두면 여기서 막히므로 틀을 준다.
+				// 2-B 가 위의 답변을 직접 읽으니, 이 줄이 거칠어도 뒤가 무너지지
+				// 않는다는 점도 함께 알려서 부담을 덜어준다.
 				id: "2a-final",
 				label: "고쳐 쓴 한 줄 설명",
+				hint: "틀에 끼워보자냥 — [누가] [무엇을 넣으면] [무엇을 받는] 앱. 답 세 개에서 중요한 낱말만 골라 넣으면 된다냥. 매끄럽지 않아도 괜찮다냥!",
 				multiline: true,
 				rows: 2,
 			},
