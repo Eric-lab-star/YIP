@@ -305,6 +305,61 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
 	},
 ];
 
+/**
+ * 빈칸을 그 자리에서 채우는 AI 프롬프트.
+ *
+ * 템플릿의 `{{필드id}}` 자리에 입력칸이 들어간다. 재료 세 칸은 **1-A 와 같은
+ * 필드 id** 를 쓴다 — 학생이 같은 내용을 두 번 쓰지 않게 하려는 것이고, 1-A 를
+ * 채우면 이 프롬프트에도 그대로 나타난다.
+ */
+export interface PromptDef {
+	id: string;
+	title: string;
+	template: string;
+	fields: WorksheetField[];
+}
+
+export const FINAL_PROJECT_PROMPTS: PromptDef[] = [
+	{
+		id: '1-B',
+		title: '1-B · 발산 프롬프트 — 빈칸을 채우고 복사해서 AI에게 보내자냥',
+		fields: [
+			{ id: '1b-time', label: '쓸 수 있는 시간' },
+			{ id: '1a-trouble', label: '평소에 불편했던 일' },
+			{ id: '1a-interest', label: '관심 있는 분야' },
+			{ id: '1a-who', label: '도와주고 싶은 사람' },
+		],
+		template: [
+			'[역할] 너는 코딩을 처음 배우는 사람을 오래 가르쳐 온 선생님이야.',
+			'',
+			'[맥락] 나는 파이썬으로 아래 기술만 배웠어.',
+			'- 제미나이 API로 텍스트 생성하기',
+			'- 이미지 인식 / 이미지 생성',
+			'- Streamlit으로 웹 화면 만들기',
+			'- LangChain으로 도구 연결하기',
+			'- RAG(내가 가진 문서를 검색해서 답하기)',
+			'- 텔레그램 봇으로 메시지 보내기',
+			'',
+			'이 프로젝트에 쓸 수 있는 시간: {{1b-time}}',
+			'',
+			'내가 평소에 불편했던 일: {{1a-trouble}}',
+			'내가 관심 있는 분야: {{1a-interest}}',
+			'도와주고 싶은 사람: {{1a-who}}',
+			'',
+			'[지시] 위 재료를 조합해서 AI 앱 아이디어를 10개 제안해줘.',
+			'- 10개 중 절반 이상은 내가 적은 "불편했던 일"을 해결하는 것으로 해줘.',
+			'- 아주 흔한 아이디어(단순 번역기, 단순 계산기, 단순 챗봇)는 빼줘.',
+			'- 위에 적은 기술 목록 밖의 기술이 필요한 아이디어는 제안하지 마.',
+			'',
+			'[형식] 표로 만들어줘. 열은 [번호 | 앱 이름 | 한 줄 설명 | 필요한 기술].',
+		].join("\n"),
+	},
+];
+
+export function getPrompt(id: string): PromptDef | undefined {
+	return FINAL_PROJECT_PROMPTS.find((p) => p.id === id);
+}
+
 export function getWorksheetBlock(id: string): WorksheetBlockDef | undefined {
 	return FINAL_PROJECT_BLOCKS.find((b) => b.id === id);
 }

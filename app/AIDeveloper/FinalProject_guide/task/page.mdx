@@ -3,6 +3,7 @@ import { MissionCard } from '@/components/mdx/MissionCard'
 import { NyangSpeech } from '@/components/mdx/NyangSpeech'
 import { PackageInstall } from '@/components/mdx/PackageInstall'
 import { StepCard } from '@/components/mdx/StepCard'
+import { PromptBlock } from '@/components/mdx/PromptBlock'
 import { WorksheetBlock } from '@/components/mdx/WorksheetBlock'
 
 export const metadata = {
@@ -58,35 +59,11 @@ AI는 나를 모른다냥. 내가 누구인지, 뭘 불편해하는지 알려주
 
 ### 1-B · 발산 — AI에게 아이디어를 넓게 뽑게 하기 (8분)
 
-이제 1-A에 적은 재료를 아래 프롬프트의 빈칸에 그대로 옮겨 담아 **제미나이 앱**(코드가 아니라 채팅으로 쓰는 쪽이다냥)에 보내보자냥.
+아래 프롬프트의 **파란 칸을 직접 채우면** 된다냥. 1-A에서 이미 적은 재료 세 줄은 자동으로 들어와 있다냥 — 시간만 채우면 끝이다냥. 다 채웠으면 오른쪽 위 **프롬프트 복사**를 눌러 **제미나이 앱**(코드가 아니라 채팅으로 쓰는 쪽이다냥)에 붙여넣자냥.
 
 이 프롬프트에는 6차시에서 배운 **역할 · 맥락 · 지시 · 형식** 네 가지가 전부 들어 있다냥. 보내기 전에 어디가 어느 요소인지 한 번 찾아보라냥!
 
-```text
-[역할] 너는 코딩을 처음 배우는 사람을 오래 가르쳐 온 선생님이야.
-
-[맥락] 나는 파이썬으로 아래 기술만 배웠어.
-- 제미나이 API로 텍스트 생성하기
-- 이미지 인식 / 이미지 생성
-- Streamlit으로 웹 화면 만들기
-- LangChain으로 도구 연결하기
-- RAG(내가 가진 문서를 검색해서 답하기)
-- 텔레그램 봇으로 메시지 보내기
-
-이 프로젝트에 쓸 수 있는 시간: ____________
-(예: 5주 동안 매주 1시간)
-
-내가 평소에 불편했던 일: ____________
-내가 관심 있는 분야: ____________
-도와주고 싶은 사람: ____________
-
-[지시] 위 재료를 조합해서 AI 앱 아이디어를 10개 제안해줘.
-- 10개 중 절반 이상은 내가 적은 "불편했던 일"을 해결하는 것으로 해줘.
-- 아주 흔한 아이디어(단순 번역기, 단순 계산기, 단순 챗봇)는 빼줘.
-- 위에 적은 기술 목록 밖의 기술이 필요한 아이디어는 제안하지 마.
-
-[형식] 표로 만들어줘. 열은 [번호 | 앱 이름 | 한 줄 설명 | 필요한 기술].
-```
+<PromptBlock prompt="1-B" />
 
 <Callout type="tip">
   **한 번 묻고 끝내지 말자냥.** 기획은 대화다냥. 답이 시원찮으면 이렇게 이어가면
