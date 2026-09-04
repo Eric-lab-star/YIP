@@ -17,7 +17,7 @@ export function MissionCard({
   children: ReactNode;
 }) {
   return (
-    <div className="my-8 px-6 py-5" style={{ ...doodleBox }}>
+    <div className="my-8 px-3 py-5 sm:px-6" style={{ ...doodleBox }}>
       <div
         className="-mx-6 -mt-5 mb-4 flex flex-wrap items-center gap-2 rounded-t-[14px] px-6 py-3 text-lg font-bold"
         style={{ backgroundColor: sky, color: "#fff" }}
