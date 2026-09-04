@@ -23,6 +23,8 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 	// 훅은 조건 없이 돌아야 하므로, 레시피가 없을 때도 안전한 키를 쓴다.
 	// 실제 오류 표시는 훅을 다 부른 뒤에 한다.
 	const generatedFieldId = recipe?.generatedFieldId ?? "__unknown-recipe";
+	// 프롬프트냐 결과물이냐에 따라 화면의 말이 전부 달라진다.
+	const isDoc = recipe?.kind === "document";
 	const [prompt, setPrompt] = useState<string | null>(null);
 	const [note, setNote] = useState<string | null>(null);
 	const [source, setSource] = useState<"ai" | "fallback" | null>(null);
@@ -131,7 +133,13 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 				style={{ backgroundColor: sky }}
 			>
 				<Sparkles className="size-4" />
-				{busy ? "만드는 중…" : shown ? "다시 만들기" : "프롬프트 생성하기"}
+				{busy
+					? "만드는 중…"
+					: shown
+						? "다시 만들기"
+						: isDoc
+							? "기획서 정리하기"
+							: "프롬프트 생성하기"}
 			</button>
 
 			{error && (
@@ -144,7 +152,7 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 				<div className="mt-5">
 					<div className="mb-2 flex flex-wrap items-center gap-2">
 						<span className="text-sm font-bold" style={{ color: ink }}>
-							완성된 프롬프트
+							{isDoc ? "정리된 기획서" : "완성된 프롬프트"}
 						</span>
 						{source === "ai" && (
 							<span className="text-xs" style={{ color: "#6B7280" }}>
@@ -156,7 +164,7 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 							onClick={copy}
 							className="ml-auto flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
 							style={{ borderColor: sky, color: sky }}
-							aria-label={copied ? "복사됨" : "완성된 프롬프트 복사"}
+							aria-label={copied ? "복사됨" : isDoc ? "정리된 기획서 복사" : "완성된 프롬프트 복사"}
 						>
 							{copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
 							{copied ? "복사됨" : "복사"}
@@ -166,7 +174,7 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 							onClick={clearGenerated}
 							className="flex items-center gap-1 rounded-md border px-2 py-1 text-sm"
 							style={{ borderColor: "#CBD5E1", color: "#6B7280" }}
-							aria-label="만든 프롬프트 지우기"
+							aria-label={isDoc ? "정리본 지우기" : "만든 프롬프트 지우기"}
 						>
 							<RotateCcw className="size-3.5" />
 							지우기
@@ -192,8 +200,18 @@ export function PromptComposer({ recipe: recipeId }: { recipe: string }) {
 					</pre>
 
 					<p className="mt-2 text-sm" style={{ color: "#6B7280" }}>
-						AI가 다듬은 문장이라도 <strong>보내기 전에 한 번 읽자냥.</strong> 내가 쓰지
-						않은 조건이 끼어 있으면 지우면 된다냥.
+						{isDoc ? (
+							<>
+								이건 <strong>내가 쓴 것을 모아 놓은 것뿐</strong>이다냥. 그대로 붙여넣지
+								말고, 아래 칸에 <strong>내 말로 다시 쓰자냥.</strong> "아직 안 정함"이
+								보이면 그게 아직 남은 숙제다냥!
+							</>
+						) : (
+							<>
+								AI가 다듬은 문장이라도 <strong>보내기 전에 한 번 읽자냥.</strong> 내가
+								쓰지 않은 조건이 끼어 있으면 지우면 된다냥.
+							</>
+						)}
 					</p>
 				</div>
 			)}

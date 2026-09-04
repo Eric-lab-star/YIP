@@ -383,6 +383,15 @@ export const FINAL_PROJECT_BLOCKS: WorksheetBlockDef[] = [
  */
 export interface PromptRecipe {
 	id: string;
+	/**
+	 * 만들어 내는 것의 성격.
+	 *
+	 * `prompt` 는 학생이 복사해서 AI 채팅에 붙여넣을 글이고, `document` 는
+	 * 학생이 읽을 결과물 그 자체다(2-F 의 기획서 정리본). 화면의 말과 서버의
+	 * 지시문이 둘 사이에서 완전히 달라지므로 타입으로 구분한다 — 기획서를
+	 * "완성된 프롬프트"라고 부르면 학생은 그걸 채팅창에 붙여넣는다.
+	 */
+	kind: "prompt" | "document";
 	/** 생성기 카드의 제목. */
 	title: string;
 	/** 카드 설명 한 줄. */
@@ -400,6 +409,7 @@ export interface PromptRecipe {
 export const PROMPT_RECIPES: PromptRecipe[] = [
 	{
 		id: "1-B",
+		kind: "prompt",
 		title: "1-A와 1-B를 합쳐 프롬프트 만들기",
 		description:
 			"위에 쓴 재료(1-A)와 네 요소(1-B)를 읽어서, 제미나이가 알아듣기 좋은 프롬프트 하나로 만들어 준다냥. 마음에 안 들면 위를 고치고 다시 누르면 된다냥!",
@@ -418,6 +428,7 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 	},
 	{
 		id: "2-A",
+		kind: "prompt",
 		title: "내 한 줄 설명을 AI가 되묻게 하는 프롬프트 만들기",
 		description:
 			"위에 쓴 한 줄 설명을 읽어서, AI가 **답 대신 질문 3개**를 던지게 하는 프롬프트를 만들어 준다냥. 그 질문에 내가 답해야 내 기획서가 된다냥!",
@@ -428,6 +439,7 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 	},
 	{
 		id: "2-B",
+		kind: "prompt",
 		title: "기능을 쪼개 달라고 하는 프롬프트 만들기",
 		description:
 			"2-A에서 다듬은 한 줄 설명과 **AI의 질문에 내가 답한 내용**까지 읽어서, 필요한 기능을 전부 꺼낸 뒤 필수/선택으로 나눠 달라는 프롬프트를 만들어 준다냥.",
@@ -453,6 +465,7 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 	},
 	{
 		id: "2-C",
+		kind: "prompt",
 		title: "핵심 기능에 기술을 짝지어 달라는 프롬프트 만들기",
 		description:
 			"2-B에서 정한 핵심 기능을 읽어서, 배운 기술 안에서만 짝지어 달라는 프롬프트를 만들어 준다냥. 울타리는 자동으로 들어간다냥!",
@@ -463,6 +476,7 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 	},
 	{
 		id: "2-E",
+		kind: "prompt",
 		title: "내 계획의 위험을 짚어 달라는 프롬프트 만들기",
 		description:
 			"지금까지 쓴 앱·기능·기술·상황을 읽어서, 어디서 넘어질지 미리 짚어 달라는 프롬프트를 만들어 준다냥.",
@@ -472,6 +486,9 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 			"2b-p2",
 			"2b-p3",
 			"2c-stack",
+			"2d-input",
+			"2d-process",
+			"2d-output",
 			"1b-context",
 		],
 		requiredAnyOf: ["2a-final", "2b-p1"],
@@ -480,7 +497,63 @@ export const PROMPT_RECIPES: PromptRecipe[] = [
 		generatedFieldId: "2e-generated",
 	},
 	{
+		id: "2-D",
+		kind: "prompt",
+		title: "내 화면 흐름을 검토해 달라는 프롬프트 만들기",
+		description:
+			"입력 → 처리 → 출력 세 칸을 읽어서, 빠진 단계가 없는지 AI에게 봐 달라는 프롬프트를 만들어 준다냥.",
+		sourceFieldIds: [
+			"2a-final",
+			"2d-input",
+			"2d-process",
+			"2d-output",
+			"2b-p1",
+			"1b-context",
+		],
+		requiredAnyOf: ["2d-input", "2d-process", "2d-output"],
+		requiredMessage: "2-D의 입력·처리·출력 중 최소 한 칸은 먼저 채워 주세요.",
+		generatedFieldId: "2d-generated",
+	},
+	{
+		// 유일한 document 레시피다. 여기서 나오는 건 채팅창에 붙여넣을 글이
+		// 아니라, 학생이 1-A~2-E 에 흩어 쓴 것을 한자리에 모아 보여주는
+		// 정리본이다. 새로 지어내지 않는 것이 이 레시피의 전부다.
+		id: "2-F",
+		kind: "document",
+		title: "지금까지 쓴 것을 기획서 한 장으로 모으기",
+		description:
+			"1-A부터 2-E까지 쓴 내용을 기획서 모양으로 정리해 준다냥. **새로 지어내지 않고 내가 쓴 것만** 모은다냥 — 빠진 항목은 비었다고 알려주니, 그걸 보고 아래 칸을 내 말로 채우면 된다냥!",
+		sourceFieldIds: [
+			"1e-topic",
+			"1e-reason",
+			"2a-final",
+			"1a-who",
+			"2b-p1",
+			"2b-p2",
+			"2b-p3",
+			"2b-dropped",
+			"2b-dropped-why",
+			"2c-stack",
+			"2c-rejected",
+			"2d-input",
+			"2d-process",
+			"2d-output",
+			"2e-risk1",
+			"2e-plan1",
+			"2e-risk2",
+			"2e-plan2",
+			"2e-risk3",
+			"2e-plan3",
+			"1b-instruction",
+		],
+		requiredAnyOf: ["1e-topic", "2a-final", "2b-p1"],
+		requiredMessage:
+			"1-E의 주제나 2-A의 한 줄 설명, 2-B의 핵심 기능 중 하나는 먼저 적어 주세요.",
+		generatedFieldId: "2f-generated",
+	},
+	{
 		id: "1-D",
+		kind: "prompt",
 		title: "1-C의 후보 3개로 비교 프롬프트 만들기",
 		description:
 			"1-C에 남긴 후보와 이유를 읽어서, AI에게 셋을 저울질해 달라고 부탁하는 프롬프트를 만들어 준다냥. 1-B에 쓴 내 상황(맥락)도 같이 넣어준다냥!",
