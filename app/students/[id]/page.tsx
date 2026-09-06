@@ -13,6 +13,29 @@ import { ObjectId } from "mongodb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+/**
+ * 배정된 교재를 화면에 낼 형태로 정리한다.
+ *
+ * 저장된 값은 배정 시점의 Booklist 스냅샷이라 오래됐을 수 있으므로 제목으로
+ * 다시 조회하고(`resolveBook`), 같은 교재가 두 번 들어 있으면 하나만 남긴다.
+ * 한 학생이 같은 교재를 두 권 듣는 일은 없으므로 중복은 언제나 데이터 사고다 --
+ * 실제로 `Tester` 문서에 `AI Developer` 가 두 번 들어 있었고, 그대로 그리면
+ * 같은 카드가 두 장 나오면서 제목을 key 로 쓰는 React 가 중복 key 를 경고했다.
+ *
+ * 저장 시점의 방어는 `studentSchema` 가 한다. 여기서 한 번 더 거르는 것은 그
+ * 검사가 생기기 전에 저장된 문서가 이미 있기 때문이다.
+ */
+function dedupeBooks<T extends { title: string }>(books: T[]) {
+  const seen = new Set<string>();
+  return books
+    .map((stored) => resolveBook(stored))
+    .filter((book) => {
+      if (seen.has(book.title)) return false;
+      seen.add(book.title);
+      return true;
+    });
+}
+
 /* A wobbly hand-drawn underline; inherits color via `currentColor`. */
 function Squiggle({ className = "" }: { className?: string }) {
   return (
@@ -107,9 +130,7 @@ export default async function Page({
         <SectionHeading icon={BookOpen} label="Books" title="교재" />
         {student.books.length ? (
           <div className="flex flex-col gap-5 space-y-5 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3 xl:grid-cols-4">
-            {student.books.map((stored) => {
-              // 저장된 값은 배정 시점의 스냅샷이라 오래됐을 수 있다.
-              const v = resolveBook(stored);
+            {dedupeBooks(student.books).map((v) => {
               return (
                 <CardImage
                   key={v.title}

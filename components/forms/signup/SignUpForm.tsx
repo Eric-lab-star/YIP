@@ -125,6 +125,11 @@ export default function SignUpForm({
     remove: removeClass,
   } = useFieldArray({ control: form.control, name: "class" });
 
+  // 배열 자체에 붙은 오류는 RHF 버전에 따라 `books.root` 또는 `books` 에
+  // 들어온다. 둘 다 본다.
+  const bookErrors = form.formState.errors.books;
+  const bookListError = bookErrors?.root?.message ?? bookErrors?.message;
+
   async function onSubmit(data: StudentSchema) {
     data.books = data.books.map((v) => {
       const match = Booklist[v.title as keyof typeof Booklist];
@@ -216,6 +221,10 @@ export default function SignUpForm({
                 canRemove={bookFields.length > 1}
               />
             ))}
+            {/* 교재 목록 전체에 걸린 오류(중복 선택)는 어느 행에도 속하지
+                않아서 BookRow 가 그리지 못한다. 여기서 그리지 않으면 저장이
+                조용히 실패한다. */}
+            {bookListError && <FieldError errors={[{ message: bookListError }]} />}
             <div className="flex w-full gap-2">
               <Button
                 variant="default"

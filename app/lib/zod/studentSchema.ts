@@ -24,7 +24,15 @@ const studentSchema = z.object({
 	role: z.enum(["student", "admin"]),
 	class: z.array(classSchema).min(1, "등원 날짜를 최소 한 개 이상 입력하세요."),
 	birthday: z.date(),
-	books: z.array(bookSchema).min(1, "최소 한개 선택하세요.")
+	// 같은 교재를 두 번 배정할 이유가 없다. 막지 않았을 때 실제로 한 학생 문서에
+	// 같은 교재가 두 번 들어갔고, 학생 화면에 같은 카드가 두 장 나왔다.
+	books: z
+		.array(bookSchema)
+		.min(1, "최소 한개 선택하세요.")
+		.refine(
+			(books) => new Set(books.map((b) => b.title)).size === books.length,
+			"같은 교재를 두 번 선택할 수 없습니다."
+		)
 })
 
 
