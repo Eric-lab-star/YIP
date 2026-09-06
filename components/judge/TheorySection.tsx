@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { BookOpen, ChevronDown } from "lucide-react";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
+import { doodleBox, palette } from "@/components/mdx/doodle";
 
 /**
  * 접힌 머리글에 쓸 부제를 본문에서 떼어낸다.
@@ -21,6 +22,11 @@ function splitLeadingHeading(markdown: string): {
 	return { title: m[1], body: markdown.slice(m[0].length) };
 }
 
+// Callout 의 `goal`(학습 목표)과 같은 하늘색 조합이다. 개념 안내라는 뜻이
+// 강의 페이지의 색 약속과 어긋나지 않게 맞췄다.
+const TINT = "#E6F4FB";
+const BORDER = palette.sky;
+
 /**
  * 문제 페이지의 접히는 "개념 정리".
  *
@@ -28,33 +34,66 @@ function splitLeadingHeading(markdown: string): {
  * 학생만 펼쳐 보면 된다. 펼친 채로 두면 이미 아는 학생에게는 문제까지 가는
  * 길이 길어지고, 에디터가 있는 오른쪽 칸과 높이가 크게 어긋난다.
  *
- * 여는 동작과 생김새는 `/problems` 목록의 주제 섹션(`TopicSection`)과 같게 뒀다.
- * 같은 화면군에서 접히는 것이 두 가지 방식으로 열리면 그것부터 배워야 한다.
+ * 처음에는 `/problems` 목록의 주제 섹션과 같은 회색 실선 테두리였는데, 긴 문제
+ * 설명 아래에 놓이니 **눈에 띄지 않아 학생이 그냥 지나쳤다.** 그래서 이 페이지가
+ * 예시 테스트 카드에 쓰는 손그림 상자(`doodleBox`)에 하늘색 톤을 입히고, 제목을
+ * 예시 테스트 제목과 같은 크기로 키우고, 오른쪽에 "펼치기" 를 눌러야 할 것으로
+ * 보이게 뒀다. 접힌 상태가 화면에서 하나의 덩어리로 읽히는 것이 목적이다.
+ *
+ * 펼친 본문은 흰 종이 위에 둔다. 5,000px 넘는 글 전체에 색을 깔면 읽기 힘들다.
  */
 export default function TheorySection({ markdown }: { markdown: string }) {
 	const [open, setOpen] = useState(false);
 	const { title, body } = splitLeadingHeading(markdown);
 
 	return (
-		<section className="mt-10 overflow-hidden rounded-md border">
+		<section
+			className="mt-10 overflow-hidden"
+			style={{ ...doodleBox, borderColor: BORDER }}
+		>
 			<button
 				type="button"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
-				className="flex w-full items-center gap-2 px-4 py-3 text-left hover:bg-accent"
+				className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors"
+				style={{ backgroundColor: TINT }}
 			>
-				<ChevronRight
-					className={`size-4 shrink-0 transition-transform ${open ? "rotate-90" : ""}`}
+				<BookOpen
+					className="size-6 shrink-0"
+					style={{ color: BORDER }}
 					aria-hidden
 				/>
-				<span className="shrink-0 font-medium">개념 정리</span>
-				{title && (
-					<span className="min-w-0 text-sm text-muted-foreground">{title}</span>
-				)}
+
+				<span className="min-w-0 flex-1">
+					<span className="block text-xl leading-tight font-bold">
+						개념 정리
+					</span>
+					{title && (
+						<span className="mt-0.5 block text-sm leading-snug text-muted-foreground">
+							{title}
+						</span>
+					)}
+				</span>
+
+				{/* 펼칠 수 있다는 것을 글자로도 말해 준다. 삼각형만으로는 긴 설명
+				    아래에서 그냥 장식으로 지나간다. */}
+				<span
+					className="flex shrink-0 items-center gap-1 text-sm font-bold"
+					style={{ color: BORDER }}
+				>
+					{open ? "접기" : "펼치기"}
+					<ChevronDown
+						className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
+						aria-hidden
+					/>
+				</span>
 			</button>
 
 			{open && (
-				<div className="border-t px-4 py-5">
+				<div
+					className="px-5 py-6"
+					style={{ borderTop: `2px dashed ${BORDER}` }}
+				>
 					{/* 본문 크기를 문제 설명과 맞춘다. ChatMarkdown 기본값은 채팅
 					    말풍선용이라 제목이 본문과 같은 크기로 나온다.
 
