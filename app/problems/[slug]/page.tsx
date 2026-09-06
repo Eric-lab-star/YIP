@@ -7,6 +7,7 @@ import { getSolvedSlugs } from "@/app/lib/mongo/submissions";
 import { validateToken } from "@/app/lib/auth/login";
 import ChatMarkdown from "@/components/commons/ChatMarkdown";
 import Solver from "@/components/judge/Solver.lazy";
+import TheorySection from "@/components/judge/TheorySection";
 import ProblemAdminControls from "@/components/judge/ProblemAdminControls";
 import { Badge } from "@/components/ui/badge";
 import Squiggle from "@/components/mdx/Squiggle";
@@ -146,6 +147,12 @@ export default async function ProblemPage({
 					content={problem.description}
 					className="text-lg leading-[1.8] [&_h1]:mt-8 [&_h1]:mb-3 [&_h1]:text-2xl [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-lg [&_li]:my-1 [&_p]:my-4"
 				/>
+
+				{/* 개념 정리는 문제 설명과 예시 테스트 사이에 둔다. 문제를 먼저
+				    읽은 뒤 막히면 펼치는 순서이고, 예시를 지나 아래로 밀면
+				    존재를 모른 채 지나간다. 이론이 없는 문제는 아무것도 그리지
+				    않는다. */}
+				{problem.theory && <TheorySection markdown={problem.theory} />}
 
 				<h2 className="mt-10 mb-4 flex items-center gap-3 text-2xl font-bold">
 					<span aria-hidden>🧪</span>
