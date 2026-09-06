@@ -125,6 +125,20 @@ export default function SignUpForm({
     remove: removeClass,
   } = useFieldArray({ control: form.control, name: "class" });
 
+  // 배열 자체에 붙은 오류는 RHF 버전에 따라 `books.root` 또는 `books` 에
+  // 들어온다. 둘 다 본다.
+  const bookErrors = form.formState.errors.books;
+  const bookListError = bookErrors?.root?.message ?? bookErrors?.message;
+
+  // 이미 배정한 교재는 다시 고를 수 없게 한다. `추가` 는 지금까지 무조건
+  // "Tour of Python" 을 붙였기 때문에 두 번 누르면 그 자리에서 중복이
+  // 만들어졌고, 실제로 그렇게 만들어진 학생 문서가 있었다. 이제 아직 고르지
+  // 않은 교재를 붙이고, 남은 교재가 없으면 버튼을 잠근다.
+  const selectedBookTitles = (form.watch("books") ?? []).map((b) => b?.title);
+  const nextUnusedBook = BOOK_TITLES.map(({ value }) => Booklist[value]).find(
+    (book) => !selectedBookTitles.includes(book.title)
+  );
+
   async function onSubmit(data: StudentSchema) {
     data.books = data.books.map((v) => {
       const match = Booklist[v.title as keyof typeof Booklist];
@@ -214,13 +228,19 @@ export default function SignUpForm({
                 control={form.control}
                 onRemove={() => removeBook(index)}
                 canRemove={bookFields.length > 1}
+                selectedTitles={selectedBookTitles}
               />
             ))}
+            {/* 교재 목록 전체에 걸린 오류(중복 선택)는 어느 행에도 속하지
+                않아서 BookRow 가 그리지 못한다. 여기서 그리지 않으면 저장이
+                조용히 실패한다. */}
+            {bookListError && <FieldError errors={[{ message: bookListError }]} />}
             <div className="flex w-full gap-2">
               <Button
                 variant="default"
                 type="button"
-                onClick={() => appendBook(DEFAULT_BOOK)}
+                disabled={!nextUnusedBook}
+                onClick={() => nextUnusedBook && appendBook(nextUnusedBook)}
               >
                 추가
                 <PlusIcon />
@@ -428,11 +448,14 @@ function BookRow({
   control,
   onRemove,
   canRemove,
+  selectedTitles,
 }: {
   index: number;
   control: Control<StudentSchema>;
   onRemove: () => void;
   canRemove: boolean;
+  /** 지금 폼에 들어 있는 모든 교재 제목. 이 행 자신의 값도 포함한다. */
+  selectedTitles: string[];
 }) {
   const showLabel = index === 0;
   return (
@@ -453,7 +476,14 @@ function BookRow({
               </SelectTrigger>
               <SelectContent>
                 {BOOK_TITLES.map(({ value, label }) => (
-                  <SelectItem key={value} value={value}>
+                  <SelectItem
+                    key={value}
+                    value={value}
+                    // 다른 행이 이미 가져간 교재는 고를 수 없다. 이 행이
+                    // 지금 고른 값은 잠그지 않는다 — 잠그면 자기 자신을
+                    // 다시 선택할 수 없어 값이 비어 버린다.
+                    disabled={value !== f.value && selectedTitles.includes(value)}
+                  >
                     {label}
                   </SelectItem>
                 ))}
