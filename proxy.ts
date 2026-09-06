@@ -56,6 +56,6 @@ export const config = {
     "/chat/:path*",
     "/editor/:path*",
     "/students/:path*",
-    "/dashBoard",
+    "/dashBoard/:path*",
   ],
 };
