@@ -10,11 +10,11 @@ HOOKS = [ROOT / directory / 'hooks/no-recursive-grep.py'
 
 
 class SearchHookTests(unittest.TestCase):
-    def check_commands(self, cases):
+    def check_commands(self, cases, shell='bash'):
         for hook in HOOKS:
             for command, expected in cases:
                 with self.subTest(hook=hook.parent.parent.name, command=command):
-                    result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(hook)],
+                    result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(hook), '--shell', shell],
                         input=json.dumps({'tool_name': 'Bash', 'tool_input': {'command': command}}),
                         capture_output=True, text=True, timeout=5)
                     self.assertEqual(result.returncode, 0, result.stderr)
@@ -32,7 +32,6 @@ class SearchHookTests(unittest.TestCase):
             ('echo "$(rg needle .)"', False),
             ("echo '$(grep -r needle .)'", False),
             ('echo "\\$(grep -r needle .)"', False),
-            ('Write-Output "`$(grep -r needle .)"', False),
             ('cat <<EOF\n$(grep -r needle .)\nEOF', True),
             ('cat <<EOF\n"$(grep -r needle .)"\nEOF', True),
             ("cat <<EOF\n'$(grep -r needle .)'\nEOF", True),
@@ -43,9 +42,37 @@ class SearchHookTests(unittest.TestCase):
             ('cat <<\\EOF\n$(grep -r needle .)\nEOF', False),
             ("cat <<E'OF'\n$(grep -r needle .)\nEOF", False),
             ('cat <<"EOF"\n$(grep -r needle .)\nEOF', False),
+        ])
+
+    def test_bash_escapes_and_backtick_substitutions(self):
+        self.check_commands([
+            ('echo "`grep -r needle .`"', True),
+            ('echo `grep -r needle .`', True),
+            ("echo '`grep -r needle .`'", False),
+            (r'echo "\`grep -r needle .\`"', False),
+            (r'echo \"; grep -r needle .; echo \"', True),
+            (r"echo \'; grep -r needle .; echo \'", True),
+            (r'echo "$(printf %s \"; grep -r needle .; printf %s \")"', True),
+            ('cat <<EOF\n`grep -r needle .`\nEOF', True),
+            ("cat <<'EOF'\n`grep -r needle .`\nEOF", False),
+            ('cat <<EOF\n\\`grep -r needle .\\`\nEOF', False),
+            (r'echo "`printf %s \"a; grep -r needle .\"`"', False),
+            (r'echo `printf %s \"a; grep -r needle .; printf %s \"`', True),
+            (r'echo "`printf %s \$(grep -r needle .)`"', True),
+            (r'echo "`echo \`grep -r needle .\``"', True),
+        ])
+
+    def test_powershell_uses_backtick_not_backslash_as_escape(self):
+        self.check_commands([
+            ('Write-Output "\\$(grep -r needle .)"', True),
+            ('Write-Output "`$(grep -r needle .)"', False),
+            ('Write-Output "`grep -r needle .`n"', False),
+            ('Write-Output `"; grep -r needle .; Write-Output `"', True),
+            ('Write-Output "a ""$(grep -r needle .)"" b"', True),
             ('@"\n$(grep -r needle .)\n"@ | Write-Output', True),
             ("@'\n$(grep -r needle .)\n'@ | Write-Output", False),
-        ])
+            ("@'\nimport sys\ns = 'a; grep -r needle .'\n'@ | python -", False),
+        ], shell='powershell')
 
     def test_shell_commands(self):
         cases = [
@@ -91,7 +118,6 @@ class SearchHookTests(unittest.TestCase):
             ('echo "grep -r needle ."', False),
             ('printf "a; grep -r needle ."', False),
             ("python -c 's = \"a; grep -r needle .\"'", False),
-            ("@'\nimport sys\ns = 'a; grep -r needle .'\n'@ | python -", False),
             ("cat <<'EOF'\ngrep -r needle .\nEOF", False),
             ('# grep -r needle .\nrg needle .', False),
         ]

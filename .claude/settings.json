@@ -11,7 +11,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\")/.claude/hooks/no-recursive-grep.py\"",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/no-recursive-grep.py\" --shell bash",
             "timeout": 10
           }
         ]
@@ -22,7 +22,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\")/.claude/hooks/stray-dev-server.py\"",
+            "command": "python \"$(git rev-parse --show-toplevel)/.claude/hooks/stray-dev-server.py\"",
             "timeout": 20,
             "async": true
           }
