@@ -1,14 +1,52 @@
-import importlib.util
 import json
 from pathlib import Path
 import subprocess
 import sys
 import unittest
 
-HOOK = Path(__file__).resolve().parents[1] / 'no-recursive-grep.py'
+ROOT = Path(__file__).resolve().parents[3]
+HOOKS = [ROOT / directory / 'hooks/no-recursive-grep.py'
+         for directory in ('.codex', '.claude')]
 
 
 class SearchHookTests(unittest.TestCase):
+    def check_commands(self, cases):
+        for hook in HOOKS:
+            for command, expected in cases:
+                with self.subTest(hook=hook.parent.parent.name, command=command):
+                    result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(hook)],
+                        input=json.dumps({'tool_name': 'Bash', 'tool_input': {'command': command}}),
+                        capture_output=True, text=True, timeout=5)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    decision = json.loads(result.stdout).get('hookSpecificOutput', {}).get('permissionDecision') if result.stdout else None
+                    self.assertEqual(decision == 'deny', expected)
+
+    def test_executable_substitutions_are_checked(self):
+        self.check_commands([
+            ('echo "$(grep -r needle .)"', True),
+            ('echo "prefix $(grep -r "two words" .) suffix"', True),
+            ('echo "$(echo "$(grep -r needle .)")"', True),
+            ('echo "$(printf ")"; grep -r needle .)"', True),
+            ('echo "$( (grep -r needle .) )"', True),
+            ('echo "$(rg needle .)"; grep -r needle .', True),
+            ('echo "$(rg needle .)"', False),
+            ("echo '$(grep -r needle .)'", False),
+            ('echo "\\$(grep -r needle .)"', False),
+            ('Write-Output "`$(grep -r needle .)"', False),
+            ('cat <<EOF\n$(grep -r needle .)\nEOF', True),
+            ('cat <<EOF\n"$(grep -r needle .)"\nEOF', True),
+            ("cat <<EOF\n'$(grep -r needle .)'\nEOF", True),
+            ('cat <<-EOF\n\t$(grep -r needle .)\n\tEOF', True),
+            ('cat <<EOF\ngrep -r needle .\nEOF', False),
+            ('cat <<EOF\n\\$(grep -r needle .)\nEOF', False),
+            ("cat <<'EOF'\n$(grep -r needle .)\nEOF", False),
+            ('cat <<\\EOF\n$(grep -r needle .)\nEOF', False),
+            ("cat <<E'OF'\n$(grep -r needle .)\nEOF", False),
+            ('cat <<"EOF"\n$(grep -r needle .)\nEOF', False),
+            ('@"\n$(grep -r needle .)\n"@ | Write-Output', True),
+            ("@'\n$(grep -r needle .)\n'@ | Write-Output", False),
+        ])
+
     def test_shell_commands(self):
         cases = [
             ('cat <<< "text"\ngrep -r needle .', True),
@@ -57,14 +95,7 @@ class SearchHookTests(unittest.TestCase):
             ("cat <<'EOF'\ngrep -r needle .\nEOF", False),
             ('# grep -r needle .\nrg needle .', False),
         ]
-        for command, expected in cases:
-            with self.subTest(command=command):
-                result = subprocess.run([sys.executable, '-X', 'utf8', str(HOOK)],
-                    input=json.dumps({'tool_name': 'Bash', 'tool_input': {'command': command}}),
-                    capture_output=True, text=True, timeout=5)
-                self.assertEqual(result.returncode, 0, result.stderr)
-                decision = json.loads(result.stdout).get('hookSpecificOutput', {}).get('permissionDecision') if result.stdout else None
-                self.assertEqual(decision == 'deny', expected)
+        self.check_commands(cases)
 
 
 if __name__ == '__main__':

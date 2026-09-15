@@ -1,7 +1,8 @@
 """PreToolUse guardrail for recursive grep; respects shell literals and options.
 
 This recognizes ordinary Bash/PowerShell commands, not arbitrary code executed
-by interpreters. Quoted scripts and here-documents are data, not shell commands.
+by interpreters or dynamically constructed commands. Literal text is data;
+$(...) in expandable strings and here-documents is executable shell code.
 """
 import json
 import re
@@ -22,33 +23,47 @@ def heredoc_delimiter(command, start):
     i += int(strip_tabs)
     while command[i:i + 1] in (' ', '\t'):
         i += 1
-    word, quote, started = [], None, False
+    word, quote, started, quoted = [], None, False, False
     while i < len(command):
         char = command[i]
         if quote is None and (char.isspace() or char in ';|&()<>'):
             break
         started = True
         if char in ('"', "'") and quote in (None, char):
+            quoted = True
             quote = char if quote is None else None
         elif char == '\\' and quote != "'" and i + 1 < len(command):
             following = command[i + 1]
             if quote is None or following in '\\"$`\n':
                 i += 1
                 if following != '\n':
+                    quoted = True
                     word.append(following)
             else:
                 word.append(char)
         else:
             word.append(char)
         i += 1
-    return (''.join(word), strip_tabs, i) if started and quote is None else None
+    return (''.join(word), strip_tabs, i, not quoted) if started and quote is None else None
 
 
-def shell_segments(command):
-    """Split only unquoted shell operators; keep embedded program text opaque."""
+def expansion_segments(text, escape):
+    """Only substitutions execute in a heredoc; its other text stays opaque."""
+    i = 0
+    while i < len(text):
+        if text[i] == escape and text[i + 1:i + 2] in (escape, '$', '`', '\n'):
+            i += 2
+        elif text.startswith('$(', i):
+            i = yield from shell_segments(text, i + 2, nested=True)
+        else:
+            i += 1
+
+
+def shell_segments(command, start=0, nested=False):
+    """Split shell operators and recurse into substitutions without executing."""
     tokens, word, heredocs = [], [], []
     word_started = False
-    i = 0
+    i, groups = start, 0
     while i < len(command):
         char = command[i]
         if command[i:i + 2] in ("@'", '@"') and command[i + 2:i + 3] in ('\n', '\r'):
@@ -56,6 +71,8 @@ def shell_segments(command):
             end = re.search(r'(?m)^' + re.escape(quote + '@'), command[i + 2:])
             if end is None:
                 break
+            if quote == '"':
+                yield from expansion_segments(command[i + 2:i + 2 + end.start()], '`')
             word.append('<here-string>')
             word_started = True
             i += 2 + end.end()
@@ -69,9 +86,14 @@ def shell_segments(command):
         if command.startswith('<<', i):
             delimiter = heredoc_delimiter(command, i)
             if delimiter:
-                heredocs.append(delimiter[:2])
+                heredocs.append((delimiter[0], delimiter[1], delimiter[3]))
                 i = delimiter[2]
                 continue
+        if command.startswith('$(', i):
+            i = yield from shell_segments(command, i + 2, nested=True)
+            word.append('<substitution>')
+            word_started = True
+            continue
         if char in ('"', "'"):
             word_started = True
             quote = char
@@ -81,7 +103,11 @@ def shell_segments(command):
                 if char == quote:
                     i += 1
                     break
-                if quote == '"' and char in ('\\', '`') and command[i + 1:i + 2] in ('"', '\\', '`'):
+                if quote == '"' and command.startswith('$(', i):
+                    i = yield from shell_segments(command, i + 2, nested=True)
+                    word.append('<substitution>')
+                    continue
+                if quote == '"' and char in ('\\', '`') and command[i + 1:i + 2] in ('"', '\\', '`', '$'):
                     i += 1
                 word.append(command[i])
                 i += 1
@@ -90,7 +116,7 @@ def shell_segments(command):
             end = command.find('\n', i)
             i = end if end >= 0 else len(command)
             continue
-        if char in ('\\', '`') and i + 1 < len(command) and command[i + 1] in ' \t\n;|&()':
+        if char in ('\\', '`') and i + 1 < len(command) and command[i + 1] in ' \t\n;|&()$':
             if command[i + 1] != '\n':
                 word.append(command[i + 1])
                 word_started = True
@@ -105,9 +131,16 @@ def shell_segments(command):
                 if tokens:
                     yield tokens
                 tokens = []
+            if char == ')' and nested and groups == 0:
+                return i + 1
+            if char == '(':
+                groups += 1
+            elif char == ')':
+                groups = max(0, groups - 1)
             i += 1
             if char == '\n' and heredocs:
-                for delimiter, strip_tabs in heredocs:
+                for delimiter, strip_tabs, expand in heredocs:
+                    body = []
                     while i < len(command):
                         end = command.find('\n', i)
                         end = len(command) if end < 0 else end
@@ -115,6 +148,9 @@ def shell_segments(command):
                         i = min(end + 1, len(command))
                         if (line.lstrip('\t') if strip_tabs else line) == delimiter:
                             break
+                        body.append(line)
+                    if expand:
+                        yield from expansion_segments('\n'.join(body), '\\')
                 heredocs = []
             continue
         word.append(char)
@@ -124,6 +160,7 @@ def shell_segments(command):
         tokens.append(''.join(word))
     if tokens:
         yield tokens
+    return i
 
 
 def executable_name(token):
