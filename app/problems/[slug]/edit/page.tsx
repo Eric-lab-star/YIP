@@ -33,6 +33,8 @@ export default async function EditProblemPage({
 		// "" 는 미분류다. undefined 로 두면 Select 가 제어되지 않는 상태로 시작한다.
 		topicSlug: problem.topicSlug ?? "",
 		description: problem.description,
+		// 설명과 같은 이유로 "" 다 — undefined 면 textarea 가 비제어로 시작한다.
+		theory: problem.theory ?? "",
 		languages: problem.languages,
 		starterCode: problem.starterCode,
 		timeLimit: problem.timeLimit,

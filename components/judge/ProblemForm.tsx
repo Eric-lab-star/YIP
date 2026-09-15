@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import {
 	Field,
+	FieldDescription,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
@@ -74,6 +75,7 @@ export default function ProblemForm({
 			difficulty: "easy",
 			topicSlug: "",
 			description: "",
+			theory: "",
 			languages: [],
 			starterCode: {},
 			timeLimit: 5,
@@ -217,6 +219,26 @@ export default function ProblemForm({
 						placeholder={"# 제목\n\n문제 설명을 마크다운으로 작성하세요."}
 					/>
 					{errors.description && <FieldError errors={[errors.description]} />}
+				</Field>
+
+				{/* 개념 정리 (선택) */}
+				<Field data-invalid={!!errors.theory}>
+					<FieldLabel htmlFor="theory">개념 정리 (선택, 마크다운)</FieldLabel>
+					<Textarea
+						id="theory"
+						rows={10}
+						className="font-mono text-sm"
+						{...register("theory")}
+						aria-invalid={!!errors.theory}
+						placeholder={
+							"# 최대공약수와 유클리드 호제법\n\n문제를 푸는 데 필요한 개념을 적으세요.\n비워두면 문제 페이지에 아무것도 나오지 않습니다."
+						}
+					/>
+					<FieldDescription>
+						문제 페이지에서 &quot;개념 정리&quot; 접힌 섹션으로 나옵니다. 맨 앞의
+						`# 제목` 한 줄은 접힌 머리글의 부제로 쓰이고 본문에서는 빠집니다.
+					</FieldDescription>
+					{errors.theory && <FieldError errors={[errors.theory]} />}
 				</Field>
 
 				{/* 언어 선택 */}
