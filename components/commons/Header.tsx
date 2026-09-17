@@ -45,7 +45,7 @@ export default function Header() {
 	}, [shouldOpen]);
 
 	return (
-		<div className="sm:h-15 shrink-0 w-full border-b-[2.5px] border-foreground bg-[#fffdf7]/85 sticky top-0 backdrop-blur z-50 select-none flex justify-between px-10 py-2">
+		<div data-site-header className="sm:h-15 shrink-0 w-full border-b-[2.5px] border-foreground bg-[#fffdf7]/85 sticky top-0 backdrop-blur z-50 select-none flex justify-between px-10 py-2">
 			<div className="flex space-x-2 items-center">
 				{showIcon && <SidebarTrigger className="" />}
 				<Link className="hidden sm:block" href={"/"}>
