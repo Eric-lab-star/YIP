@@ -27,6 +27,7 @@ export default function RaspberryPiLesson({
 }: {
   children: ReactNode;
 }) {
+  const lesson = useRef<HTMLElement>(null);
   const article = useRef<HTMLDivElement>(null);
   const figure = useRef<HTMLElement>(null);
   const [active, setActive] = useState<PartId>("overview");
@@ -39,6 +40,24 @@ export default function RaspberryPiLesson({
     sync();
     preference.addEventListener("change", sync);
     return () => preference.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const root = lesson.current;
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    if (!root || !header) return;
+    // The site header can wrap on narrow screens or while the profile loads.
+    // Keep both the sticky model and anchor offsets below its actual height.
+    const syncOffset = () => {
+      root.style.setProperty(
+        "--pi-header-offset",
+        `${header.getBoundingClientRect().height + 12}px`,
+      );
+    };
+    const observer = new ResizeObserver(syncOffset);
+    observer.observe(header);
+    syncOffset();
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -98,7 +117,7 @@ export default function RaspberryPiLesson({
   );
 
   return (
-    <article className={styles.lesson}>
+    <article ref={lesson} className={styles.lesson}>
       <div className={styles.layout}>
         <figure
           ref={figure}
