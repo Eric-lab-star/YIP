@@ -1,5 +1,4 @@
-import VideoPlayer from "@/components/commons/VideoPlayer";
-import { accent, doodleBox } from "@/components/mdx/doodle";
+import VideoLesson from "@/components/mdx/VideoLesson";
 
 export const metadata = {
   title: "라즈베리파이 시작 준비",
@@ -9,25 +8,9 @@ export const metadata = {
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
 
-<div style={{ marginBottom: "1.5rem" }}>
-{videoSrc ? (
-  <VideoPlayer src={videoSrc} />
-) : (
-  <div
-    style={{
-      ...doodleBox,
-      aspectRatio: "16 / 9",
-      display: "grid",
-      placeItems: "center",
-      padding: "1rem",
-      textAlign: "center",
-      backgroundColor: accent,
-    }}
-  >
-    강의 영상을 준비하고 있어요.
-  </div>
-)}
-</div>
+export default function Layout({ children }) {
+  return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
+}
 
 # 라즈베리파이 시작 준비
 
