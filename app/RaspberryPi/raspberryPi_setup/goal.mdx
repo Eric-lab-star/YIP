@@ -1,0 +1,60 @@
+import VideoPlayer from "@/components/commons/VideoPlayer";
+import { accent, doodleBox } from "@/components/mdx/doodle";
+
+export const metadata = {
+  title: "라즈베리파이 시작 준비",
+  description: "영상과 자세한 설명, 학습 자료로 라즈베리파이 사용을 준비합니다.",
+  session: 2,
+};
+
+export const videoSrc = ""; // 영상이 준비되면 주소를 입력합니다.
+
+# 라즈베리파이 시작 준비
+
+영상을 먼저 보고, 아래의 자세한 설명과 학습 자료를 함께 확인하세요.
+
+## 강의 영상
+
+{videoSrc ? (
+  <VideoPlayer src={videoSrc} />
+) : (
+  <div
+    style={{
+      ...doodleBox,
+      aspectRatio: "16 / 9",
+      display: "grid",
+      placeItems: "center",
+      padding: "1rem",
+      textAlign: "center",
+      backgroundColor: accent,
+    }}
+  >
+    강의 영상을 준비하고 있어요.
+  </div>
+)}
+
+{/* 영상의 주요 구간과 시간 안내를 이곳에 추가합니다. */}
+
+## 자세한 설명
+
+### 준비물
+
+{/* 필요한 장비와 프로그램 목록을 작성합니다. */}
+
+### 설정 순서
+
+{/* 영상의 순서에 맞춰 설명, 화면 캡처, 코드 예제를 추가합니다. */}
+
+### 확인하기
+
+{/* 설정 후 확인할 항목과 자주 겪는 문제의 해결 방법을 작성합니다. */}
+
+## 학습 자료
+
+### 참고 링크
+
+{/* 공식 문서와 보충 자료 링크를 추가합니다. */}
+
+### 다운로드
+
+{/* 수업에 필요한 파일의 다운로드 링크를 추가합니다. */}
