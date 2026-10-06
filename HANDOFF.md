@@ -2,11 +2,11 @@
 
 ## 최신 상태 — 다음 세션은 이 절부터 읽기
 
-2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 구현과 검증을 완료해 PR #59에 반영했다. 이번 인수인계 요청은 이 결과를 기록하고 문서를 커밋하는 작업이며, 애플리케이션 코드를 추가로 변경하지 않는다.
+2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 구현과 검증을 완료해 PR #59에 반영했다. 인수인계 문서는 `5804113`으로 먼저 커밋했다. 이후 사용자의 **오늘까지 모든 작업을 커밋**하라는 요청에 따라 남아 있던 코드·프로젝트 설정 8개 파일도 전체 검증 후 커밋 대상에 포함했다.
 
 - 현재 브랜치: `feat/raspberry-pi-setup-layout`.
-- 최신 구현 커밋: `b672fa1c1dbe5e3c36554fbe1a5c9caf405dd9a4` — `Add Raspberry Pi curriculum goal and task routes`.
-- PR: https://github.com/Eric-lab-star/YIP/pull/59 — `Add Raspberry Pi video lessons and curriculum routes`, **OPEN, 미병합**. 이번 문서 갱신 직전 PR head가 위 구현 커밋과 일치함을 확인했다.
+- 교재 경로 구현 커밋: `b672fa1c1dbe5e3c36554fbe1a5c9caf405dd9a4` — `Add Raspberry Pi curriculum goal and task routes`.
+- PR: https://github.com/Eric-lab-star/YIP/pull/59 — `Add Raspberry Pi video lessons and curriculum routes`, **OPEN, 미병합**. 최초 인수인계 갱신 시 PR head가 위 구현 커밋과 일치함을 확인했으며 이후 문서 및 전체 작업 정리 커밋이 추가된다.
 - 위 구현 커밋의 GitHub 검사: `GitGuardian Security Checks`, `Vercel`, `Vercel Preview Comments` 모두 **SUCCESS**(2026-10-06 확인). 이는 PR 검사 결과이며 프로덕션 병합·배포 완료를 뜻하지 않는다.
 - 이후 인수인계 문서 커밋은 구현 커밋과 별개다. 다음 세션에는 `git status`, `git log`, PR 상태를 다시 확인할 것.
 
@@ -32,13 +32,21 @@
    - 예: `/RaspberryPi/python_setup/goal`, `/RaspberryPi/python_setup/task`.
    - 기존 `/RaspberryPi/raspberryPi_setup/goal`은 유지한다. Raspberry Pi는 **goal/task 두 경로만** 사용하며 슬라이드 경로를 만들지 않았다. 다른 섹션의 네 경로 규칙을 그대로 적용하지 말 것.
 
+4. **남아 있던 전체 작업 정리**
+   - `app/dashBoard/books.ts`: Raspberry Pi 교재 카드와 `/RaspberryPi` 링크.
+   - `app/layout.tsx`: 검색 키워드에서 `입코드` 제거, `세종`·`대전` 추가 및 기존 포맷 변경.
+   - `tsconfig.json`: `app/RaspberryPi/page.mdx`를 include 목록에 추가.
+   - `app/RaspberryPi/WhatIsRaspberryPi/page.mdx`: 제목과 메타데이터만 있는 기존 개요 페이지를 포함했다. 커리큘럼의 `what_is_raspberryPi/goal`과는 별도 경로이며 합치거나 삭제하지 않았다.
+   - `AGENTS.md`, `.codex/agents/lesson-converter.toml`, `.serena/project.yml`, `.serena/.gitignore`: 기존 프로젝트 지침과 도구 설정을 함께 버전 관리한다. Serena의 캐시와 개인 설정은 `.serena/.gitignore`에서 계속 제외한다.
+
 ### 검증 결과와 한계
 
-다음은 2026-10-06 구현 작업에서 직접 실행한 결과다. 이번 문서 갱신만을 위해 빌드나 브라우저 검사를 다시 실행하지는 않았다.
+다음은 2026-10-06 구현 작업에서 직접 실행한 결과다. 최초 문서 커밋에서는 검사를 반복하지 않았고, 이후 전체 작업 커밋을 준비하면서 남아 있던 8개 파일까지 포함해 빌드·타입·lint를 다시 실행했다.
 
 - 최종 프로덕션 `npm run build`와 `npx tsc --noEmit`: **성공**. 실행 중인 개발 서버에 영향을 주지 않도록 별도 검증 폴더를 사용했다.
 - 새 MDX **44개 모두** `@mdx-js/mdx` + `remark-gfm` + `remark-cjk-friendly`로 컴파일했다. 프로덕션 route manifest에 44개 경로가 모두 등록됐고, 제목·차시·goal 템플릿 본문·task 제목만 있는 본문을 확인했다. 커밋 직전 대상 47개 파일이 검증 폴더의 파일과 일치함도 확인했다.
 - 전체 ESLint: 기존 **22 errors / 147 warnings**, main 기준선 대비 **신규 항목 0개**. 파일·규칙·심각도·메시지 단위로 비교했다. 저장소 지침의 168건은 오래된 수치다.
+- 전체 작업 정리 시 추가한 `WhatIsRaspberryPi/page.mdx`의 MDX 컴파일과 프로덕션 경로 등록을 확인했다. tsconfig JSON, Serena YAML, Codex agent TOML 문법 검사도 통과했다. 원본 8개 파일이 검증 복사본과 일치함을 확인했으며 도구 설정 자체의 런타임 동작을 별도로 검증한 것은 아니다.
 - 실제 브라우저에서 사이드바의 `python_setup` 학습하기 ↔ 실습하기 이동을 확인했다. 두 페이지를 CSS 너비 **320 / 390 / 768 / 769 / 1024 / 1025 / 1280px**에서 확인했고 가로 넘침이 없었다. 모바일·데스크톱 화면을 시각 검사했고 영상 메타데이터 로딩도 확인했다. 모든 44개 경로를 브라우저에서 하나씩 열어 본 것은 아니다.
 - 영상 배치 변경 단계에서는 **1339 / 1920 / 2560px**와 데스크톱 사이드바 표시/숨김도 확인했다. 숨김 상태에서 1339px 화면은 영상 약 1071×603px·양옆 약 128px, 2560px 화면은 영상 1280×720px였다.
 - **전체화면 전환은 최종 영상 배치 검증에서 자동화로 진입하지 못해 미확인**이다. CSS상 크기 제한 제외 여부와 실제 전체화면 동작 검증을 혼동하지 말 것. 이전 9월의 성공 기록은 최신 변경의 검증 결과가 아니다.
@@ -48,19 +56,18 @@
 
 - 검증 폴더: `C:\Users\cyon2\AppData\Local\Temp\yip-video-height-20261006-103418`. 당시 HEAD와 작업 대상 파일, 실물 `node_modules`, 로컬 환경 파일로 검증했다. 환경 파일 내용은 출력하거나 커밋하지 말 것.
 - 최초 경로 빌드는 이 임시 복사본에서 `Cannot find module 'next/dist/compiled/webpack/webpack-lib'`로 실패했다. 작업 폴더에는 파일이 있고 임시 복사본에는 없음을 확인했다. 의존성을 `robocopy /E /XJ /R:1 /W:1`로 보완한 뒤 최종 빌드·타입 검사가 통과했다. 삭제·미러링 옵션은 사용하지 않았다.
-- 최종 로그: 위 검증 폴더의 `build-routes-final.log`, `lint-routes-final.json`. 영상 배치 검증 로그는 `build-theater-final.log`, `lint-theater.json`. PR 본문 초안은 `pr-routes-body.md`.
+- 전체 작업 정리의 최종 로그: 위 검증 폴더의 `build-checkpoint.log`, `lint-checkpoint.json`. 경로 작업 로그는 `build-routes-final.log`, `lint-routes-final.json`, 영상 배치 검증 로그는 `build-theater-final.log`, `lint-theater.json`. PR 본문 초안은 `pr-routes-body.md`.
 - lint 기준선: `scratchpad/pi-lint-main.json`. 기준선에 기록된 파일 경로의 루트는 `C:\Users\cyon2\source\YIP\scratchpad\pi-validation`이므로 비교 시 상대 경로로 정규화했다.
 - 같은 작업 폴더에서 dev와 build를 동시에 실행하지 말 것. 임시 폴더·프로세스·브라우저 ID는 세션마다 재확인할 것. 당시 브라우저 뷰포트 도구의 지정 크기는 실제 CSS 크기와 달라 `innerWidth`로 확인했다.
 
-### 남은 작업과 보존한 로컬 변경
+### 남은 작업과 커밋 범위
 
 - **교재 본문은 요청한 틀까지만 완성됐다.** 모든 새 goal은 같은 `sampleVideo.mp4`와 작성용 주석을 사용하며, task는 제목만 있다. 실제 수업 영상, 설명, 자료, 실습 문제 작성은 후속 작업이다.
 - 최신 영상 배치의 실제 전체화면 전환은 수동으로 재확인할 필요가 있다.
 - PR #59는 검토·병합 대기 상태다. 병합이나 별도 프로덕션 배포는 하지 않았다.
-- 이번 문서 커밋에는 `HANDOFF.md`만 포함한다. 아래 기존 로컬 변경은 보존한다.
-  - 수정: `app/dashBoard/books.ts`(Raspberry Pi 교재 카드), `app/layout.tsx`(검색 키워드), `tsconfig.json`(MDX 경로 등).
-  - 미추적: `.codex/agents/`, `.serena/`, `AGENTS.md`, `app/RaspberryPi/WhatIsRaspberryPi/`.
-- `AppSideBar.tsx`, `RapberryPi.ts`, `raspberryPiTree.ts`와 새 44개 경로는 이제 **커밋·push된 상태**다. 아래 이전 기록의 미커밋 목록과 혼동하지 말 것.
+- 처음에는 문서만 커밋하고 남겨 두었던 코드·설정 8개 파일을 이후 전체 작업 커밋에 모두 포함했다. 더 이상 아래 과거 기록의 미커밋 목록을 현재 상태로 해석하지 말 것.
+- 기존 ignore 규칙에 해당하는 환경 파일, 빌드 산출물, 의존성, `scratchpad/`, Serena 캐시·개인 설정은 커밋하지 않는다. 작업 파일을 삭제하거나 ignore 규칙을 새로 추가해 변경을 숨기지 않았다.
+- `AppSideBar.tsx`, `RapberryPi.ts`, `raspberryPiTree.ts`와 새 44개 경로는 앞선 커밋으로 이미 원격에 반영돼 있다.
 
 ---
 
