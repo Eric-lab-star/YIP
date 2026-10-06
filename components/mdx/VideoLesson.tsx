@@ -11,11 +11,13 @@ export default function VideoLesson({
 }) {
   return (
     <article className={styles.lesson}>
-      {src ? (
-        <VideoPlayer src={src} />
-      ) : (
-        <div className={styles.placeholder}>강의 영상을 준비하고 있어요.</div>
-      )}
+      <div className={styles.theater}>
+        {src ? (
+          <VideoPlayer src={src} />
+        ) : (
+          <div className={styles.placeholder}>강의 영상을 준비하고 있어요.</div>
+        )}
+      </div>
       <div className={styles.body}>{children}</div>
     </article>
   );
