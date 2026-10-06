@@ -47,6 +47,14 @@ export const Booklist = {
     description:
       "공공데이터포털의 데이터를 파이썬으로 수집·분석·시각화해보면서, 지도와 그래프로 세상을 읽는 눈을 기르는 것을 목표로 합니다.",
   },
+  "Raspberry Pi": {
+    title: "Raspberry Pi",
+    link: "/RaspberryPi",
+    imagekey: "RaspberryPi/raspberry_card_icon.png",
+    state: "기초 2",
+    description:
+      "손바닥 크기의 다재다능한 컴퓨터 라스베리 파이를 파이썬으로 제어하는 파이썬 하드웨어 입문 수업입니다. 전자기기를 제어하는 기초방법을 배우고 파이썬으로 현실세계의 문제점을 해결하는 방법을 학습하는 것을 목표로 합니다.",
+  },
 };
 
 export type Book = (typeof Booklist)[keyof typeof Booklist];

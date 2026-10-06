@@ -1,0 +1,250 @@
+.player {
+  --player-ink: #263d5b;
+  --player-paper: #fffdf7;
+  --player-sky: #49b6e5;
+  --media-background-color: #000;
+  --media-primary-color: var(--player-paper);
+  --media-control-background: transparent;
+  --media-control-hover-background: rgb(255 253 247 / 15%);
+  --media-font-family: "Gaegu", "Delius Swash Caps", "Comic Sans MS", cursive;
+  --media-font-size: 1rem;
+  --media-control-padding: 8px;
+  --media-control-height: 24px;
+  --media-focus-box-shadow: inset 0 0 0 2px var(--player-sky);
+  --media-range-track-height: 4px;
+  --media-range-track-background: rgb(255 253 247 / 30%);
+  --media-time-range-buffered-color: rgb(255 253 247 / 45%);
+  --media-range-track-border-radius: 8px 3px 7px 3px;
+  --media-range-bar-color: var(--player-sky);
+  --media-range-thumb-background: var(--player-sky);
+  --media-range-thumb-width: 12px;
+  --media-range-thumb-height: 12px;
+  --media-range-thumb-border-radius: 50%;
+  --media-range-padding: 6px;
+  --media-slot-display: block;
+
+  display: block;
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+  border: 2.5px solid var(--player-ink);
+  border-radius: 20px 12px 18px 12px / 12px 18px 12px 20px;
+  color: var(--player-paper);
+  isolation: isolate;
+}
+
+.player::part(media-layer) {
+  aspect-ratio: 16 / 9;
+}
+
+.controls {
+  width: 100%;
+  padding: 20px 8px 4px;
+  background: linear-gradient(transparent, rgb(0 0 0 / 65%) 45%, rgb(0 0 0 / 85%));
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+/* Media Chrome tracks pointer movement, leaving the player, and touch taps.
+   Keep paused controls and keyboard-focused controls discoverable. */
+.player:where([userinactive]:not([mediapaused])) .controls:not(:hover) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.player[keyboardcontrol] .controls:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.progress {
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  border-radius: 6px;
+  --media-control-hover-background: transparent;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.button {
+  flex-shrink: 0;
+  width: 40px;
+  min-width: 0;
+  height: 40px;
+  border: 1.5px solid transparent;
+  border-radius: 14px 5px 11px 5px / 5px 11px 5px 14px;
+}
+
+.button:hover {
+  border-color: rgb(255 253 247 / 35%);
+}
+
+.rate {
+  --media-control-padding: 0 2px;
+  --media-font-size: 0.85rem;
+}
+
+.playIcon {
+  fill: none;
+  stroke-width: 2;
+}
+
+.time {
+  --media-font-family: "JetBrains Mono", monospace;
+  --media-font-size: 0.7rem;
+  --media-font-weight: 500;
+  --media-control-padding: 0 6px;
+
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+  min-width: 0;
+}
+
+.volumeGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.volume {
+  width: 0;
+  min-width: 0;
+  height: 40px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  border-radius: 6px;
+  transition: width 160ms ease, opacity 160ms ease, visibility 160ms;
+}
+
+.volumeGroup:hover .volume,
+.volumeGroup:has(:active) .volume,
+.player[keyboardcontrol] .volumeGroup:focus-within .volume {
+  width: 76px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.feedback {
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 10cqw, 76px);
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 253 247 / 30%);
+  border-radius: 50%;
+  color: var(--player-paper);
+  background: rgb(38 61 91 / 80%);
+  pointer-events: none;
+  animation: playback-feedback 650ms ease-out both;
+}
+
+.feedback svg {
+  width: 50%;
+  height: 50%;
+  stroke-width: 2.5;
+}
+
+@keyframes playback-feedback {
+  0% { opacity: 0; transform: scale(0.85); }
+  15%, 55% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+/* Base the compact layout on player width, including beside the lesson sidebar. */
+@container (max-width: 32rem) {
+  .skip {
+    display: none;
+  }
+}
+
+@container (max-width: 24rem) {
+  .controls {
+    padding: 10px 4px 2px;
+  }
+
+  .button {
+    --media-control-padding: 6px;
+    --media-control-height: 20px;
+    width: 34px;
+    height: 36px;
+  }
+
+  .time {
+    --media-font-size: 0.62rem;
+    --media-control-padding: 0 2px;
+  }
+
+  .rate {
+    --media-control-padding: 0 2px;
+    --media-font-size: 0.75rem;
+  }
+
+  /* A small popover leaves the time and fullscreen button in place on phones. */
+  .volume {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    height: 36px;
+    border: 1px solid rgb(255 253 247 / 40%);
+    background: rgb(0 0 0 / 90%);
+  }
+
+  .volumeGroup:hover .volume,
+  .volumeGroup:has(:active) .volume,
+  .player[keyboardcontrol] .volumeGroup:focus-within .volume {
+    width: 96px;
+  }
+}
+
+/* Leave room for hour-long timestamps in the narrowest lesson column. */
+@container (max-width: 16rem) {
+  .toolbar {
+    gap: 0;
+  }
+
+  .button {
+    width: 30px;
+  }
+}
+
+.player:fullscreen {
+  border: 0;
+  border-radius: 0;
+}
+
+.player:fullscreen::part(media-layer) {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .controls, .button, .volume {
+    transition: none;
+  }
+
+  .feedback {
+    animation: none;
+  }
+}
