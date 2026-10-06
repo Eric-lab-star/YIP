@@ -1,14 +1,16 @@
-# HANDOFF — 2026-10-06 (라즈베리파이 영상 배치·커리큘럼 경로 완료)
+# HANDOFF — 2026-10-06 (라즈베리파이 작업 main 병합 완료)
 
 ## 최신 상태 — 다음 세션은 이 절부터 읽기
 
-2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 구현과 검증을 완료해 PR #59에 반영했다. 인수인계 문서는 `5804113`으로 먼저 커밋했다. 이후 사용자의 **오늘까지 모든 작업을 커밋**하라는 요청에 따라 남아 있던 코드·프로젝트 설정 8개 파일도 전체 검증 후 커밋 대상에 포함했다.
+2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 인수인계 문서는 `5804113`으로 먼저 커밋했고, 남아 있던 코드·프로젝트 설정 8개 파일과 갱신한 인수인계까지 `9acb2d5`로 커밋·push했다. 사용자의 요청으로 **PR #59를 main에 병합**했으며 로컬 main도 동기화했다. 이번 갱신은 병합 후 상태를 기록하는 문서 작업이다.
 
-- 현재 브랜치: `feat/raspberry-pi-setup-layout`.
+- 현재 브랜치: **`main`**. 이 기록을 시작할 때 로컬 HEAD와 `origin/main`은 모두 `539d96a3a3dddf2f8431dd5232f8de8eb7e58adc`였고 작업 트리는 깨끗했다.
+- 병합 커밋: `539d96a3a3dddf2f8431dd5232f8de8eb7e58adc` — `Merge pull request #59 from Eric-lab-star/feat/raspberry-pi-setup-layout`.
 - 교재 경로 구현 커밋: `b672fa1c1dbe5e3c36554fbe1a5c9caf405dd9a4` — `Add Raspberry Pi curriculum goal and task routes`.
-- PR: https://github.com/Eric-lab-star/YIP/pull/59 — `Add Raspberry Pi video lessons and curriculum routes`, **OPEN, 미병합**. 최초 인수인계 갱신 시 PR head가 위 구현 커밋과 일치함을 확인했으며 이후 문서 및 전체 작업 정리 커밋이 추가된다.
-- 위 구현 커밋의 GitHub 검사: `GitGuardian Security Checks`, `Vercel`, `Vercel Preview Comments` 모두 **SUCCESS**(2026-10-06 확인). 이는 PR 검사 결과이며 프로덕션 병합·배포 완료를 뜻하지 않는다.
-- 이후 인수인계 문서 커밋은 구현 커밋과 별개다. 다음 세션에는 `git status`, `git log`, PR 상태를 다시 확인할 것.
+- PR: https://github.com/Eric-lab-star/YIP/pull/59 — `Add Raspberry Pi video lessons and curriculum routes`, **MERGED**. 병합 시각: **2026-10-06 12:28:40 KST** (`03:28:40 UTC`). 병합 직전 PR head는 `9acb2d52a0cf75faa1fe109bfd5c6176da7e5d1d`였다.
+- 병합 직전 최신 head의 `GitGuardian Security Checks`, `Vercel`, `Vercel Preview Comments`는 모두 **SUCCESS**였다. `main`이 해당 head의 조상이고 PR이 `MERGEABLE / CLEAN`임을 확인한 뒤, head 커밋을 지정해 병합했다.
+- **병합 후 배포 상태는 별도다.** 이번 문서 갱신 시 병합 커밋 `539d96a`의 GitHub commit status에서 Vercel은 **pending**이었다(상태 갱신 시각 12:28:43 KST). 프로덕션 배포 완료나 실제 사이트 반영은 아직 확인하지 않았다. 다음 세션에는 해당 커밋의 최신 검사·배포 상태를 다시 확인할 것.
+- 이번 인수인계 갱신은 위 병합 커밋 뒤의 문서 변경이다. 다음 세션에는 `git status`, `git log`, `origin/main`을 다시 확인할 것.
 
 ### 이번에 완료한 작업
 
@@ -39,9 +41,16 @@
    - `app/RaspberryPi/WhatIsRaspberryPi/page.mdx`: 제목과 메타데이터만 있는 기존 개요 페이지를 포함했다. 커리큘럼의 `what_is_raspberryPi/goal`과는 별도 경로이며 합치거나 삭제하지 않았다.
    - `AGENTS.md`, `.codex/agents/lesson-converter.toml`, `.serena/project.yml`, `.serena/.gitignore`: 기존 프로젝트 지침과 도구 설정을 함께 버전 관리한다. Serena의 캐시와 개인 설정은 `.serena/.gitignore`에서 계속 제외한다.
 
+5. **전체 작업 커밋과 main 병합**
+   - `9acb2d5`: 남아 있던 8개 코드·설정 파일과 HANDOFF를 포함한 9개 파일을 커밋하고 기존 PR 브랜치에 push했다. 커밋 검사에서 발견한 개요 MDX 끝의 불필요한 빈 줄만 정리했으며 본문이 같고 MDX 컴파일이 통과함을 확인했다.
+   - `539d96a`: PR #59를 merge commit 방식으로 병합했다. 로컬에서 `git switch main` 후 `git merge --ff-only origin/main`으로 동기화했다.
+   - 검증했던 최종 head `9acb2d5`와 병합 결과 사이에 파일 차이가 없음을 `git diff --exit-code`로 확인했다. 다른 작업 트리나 작업 브랜치를 삭제하지 않았다.
+
 ### 검증 결과와 한계
 
 다음은 2026-10-06 구현 작업에서 직접 실행한 결과다. 최초 문서 커밋에서는 검사를 반복하지 않았고, 이후 전체 작업 커밋을 준비하면서 남아 있던 8개 파일까지 포함해 빌드·타입·lint를 다시 실행했다.
+
+병합 후에는 검증한 head와 병합 결과의 파일 동일성, PR의 MERGED 상태, 로컬·원격 main 일치와 깨끗한 작업 트리를 확인했다. 이번 인수인계 갱신에서는 앱 빌드·브라우저 검사를 다시 실행하지 않았으며 문서 diff만 검사한다.
 
 - 최종 프로덕션 `npm run build`와 `npx tsc --noEmit`: **성공**. 실행 중인 개발 서버에 영향을 주지 않도록 별도 검증 폴더를 사용했다.
 - 새 MDX **44개 모두** `@mdx-js/mdx` + `remark-gfm` + `remark-cjk-friendly`로 컴파일했다. 프로덕션 route manifest에 44개 경로가 모두 등록됐고, 제목·차시·goal 템플릿 본문·task 제목만 있는 본문을 확인했다. 커밋 직전 대상 47개 파일이 검증 폴더의 파일과 일치함도 확인했다.
@@ -64,7 +73,7 @@
 
 - **교재 본문은 요청한 틀까지만 완성됐다.** 모든 새 goal은 같은 `sampleVideo.mp4`와 작성용 주석을 사용하며, task는 제목만 있다. 실제 수업 영상, 설명, 자료, 실습 문제 작성은 후속 작업이다.
 - 최신 영상 배치의 실제 전체화면 전환은 수동으로 재확인할 필요가 있다.
-- PR #59는 검토·병합 대기 상태다. 병합이나 별도 프로덕션 배포는 하지 않았다.
+- PR #59의 병합은 완료됐다. 남은 확인은 병합 커밋의 Vercel 배포 결과와 실제 사이트 반영 여부다. 별도 수동 배포 명령은 실행하지 않았다.
 - 처음에는 문서만 커밋하고 남겨 두었던 코드·설정 8개 파일을 이후 전체 작업 커밋에 모두 포함했다. 더 이상 아래 과거 기록의 미커밋 목록을 현재 상태로 해석하지 말 것.
 - 기존 ignore 규칙에 해당하는 환경 파일, 빌드 산출물, 의존성, `scratchpad/`, Serena 캐시·개인 설정은 커밋하지 않는다. 작업 파일을 삭제하거나 ignore 규칙을 새로 추가해 변경을 숨기지 않았다.
 - `AppSideBar.tsx`, `RapberryPi.ts`, `raspberryPiTree.ts`와 새 44개 경로는 앞선 커밋으로 이미 원격에 반영돼 있다.
