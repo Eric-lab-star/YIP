@@ -3,7 +3,7 @@
 import { container } from '@/app/lib/tv/commons';
 import { d2coding } from '@/fonts/local';
 import clsx from 'clsx';
-import { Prism as SyntaxHighlighter }from 'react-syntax-highlighter';
+import SyntaxHighlighter from '@/components/commons/syntaxHighlighter';
 import { oneDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function CodeBlock({
