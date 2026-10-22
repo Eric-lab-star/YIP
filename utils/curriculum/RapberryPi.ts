@@ -7,7 +7,7 @@ export interface Lesson {
 
 export const RaspberryPiCurriculum: Lesson[] = [
   {
-    name: "라스베리파이의 구성요소",
+    name: "라즈베리파이의 구성요소",
     slug: "what_is_raspberryPi",
     description: "what is raspberrypi ",
   },
@@ -47,7 +47,7 @@ export const RaspberryPiCurriculum: Lesson[] = [
     description: "basic tact switch",
   },
   {
-    name: "고급 택트 스위치 ",
+    name: "고급 택트 스위치",
     slug: "advanced_tact_switch",
     description: "advanced tact switch",
   },
@@ -72,7 +72,7 @@ export const RaspberryPiCurriculum: Lesson[] = [
     description: "MPU6050 sensor",
   },
   {
-    name: "DS18B02 온도센서",
+    name: "DS18B20 온도센서",
     slug: "DS18B02_sensor",
     description: "DS18B02 sensor",
   },
@@ -82,7 +82,7 @@ export const RaspberryPiCurriculum: Lesson[] = [
     description: "save data",
   },
   {
-    name: "블루투스LE  스마트 조명제어",
+    name: "블루투스LE 스마트 조명제어",
     slug: "BLE",
     description: "BLE",
   },
