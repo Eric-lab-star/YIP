@@ -32,6 +32,12 @@ export const problemFormSchema = z.object({
 		.string()
 		.min(1, "문제 설명을 입력하세요")
 		.max(50_000, "설명이 너무 깁니다"),
+	/**
+	 * 개념 정리. 문제를 푸는 데 필요한 이론을 문제 페이지에서 바로 볼 수 있게
+	 * 한다. 선택 항목이라 비어 있으면 화면에 아무것도 나오지 않는다 —
+	 * 131개 문제 중 이론이 필요한 것만 채우면 된다.
+	 */
+	theory: z.string().max(50_000, "개념 정리가 너무 깁니다").optional(),
 	languages: z.array(z.string()).min(1, "언어를 하나 이상 선택하세요"),
 	starterCode: z.record(z.string(), z.string()),
 	timeLimit: z

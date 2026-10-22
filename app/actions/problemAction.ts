@@ -40,6 +40,9 @@ function prepare(
 		fields: {
 			title: p.title,
 			description: p.description,
+			// 빈 문자열은 "개념 정리 없음". 저장해두면 문제 페이지가 빈 섹션을
+			// 그리게 되므로 undefined 로 떨어뜨린다.
+			theory: p.theory?.trim() ? p.theory : undefined,
 			difficulty: p.difficulty,
 			languages: p.languages,
 			starterCode,

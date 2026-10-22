@@ -16,6 +16,11 @@ export interface Problem {
 	title: string;
 	/** Markdown problem statement. */
 	description: string;
+	/**
+	 * Markdown 개념 정리. 문제를 푸는 데 필요한 이론이며, 문제 페이지에서
+	 * 접힌 섹션으로 보여준다. 없는 문제가 대부분이라 optional 이다.
+	 */
+	theory?: string;
 	difficulty: Difficulty;
 	/** 소속 주제의 slug (`topics` 컬렉션). 미분류면 없음. */
 	topicSlug?: string;
