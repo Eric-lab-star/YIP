@@ -1,6 +1,106 @@
-# HANDOFF — 2026-10-06 (라즈베리파이 작업 main 병합 완료)
+# HANDOFF — 2026-10-22 (라즈베리 goal 교재 21개 완성·열린 PR 5건 전부 main 병합)
 
 ## 최신 상태 — 다음 세션은 이 절부터 읽기
+
+### 목표
+
+라즈베리파이 교재(22차시, **goal/task 두 경로만** — 다른 섹션의 4경로 규칙 적용 금지)의
+본문을 채우는 중이다. 사용자가 작업 순서를 결정했다: **학습하기(goal) 전부 완성 →
+실습하기(task) 전부 작성.** goal 단계는 이번 세션에서 끝났고, task 단계가 남았다.
+
+같은 날 추가 작업: 사용자가 1차시 goal이 "길고 지루하다"고 해서, 번호 절마다
+**15초 스토리 애니메이션**("하나와 도윤" 시리즈, 중학생 남녀가 과학실에서
+라즈베리파이를 발견하는 10부작)을 만들어 절 시작에 삽입했다. 코딩냥이 텍스트
+스토리안은 "글자가 더 늘어 부담"으로 기각됐다 — 이후 차시도 글자 추가가 아니라
+영상으로 풀 것. 제작 파이프라인·비용·자산 위치는 메모리
+`raspberry-pi-curriculum-progress`와 `scratchpad/kling-series/`(gitignore, 로컬 영구)에
+있다: Gemini 프레임 합성 → Kling API `kling-v3` image2video(15초 ≈ 9유닛) →
+Edge TTS 내레이션 + 자작 BGM → ffmpeg 합성 → R2 `raspberry-pi/lesson01/epNN.mp4`.
+캐릭터 참조 이미지 2장과 BGM을 그대로 써야 다음 차시에서 시리즈가 이어진다.
+Kling `multi-image2video`는 폐기된 API라 쓰지 말 것(프로브는 통과하나 제출 시 거부).
+
+### 내린 결정과 이유
+
+- **수업 영상은 사용자가 직접 촬영한다.** Kling AI로 생성하려던 계획은 폐기 —
+  크레딧이 0이기도 했지만, 결정적으로 생성 영상은 보드 위 부품 위치가 실물과
+  달라져 교육용으로 부적합하다고 판단했다. 그래서 22개 goal의 `videoSrc`는 전부
+  `sampleVideo.mp4` 자리표시자다. 영상 교체는 후속 작업.
+- **goal 21개(2~22차시)는 1차시 완성본 구조를 그대로 따랐다**
+  (`app/RaspberryPi/what_is_raspberryPi/goal/page.mdx` 참조): 도입 →
+  `Callout type="goal"` 번호 목표 → 개념 절 + `analogy` 비유 → `important`/`tip`
+  안전·주의 → "스스로 확인해 보기" `<details>` 3문항 → 학습 자료 + 다음 수업 링크.
+  교재 전체를 "입력 → 판단 → 출력" 흐름 하나로 관통시켰다.
+- **핀 규약을 교재 전체에 고정했다. task 작성 시 반드시 유지할 것**:
+  LED=GPIO17(핀11), 버튼=GPIO27(핀13), 3색 LED=17/27/22, 디지털 센서 DO=GPIO22,
+  HC-SR04 Trig=GPIO23/Echo=GPIO24(**Echo는 5V라 1kΩ+2kΩ 전압분배 필수**),
+  DS18B20=GPIO4(1-Wire, 4.7kΩ 풀업), I2C SDA=GPIO2/SCL=GPIO3(MPU6050 주소 0x68).
+  라이브러리는 gpiozero 기본, 에디터는 Thonny, 카메라는 Picamera2/rpicam,
+  녹음은 USB 마이크 + arecord(3.5mm 단자는 출력 전용). 파이에는 ADC가 없어
+  CDS/MQ-2는 비교기 모듈의 DO 핀으로 읽는다.
+- **커리큘럼 표시명 4건을 수정하되 slug는 그대로 뒀다** (`utils/curriculum/RapberryPi.ts`
+  — 파일명 오타도 의도적으로 유지): 라스베리→라즈베리, "DS18B02 온도센서"→"DS18B20
+  온도센서"(실제 센서명), 공백 정리 2건. slug `DS18B02_sensor`는 바꾸지 않았다 —
+  경로가 바뀌면 기존 링크가 깨진다.
+- **PR #55(문제 개념 정리)의 충돌은 HANDOFF.md 한 파일뿐**이어서 main 쪽을
+  택해 해소했다. 브랜치 쪽 세션 기록은 커밋 `47c2eb0`에 보존돼 있다.
+- **task 품질 틀(사용자 합의)**: 준비물 체크리스트 → 단계별 절차 + 관찰 가능한
+  성공 확인 포인트 → 자주 겪는 문제와 해결(트러블슈팅) → 변형 과제. 배선이 있는
+  task 상단마다 3.3V/전원분리 경고를 반복한다.
+
+### 실패한 시도 — 반복하지 말 것
+
+- `npx next lint --format json`은 **없는 옵션이다** (Next 16.3.1). package.json의
+  lint 스크립트는 그냥 `eslint`이므로 `npx eslint . --format json`을 쓸 것.
+- `/problems/s-gcd`의 **브라우저 스크린샷은 CDP `Page.captureScreenshot` 30초
+  타임아웃으로 계속 실패한다** (Monaco 에디터로 렌더러가 바쁜 것으로 추정 —
+  (추정)). DOM 읽기·클릭은 정상 동작하므로 find/read_page로 검증을 대체했다.
+  3회 이상 재시도하지 말 것.
+- 작업 폴더 전체 lint가 33 errors로 기준선(22)보다 11개 많게 나오는데, **전부
+  미커밋 로컬 `scratchpad/codex-repair/verify_skills.cjs`(2)와
+  `scratchpad/project-review-repro.cjs`(9)의 기존 항목**이다. 회귀로 오진하지 말 것.
+- PR 검사 대기 루프에서 `mergeStateStatus`의 `UNSTABLE`은 "검사 진행 중"이다.
+  이걸 제외하지 않으면 루프가 조기 종료한다. `gh pr checks` 출력의 `pending`을
+  보는 쪽이 확실했다.
+
+### 현재 상태 — 전부 실행해서 확인함
+
+- **main = `5ae6244`** (`Merge pull request #55`). 로컬·원격 브랜치는 **main 하나**,
+  워크트리 **0개**, 열린 PR **0건**. 병합한 PR: #60(1차시 교재), #62(goal 21개),
+  #61(Prism 경량화), #57(훅 수정), #55(문제 개념 정리).
+- 검증 결과 (병합 전 각 브랜치에서 실행):
+  - `npx tsc --noEmit` → 0 errors
+  - `npm run build` → exit 0
+  - `npx eslint . --format json` → 저장소 파일 기준 22 errors/147 warnings,
+    main 기준선 대비 **신규 0건**
+  - goal 21개 MDX 전부 `@mdx-js/mdx` + `remark-gfm` + `remark-cjk-friendly` 컴파일
+    통과 (검증 스크립트 `scratchpad/verify-goal-mdx.mjs` — gitignore 대상이라
+    로컬에만 있다)
+- #55의 "개념 정리" 펼치기/접기는 임시 프로덕션 서버(`npm run start -- -p 3210`,
+  사용자 dev 서버 :3000 회피)에서 **DOM으로 검증** — 펼치면 유클리드 호제법 본문
+  렌더, 접으면 제거. 시각(픽셀) 확인은 위 스크린샷 문제로 못 했다.
+- 22개 task 페이지는 여전히 **제목만 있는 껍데기**다.
+
+### 다음 단계
+
+**`app/RaspberryPi/what_is_raspberryPi/task/page.mdx`부터** 위 task 품질 틀대로
+작성 시작 (1차시 task는 배선이 없으니 보드 관찰·명칭 확인 활동 중심). 이후
+2~22차시 순서대로. 핀 규약과 goal 본문의 서술(각 goal이 task를 예고하는 문장)과
+어긋나지 않게 해당 goal을 먼저 읽고 쓸 것.
+
+### 미해결 의문
+
+- **병합 커밋 `5ae6244`의 프로덕션 배포 결과는 확인하지 않았다.** PR 검사의 Vercel
+  pass는 프리뷰 배포다. 실제 사이트에 1차시 교재·개념 정리가 반영됐는지 볼 것.
+- goal 본문 21개는 기술 검증(컴파일·빌드)만 했고 **실제 수업 진행과 대조는 미검토**
+  — spaceshipCaptain PR #28과 같은 상태다.
+- 1차시의 부품 이미지(`/images/raspberry-pi/components/*.svg`)는 자리표시자 SVG다.
+  사용자가 영상 촬영일에 실사 촬영 예정.
+- #55가 넣은 seed(`scripts/seed-problem-theory.mjs`)는 s-gcd만 이론 콘텐츠가 있다.
+  다른 문제의 개념 정리 본문은 미작성이며 별도 지시도 없었다.
+
+---
+
+## 이전 기록 — 2026-10-06 (라즈베리파이 44개 경로 작성·PR #59 병합)
 
 2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 인수인계 문서는 `5804113`으로 먼저 커밋했고, 남아 있던 코드·프로젝트 설정 8개 파일과 갱신한 인수인계까지 `9acb2d5`로 커밋·push했다. 사용자의 요청으로 **PR #59를 main에 병합**했으며 로컬 main도 동기화했다. 이번 갱신은 병합 후 상태를 기록하는 문서 작업이다.
 

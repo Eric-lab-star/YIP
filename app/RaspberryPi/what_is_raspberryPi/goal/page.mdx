@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "라즈베리파이의 구성요소",
@@ -8,6 +9,9 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 영상은 R2에 있다. */}
+export const clipBase = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/raspberry-pi/lesson01";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -34,10 +38,15 @@ export default function Layout({ children }) {
 
 </Callout>
 
+각 절의 시작에는 중학생 **하나와 도윤**이 과학실에서 라즈베리파이를 알아가는
+**15초 이야기 영상**이 있어요. 영상을 먼저 보고 본문을 읽으면 더 쉽게 이해할 수 있습니다.
+
 {/* 아래 이미지 주소를 실제 사진 경로로 바꾸면 됩니다. */}
 ![라즈베리파이 전체 모습 — 이미지 준비 중](/images/raspberry-pi/components/01-board-overview.svg)
 
 ## 1. 작은 판 하나가 컴퓨터라고요?
+
+<SectionClip src={clipBase + "/ep01.mp4"} title="1화 — 과학실에서 발견한 작은 컴퓨터" />
 
 라즈베리파이의 초록색 판을 **기판**, 또는 **보드**라고 부릅니다.
 기판에는 부품 사이로 전기와 신호가 오갈 수 있는 길이 만들어져 있어요.
@@ -65,6 +74,8 @@ export default function Layout({ children }) {
 ![CPU와 SoC — 이미지 준비 중](/images/raspberry-pi/components/02-processor.svg)
 
 ## 2. CPU — 명령을 실행하는 일꾼
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="2화 — 우주에서도 일하는 CPU" />
 
 보드 위의 **은색 정사각형 칩**을 찾아보세요.
 이 칩의 이름은 **BCM2711**이고, CPU를 비롯한 여러 기능을 한곳에 모아 놓은 **SoC**입니다.
@@ -98,6 +109,8 @@ SoC는 “컴퓨터에 필요한 여러 기능을 작은 칩 하나에 모았다
 ![RAM과 microSD 카드 — 이미지 준비 중](/images/raspberry-pi/components/03-memory-storage.svg)
 
 ## 3. RAM과 microSD — 책상과 책장은 달라요
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="3화 — 사라진 보고서와 microSD 카드" />
 
 ### RAM: 지금 하는 일을 펼쳐 놓는 책상
 
@@ -145,6 +158,8 @@ RAM 칩은 보드에 붙어 있지만, microSD 카드는 넣고 뺄 수 있는 �
 
 ## 4. USB와 네트워크 — 다른 장치와 연결해요
 
+<SectionClip src={clipBase + "/ep04.mp4"} title="4화 — 서랍 속 전선과 USB" />
+
 기판 가장자리의 연결 입구를 **포트** 또는 **단자**라고 합니다.
 각 단자는 생김새뿐 아니라 하는 일도 달라요.
 
@@ -178,6 +193,8 @@ Wi-Fi와 블루투스는 모두 무선 통신이지만, 주로 연결하는 대�
 
 ## 5. micro-HDMI — 화면을 모니터로 보내요
 
+<SectionClip src={clipBase + "/ep05.mp4"} title="5화 — 과학실 TV가 화면이 되다" />
+
 보드의 다른 가장자리를 보면 작고 납작한 단자 두 개가 나란히 있습니다.
 이것이 **micro-HDMI 단자**예요.
 라즈베리파이가 만든 화면과 소리를 모니터나 TV로 보내는 **출력 단자**입니다.
@@ -202,6 +219,8 @@ Wi-Fi와 블루투스는 모두 무선 통신이지만, 주로 연결하는 대�
 ![USB-C 전원 단자 — 이미지 준비 중](/images/raspberry-pi/components/06-usb-c-power.svg)
 
 ## 6. USB-C — 보드에 전기를 공급해요
+
+<SectionClip src={clipBase + "/ep06.mp4"} title="6화 — 번개 신호와 USB-C 전원" />
 
 micro-HDMI 옆, 모서리 가까이에 있는 **둥근 타원형 단자**가 USB-C 전원 단자입니다.
 우리 실습에서는 이곳으로 라즈베리파이에 전기를 공급해요.
@@ -228,6 +247,8 @@ USB-C 모양이 같아도 모든 충전기와 케이블이 필요한 전력을 �
 ![40핀 GPIO 헤더 — 이미지 준비 중](/images/raspberry-pi/components/07-gpio-header.svg)
 
 ## 7. GPIO — 프로그램이 현실의 장치와 만나는 곳
+
+<SectionClip src={clipBase + "/ep07.mp4"} title="7화 — 마흔 개의 마법 문, GPIO" />
 
 긴 가장자리를 따라 금속 핀이 두 줄로 서 있는 부분을 찾아보세요.
 **한 줄에 20개씩, 모두 40개**인 이 부분을 **GPIO 헤더**라고 합니다.
@@ -274,6 +295,8 @@ USB-C 모양이 같아도 모든 충전기와 케이블이 필요한 전력을 �
 
 ## 8. 카메라·디스플레이·소리 단자도 있어요
 
+<SectionClip src={clipBase + "/ep08.mp4"} title="8화 — 새집 카메라" />
+
 지금까지 살펴본 단자 외에도 용도에 맞는 장치를 연결할 수 있어요.
 처음부터 모두 사용할 필요는 없습니다.
 
@@ -289,6 +312,8 @@ CSI와 DSI는 생김새가 비슷해도 역할이 다릅니다.
 ![부품들이 함께 동작하는 모습 — 이미지 준비 중](/images/raspberry-pi/components/09-components-together.svg)
 
 ## 9. 한 가지 작업에서 부품들이 협력하는 모습
+
+<SectionClip src={clipBase + "/ep09.mp4"} title="9화 — 한 팀으로 일하는 부품들" />
 
 라즈베리파이에서 **Python 파일을 열고 실행한 뒤 저장하는 상황**을 떠올려 봅시다.
 
@@ -306,6 +331,8 @@ CSI와 DSI는 생김새가 비슷해도 역할이 다릅니다.
 ![라즈베리파이 구성요소 한눈에 보기 — 이미지 준비 중](/images/raspberry-pi/components/10-review.svg)
 
 ## 10. 스스로 확인해 보기
+
+<SectionClip src={clipBase + "/ep10.mp4"} title="10화 — 라즈베리파이 박사" />
 
 정답을 바로 펼치기 전에, 보드를 가리키면서 자신의 말로 설명해 보세요.
 
