@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "MPU6050 센서",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson13";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ export default function Layout({ children }) {
 
 ## 1. 한 칩에 두 가지 감각
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="50화 — 한 칩에 두 감각" />
+
 MPU6050 안에는 서로 다른 감각 두 개가 함께 들어 있어요.
 
 | 감각 | 재는 것 | 알 수 있는 것 |
@@ -52,6 +59,8 @@ MPU6050 안에는 서로 다른 감각 두 개가 함께 들어 있어요.
 그래서 MPU6050을 "6축 센서"라고 부릅니다. 가속도 3축 + 자이로 3축이에요.
 
 ## 2. 값이 많으면 핀이 모자라요 — I2C의 등장
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="51화 — 선 두 가닥의 마법, I2C" />
 
 여기서 문제가 하나 생깁니다.
 여섯 가지 값이 쉬지 않고 변하는데, 지금까지처럼 핀 하나에 신호 하나씩 받는 방식이라면
@@ -87,6 +96,8 @@ MPU6050의 주소는 보통 **0x68**이에요. 같은 두 가닥 선에 다른 I
 | SCL | GPIO3(물리 핀 5) |
 
 ## 3. 사용 준비와 확인
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="52화 — 출석 확인, 0x68" />
 
 I2C는 설정에서 켜 줘야 사용할 수 있어요.
 라즈베리 메뉴의 **기본 설정 → Raspberry Pi Configuration → Interfaces**에서 **I2C를 사용함**으로 바꿉니다.

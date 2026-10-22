@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "주변기기 연결하기",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson03";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -31,6 +36,8 @@ export default function Layout({ children }) {
 
 ## 1. 연결 순서 한눈에 보기
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="16화 — 순서가 중요해" />
+
 | 순서 | 할 일 | 연결하는 곳 |
 | --- | --- | --- |
 | 1 | microSD 카드 꽂기 | 보드 뒷면 슬롯 |
@@ -49,6 +56,8 @@ export default function Layout({ children }) {
 </Callout>
 
 ## 2. 하나씩 연결해 봅시다
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="17화 — 하나씩, 차근차근" />
 
 ### microSD 카드: 방향을 확인하고 끝까지
 
@@ -78,6 +87,8 @@ micro-HDMI–HDMI 케이블의 작은 쪽을 라즈베리파이에, 큰 쪽을 �
 
 ## 3. 부팅이 잘 되었는지 확인해요
 
+<SectionClip src={clipBase + "/ep03.mp4"} title="18화 — 잘 켜졌는지 확인하기" />
+
 부팅이 끝나면 **바탕화면**이 나타납니다.
 화면 위쪽의 메뉴 막대에서 다음을 확인해 보세요.
 
@@ -102,6 +113,8 @@ micro-HDMI–HDMI 케이블의 작은 쪽을 라즈베리파이에, 큰 쪽을 �
 </Callout>
 
 ## 4. 안전하게 종료하기
+
+<SectionClip src={clipBase + "/ep04.mp4"} title="19화 — 헤어질 때도 예의 있게" />
 
 사용을 마칠 때 전원을 바로 뽑으면 저장 중이던 데이터가 손상될 수 있어요.
 1차시에서 배운 종료 순서를 실제로 해 봅시다.

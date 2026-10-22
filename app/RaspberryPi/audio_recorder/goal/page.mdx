@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "녹음기",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson21";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -32,6 +37,8 @@ export default function Layout({ children }) {
 
 ## 1. 귀는 따로 달아야 해요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="76화 — 귀는 따로 달아요" />
+
 먼저 확인할 것이 있어요. 1차시에서 배운 단자들을 떠올려 보세요.
 3.5mm 둥근 단자는 소리를 **내보내는** 출력 전용이었죠.
 라즈베리파이에는 **마이크 입력 단자가 없습니다.**
@@ -50,6 +57,8 @@ arecord -l
 `arecord`는 녹음, `aplay`는 재생을 맡는 Raspberry Pi OS의 기본 도구입니다.
 
 ## 2. 소리가 숫자가 되는 비밀: 샘플링
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="77화 — 소리를 숫자로 바꾸는 마법" />
 
 소리의 정체는 공기의 **떨림(진동)**이에요.
 마이크는 이 떨림을 전기 신호로 바꾸는데, 이 신호는 연속적으로 변하는 **아날로그**예요.
@@ -78,6 +87,8 @@ arecord -l
 덜어내 크기를 줄인 **압축** 형식이에요.
 
 ## 3. 녹음하고 들어 보기
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="78화 — 오 초의 목소리 일기" />
 
 5초 동안 녹음해 봅시다.
 

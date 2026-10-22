@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "브레드 보드란 무엇인가",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson05";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -32,6 +37,8 @@ LED를 켜려면 LED와 라즈베리파이를 전선으로 이어야 해요.
 
 ## 1. 전기가 흐르려면 길이 이어져야 해요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="24화 — 전기는 한 바퀴 돌아야 해" />
+
 회로를 만들기 전에 꼭 알아야 할 규칙이 하나 있어요.
 **전기는 출발한 곳에서 나와 한 바퀴 돌아 되돌아갈 수 있어야 흐릅니다.**
 이렇게 이어진 길을 **회로(circuit)**라고 해요.
@@ -41,6 +48,8 @@ LED를 켜려면 LED와 라즈베리파이를 전선으로 이어야 해요.
 길이 한 군데라도 끊어져 있으면 아무 일도 일어나지 않아요.
 
 ## 2. 브레드보드 내부는 이렇게 연결되어 있어요
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="25화 — 브레드보드 속의 비밀" />
 
 브레드보드의 비밀은 **겉에서 보이지 않는 속의 금속 띠**예요.
 구멍에 꽂은 부품 다리는 이 금속 띠에 물리면서 서로 연결됩니다.
@@ -79,6 +88,8 @@ LED를 켜려면 LED와 라즈베리파이를 전선으로 이어야 해요.
 
 ## 3. 점퍼선: 구멍과 구멍을 잇는 다리
 
+<SectionClip src={clipBase + "/ep03.mp4"} title="26화 — 구멍과 구멍을 잇는 다리" />
+
 **점퍼선**은 양 끝에 단단한 핀이나 소켓이 달린 연결용 전선이에요.
 끝 모양에 따라 세 종류를 구분해서 사용합니다.
 
@@ -89,6 +100,8 @@ LED를 켜려면 LED와 라즈베리파이를 전선으로 이어야 해요.
 GPIO 헤더의 핀에는 소켓 쪽을 끼우고, 브레드보드 구멍에는 핀 쪽을 꽂는다고 기억하면 쉬워요.
 
 ## 4. 저항: 전류를 알맞게 줄여 주는 부품
+
+<SectionClip src={clipBase + "/ep04.mp4"} title="27화 — 전류를 지키는 문지기, 저항" />
 
 **저항**은 전기의 흐름을 방해해서 전류의 양을 줄여 주는 부품이에요.
 "방해"라고 하면 나쁜 일 같지만, 사실은 **부품을 지켜 주는 보호자**입니다.

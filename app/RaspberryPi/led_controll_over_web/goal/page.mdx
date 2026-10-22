@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "웹으로 LED 제어하기",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson18";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -32,6 +37,8 @@ export default function Layout({ children }) {
 </Callout>
 
 ## 1. 두 세계를 잇는 다리
+
+<SectionClip src={clipBase + "/ep01.mp4"} title="66화 — 두 세계를 잇는 다리" />
 
 우리는 이미 두 가지를 할 줄 알아요.
 
@@ -66,6 +73,8 @@ app.run(host="0.0.0.0", port=8080)
 
 ## 2. 신호의 여행을 따라가 봐요
 
+<SectionClip src={clipBase + "/ep02.mp4"} title="67화 — 신호의 여섯 걸음 여행" />
+
 버튼 한 번에 일어나는 일을 순서대로 따라가면, 배운 것들이 전부 연결됩니다.
 
 1. 스마트폰 브라우저가 Wi-Fi로 **요청**을 보내요: "/on 주세요."
@@ -90,6 +99,8 @@ IoT는 "사물(Things)이 인터넷에 연결된다"는 뜻이에요.
 </Callout>
 
 ## 3. 주소창 말고 진짜 버튼 만들기
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="68화 — 주소창 말고 진짜 버튼" />
 
 주소를 직접 입력하는 리모컨은 불편하죠.
 응답으로 글자 대신 **HTML**을 보내면 버튼이 있는 페이지를 만들 수 있어요.

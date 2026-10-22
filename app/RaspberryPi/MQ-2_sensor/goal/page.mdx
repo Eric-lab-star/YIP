@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "MQ-2가스감지센서",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson11";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -31,6 +36,8 @@ export default function Layout({ children }) {
 </Callout>
 
 ## 1. 뜨겁게 달궈서 냄새 맡는 센서
+
+<SectionClip src={clipBase + "/ep01.mp4"} title="44화 — 냄새 맡는 꼬마 화로" />
 
 MQ-2의 망사 속에는 **산화주석**이라는 물질이 들어 있어요.
 이 물질은 평소에는 전기를 잘 흘리지 않다가,
@@ -62,6 +69,8 @@ MQ-2의 망사 속에는 **산화주석**이라는 물질이 들어 있어요.
 
 ## 2. 연결: CDS 모듈과 거의 같아요
 
+<SectionClip src={clipBase + "/ep02.mp4"} title="45화 — 연결은 익숙한 그 모습" />
+
 수업에서 쓰는 MQ-2 모듈에도 비교기와 기준 조절 나사가 달려 있어서,
 농도가 기준을 넘으면 **DO 핀**으로 디지털 신호를 내보냅니다.
 덕분에 연결과 프로그램 모두 지난 시간과 거의 같아요.
@@ -87,6 +96,8 @@ MQ-2의 망사 속에는 **산화주석**이라는 물질이 들어 있어요.
 </Callout>
 
 ## 3. 가스 경보기의 흐름
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="46화 — 부엌을 지키는 경보기" />
 
 경보기의 생각 흐름은 이렇게 이어집니다.
 
