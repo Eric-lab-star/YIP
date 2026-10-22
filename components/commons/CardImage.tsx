@@ -41,6 +41,10 @@ export function CardImage({
             src={`${process.env.R2_CUSTOM}/${imagekey}`}
             alt="book image"
             fill
+            // 카드 그리드가 1→2(sm)→3(lg)→4(xl)열이므로 그 폭만큼만 받는다.
+            // fill 이미지는 sizes가 없으면 100vw로 가정해 과대한 소스를 받고
+            // dev 콘솔 경고가 난다.
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             className="object-contain p-5"
             aria-label="logo"
           />
