@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "CDS 센서",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson10";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ export default function Layout({ children }) {
 
 ## 1. CDS: 빛을 받으면 저항이 줄어드는 부품
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="40화 — 빛을 느끼는 부품" />
+
 **CDS 센서**는 황화카드뮴(CdS)이라는 물질로 만든 **광저항**이에요.
 구불구불한 무늬가 그려진 동그란 머리가 특징이라 쉽게 알아볼 수 있어요.
 동작 원리는 한 줄로 정리됩니다.
@@ -46,6 +53,8 @@ CDS는 그 방해하는 정도가 **빛에 따라 변하는** 특별한 저항�
 LED나 버튼과 달리 CDS 자체는 방향이 없어서 어느 쪽으로 꽂아도 됩니다.
 
 ## 2. 아날로그와 디지털: 미끄럼틀과 계단
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="41화 — 미끄럼틀과 계단" />
 
 여기서 생각해 볼 것이 있어요. 버튼은 눌림과 안 눌림, **딱 두 가지** 상태였죠.
 그런데 밝기는 다릅니다. 캄캄한 밤부터 눈부신 한낮까지 **끊김 없이 이어지는 값**이에요.
@@ -66,6 +75,8 @@ CDS가 느끼는 밝기는 미끄럼틀처럼 연속적인 **아날로그** 값�
 </Callout>
 
 ## 3. 그런데 문제가 하나 있어요
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="42화 — 통역사가 필요해" />
 
 라즈베리파이의 GPIO 핀은 **디지털 전용**이에요.
 핀이 읽을 수 있는 것은 높음(3.3V)과 낮음(0V), 두 가지뿐입니다.
@@ -116,6 +127,8 @@ AO는 ADC가 있을 때만 사용하고, 우리 수업에서는 **DO만** 연결
 </Callout>
 
 ## 4. 어두우면 켜지는 가로등 만들기
+
+<SectionClip src={clipBase + "/ep04.mp4"} title="43화 — 어두워지면 켜지는 가로등" />
 
 이제 도입에서 본 가로등의 비밀을 풀 수 있어요.
 CDS 모듈의 입력과 LED 출력을 연결하면 됩니다.

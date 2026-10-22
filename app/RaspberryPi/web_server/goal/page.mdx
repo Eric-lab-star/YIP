@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "웹서버 만들기",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson17";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ export default function Layout({ children }) {
 
 ## 1. 웹의 규칙: 요청하면 응답한다
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="63화 — 주문하면 나오는 식당" />
+
 웹의 세계에는 두 가지 역할이 있어요.
 
 - **클라이언트**: 보여 달라고 **요청**하는 쪽. 브라우저가 대표예요.
@@ -54,6 +61,8 @@ export default function Layout({ children }) {
 그리고 서버는 대단한 컴퓨터만 하는 일이 아니에요. **라즈베리파이도 훌륭한 서버가 될 수 있습니다.**
 
 ## 2. Flask: 파이썬으로 차리는 작은 주방
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="64화 — 파이썬으로 차리는 주방, Flask" />
 
 **Flask(플라스크)**는 Python으로 웹서버를 만드는 라이브러리예요.
 놀랍게도 몇 줄이면 서버가 완성됩니다.
@@ -100,6 +109,8 @@ def now():
 **응답을 프로그램이 그때그때 만든다**는 것, 이것이 서버의 진짜 힘이에요.
 
 ## 3. 다른 기기에서 접속하기: IP 주소
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="65화 — 우리 가게 주소 알려 주기" />
 
 localhost는 자기 자신만 가리키니, 스마트폰에서 접속하려면
 라즈베리파이의 **네트워크 주소**가 필요해요.

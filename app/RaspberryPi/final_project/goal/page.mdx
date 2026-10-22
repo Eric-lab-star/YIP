@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "최종프로젝트",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson22";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ LED와 버튼, 다섯 가지 센서, 카메라와 마이크, 파일 저장, 블�
 
 ## 1. 모든 작품의 뼈대는 이미 알고 있어요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="79화 — 이미 알고 있는 뼈대" />
+
 과정 내내 반복된 문장을 기억하나요?
 
 **입력 → 판단 → 출력**
@@ -50,6 +57,8 @@ LED와 버튼, 다섯 가지 센서, 카메라와 마이크, 파일 저장, 블�
 조각 세 개를 이으니 벌써 스마트 가로등이 되었죠.
 
 ## 2. 설계의 순서: 만들기 전에 그리기
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="80화 — 만들기 전에 그리기" />
 
 좋은 프로젝트는 납땜이 아니라 **질문**에서 시작해요. 이 순서를 따라가 봅시다.
 
@@ -90,6 +99,8 @@ LED와 버튼, 다섯 가지 센서, 카메라와 마이크, 파일 저장, 블�
 
 ## 3. 아이디어 창고
 
+<SectionClip src={clipBase + "/ep03.mp4"} title="81화 — 아이디어 창고" />
+
 막막할 때 출발점으로 삼을 만한 조합들이에요. 그대로 만들어도 좋고 바꿔도 좋아요.
 
 - **스마트 가로등**: CDS + 초음파 + LED. 어두울 때 사람이 지나가면 켜져요.
@@ -100,6 +111,8 @@ LED와 버튼, 다섯 가지 센서, 카메라와 마이크, 파일 저장, 블�
 - **가스 안전 모니터**: MQ-2 + LED + 웹페이지 상태 표시. 수업에서 배운 안전 수칙을 지키며 시험해요.
 
 ## 4. 발표: 작품의 절반
+
+<SectionClip src={clipBase + "/ep04.mp4"} title="82화 — 작품의 절반은 이야기" />
 
 완성만큼 중요한 것이 **설명**이에요. 발표에는 이 네 가지를 담아요.
 

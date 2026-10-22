@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "사물인식",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson20";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ export default function Layout({ children }) {
 
 ## 1. 컴퓨터의 눈에 사진은 숫자 덩어리예요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="72화 — 컴퓨터 눈에 비친 사진" />
+
 사람은 사진을 보면 단번에 "고양이네"라고 알아요.
 컴퓨터에게 사진은 **픽셀**이라는 작은 점들의 모임이고, 각 점은 색을 나타내는 **숫자**일 뿐이에요.
 가로 640, 세로 480 사진이라면 숫자가 약 30만 개가 넘는 셈이죠.
@@ -42,6 +49,8 @@ export default function Layout({ children }) {
 귀 모양, 수염, 자세, 조명까지 경우의 수가 끝이 없으니까요.
 
 ## 2. 규칙을 쓰는 대신, 예시로 배우게 해요
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="73화 — 규칙 대신 예시로" />
 
 그래서 발상을 뒤집은 것이 **머신러닝**이에요.
 사람이 규칙을 써 주는 대신, **수많은 예시 사진을 보여 주고 컴퓨터가 스스로 패턴을 찾게** 합니다.
@@ -65,6 +74,8 @@ export default function Layout({ children }) {
 요리에 비유하면, 레시피 개발은 연구소가 했고 우리는 완성된 레시피로 요리하는 셈이에요.
 
 ## 3. 분류와 감지, 그리고 확신의 정도
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="74화 — 어디에 있는지, 얼마나 확신하는지" />
 
 사물인식 모델이 답하는 방식은 두 가지가 있어요.
 
@@ -94,6 +105,8 @@ export default function Layout({ children }) {
 </Callout>
 
 ## 4. 인식 결과를 행동으로 잇기
+
+<SectionClip src={clipBase + "/ep04.mp4"} title="75화 — 인식을 행동으로" />
 
 인식은 그 자체로도 신기하지만, 진짜 재미는 **행동과 연결**할 때예요.
 

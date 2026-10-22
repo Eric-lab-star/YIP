@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "블루투스LE 스마트 조명제어",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson16";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -32,6 +37,8 @@ export default function Layout({ children }) {
 
 ## 1. LE는 Low Energy, 저전력이라는 뜻이에요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="60화 — 작은 목소리의 블루투스" />
+
 블루투스는 원래 무선 이어폰처럼 **소리를 계속 흘려보내는** 일을 잘했어요.
 그런데 스마트워치나 센서는 사정이 달라요.
 보낼 데이터는 "심박수 72" 같은 **짧은 숫자**뿐인데, 배터리는 며칠씩 버텨야 하죠.
@@ -49,6 +56,8 @@ export default function Layout({ children }) {
 라즈베리파이 4에는 BLE를 지원하는 블루투스가 **내장되어 있어서** 부품을 더할 필요가 없어요.
 
 ## 2. BLE의 대화 구조: 광고, 연결, 그리고 특성
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="61화 — 광고, 연결, 그리고 서랍장" />
 
 BLE 기기들이 서로를 찾고 대화하는 방식에는 정해진 순서가 있어요.
 
@@ -80,6 +89,8 @@ BLE의 모든 대화는 결국 이 서랍을 읽고 쓰는 일이에요.
 </Callout>
 
 ## 3. 전체 흐름: 폰에서 LED까지
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="62화 — 폰에서 LED까지" />
 
 이번 실습에서 라즈베리파이는 **광고를 내보내는 조명 기기** 역할을 맡아요.
 Python의 BLE 라이브러리로 서비스와 특성을 만들어 두고,

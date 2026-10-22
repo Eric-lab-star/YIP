@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "초음파센서",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson12";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -32,6 +37,8 @@ export default function Layout({ children }) {
 
 ## 1. 소리의 왕복 시간으로 거리를 재요
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="47화 — 박쥐의 비법" />
+
 눈이 두 개 달린 것처럼 생긴 HC-SR04의 두 원통은 사실 **스피커와 마이크**예요.
 한쪽이 사람 귀에 들리지 않는 높은 소리인 **초음파**를 쏘고,
 다른 쪽이 물체에 부딪혀 돌아온 소리를 받습니다.
@@ -48,6 +55,8 @@ export default function Layout({ children }) {
 버튼이나 가스 센서의 네/아니오와 달리, 이번에는 **거리라는 숫자**를 얻는다는 점이 새로워요.
 
 ## 2. 네 개의 핀: 쏘라는 명령과 돌아온 보고
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="48화 — 명령하는 핀, 보고하는 핀" />
 
 | 핀 | 역할 | 연결 |
 | --- | --- | --- |
@@ -78,6 +87,8 @@ Echo → 1k옴 → (여기서 GPIO24로) → 2k옴 → GND 순서로 연결하�
 </Callout>
 
 ## 3. gpiozero가 계산을 대신해 줘요
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="49화 — 계산은 맡기고 놀이처럼" />
 
 시간을 재고 소리의 속력을 곱하는 계산은 gpiozero의 **DistanceSensor**가 다 해 줍니다.
 

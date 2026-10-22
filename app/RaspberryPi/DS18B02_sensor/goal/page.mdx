@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "DS18B20 온도센서",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson14";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -33,6 +38,8 @@ export default function Layout({ children }) {
 
 ## 1. 온도를 숫자로 말해 주는 센서
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="53화 — 온도를 숫자로 말하는 센서" />
+
 CDS와 MQ-2를 떠올려 보세요. 저항이 변하는 아날로그 센서라서,
 라즈베리파이로는 기준보다 높은지 낮은지만 알 수 있었어요.
 
@@ -45,6 +52,8 @@ ADC가 없는 라즈베리파이에게 딱 맞는 똑똑한 친구죠.
 - MPU6050처럼, 아날로그의 한계를 **센서 쪽에서 디지털로 바꿔서** 해결한 경우예요.
 
 ## 2. 1-Wire: 선 한 가닥으로 나누는 대화
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="54화 — 선 한 가닥의 대화" />
 
 지난 시간의 I2C는 SDA와 SCL **두 가닥**으로 대화했어요.
 DS18B20이 쓰는 **1-Wire(원와이어)**는 이름 그대로 **데이터 선이 한 가닥**뿐입니다.
@@ -79,6 +88,8 @@ DS18B20이 쓰는 **1-Wire(원와이어)**는 이름 그대로 **데이터 선�
 </Callout>
 
 ## 3. 설정하고 읽어 보기
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="55화 — 폴더 속의 온도" />
 
 I2C처럼 1-Wire도 설정에서 켜 줘야 해요.
 **기본 설정 → Raspberry Pi Configuration → Interfaces**에서 **1-Wire를 사용함**으로 바꾸고 재부팅합니다.

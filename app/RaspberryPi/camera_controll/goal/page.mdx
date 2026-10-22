@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "카메라 연결하기",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson19";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -31,6 +36,8 @@ export default function Layout({ children }) {
 </Callout>
 
 ## 1. 어디에, 어떻게 꽂을까요?
+
+<SectionClip src={clipBase + "/ep01.mp4"} title="69화 — 리본 케이블은 조심조심" />
 
 1차시에서 스치듯 만났던 단자를 기억하나요?
 보드 가운데쯤의 길고 납작한 단자, **CSI(카메라 직렬 인터페이스)**가 오늘의 자리예요.
@@ -58,6 +65,8 @@ CSI는 카메라 전용의 널찍한 길이라 고화질 영상도 빠르게 전
 
 ## 2. 첫 촬영: 명령어 한 줄
 
+<SectionClip src={clipBase + "/ep02.mp4"} title="70화 — 명령어 한 줄로 찰칵" />
+
 전원을 켜고 터미널에서 한 줄이면 사진이 찍혀요.
 
 ```bash
@@ -77,6 +86,8 @@ rpicam-vid -t 10000 -o video.mp4
 촬영이 안 되면 먼저 연결을 의심합니다. 전원을 분리한 뒤 리본 케이블의 방향과 고정 상태를 다시 확인하세요.
 
 ## 3. Python으로 찍기: 프로그램과 카메라의 만남
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="71화 — 파이썬과 카메라의 만남" />
 
 명령어로도 충분히 찍을 수 있는데 왜 Python이 필요할까요?
 **조건과 반복**을 붙일 수 있기 때문이에요.

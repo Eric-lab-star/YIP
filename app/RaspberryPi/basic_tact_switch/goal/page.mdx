@@ -1,5 +1,6 @@
 import VideoLesson from "@/components/mdx/VideoLesson";
 import { Callout } from "@/components/mdx/Callout";
+import { SectionClip } from "@/components/mdx/SectionClip";
 
 export const metadata = {
   title: "기초 택트 스위치",
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 재녹음 시 같은 키에
+    덮어쓰지 말고 버전 폴더를 새로 올려 이 경로를 바꿀 것(CDN immutable 캐시). */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson08";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
@@ -31,6 +36,8 @@ export default function Layout({ children }) {
 
 ## 1. 스위치: 길을 끊었다 이었다 하는 문지기
 
+<SectionClip src={clipBase + "/ep01.mp4"} title="34화 — 길을 여닫는 문지기" />
+
 **스위치**는 회로의 길을 잇거나 끊는 부품이에요.
 **택트 스위치**는 누르는 동안에만 길이 이어지고, 손을 떼면 다시 끊어지는 방식입니다.
 "딸깍" 하는 촉감(tact)이 있어서 이런 이름이 붙었어요.
@@ -48,6 +55,8 @@ export default function Layout({ children }) {
 택트 스위치는 가운데 홈에 걸쳐 꽂으면 짝이 자연스럽게 양쪽으로 나뉘어 실수를 줄일 수 있습니다.
 
 ## 2. 입력: 핀의 전압을 읽는 일
+
+<SectionClip src={clipBase + "/ep02.mp4"} title="35화 — 입력: 핀이 듣는 시간" />
 
 LED 때는 프로그램이 핀의 전압을 **바꿨어요**(출력).
 버튼은 반대로, 핀의 전압이 지금 높은지 낮은지를 프로그램이 **읽어요**(입력).
@@ -74,6 +83,8 @@ gpiozero의 Button은 **이 내장 풀업을 자동으로 켜 줍니다.**
 </Callout>
 
 ## 3. gpiozero의 Button
+
+<SectionClip src={clipBase + "/ep03.mp4"} title="36화 — Button과 첫 만남" />
 
 ```python
 from gpiozero import Button
