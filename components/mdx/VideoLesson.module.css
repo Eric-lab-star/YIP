@@ -1,5 +1,10 @@
 /* The app shell normally centers a capped-width content container.
    Only video lessons need it to span the full area beside the sidebar. */
+:global(main):has(> div > .lesson) {
+  /* Let tables scroll inside the lesson when the sidebar narrows the main flex item. */
+  min-width: 0;
+}
+
 :global(main) > div:has(> .lesson) {
   width: 100%;
   max-width: none;

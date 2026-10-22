@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-labelledby="title description">
+  <title id="title">부품들이 함께 동작하는 모습 — 이미지 자리표시자</title>
+  <desc id="description">이 소주제에 관련된 사진을 넣을 자리입니다.</desc>
+  <rect width="800" height="500" rx="24" fill="#F3F8FB"/>
+  <rect x="18" y="18" width="764" height="464" rx="18" fill="none" stroke="#9AB2C2" stroke-width="2" stroke-dasharray="10 8"/>
+  <g transform="translate(354 126)" fill="none" stroke="#698A9E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="92" height="72" rx="8"/>
+    <circle cx="66" cy="21" r="7"/>
+    <path d="M8 62 31 34 49 53 61 41 84 62"/>
+  </g>
+  <g text-anchor="middle" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif">
+    <text x="400" y="274" fill="#263D5B" font-size="32" font-weight="600">부품들이 함께 동작하는 모습</text>
+    <text x="400" y="326" fill="#58758A" font-size="24">이미지 준비 중</text>
+  </g>
+</svg>
