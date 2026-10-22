@@ -1,0 +1,160 @@
+import VideoLesson from "@/components/mdx/VideoLesson";
+import { Callout } from "@/components/mdx/Callout";
+
+export const metadata = {
+  title: "LED 여러개 제어하기",
+  description: "여러 GPIO 핀을 함께 사용하고 리스트와 반복문으로 LED 여러 개를 순서대로 제어합니다.",
+  session: 7,
+};
+
+export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+export default function Layout({ children }) {
+  return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
+}
+
+# LED 여러개 제어하기
+
+LED 하나를 다룰 수 있게 되었으니, 이제 욕심을 내 볼까요?
+신호등은 빨강, 노랑, 초록 세 개의 불이 **정해진 순서**로 바뀌어요.
+오늘은 LED 세 개를 연결하고, 프로그램으로 순서를 지휘하는 방법을 배웁니다.
+그 과정에서 Python의 **리스트**와 **반복문**이 왜 고마운 존재인지도 알게 될 거예요.
+
+<Callout type="goal">
+
+**이번 수업을 마치면**
+
+1. LED 여러 개를 서로 다른 GPIO 핀에 연결하는 방법을 설명할 수 있어요.
+2. LED 각각을 변수로 만들어 원하는 순서로 켜고 끌 수 있어요.
+3. 리스트와 반복문으로 같은 일을 더 짧은 코드로 표현할 수 있어요.
+
+</Callout>
+
+## 1. 핀 하나에 LED 하나
+
+GPIO 신호 핀 하나는 켜짐과 꺼짐, 한 가지 신호만 보낼 수 있어요.
+그래서 LED 세 개를 **따로따로** 조종하려면 **신호 핀도 세 개**가 필요합니다.
+우리 수업에서는 다음처럼 연결할 거예요.
+
+| LED 색 | GPIO 번호 | 물리 핀 |
+| --- | --- | --- |
+| 빨강 | GPIO17 | 11번 |
+| 노랑 | GPIO27 | 13번 |
+| 초록 | GPIO22 | 15번 |
+
+세 LED 모두 **각자 저항 하나씩**과 직렬로 연결합니다. 저항은 나눠 쓸 수 없어요.
+GND는 하나로 모아도 괜찮습니다. 브레드보드의 파란 전원 레일(-)에 GND를 한 번 연결해 두고,
+세 LED의 짧은 다리를 모두 그 레일에 꽂으면 깔끔해요.
+
+<Callout type="analogy">
+
+**전원 레일은 모두가 함께 쓰는 복도예요.**
+
+교실(LED)마다 문은 따로 있지만, 복도(GND 레일)는 하나로 이어져 있어도 되죠.
+전기가 돌아가는 길인 GND는 이렇게 공유할 수 있지만,
+교실 문에 해당하는 신호 핀과 저항은 LED마다 따로 있어야 해요.
+
+</Callout>
+
+## 2. 변수 세 개로 지휘하기
+
+연결이 끝났다면 지난 시간의 방법을 그대로 세 번 쓰면 됩니다.
+
+```python
+from gpiozero import LED
+from time import sleep
+
+red = LED(17)
+yellow = LED(27)
+green = LED(22)
+
+red.on()
+sleep(1)
+red.off()
+yellow.on()
+sleep(1)
+yellow.off()
+green.on()
+sleep(1)
+green.off()
+```
+
+빨강, 노랑, 초록이 1초씩 차례로 켜졌다 꺼져요.
+동작은 하지만 비슷한 줄이 계속 반복되는 것이 보이나요?
+LED가 열 개라면 서른 줄이 넘어갈 거예요. 더 좋은 방법이 필요합니다.
+
+## 3. 리스트와 반복문: 반복을 맡겨요
+
+Python의 **리스트**는 여러 값을 순서대로 담는 바구니예요.
+**for 반복문**은 바구니에서 하나씩 꺼내며 같은 일을 반복해 줍니다.
+
+```python
+from gpiozero import LED
+from time import sleep
+
+leds = [LED(17), LED(27), LED(22)]
+
+for led in leds:
+    led.on()
+    sleep(1)
+    led.off()
+```
+
+- `leds = [...]`: LED 세 개를 리스트 하나에 담았어요.
+- `for led in leds:`: 리스트에서 하나씩 꺼내 led라는 이름으로 부르며, 들여쓰기된 부분을 실행해요.
+
+위의 아홉 줄짜리 켜고 끄기가 **네 줄**로 줄었어요.
+LED를 다섯 개로 늘려도 리스트에 두 개만 더 담으면 끝이에요.
+이것이 프로그래밍에서 반복문을 쓰는 이유입니다.
+**반복되는 일의 모양을 찾아내면, 코드는 짧아지고 고치기 쉬워져요.**
+
+### 진짜 신호등처럼
+
+실제 신호등은 초록 → 노랑 → 빨강 순서로 바뀌고, 불마다 켜져 있는 시간이 달라요.
+이렇게 **순서와 시간을 설계하는 것**이 오늘 실습의 과제입니다.
+반복문과 sleep의 숫자를 바꿔 가며 여러분만의 신호등 규칙을 만들어 보세요.
+
+<Callout type="tip">
+
+**하나만 안 켜질 때는 그 LED만 따로 시험해요.**
+
+세 개 중 하나만 안 켜진다면 프로그램보다 배선을 먼저 의심합니다.
+쉘에서 그 LED만 `LED(27).on()`처럼 켜 보면, 문제가 배선에 있는지 코드에 있는지 금방 갈라낼 수 있어요.
+배선을 확인할 때는 전원을 분리하는 것, 잊지 않았죠?
+
+</Callout>
+
+## 스스로 확인해 보기
+
+<details>
+<summary>1. LED 세 개를 따로 조종하려면 GPIO 신호 핀이 몇 개 필요한가요?</summary>
+
+세 개 필요합니다. 신호 핀 하나는 한 가지 켜짐·꺼짐 신호만 보낼 수 있어서,
+따로 움직일 LED마다 핀을 하나씩 배정해요.
+
+</details>
+
+<details>
+<summary>2. 저항과 GND 중에서 LED끼리 함께 써도 되는 것은 어느 쪽인가요?</summary>
+
+GND는 함께 써도 됩니다. 전기가 되돌아가는 길이라 레일에 모아 연결할 수 있어요.
+저항은 LED마다 하나씩 직렬로 있어야 각 LED에 흐르는 전류를 제한할 수 있습니다.
+
+</details>
+
+<details>
+<summary>3. 리스트와 for 반복문을 쓰면 무엇이 좋아지나요?</summary>
+
+반복되는 코드가 짧아지고, LED 개수가 늘어나도 리스트에 추가만 하면 돼요.
+고칠 곳이 한 군데로 모이니 실수도 줄어듭니다.
+
+</details>
+
+## 학습 자료
+
+- [gpiozero 신호등 부품 문서](https://gpiozero.readthedocs.io/en/stable/recipes.html#traffic-lights): 여러 LED를 묶어 다루는 TrafficLights 도구
+- [Python for 반복문 공식 자습서](https://docs.python.org/ko/3/tutorial/controlflow.html#for-statements): 반복문 기초
+
+지금까지는 라즈베리파이가 신호를 **내보내기만** 했어요.
+다음 수업 [기초 택트 스위치](/RaspberryPi/basic_tact_switch/goal)에서는
+반대로 바깥의 신호를 **받아들이는** 입력을 배웁니다.

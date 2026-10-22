@@ -16,6 +16,7 @@ import { aIDeveloperTree } from "@/utils/sideBarTree/AIDeveloperTree";
 import { algorithmTree } from "@/utils/sideBarTree/AlgorithmTree";
 import { simpleWebDevTree } from "@/utils/sideBarTree/simpleWebDevTree";
 import { publicDataVizTree } from "@/utils/sideBarTree/PublicDataVizTree";
+import { raspberryPiTree } from "@/utils/sideBarTree/raspberryPiTree";
 import ChatRoomList from "./ChatRoomList";
 import ProblemSidebarList from "./ProblemSidebarList";
 import Link from "next/link";
@@ -88,6 +89,8 @@ function getTitle(section: string) {
       return "웹 개발 입문";
     case "PublicDataViz":
       return "공공데이터 분석 입문";
+    case "RaspberryPi":
+      return "라스베리 파이 입문";
   }
 }
 
@@ -105,5 +108,7 @@ function getSidebarItems(section: string) {
       return simpleWebDevTree;
     case "PublicDataViz":
       return publicDataVizTree;
+    case "RaspberryPi":
+      return raspberryPiTree;
   }
 }

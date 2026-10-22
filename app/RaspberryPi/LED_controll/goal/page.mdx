@@ -1,0 +1,157 @@
+import VideoLesson from "@/components/mdx/VideoLesson";
+import { Callout } from "@/components/mdx/Callout";
+
+export const metadata = {
+  title: "LED 제어하기",
+  description: "LED의 극성과 저항의 필요성을 이해하고 gpiozero로 LED를 켜고 끄고 깜빡이게 만듭니다.",
+  session: 6,
+};
+
+export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+export default function Layout({ children }) {
+  return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
+}
+
+# LED 제어하기
+
+오늘은 이 과정의 첫 번째 기념일이에요.
+**내가 쓴 프로그램이 현실의 불빛을 켜는 날**이기 때문입니다.
+화면 속에만 있던 코드가 GPIO를 지나 브레드보드 위 LED까지 닿는 길을 따라가 봅시다.
+
+<Callout type="goal">
+
+**이번 수업을 마치면**
+
+1. LED의 두 다리를 구분하고 올바른 방향으로 연결할 수 있어요.
+2. GPIO의 출력으로 LED가 켜지는 원리를 설명할 수 있어요.
+3. gpiozero의 LED로 켜기, 끄기, 깜빡이기를 할 수 있어요.
+
+</Callout>
+
+## 1. LED: 방향이 있는 작은 전구
+
+**LED(발광 다이오드)**는 전기가 흐르면 빛을 내는 부품이에요.
+전구와 다른 점이 하나 있는데, **전기가 한쪽 방향으로만 흐른다**는 거예요.
+그래서 LED의 두 다리는 서로 역할이 다릅니다.
+
+| 다리 | 이름 | 연결하는 곳 |
+| --- | --- | --- |
+| 긴 다리 | 애노드(+) | GPIO 신호 핀 쪽 |
+| 짧은 다리 | 캐소드(-) | GND 쪽 |
+
+방향을 반대로 꽂으면 LED는 켜지지 않아요.
+다행히 이 정도로는 보통 망가지지 않으니, 안 켜지면 먼저 방향부터 확인해 보세요.
+
+<Callout type="important">
+
+**저항을 빼먹지 마세요.**
+
+지난 시간에 배운 대로 LED는 반드시 **저항과 직렬로** 연결합니다.
+저항 없이 GPIO에 직접 연결하면 전류가 지나치게 흘러 LED가 망가질 수 있고 보드에도 무리가 돼요.
+우리 수업에서는 **330옴 저항**을 사용합니다. 저항은 방향이 없으니 어느 쪽으로 꽂아도 괜찮아요.
+
+</Callout>
+
+## 2. 회로의 길을 미리 그려 봐요
+
+실습에서 만들 회로는 이 길을 따라 전기가 흐릅니다.
+
+**GPIO17(물리 핀 11) → 저항 → LED 긴 다리 → LED 짧은 다리 → GND(물리 핀 9)**
+
+1차시에서 배운 핀 번호 약속을 기억하나요?
+**물리 핀 번호**는 헤더에서의 자리 번호이고, **GPIO 번호**는 신호 핀의 이름이에요.
+프로그램에서는 GPIO 번호인 **17**을 사용하고, 점퍼선을 꽂을 때는 물리 핀 11번 자리를 찾습니다.
+
+GPIO17이 **켜짐(3.3V)**이 되면 전기가 이 길을 따라 흘러 LED가 빛나고,
+**꺼짐(0V)**이 되면 전기가 흐르지 않아 LED가 꺼져요.
+"출력"이라는 말이 바로 이것입니다. 프로그램이 핀의 전압을 바꾸어 바깥 세계로 신호를 보내는 거예요.
+
+## 3. gpiozero로 LED 조종하기
+
+배선을 마쳤다면(전원 분리 상태에서!) 프로그램은 놀랄 만큼 짧아요.
+
+```python
+from gpiozero import LED
+
+led = LED(17)
+
+led.on()    # 켜기
+led.off()   # 끄기
+```
+
+한 줄씩 읽어 봅시다.
+
+- `from gpiozero import LED`: 도구 상자 gpiozero에서 LED 도구를 꺼내요.
+- `led = LED(17)`: **GPIO17에 연결된 LED**라고 알려 주고, led라는 이름을 붙여요.
+- `led.on()`과 `led.off()`: GPIO17을 켜짐과 꺼짐으로 바꿔요.
+
+쉘에서 한 줄씩 입력하면 입력하는 순간마다 LED가 반응하는 것을 볼 수 있어요.
+
+### 깜빡이게 하려면?
+
+켜고, 잠시 기다리고, 끄고, 잠시 기다리는 일을 반복하면 깜빡임이 됩니다.
+
+```python
+from gpiozero import LED
+from time import sleep
+
+led = LED(17)
+
+while True:
+    led.on()
+    sleep(1)
+    led.off()
+    sleep(1)
+```
+
+`sleep(1)`은 1초 동안 기다리라는 뜻이고, `while True:`는 들여쓰기된 부분을 계속 반복하라는 뜻이에요.
+실행하면 LED가 1초 간격으로 깜빡입니다. 멈출 때는 Thonny의 정지 버튼을 누르세요.
+gpiozero에는 이 네 줄을 대신해 주는 `led.blink()`도 준비되어 있답니다.
+
+<Callout type="tip">
+
+**안 켜져요! 순서대로 확인해 봐요.**
+
+1. LED 방향: 긴 다리가 저항을 지나 GPIO17 쪽인가요?
+2. 핀 자리: 점퍼선이 물리 핀 11번(GPIO17)과 9번(GND)에 있나요?
+3. 브레드보드: 부품들이 **같은 다섯 구멍 묶음**으로 이어져 있나요?
+4. 프로그램: `LED(17)`의 숫자가 17이 맞나요?
+
+대부분의 문제는 이 네 가지 안에서 발견돼요.
+
+</Callout>
+
+## 스스로 확인해 보기
+
+<details>
+<summary>1. LED의 긴 다리와 짧은 다리는 각각 어디에 연결하나요?</summary>
+
+긴 다리(+)는 저항을 거쳐 GPIO 신호 핀 쪽에, 짧은 다리(-)는 GND 쪽에 연결합니다.
+LED는 전기가 한 방향으로만 흐르는 부품이라 방향이 중요해요.
+
+</details>
+
+<details>
+<summary>2. led = LED(17)에서 17은 물리 핀 번호인가요, GPIO 번호인가요?</summary>
+
+GPIO 번호입니다. gpiozero는 GPIO 번호를 사용해요.
+GPIO17의 헤더 위 자리는 물리 핀 11번이에요.
+
+</details>
+
+<details>
+<summary>3. led.on()을 실행하면 GPIO17 핀에는 어떤 변화가 생기나요?</summary>
+
+핀의 전압이 0V에서 3.3V로 바뀌어요.
+그 전압으로 전류가 저항과 LED를 지나 GND로 흐르면서 LED가 빛납니다.
+
+</details>
+
+## 학습 자료
+
+- [gpiozero LED 공식 문서](https://gpiozero.readthedocs.io/en/stable/recipes.html#led): LED 제어의 다양한 방법
+- [GPIO와 40핀 헤더 안내](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#gpio-and-the-40-pin-header): 핀 배치 확인
+
+다음 수업 [LED 여러개 제어하기](/RaspberryPi/more_LEDS/goal)에서는
+LED를 세 개로 늘려 신호등처럼 순서대로 켜 봅니다.

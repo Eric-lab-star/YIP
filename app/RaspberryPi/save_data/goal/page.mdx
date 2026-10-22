@@ -1,0 +1,171 @@
+import VideoLesson from "@/components/mdx/VideoLesson";
+import { Callout } from "@/components/mdx/Callout";
+
+export const metadata = {
+  title: "데이터 저장하기",
+  description: "센서로 읽은 값을 CSV 파일로 기록하고 시각과 함께 저장해 변화를 추적하는 방법을 배웁니다.",
+  session: 15,
+};
+
+export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
+
+export default function Layout({ children }) {
+  return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
+}
+
+# 데이터 저장하기
+
+지난 시간에 온도를 읽었을 때, 숫자는 화면에 나타났다가 **흘러가 버렸어요**.
+프로그램을 끄면 사라지고, 어제의 온도는 다시 볼 수 없죠.
+"우리 교실은 몇 시에 가장 더울까?" 같은 질문에 답하려면
+값을 **기록으로 남겨야** 합니다.
+오늘은 센서 값을 **파일로 저장**해서, 흘러가는 숫자를 데이터로 바꾸는 방법을 배워요.
+
+<Callout type="goal">
+
+**이번 수업을 마치면**
+
+1. 값을 저장해야 하는 이유와 RAM·microSD의 역할 차이를 연결해 설명할 수 있어요.
+2. Python으로 파일을 열고 쓰고 닫을 수 있어요.
+3. CSV 형식으로 시각과 측정값을 기록할 수 있어요.
+
+</Callout>
+
+## 1. 1차시의 약속이 돌아왔어요
+
+RAM과 microSD 카드의 차이, 기억하나요?
+**RAM은 전원을 끄면 사라지는 책상, microSD는 저장한 것이 남는 책장**이었죠.
+
+프로그램 안의 변수에 담긴 온도 값은 **RAM에** 있어요. 프로그램이 끝나면 사라집니다.
+값을 내일도 보려면 **microSD 카드의 파일로** 옮겨 적어야 해요.
+그 옮겨 적는 일이 바로 **파일 쓰기**입니다.
+
+## 2. Python으로 파일에 쓰기
+
+```python
+file = open("record.txt", "w")
+file.write("안녕, 파일!")
+file.close()
+```
+
+- `open("record.txt", "w")`: record.txt 파일을 **쓰기(w) 모드**로 열어요. 파일이 없으면 새로 만들어요.
+- `file.write(...)`: 내용을 적어요.
+- `file.close()`: 다 썼으니 파일을 닫아요. 닫아야 내용이 확실하게 저장됩니다.
+
+실행하면 Thonny 옆 파일 목록에 record.txt가 생기고, 열어 보면 적은 내용이 들어 있어요.
+
+<Callout type="important">
+
+**쓰기 모드 w는 기존 내용을 지워요.**
+
+w 모드로 열면 파일에 있던 내용이 **모두 지워지고 처음부터** 다시 써요.
+온도처럼 계속 **덧붙여** 기록할 때는 **추가(a, append) 모드**를 사용합니다.
+`open("record.txt", "a")`처럼 여는 거예요.
+기록 프로그램에서 w와 a를 헷갈리면 어제까지의 기록이 통째로 사라질 수 있으니 꼭 구분하세요.
+
+그리고 더 안전한 습관이 있어요. **with 구문**을 쓰면 닫기를 깜빡해도 Python이 알아서 닫아 줍니다.
+
+```python
+with open("record.txt", "a") as file:
+    file.write("한 줄 더!\n")
+```
+
+</Callout>
+
+## 3. CSV: 표를 담는 가장 단순한 형식
+
+온도를 기록할 때 값만 적으면 나중에 곤란해져요.
+**언제** 잰 값인지 모르면 "몇 시에 가장 더웠나"에 답할 수 없으니까요.
+그래서 한 줄에 **시각과 값을 쉼표로 구분해** 함께 적습니다.
+
+```text
+시각,온도
+09:00:00,22.5
+09:10:00,23.1
+09:20:00,24.0
+```
+
+이런 형식을 **CSV(쉼표로 구분한 값)**라고 해요.
+모양은 그냥 글자이지만, 쉼표 약속 덕분에 엑셀이나 구글 시트에서 열면 **표로** 펼쳐집니다.
+센서 데이터를 저장하는 가장 널리 쓰이는 형식이에요.
+
+시각은 Python의 datetime이 알려 줍니다.
+
+```python
+from datetime import datetime
+
+now = datetime.now()
+print(now.strftime("%H:%M:%S"))
+```
+
+## 4. 조립: 10초마다 온도를 기록하는 프로그램
+
+배운 조각들을 모으면 **온도 기록 장치**가 완성돼요.
+
+```python
+from w1thermsensor import W1ThermSensor
+from datetime import datetime
+from time import sleep
+
+sensor = W1ThermSensor()
+
+while True:
+    temp = sensor.get_temperature()
+    now = datetime.now().strftime("%H:%M:%S")
+
+    with open("temperature.csv", "a") as file:
+        file.write(f"{now},{temp:.1f}\n")
+
+    print(f"{now} 기록 완료: {temp:.1f}도")
+    sleep(10)
+```
+
+- 10초마다 온도를 재서, 시각과 함께 temperature.csv에 **한 줄씩 덧붙여요**.
+- 줄 끝의 `\n`은 줄바꿈이에요. 이게 없으면 모든 기록이 한 줄에 붙어 버립니다.
+- 하루를 돌리면 8,640줄의 기록이 쌓여요. 여러분의 첫 **데이터 수집 장치**입니다.
+
+<Callout type="tip">
+
+**기록 프로그램을 돌릴 때의 습관**
+
+- 전원을 그냥 뽑으면 마지막 기록이 손상될 수 있어요. **정지 버튼으로 멈춘 뒤 안전 종료**하는 약속은 기록 장치에서 더욱 중요해요.
+- 모은 CSV는 복사해 두세요. 실수로 w 모드로 열어 덮어쓰는 사고를 대비하는 보험이에요.
+- 파일이 커지는 속도는 기록 간격이 정해요. 10초마다와 10분마다 중 무엇이 적절한지는 목적에 따라 다릅니다.
+
+</Callout>
+
+## 스스로 확인해 보기
+
+<details>
+<summary>1. 변수에 담긴 측정값은 프로그램이 끝나면 왜 사라지나요?</summary>
+
+변수는 RAM에 있기 때문이에요. RAM은 전원이 꺼지거나 프로그램이 끝나면 비워지는 작업 공간이라,
+남기고 싶은 값은 microSD 카드의 파일로 저장해야 합니다.
+
+</details>
+
+<details>
+<summary>2. 파일을 열 때 w 모드와 a 모드는 어떻게 다른가요?</summary>
+
+w는 기존 내용을 지우고 처음부터 쓰는 쓰기 모드이고,
+a는 기존 내용 뒤에 덧붙이는 추가 모드예요.
+측정값을 계속 쌓는 기록에는 a 모드를 사용합니다.
+
+</details>
+
+<details>
+<summary>3. 온도만 저장하지 않고 시각을 함께 저장하는 이유는 무엇인가요?</summary>
+
+언제 잰 값인지 알아야 변화를 추적할 수 있기 때문이에요.
+시각과 값을 쉼표로 구분해 저장하면 CSV 형식이 되어 표 프로그램에서 열어 분석할 수 있습니다.
+
+</details>
+
+## 학습 자료
+
+- [Python 파일 읽고 쓰기 공식 자습서](https://docs.python.org/ko/3/tutorial/inputoutput.html#reading-and-writing-files): 파일 입출력 기초
+
+지금까지 라즈베리파이는 혼자서 일했어요.
+다음 수업 [블루투스LE 스마트 조명제어](/RaspberryPi/BLE/goal)에서는
+드디어 **스마트폰과 무선으로** 연결해 조명을 제어해 봅니다.
+

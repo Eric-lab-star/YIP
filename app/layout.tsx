@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     "YIP",
     "yipcode",
     "yip코드",
-    "입코드",
     "YIP 코딩",
     "코딩 학원",
     "코딩 아카데미",
@@ -36,6 +35,8 @@ export const metadata: Metadata = {
     "아두이노",
     "Arduino",
     "어린이 코딩",
+    "세종",
+    "대전",
   ],
   // No `alternates.canonical` here on purpose. Metadata is inherited, so a
   // canonical set on the root layout is emitted by every page that does not
@@ -142,7 +143,7 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href=${JSON.stringify(
-              FONT_HREF
+              FONT_HREF,
             )};l.media='print';l.onload=function(){this.media='all'};document.head.appendChild(l);})();`,
           }}
         />

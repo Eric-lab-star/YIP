@@ -1,51 +1,204 @@
-# HANDOFF — 2026-08-06 (2026-09-06 6차 갱신)
+# HANDOFF — 2026-10-06 (라즈베리파이 작업 main 병합 완료)
 
-두 갈래가 섞여 있다. **A는 열린 PR 1건만 남았고, B는 미완이다.**
+## 최신 상태 — 다음 세션은 이 절부터 읽기
 
-- (A) YIP 저장소 — 2026-09-06 세션에서 PR **#52·#53·#54 를 머지·배포**했고,
-  **#55 하나가 열려 있다**. 이 세션에서 한 일은 **A-8 절**. 그 앞의 A~A-7 은
-  이전 세션들이고 전부 완료 상태다.
+2026-10-06 작업에서 큰 화면의 영상 배치를 수정하고, 커리큘럼 slug를 정리한 뒤 사이드바가 가리키는 **22개 수업의 goal/task 경로 44개**를 만들었다. 인수인계 문서는 `5804113`으로 먼저 커밋했고, 남아 있던 코드·프로젝트 설정 8개 파일과 갱신한 인수인계까지 `9acb2d5`로 커밋·push했다. 사용자의 요청으로 **PR #59를 main에 병합**했으며 로컬 main도 동기화했다. 이번 갱신은 병합 후 상태를 기록하는 문서 작업이다.
+
+- 현재 브랜치: **`main`**. 이 기록을 시작할 때 로컬 HEAD와 `origin/main`은 모두 `539d96a3a3dddf2f8431dd5232f8de8eb7e58adc`였고 작업 트리는 깨끗했다.
+- 병합 커밋: `539d96a3a3dddf2f8431dd5232f8de8eb7e58adc` — `Merge pull request #59 from Eric-lab-star/feat/raspberry-pi-setup-layout`.
+- 교재 경로 구현 커밋: `b672fa1c1dbe5e3c36554fbe1a5c9caf405dd9a4` — `Add Raspberry Pi curriculum goal and task routes`.
+- PR: https://github.com/Eric-lab-star/YIP/pull/59 — `Add Raspberry Pi video lessons and curriculum routes`, **MERGED**. 병합 시각: **2026-10-06 12:28:40 KST** (`03:28:40 UTC`). 병합 직전 PR head는 `9acb2d52a0cf75faa1fe109bfd5c6176da7e5d1d`였다.
+- 병합 직전 최신 head의 `GitGuardian Security Checks`, `Vercel`, `Vercel Preview Comments`는 모두 **SUCCESS**였다. `main`이 해당 head의 조상이고 PR이 `MERGEABLE / CLEAN`임을 확인한 뒤, head 커밋을 지정해 병합했다.
+- **병합 후 배포 상태는 별도다.** 이번 문서 갱신 시 병합 커밋 `539d96a`의 GitHub commit status에서 Vercel은 **pending**이었다(상태 갱신 시각 12:28:43 KST). 프로덕션 배포 완료나 실제 사이트 반영은 아직 확인하지 않았다. 다음 세션에는 해당 커밋의 최신 검사·배포 상태를 다시 확인할 것.
+- 이번 인수인계 갱신은 위 병합 커밋 뒤의 문서 변경이다. 다음 세션에는 `git status`, `git log`, `origin/main`을 다시 확인할 것.
+
+### 이번에 완료한 작업
+
+1. **큰 화면의 영상 배치**
+   - `components/mdx/VideoLesson.tsx`와 `.module.css`에 어두운 전체 너비 배경과 중앙 정렬 플레이어를 적용했다. 사이드바를 숨겨도 영상과 재생바가 가로 전체로 계속 커지지 않고 좌우 여백이 생긴다.
+   - 플레이어 너비는 `min(100%, clamp(960px, 80vw, 1280px), calc(70svh * 16 / 9))`. 좁은 콘텐츠 영역에서는 가용 너비를 채우고, 넓은 화면에서는 약 80vw를 사용하되 최대 1280px 및 화면 높이의 70%에 해당하는 16:9 크기로 제한한다.
+   - 영상과 컨트롤을 함께 제한한다. 네이티브 전체화면은 `:not(:fullscreen)`으로 제한 대상에서 제외한다. 영상 아래 본문은 최대 48rem과 패딩을 유지한다.
+   - 커밋: `1751773`(높이 제한) → `b75f216`(최종 중앙 배치와 좌우 배경).
+
+2. **커리큘럼 slug 정리**
+   - 실제 파일은 `utils/curriculum/RapberryPi.ts`이며 기존 파일명 철자를 유지했다.
+   - 문자열 내부 공백을 `_`로 바꿨다. 예: `python setup` → `python_setup`; ` final project`는 앞 공백을 제거해 `final_project`로 정리했다. 대소문자 및 기존 단어 철자는 유지했다.
+   - 이는 기존 문자열 값의 수정이다. 앞으로 추가하는 slug를 자동 변환하는 기능은 넣지 않았다.
+   - 작업 도중 목록의 중복 `ultra_sonic_sensor` 항목이 사용자 편집으로 정리됐다. 최종 목록은 **중복 없는 22개**이며 페이지의 `session`을 최종 순서 1~22에 맞췄다.
+
+3. **사이드바 경로와 44개 MDX 페이지**
+   - 실제 트리 파일은 `utils/sideBarTree/raspberryPiTree.ts`. 각 slug에서 `/RaspberryPi/${slug}/goal`(학습하기), `/RaspberryPi/${slug}/task`(실습하기)를 만든다.
+   - `app/RaspberryPi/<slug>/goal/page.mdx`: 기존 `app/RaspberryPi/raspberryPi_setup/goal/page.mdx`를 복사하고 수업명·설명·차시 메타데이터를 맞췄다. VideoLesson, 샘플 영상 URL, 설명·자료 틀은 유지했다.
+   - `app/RaspberryPi/<slug>/task/page.mdx`: 메타데이터와 `# <수업명> 실습`만 있다. 화면에는 제목만 표시한다.
+   - 커리큘럼, 트리, `components/commons/AppSideBar.tsx`의 Raspberry Pi 연결을 포함해 **47개 파일**을 `b672fa1`로 커밋하고 원격 PR 브랜치에 push했다.
+   - 예: `/RaspberryPi/python_setup/goal`, `/RaspberryPi/python_setup/task`.
+   - 기존 `/RaspberryPi/raspberryPi_setup/goal`은 유지한다. Raspberry Pi는 **goal/task 두 경로만** 사용하며 슬라이드 경로를 만들지 않았다. 다른 섹션의 네 경로 규칙을 그대로 적용하지 말 것.
+
+4. **남아 있던 전체 작업 정리**
+   - `app/dashBoard/books.ts`: Raspberry Pi 교재 카드와 `/RaspberryPi` 링크.
+   - `app/layout.tsx`: 검색 키워드에서 `입코드` 제거, `세종`·`대전` 추가 및 기존 포맷 변경.
+   - `tsconfig.json`: `app/RaspberryPi/page.mdx`를 include 목록에 추가.
+   - `app/RaspberryPi/WhatIsRaspberryPi/page.mdx`: 제목과 메타데이터만 있는 기존 개요 페이지를 포함했다. 커리큘럼의 `what_is_raspberryPi/goal`과는 별도 경로이며 합치거나 삭제하지 않았다.
+   - `AGENTS.md`, `.codex/agents/lesson-converter.toml`, `.serena/project.yml`, `.serena/.gitignore`: 기존 프로젝트 지침과 도구 설정을 함께 버전 관리한다. Serena의 캐시와 개인 설정은 `.serena/.gitignore`에서 계속 제외한다.
+
+5. **전체 작업 커밋과 main 병합**
+   - `9acb2d5`: 남아 있던 8개 코드·설정 파일과 HANDOFF를 포함한 9개 파일을 커밋하고 기존 PR 브랜치에 push했다. 커밋 검사에서 발견한 개요 MDX 끝의 불필요한 빈 줄만 정리했으며 본문이 같고 MDX 컴파일이 통과함을 확인했다.
+   - `539d96a`: PR #59를 merge commit 방식으로 병합했다. 로컬에서 `git switch main` 후 `git merge --ff-only origin/main`으로 동기화했다.
+   - 검증했던 최종 head `9acb2d5`와 병합 결과 사이에 파일 차이가 없음을 `git diff --exit-code`로 확인했다. 다른 작업 트리나 작업 브랜치를 삭제하지 않았다.
+
+### 검증 결과와 한계
+
+다음은 2026-10-06 구현 작업에서 직접 실행한 결과다. 최초 문서 커밋에서는 검사를 반복하지 않았고, 이후 전체 작업 커밋을 준비하면서 남아 있던 8개 파일까지 포함해 빌드·타입·lint를 다시 실행했다.
+
+병합 후에는 검증한 head와 병합 결과의 파일 동일성, PR의 MERGED 상태, 로컬·원격 main 일치와 깨끗한 작업 트리를 확인했다. 이번 인수인계 갱신에서는 앱 빌드·브라우저 검사를 다시 실행하지 않았으며 문서 diff만 검사한다.
+
+- 최종 프로덕션 `npm run build`와 `npx tsc --noEmit`: **성공**. 실행 중인 개발 서버에 영향을 주지 않도록 별도 검증 폴더를 사용했다.
+- 새 MDX **44개 모두** `@mdx-js/mdx` + `remark-gfm` + `remark-cjk-friendly`로 컴파일했다. 프로덕션 route manifest에 44개 경로가 모두 등록됐고, 제목·차시·goal 템플릿 본문·task 제목만 있는 본문을 확인했다. 커밋 직전 대상 47개 파일이 검증 폴더의 파일과 일치함도 확인했다.
+- 전체 ESLint: 기존 **22 errors / 147 warnings**, main 기준선 대비 **신규 항목 0개**. 파일·규칙·심각도·메시지 단위로 비교했다. 저장소 지침의 168건은 오래된 수치다.
+- 전체 작업 정리 시 추가한 `WhatIsRaspberryPi/page.mdx`의 MDX 컴파일과 프로덕션 경로 등록을 확인했다. tsconfig JSON, Serena YAML, Codex agent TOML 문법 검사도 통과했다. 원본 8개 파일이 검증 복사본과 일치함을 확인했으며 도구 설정 자체의 런타임 동작을 별도로 검증한 것은 아니다.
+- 실제 브라우저에서 사이드바의 `python_setup` 학습하기 ↔ 실습하기 이동을 확인했다. 두 페이지를 CSS 너비 **320 / 390 / 768 / 769 / 1024 / 1025 / 1280px**에서 확인했고 가로 넘침이 없었다. 모바일·데스크톱 화면을 시각 검사했고 영상 메타데이터 로딩도 확인했다. 모든 44개 경로를 브라우저에서 하나씩 열어 본 것은 아니다.
+- 영상 배치 변경 단계에서는 **1339 / 1920 / 2560px**와 데스크톱 사이드바 표시/숨김도 확인했다. 숨김 상태에서 1339px 화면은 영상 약 1071×603px·양옆 약 128px, 2560px 화면은 영상 1280×720px였다.
+- **전체화면 전환은 최종 영상 배치 검증에서 자동화로 진입하지 못해 미확인**이다. CSS상 크기 제한 제외 여부와 실제 전체화면 동작 검증을 혼동하지 말 것. 이전 9월의 성공 기록은 최신 변경의 검증 결과가 아니다.
+- 임시 뷰포트 설정은 reset했고 검사용 탭을 닫았다. 영상 배치 확인용 임시 프로덕션 서버도 종료했다. 기존 사용자 개발 서버와 탭은 유지했다.
+
+### 검증 환경과 발견한 문제
+
+- 검증 폴더: `C:\Users\cyon2\AppData\Local\Temp\yip-video-height-20261006-103418`. 당시 HEAD와 작업 대상 파일, 실물 `node_modules`, 로컬 환경 파일로 검증했다. 환경 파일 내용은 출력하거나 커밋하지 말 것.
+- 최초 경로 빌드는 이 임시 복사본에서 `Cannot find module 'next/dist/compiled/webpack/webpack-lib'`로 실패했다. 작업 폴더에는 파일이 있고 임시 복사본에는 없음을 확인했다. 의존성을 `robocopy /E /XJ /R:1 /W:1`로 보완한 뒤 최종 빌드·타입 검사가 통과했다. 삭제·미러링 옵션은 사용하지 않았다.
+- 전체 작업 정리의 최종 로그: 위 검증 폴더의 `build-checkpoint.log`, `lint-checkpoint.json`. 경로 작업 로그는 `build-routes-final.log`, `lint-routes-final.json`, 영상 배치 검증 로그는 `build-theater-final.log`, `lint-theater.json`. PR 본문 초안은 `pr-routes-body.md`.
+- lint 기준선: `scratchpad/pi-lint-main.json`. 기준선에 기록된 파일 경로의 루트는 `C:\Users\cyon2\source\YIP\scratchpad\pi-validation`이므로 비교 시 상대 경로로 정규화했다.
+- 같은 작업 폴더에서 dev와 build를 동시에 실행하지 말 것. 임시 폴더·프로세스·브라우저 ID는 세션마다 재확인할 것. 당시 브라우저 뷰포트 도구의 지정 크기는 실제 CSS 크기와 달라 `innerWidth`로 확인했다.
+
+### 남은 작업과 커밋 범위
+
+- **교재 본문은 요청한 틀까지만 완성됐다.** 모든 새 goal은 같은 `sampleVideo.mp4`와 작성용 주석을 사용하며, task는 제목만 있다. 실제 수업 영상, 설명, 자료, 실습 문제 작성은 후속 작업이다.
+- 최신 영상 배치의 실제 전체화면 전환은 수동으로 재확인할 필요가 있다.
+- PR #59의 병합은 완료됐다. 남은 확인은 병합 커밋의 Vercel 배포 결과와 실제 사이트 반영 여부다. 별도 수동 배포 명령은 실행하지 않았다.
+- 처음에는 문서만 커밋하고 남겨 두었던 코드·설정 8개 파일을 이후 전체 작업 커밋에 모두 포함했다. 더 이상 아래 과거 기록의 미커밋 목록을 현재 상태로 해석하지 말 것.
+- 기존 ignore 규칙에 해당하는 환경 파일, 빌드 산출물, 의존성, `scratchpad/`, Serena 캐시·개인 설정은 커밋하지 않는다. 작업 파일을 삭제하거나 ignore 규칙을 새로 추가해 변경을 숨기지 않았다.
+- `AppSideBar.tsx`, `RapberryPi.ts`, `raspberryPiTree.ts`와 새 44개 경로는 앞선 커밋으로 이미 원격에 반영돼 있다.
+
+---
+
+## 이전 기록 — 2026-09-17 라즈베리파이 개요 및 브라우저 검증
+
+다음 내용은 개요 PR #58 병합 전의 기록을 보존한 것이다. 현재 브랜치·PR 상태는 위 최신 절을 따른다.
+
+사용자는 Raspberry Pi 4 Model B **1GB**용 교재를 요청했다. `app/RaspberryPi/page.mdx`에 개요를 작성하고, 왼쪽 본문을 스크롤하면 오른쪽 3D 모형이 해당 부품을 확대·회전하도록 구현했다. 브라우저 연결 후 실제 화면 검증까지 완료했으며, 마지막 요청은 이 인수인계 문서에 기록하는 것이다.
+
+- 현재 브랜치: `feat/raspberry-pi-overview`
+- 원격에 올라간 최신 커밋: `82c88a44eb58bc71366bd54d242ead1fab26e44c`
+- 첫 구현 커밋: `2ae1cad`; 모바일 상단 겹침 수정: `82c88a4`
+- PR: https://github.com/Eric-lab-star/YIP/pull/58
+- 기록 직전 확인한 PR 상태: **OPEN, 검토 준비 완료(isDraft=false)**. 병합·배포하지 않았다.
+- 로컬 확인 URL: http://localhost:3000/RaspberryPi
+- 아래의 2026-09-04 이전 기록에 있는 “열린 PR 0개/main만 존재”는 당시 상태다. 현재 상태로 해석하지 말 것. Neovim 등 이전 미완 작업은 이번 세션에서 건드리지 않았다.
+
+### 구현 내용과 결정
+
+본문은 요청한 순서 그대로다: **라즈베리파이 살펴보기 → 연산처리장치 → 메모리 → 포트와 단자 → 40 GPIO 헤더핀 → 마이크로 HDMI → USB-C 전원 단자**. 1GB RAM과 microSD 저장 공간의 차이, SoC/CPU, USB 2.0·3.0, GPIO 전압과 번호, HDMI0 위치, 전원 연결·종료 순서 등을 설명한다. 공식 사양·GPIO 안내·시작 안내·치수 도면을 본문 참고 자료로 연결했다.
+
+- `app/RaspberryPi/page.mdx`: 교재 본문 및 메타데이터. MDX 기본 레이아웃만 `RaspberryPiLesson`으로 바꿔 기존 최대 본문 폭을 벗어나고, 제목·문단 등은 공통 MDX 스타일을 사용한다.
+- `app/RaspberryPi/layout.tsx`: 사용자가 준비한 로그인 레이아웃을 경로의 필수 파일로 포함했다. `requireAuth()`, `force-dynamic` 적용.
+- `components/raspberry-pi/RaspberryPiLesson.tsx` 및 `.module.css`: 본문/고정 모형 배치, 스크롤 구역 판정, 작은 화면의 상단 고정, 모션 감소 설정, WebGL 오류 대체 화면.
+- `components/raspberry-pi/BoardCanvas.tsx`: 기존 React Three Fiber/Three.js로 직접 구성한 교육용 3D 모형. 외부 모델·텍스처 다운로드는 없다. 실제 부품 배치를 단순화한 모형이며 사진 수준의 복제는 아니다.
+- `components/raspberry-pi/board.ts`: 일곱 구역의 부품 이름·색상·카메라 목표 위치.
+- `components/raspberry-pi/BoardDiagram.tsx`: 로딩 중 또는 3D 불가 시의 SVG 부품 배치도.
+- `components/raspberry-pi/scroll.ts`, `scripts/raspberry-pi-scroll.test.mjs`: 읽기 기준선을 넘은 마지막 구역 선택 및 테스트.
+- `components/commons/Header.tsx`: 기존 스타일은 유지하고 `data-site-header` 표식만 추가. 교재가 ResizeObserver로 실제 메뉴 높이를 측정해 `--pi-header-offset`에 12px 여유를 더한다.
+
+두 열 전환은 뷰포트가 아닌 **교재 컨테이너 너비 46rem** 기준이다. 사이드바가 열리면 1024px에서도 위아래 배치가 정상이다. 검증 당시 루트 글자 크기는 18px였고, 두 열로 바뀐 직후의 CSS 뷰포트 너비는 1183px였다.
+
+성능상 모형은 `frameloop="demand"`, 제한된 DPR, low-power WebGL 설정을 사용한다. 스크롤마다 카메라 목표가 바뀌며 보간한다. 모션 감소 설정에서는 바로 이동한다. WebGL2 사전 확인과 context lost 처리가 있다. fallback은 자동 코드 경로로 마련했지만 **WebGL 불가 환경 및 모션 감소 환경을 브라우저에서 강제로 재현한 검증은 하지 않았다**.
+
+### 수정 과정에서 실제로 발견한 문제
+
+1. 모바일의 세로 배치를 grid로 만들면 sticky 모형이 짧은 자기 행에 묶여 스크롤과 함께 사라질 수 있었다. 모바일 기본을 block으로 바꾸고 넓은 컨테이너만 grid로 처리했다.
+2. React Three Fiber의 비동기 WebGL 초기화 실패는 React 오류 경계만으로 모두 잡히지 않았다. WebGL2 사용 가능 여부를 먼저 확인하도록 수정했다.
+3. 연결된 브라우저의 320px 화면에서는 기존 상단 메뉴의 이름이 줄바꿈되어 메뉴 높이가 커졌다. 모형의 고정 top 76.5px가 메뉴 아래쪽 114.6px보다 위라 제목이 가려졌다. 실제 메뉴 높이를 반영한 뒤 top 126.6px로 내려가 겹침이 사라짐을 확인했다.
+4. 공통 상단 메뉴 자체의 이름 줄바꿈/좁은 폭 배치는 기존 문제로 남아 있다. 이번 수정은 교재 모형이 메뉴 아래에 유지되도록 한 것이다.
+
+### 검증 결과
+
+최신 수정 후 실행한 결과:
+
+- `npx tsc --noEmit`: 오류 0개.
+- `node --test scripts/raspberry-pi-scroll.test.mjs`: 4개 통과. 경계 통과·앞뒤 이동/점프·모바일 기준선·빈 본문 확인.
+- `node scratchpad/verify-raspberry-mdx.mjs`: MDX 컴파일 성공. `@mdx-js/mdx` + `remark-gfm` + `remark-cjk-friendly`.
+- 수정 파일 대상 ESLint: 신규 항목 없음.
+- 별도 검증 폴더의 `npm run build`: 성공. 컴파일 7.7초, TypeScript 3.0초, 정적 페이지 106/106. `/RaspberryPi` 동적 경로 포함.
+- 별도 검증 폴더의 `npm run lint`: **169건(22 errors, 147 warnings)**. main 기준선과 개별 메시지를 비교해 **신규 항목 0개**. 저장소 지침에 적힌 168건은 오래된 수치다.
+- 주 작업 폴더 전체 lint는 **180건(33 errors, 147 warnings)**이었다. 차이 11개는 기존 로컬 `scratchpad/codex-repair/verify_skills.cjs`, `scratchpad/project-review-repro.cjs`의 항목이며 이번 교재 변경에서 발생한 것이 아니다. 파일을 지우거나 규칙을 완화하지 않았다.
+- `git diff --check`, 커밋 전 staged diff 검사: 통과.
+
+연결된 Brave에서 실제 WebGL 렌더링을 보고 검증했다. 전체 모형과 여섯 부품의 확대·회전, 일반 스크롤에 따른 전환, 역방향 전환, 모바일 sticky를 확인했다. **CSS 너비 320 / 390 / 768 / 769 / 1024 / 1183 / 1280px**에서 시각 검사 및 가로 넘침 검사를 했으며 교재의 페이지 가로 넘침은 없었다. 임시 뷰포트 설정은 종료 전에 reset했고, 페이지를 개요 위치에 열어 두었다.
+
+### 실행 환경과 재현 시 주의
+
+- 원래 실행 중인 사용자 dev 서버 `localhost:3000`를 사용했다. 같은 작업 폴더에서 dev와 build를 동시에 실행하지 않았다. 프로세스 번호는 바뀔 수 있으므로 다음 세션에서 재확인할 것.
+- 별도 빌드 검증 폴더: `C:\Users\cyon2\AppData\Local\Temp\yip-pi-validation-20260917`. 실물 `node_modules`와 로컬 환경 파일이 있다. 환경 파일 내용은 출력하거나 PR에 넣지 말 것.
+- 처음에는 이 검증 폴더를 저장소 안 `scratchpad/pi-validation`에 만들었지만, 루트 TypeScript가 하위 파일까지 포함하므로 위 Temp 경로로 옮겼다.
+- 옮긴 뒤 재빌드에서 `mongodb`, `sharp`, `@aws-sdk/client-s3` 등을 찾지 못했다. 일부 의존성 폴더가 비어 있었고, 이전 위치에서는 부모 저장소의 의존성을 찾아 통과했던 것으로 보인다. 원본 `node_modules`를 `robocopy /E /XJ /R:1 /W:1`로 보완(삭제 옵션 없음)한 뒤 빌드가 통과했다. 코드 회귀가 아니었다.
+- 일반 `exec_command`는 이 세션에서 Windows CreateProcess 오류 `-1073283067`로 실패했다. Serena `execute_shell_command`로 작업했다. 이 도구의 기본 셸은 cmd이므로 PowerShell 문법은 `powershell -NoProfile -Command "..."`로 명시해야 한다.
+- 처음 브라우저 목록은 비어 있었고 Chrome native host 등록 누락을 진단했다. 사용자가 연결한 뒤 Brave가 실제 연결되었다. 이제 과거의 “브라우저 연결 불가”를 현재 장애로 취급하지 말 것.
+- CUA로 조작한 브라우저 ID는 당시 `1`, 탭 ID는 `1861905924`였다. 새 세션에는 목록/현재 상태를 확인하고 재사용한다. 네이티브 호스트를 수동 수정하지 않았다.
+- 당시 배율 때문에 viewport 도구의 1600×1125 지정이 실제 CSS 1280×900으로 측정됐다. 지정 숫자만 믿지 말고 `innerWidth/innerHeight`로 확인할 것.
+- 접근성 트리에는 정상 3D 렌더링 중에도 canvas fallback 문구가 나타날 수 있다. 이 문구만으로 GPU 실패를 판단하지 말고 스크린샷을 확인한다.
+- dev 로그에는 이전 MDX 편집 중 오류, 외부 브라우저 확장 메시지, R3F 내부 THREE.Clock 경고도 섞여 있었다. 최종 코드의 재현 결과와 과거 로그를 구분할 것.
+
+로컬 검증 산출물은 `scratchpad/pi-build-final.log`, `pi-lint-main.json`, `pi-lint-final.json`, `pi-lint-final-isolated.json`, `verify-raspberry-mdx.mjs`, `pi-pr-body.md`에 있다. 임시 산출물이며 PR에는 포함하지 않았다.
+
+### 기존 사용자 작업 — 이번 PR에 포함하지 않음
+
+기록 직전에도 다음 미커밋 작업이 남아 있었다. 다음 세션에서 출처를 확인하고 보존할 것.
+
+- 수정: `app/dashBoard/books.ts`, `app/layout.tsx`, `components/commons/AppSideBar.tsx`, `tsconfig.json`
+- 미추적: `.codex/agents/`, `AGENTS.md`, `app/RaspberryPi/WhatIsRaspberryPi/`, `utils/curriculum/RapberryPi.ts`, `utils/sideBarTree/raspberryPiTree.ts`
+- `.serena/`는 이번 도구 활성화 과정에서 생긴 로컬 메타데이터다.
+- `RapberryPi.ts`라는 기존 파일명 철자도 그대로 두었다.
+- 사용자 커리큘럼의 후속 장/4개 하위 경로는 이번 개요 구현의 범위가 아니며 완성된 교재로 간주하지 말 것.
+
+### 다음 작업
+
+이번 요청의 구현·브라우저 검증·PR 갱신은 완료됐다. PR #58은 검토 준비 상태로 열려 있다. **병합이나 배포는 사용자의 별도 지시 후 진행한다.** 다음 교재 작성 요청이 오면 기존 사용자 커리큘럼과 미커밋 파일부터 확인한다.
+
+---
+
+## 이전 인수인계 기록 — 아래 상태·수치는 각 날짜 당시의 기록
+
+### HANDOFF — 2026-08-06 (2026-09-04 5차 갱신)
+
+두 갈래가 섞여 있다. **A는 끝났고, B는 미완이다.**
+
+- (A) YIP 저장소 — 최종 프로젝트 활동지·프롬프트 생성기 개편이 **main 에 병합됐다**
+  (PR #50·#51). 열린 PR 0 건, 로컬·원격 브랜치는 `main` 하나뿐이다. 이 세션에서
+  한 일은 **A-7 절**. 그 앞의 A~A-6 은 이전 세션들이고 전부 완료 상태다.
 - (B) 사용자 Neovim 설정 (`~/AppData/Local/nvim/`, **이 저장소 밖**) — 미완.
   **저장소 밖에 남아 있는 유일한 작업이다.** B 절의 "청소해야 할 것" 부터 보면 된다.
 
-**먼저 볼 것 — 열린 PR #55 (`feat/problem-theory`).** 문제 페이지에 "개념 정리"
-접힘 섹션을 붙이고 `s-gcd` 에 최대공약수·유클리드 호제법 내용을 넣었다. 코드는
-검증을 통과했지만 **펼치는 클릭을 브라우저에서 한 번도 눌러보지 못했다.**
-A-8 절 "현재 상태" 참조.
-
-**lint 기준선은 167 이 아니라 169 다.** 이 문서 A~A-7 절이 여러 번 167/168 이라
-적어둔 것은 그 시점의 실측이고, 2026-09-06 에 **머지 전 main 을 다시 재서 169
-(22 errors, 147 warnings)** 를 확인했다. 판정은 "숫자가 169 이하"가 아니라
-**"같은 명령으로 main 을 다시 재서 같은 수"** 로 할 것. CLAUDE.md 의 168 도 낡았다.
-
-**브라우저 자동화가 이 세션에서 망가졌다 — 시간을 가장 많이 먹은 것이다.**
-합성 `.click()` 과 `computer` 의 진짜 클릭이 **둘 다** React 에 도달하지 않았고,
-나중에는 페이지 트리 자체가 하이드레이션되지 않았다(`/problems` 처럼 이번에
-건드리지 않은 라우트도 마찬가지라 코드 문제가 아니다). 우회 방법과 오진 함정은
-A-8 "실패한 시도" 에 있다. **UI 동작 검증을 브라우저로 시작하기 전에 그 절을
-먼저 읽을 것.**
+**A-7 에서 이어받는 사람이 먼저 볼 것 — 이 세션의 진단 하나가 틀렸었다.**
+"레슨 페이지 하이드레이션이 45초 걸린다"고 여러 커밋과 PR #50 본문에 적혀 있는데
+**오진이다.** 실제로는 0.5초이고, 느린 것은 브라우저 확장의 스크립트 주입
+왕복(7~8초, 최대 45초 타임아웃)이었다. PR #50 본문은 아직 정정되지 않았다.
+A-7 절의 "실패한 시도" 첫 항목에 측정값이 있다.
 
 **`Tester` 계정이 있다** (이름 `Tester`, 전화번호 `01012345678`, 노출돼도 무방).
-검증할 때 실제 사용자 계정 대신 이걸 쓸 것. 다만 이 계정은 **AI 사용이 꺼져
-있고**(A-7 "다음 단계"), **관리자가 아니라서** 관리자 화면은 열 수 없다.
-관리자는 김경섭·박영일·채호영 3명이고, **자격증명은 에이전트가 넣을 수 없다.**
+검증할 때 실제 사용자 계정 대신 이걸 쓸 것 — 이 세션에서 사용자 답안을 네 번
+덮어썼다. 다만 이 계정은 **AI 사용이 꺼져 있어** AI 생성 경로는 검증되지 않는다
+(A-7 "다음 단계" 참조).
 
-**A-6 에서 넘어온 것 — 아직 남아 있다.** `/problems/topics` 의 이름변경·순서변경·
-삭제와 문제 폼의 주제 선택은 **관리자 세션에서 한 번도 실행해 본 적이 없다.**
-2026-09-06 세션에서도 손대지 않았다. (같은 세션에서 `/dashBoard` 자체가 관리자
-계정으로 정상 동작하는 것은 사용자가 확인해 줬다.)
+**A-6 에서 넘어온 것 — 관리자 화면이 검증 없이 프로덕션에 있다.**
+`/problems/topics` 의 이름변경·순서변경·삭제와 문제 폼의 주제 선택은 **관리자
+세션에서 한 번도 실행해 본 적이 없다.** 이번 세션에서도 손대지 않았다.
 
 **dev 서버가 머신을 죽이던 버그는 잡혔다** (Next 16.3.1, PR #42). 다만 브랜치를
 새로 받아 `.next` 가 낡아 있으면 `rm -rf .next` 를 한 번 하고 시작할 것.
-그리고 **`npm run build` 를 dev 서버와 동시에 돌리지 말 것** — A-7 세션에서
-`.next` 충돌로 dev 서버를 두 번 죽였다. 2026-09-06 세션은 빌드 전마다
-`Get-NetTCPConnection -LocalPort 3000` 으로 확인하고 죽였다 가 다시 띄우는
-방식으로 한 번도 충돌하지 않았다.
+그리고 **`npm run build` 를 dev 서버와 동시에 돌리지 말 것** — 이번 세션에서
+`.next` 충돌로 dev 서버를 두 번 죽였다. A-7 절.
 
-이전 갱신분 요약 — A-7 의 "레슨 페이지 하이드레이션 45초" 는 **오진**이고 실제로는
-0.5초다(느린 것은 브라우저 확장의 주입 왕복). PR #50 본문은 아직 정정되지 않았다.
-모델명 4 종은 실제 키로 호출해 유효함을 확인했고(A-2), 레슨 반응형 스윕은 A-4 에서
-끝났으며, `/problems` 주제 분류는 A-6 에서 완료됐다.
+이전 갱신분 요약 — 모델명 4 종은 실제 키로 호출해 유효함을 확인했고(A-2),
+레슨 반응형 스윕은 A-4 에서 끝났으며, `/problems` 주제 분류는 A-6 에서 완료됐다.
+
 ---
 
 ## A. YIP 저장소 (2026-08-06 세션)
@@ -788,212 +941,6 @@ squash 가 아니라 진짜 머지 커밋이라 ancestry 판정이 유효하다.
   만들어 주는 글이 중고등학생에게 적절한 수준인지, 활동지 문항 순서가 실제
   수업에서 굴러가는지는 아무도 읽어보지 않았다. A-4 절의 spaceshipCaptain
   내레이션과 같은 성격의 미검토 콘텐츠다.
-
----
-
-## A-8. 2026-09-06 세션 — 사이드바 주제화, 교재 중복, dashBoard 유출, 문제 이론
-
-### 목표
-
-시작은 "`/problems` 사이드바를 메인 목록처럼 종류별로 나눠 달라" 하나였다.
-거기서 사용자가 발견한 콘솔 에러 → 그 뿌리인 권한 누락 → 마지막에 "문제 페이지에
-이론도 같이 보여 달라" 로 이어졌다. 네 갈래이고 서로 무관해서 **PR 을 넷으로
-나눴다.**
-
-| PR | 내용 | 상태 |
-|---|---|---|
-| #52 | `/problems` 사이드바를 주제별 접힘 구조로 | 머지 `5ab398e` |
-| #53 | 교재 중복(학생 페이지 깨짐 + 폼에서 중복 추가) | 머지 `e2f3b21` |
-| #54 | `/dashBoard` 전체 관리자 게이트 | 머지 `35d2123` |
-| #55 | 문제 페이지 "개념 정리" + `s-gcd` 내용 | **열려 있음** |
-
-머지 순서는 #54 → #53 → #52 로, 보안 건을 먼저 넣었다.
-
-### 내린 결정과 이유 — 특히 무엇을 택하지 않았는지
-
-**사이드바 그룹핑 규칙을 목록 화면과 공유했다** (`components/commons/ProblemSidebarList.tsx`).
-주제 순서대로, 문제 없는 주제 숨김, 미분류 마지막 — `ProblemList.tsx` 의
-`grouped` 와 같은 규칙이다. 사이드바에만 따로 정렬 규칙을 두면 두 화면이 다른
-목차를 보여주게 되고, 그게 원래 사용자가 고쳐 달라고 한 문제였다.
-
-**자동으로 펼치기만 하고 자동으로 접지 않는다.** 레슨 사이드바
-(`components/commons/SideBarItems.tsx` 의 `FolderItem`)와 같은 규칙이다. 이동할
-때마다 다른 주제를 닫으면 옆 주제를 훑어보는 동작이 매번 끊긴다.
-
-**활성 문제 판정을 전체 경로가 아니라 경로 세그먼트로 했다.** `/submissions`,
-`/solutions`, `/edit` 에서도 섹션이 열린 채 유지된다.
-
-**교재 중복은 렌더에서 접고, 스키마에서도 막았다** (둘 다). key 충돌만 고치면
-같은 카드가 두 장 그대로 나오고, 스키마만 고치면 이미 저장된 문서가 계속 깨진다.
-검사가 생기기 전 문서가 있으므로 양쪽이 필요하다.
-
-**폼의 배열 오류를 그릴 자리를 새로 만들었다** (`components/forms/signup/SignUpForm.tsx`).
-배열 자체에 붙은 오류는 어느 행에도 속하지 않아 `BookRow` 가 그리지 못한다.
-안 만들었으면 관리자가 저장을 눌러도 아무 일도 안 일어나는 **조용한 실패**가 됐다.
-RHF 버전에 따라 `errors.books.root` 또는 `errors.books` 로 오므로 둘 다 읽는다.
-
-**`추가` 버튼이 고정된 `DEFAULT_BOOK`("Tour of Python")을 붙이던 것을 고쳤다.**
-두 번 누르면 그 자리에서 중복이 만들어졌고, `Tester` 문서가 그렇게 생겼을 것으로
-본다 (추정). 이제 아직 안 고른 교재를 붙이고 6개가 다 차면 잠긴다.
-
-**dashBoard 권한을 페이지마다가 아니라 레이아웃 하나로 옮겼다**
-(`app/dashBoard/layout.tsx`, `requireAdmin()`). 페이지마다 쓰는 방식이 이미
-3개를 빠뜨렸다는 것이 근거다. `requireAdmin()` 은 `app/lib/auth/requireAuth.ts` 에
-**이미 있었고 호출자가 하나도 없었다.**
-
-**문제 이론을 코드가 아니라 DB(`problems.theory`)에 뒀다 — 사용자 선택.**
-장점은 배포 없이 관리자 폼에서 고칠 수 있는 것, 대가는 마크다운이라 doodle
-컴포넌트(`Callout`, `NyangSpeech`)를 못 쓰는 것이다. 코드에 두는 안은
-`utils/problemTheory/` 모듈로 제시했으나 사용자가 DB 를 골랐다.
-
-**이론 섹션에 제목 필드를 따로 두지 않았다.** 마크다운 맨 앞 `# 제목` 한 줄을
-접힌 머리글의 부제로 쓰고 본문에서 뺀다(`components/judge/TheorySection.tsx` 의
-`splitLeadingHeading`). 필드를 늘리지 않으면서 펼쳤을 때 같은 문장이 두 번
-나오는 것도 막는다.
-
-**이론은 접힌 채가 기본이고, 문제 설명과 예시 테스트 *사이*에 둔다.** 예시
-테스트 아래에 두면 스크롤을 멈춘 뒤라 존재를 모른 채 지나간다.
-
-**`s-gcd` 이론의 눈높이를 알고리즘이 아니라 함수 초보에 맞췄다.**
-이 문제는 Tour of Python 의 `functionExcercise` 연습문제다(`app/lib/tourProblems.ts`).
-시간복잡도 표기를 쓰지 않고 손으로 따라갈 수 있는 크기의 예로만 설명했다.
-
-### 프로덕션 DB 를 두 번 썼다 (둘 다 사용자 승인)
-
-1. **`Tester` 문서의 교재 중복 제거** — `AI Developer` 가 두 번 있던 것을 하나로.
-   4건 → 3건, `modified 1`. 학생 15명 중 중복이 있던 것은 이 한 명뿐이었고 지금은
-   0명이다. 첫 등장만 남겼다. 쓰기는 **읽은 문서와 `books` 가 그대로일 때만**
-   적용되도록 조건을 걸었다. 스크립트는 임시로 만들고 지웠다.
-2. **`s-gcd` 의 `theory` 채우기** — `scripts/seed-problem-theory.mjs --write`.
-   이 스크립트는 **저장소에 남아 있고** slug 로 upsert 하므로 여러 번 돌려도 된다.
-   `--only <slug>` 와 인자 없는 dry run 을 지원한다.
-
-### 발견한 것 — `/dashBoard/[id]` 가 학생 전화번호를 평문으로 흘리고 있었다
-
-콘솔 에러를 쫓다가 `/dashBoard/signup` 에 권한 확인이 없다는 것을 알았고, 라우트
-5개를 전부 재보니 3개가 빠져 있었다.
-
-- `/dashBoard/signup`, `/dashBoard/new` — 확인 없음. 게다가 동적인 것이 없어서
-  **정적 프리렌더(`○`)** 되고 있었다. 폼이 빌드에 구워져 누구에게나 나갔다.
-- `/dashBoard/[id]` — 확인 없이 id 로 학생을 읽어 폼에 채운다. **쿠키 없는 curl
-  이 200 과 함께 `01012345678` 을 돌려줬다.** ObjectId 만 알면 아무 학생이나
-  열렸고 그 id 는 다른 화면 링크에 있다.
-
-**쓰기 경로는 처음부터 멀쩡했고**(`studentCreateAction` 의 `isAdmin()`), 그것이
-이 문제를 가렸다. 쓰기를 막는 것은 읽기에 대해 아무 말도 하지 않는다.
-**나는 이것을 처음에 "화면만 노출되고 데이터는 안 샌다" 고 사용자에게 잘못
-말했다** — 쓰기 경로만 보고 판단한 것이다. 곧 정정했다.
-
-고친 뒤 `proxy.ts` matcher 도 `/dashBoard` (정확히 일치) → `/dashBoard/:path*`
-로 넓혔다. 그건 빠른 리다이렉트이고 **경계는 레이아웃**이다. `CLAUDE.md` 의
-"there is no layout doing it for you" 문장도 갱신했다.
-
-### 실패한 시도 — 반복하지 말 것
-
-**브라우저 클릭이 React 에 도달하지 않는다. 합성 `.click()` 과 `computer` 의
-진짜 마우스 클릭이 둘 다 안 됐다.** HANDOFF A-5 절이 적어둔 "합성은 안 되고
-`computer` 의 진짜 클릭만 된다" 는 이제 절반만 맞다. DOM 에 React fiber 가 붙어
-있고(`__reactProps$*` 에 `onClick` 존재) `elementFromPoint` 도 그 버튼을 가리키는데
-어느 쪽 클릭으로도 상태가 안 바뀌었다.
-**우회**: 엘리먼트에서 `__reactProps$*` 키를 찾아 핸들러를 직접 부른다. Radix
-Select 는 `onPointerDown` 으로는 안 열리고 `onKeyDown` 의 스페이스로 열렸다.
-이 방법으로 폼 검증을 끝냈다.
-
-**나중에는 페이지 트리 자체가 하이드레이션되지 않았다.** 껍데기(헤더·사이드바)는
-fiber 가 붙는데 페이지 본문 서브트리는 fiber 가 하나도 없고 Monaco 도 안 뜬다.
-**이번에 건드리지 않은 `/problems` 에서도 같았으므로 코드 회귀가 아니다.**
-청크 404 는 0건, 콘솔 앱 에러 0건이라 원인은 못 찾았다 (추정: 확장 프로그램).
-처음에 `/problems/s-gcd` 와 `/problems/s-fib-nth` 를 비교해 "내 변경 탓이 아니다"
-라고 판단했는데 **그건 통제군이 아니었다** — 둘은 같은 라우트 파일을 쓴다.
-다른 라우트(`/problems`)로 다시 재고 나서야 결론이 섰다.
-
-**스크린샷이 한 프레임 낡게 온다.** `Page.captureScreenshot` 이 30초 타임아웃 후
-재시도로 성공했는데, 이미지가 실제 DOM 과 달랐다(사이드바 스크롤 위치가 3항목
-어긋남). 판정은 `getBoundingClientRect` / `document.elementFromPoint` 로 하고
-스크린샷은 눌림·겹침 같은 시각 확인에만 쓸 것.
-
-**반응형 iframe 하네스에서 두 번 틀렸다.** ① 오버플로 기준은 `innerWidth` 가
-아니라 `documentElement.clientWidth` 다 — 스크롤바 보정 때문에 12px 느슨해진다.
-② 이 저장소 `body` 가 `flex sm:justify-center` 라 iframe 이 부모 폭(991px)까지
-**축소된다.** 1024/1280 이 전부 991 로 찍혀서 "창이 최대화돼 resize 가 안 먹는다"
-고 오진했는데, `resize_window` 는 무관했다. `document.body.style.display='block'`
-(또는 iframe 에 `flexShrink:0`) 이면 창 크기와 무관하게 원하는 폭이 나온다.
-
-**펼친 상태를 클릭 없이 재는 방법**: `useState` 초기값을 잠시 `true` 로 바꾸면
-SSR 이 펼친 마크업을 내주므로 하이드레이션 없이 측정·스크린샷이 된다. 두 번
-썼고 두 번 다 되돌렸다.
-
-**`python - <<'PY'` 안에서 `\n` 이 실제 줄바꿈이 됐다.** JSX placeholder 문자열이
-여러 줄로 깨져 `TS1002: Unterminated string literal` 이 났다. 여러 줄 문자열을
-넣을 때는 스크립트 파일에 쓰거나 Edit 도구를 쓸 것.
-
-**`rg -r ''` 를 실수로 썼다.** `-r` 은 `--replace` 라 매치를 전부 빈 문자열로
-바꿔 출력해서, 파일이 깨진 것처럼 보인다. CLAUDE.md 가 경고한 그대로다.
-
-**`rm -rf .next` 가 권한 거부됐다.** 세 번 시도했고 셋 다 막혔다. dev 가 알아서
-다시 빌드하므로 진행에는 지장 없었다.
-
-### 현재 상태 — 전부 실행해서 확인함
-
-**로컬 브랜치는 `feat/problem-theory` @ `3c0ef37`, origin 과 동기. 작업 트리
-깨끗.** `main` 은 `5ab398e`. 열린 PR 은 **#55 하나.**
-
-재현 명령과 결과 (`feat/problem-theory` 에서 실행, 각각 dev 서버를 죽인 뒤):
-
-- `npx tsc --noEmit` → **0 errors**
-- `npm run build` → **exit 0**, `Compiled successfully`
-- `npm run lint` → **169 problems (22 errors, 147 warnings)**. 머지 전 main 을
-  같은 명령으로 재도 169 라 신규 0건이다.
-- **테스트 스위트는 없다.** `npm test` 는 존재하지 않는다.
-
-머지된 세 건은 **프로덕션(`yipcode.xyz`)에서 실제 응답으로 확인했다** (배포 상태
-API 가 아니라 — A-6 절의 함정):
-
-- `/dashBoard/signup`, `/dashBoard/new`, `/dashBoard/<studentId>` → 전부 **307 →
-  /login**, 폼 마크업 0, 전화번호 0. 고치기 전에는 200 + 폼 + 전화번호였다.
-- 로그인한 비관리자(`Tester`)로 `/dashBoard/<id>` → `/` 에 안착,
-  `/dashBoard/new` 본문은 `NEXT_REDIRECT;replace;/;307`
-- `npm run build` 에서 `/dashBoard/new`·`/dashBoard/signup` 이 `○` → `ƒ` 로 바뀜
-- `/`, `/problems`, `/Algorithm`, `/simpleWebDev`, `/problems/s-final-lis` 전부
-  200, `/problems` HTML 에 주제 섹션(`실전 종합`) 포함
-- **관리자 계정으로 `/dashBoard` 가 정상 동작하는 것은 사용자가 확인해 줬다.**
-
-#55(열린 PR)에서 확인한 것과 못 한 것:
-
-- 서버 HTML: `s-gcd` 는 접힌 머리글 + 부제("최대공약수와 유클리드 호제법") +
-  `aria-expanded="false"`, 본문 div 없음. `s-fib-nth`(이론 없음)는 섹션 0건
-- 제목 분리 로직을 실제 원문에 돌려 확인 — 부제 추출됨, 본문은 `##` 로 시작,
-  h1 중복 없음, h2 6 / h3 2 / 표 2 / 코드블록 5
-- 반응형: 섹션을 강제로 펼친 상태로 320/390/641 측정 → 페이지 오버플로 0,
-  표 폭 234·175px 로 칸 안에 들어감. 320px·390px 스크린샷으로 눈으로 확인
-- **펼치는 클릭을 눌러보지 못했다.** 위 "실패한 시도" 의 하이드레이션 문제 때문이다.
-- **768px 이상에서 펼친 상태를 재지 못했다.** 같은 이유로 그 폭에서는 페이지
-  본문이 숨은 채 렌더됐다. 좁은 쪽(짜부라짐이 생기는 쪽)은 쟀다.
-
-### 다음 단계 — 첫 번째 행동 하나
-
-**브라우저에서 `http://localhost:3000/problems/s-gcd` 를 열어 "개념 정리" 상자를
-실제로 클릭해 펼쳐지는지 확인한다.** 안 펼쳐지면 `components/judge/TheorySection.tsx`
-의 `useState`/`onClick` 이 아니라 **먼저 페이지가 하이드레이션됐는지**를 볼 것
-(`document.querySelector('h1')` 에 `__reactFiber$*` 키가 있는지). 껍데기만 붙고
-본문이 안 붙는 상태였다면 이 세션과 같은 환경 문제다. 확인되면 #55 를 머지하고,
-`/problems` 목록에서 어떤 문제에 이론이 있는지 표시할지 결정하면 된다(미결정).
-
-### 미해결 의문 (A-8 절)
-
-- **하이드레이션이 왜 멈췄는지 모른다.** 청크 404 0건, 콘솔 앱 에러 0건.
-  같은 세션 초반에는 정상 동작했다(사이드바 주제 섹션을 클릭해 펼쳤다).
-  (추정: 브라우저 확장)
-- **이론 내용이 수업에서 통하는지 검증되지 않았다.** 새로 쓴 레슨 콘텐츠이고
-  아무도 읽어보지 않았다. A-4 의 spaceshipCaptain 내레이션과 같은 성격이다.
-- **`/problems` 목록에서 이론이 있는 문제를 표시할지 정하지 않았다.** 지금은
-  문제를 열어야만 알 수 있다.
-- **이론 본문 전체가 접힌 상태에서도 RSC 페이로드로 내려간다.** `s-gcd` 는
-  2,382자라 문제없지만, 훨씬 긴 이론을 여러 문제에 붙이면 다시 볼 일이다 (추정).
-- **`Tester` 는 관리자가 아니라서 관리자 화면 검증에 쓸 수 없다.** A-7 이 남긴
-  "AI 사용을 켜라" 와 별개 문제다. 관리자 검증용 계정을 따로 둘지는 안 물어봤다.
-- **`/dashBoard/signup` 과 `/dashBoard/new` 가 왜 둘 다 있는지 모른다.** 내용이
-  똑같다(둘 다 `<SignUpForm />` 하나). 하나를 지워도 되는지 확인하지 않았다.
 
 ---
 
