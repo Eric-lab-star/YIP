@@ -10,8 +10,10 @@ export const metadata = {
 
 export const videoSrc = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/sampleVideo.mp4";
 
-{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 영상은 R2에 있다. */}
-export const clipBase = "https://pub-4507544ab1a54f5a999f046097091e6c.r2.dev/raspberry-pi/lesson01";
+{/* 하나와 도윤 시리즈 — 절마다 15초 스토리 클립. 영상은 R2에 있다.
+    주소는 반드시 커스텀 도메인으로: pub-*.r2.dev는 개발용이라 속도 제한이
+    걸려 재생이 계속 버퍼링된다. */}
+export const clipBase = "https://r2.kimkyungsub.com/raspberry-pi/lesson01";
 
 export default function Layout({ children }) {
   return <VideoLesson src={videoSrc}>{children}</VideoLesson>;
