@@ -2,8 +2,22 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { CanvasTexture, Path, Shape, Vector3 } from "three";
+import {
+  CanvasTexture,
+  Path,
+  setConsoleFunction,
+  Shape,
+  Vector3,
+} from "three";
 import { boardViews, type PartId, type Point3 } from "./board";
+
+// R3F 9 still creates a THREE.Clock for every Canvas, even on 9.8.2, and it
+// offers no way to swap it. Drop this filter once R3F stops doing that.
+const R3F_CLOCK_WARNING =
+  "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.";
+setConsoleFunction((type, message, ...params) => {
+  if (message !== R3F_CLOCK_WARNING) console[type](message, ...params);
+});
 
 type Props = {
   active: PartId;
