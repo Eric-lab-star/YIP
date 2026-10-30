@@ -52,6 +52,7 @@ export const config = {
     "/spaceshipCaptain/:path*",
     "/AIDeveloper/:path*",
     "/PublicDataViz/:path*",
+    "/RaspberryPi/:path*",
     "/login",
     "/chat/:path*",
     "/editor/:path*",
