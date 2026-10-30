@@ -1,0 +1,94 @@
+import { CheckQuiz } from "@/components/mdx/CheckQuiz";
+
+export const metadata = {
+  title: "CDS 센서 확인",
+  description: "CDS 센서에서 읽은 내용을 제대로 이해했는지 문제로 확인합니다.",
+  session: 10,
+};
+
+# CDS 센서 확인
+
+학습하기에서 읽은 내용을 문제로 확인해 봐요.
+답을 고르면 바로 결과가 나오고, 틀렸다면 다시 읽을 곳을 알려 줍니다.
+
+<CheckQuiz
+  questions={[
+    {
+      question: "CDS 모듈의 DO를 GPIO22에 연결한 회로에서, 조금 어두운 때와 아주 캄캄한 때를 프로그램이 구분하게 만들고 싶습니다. 어떻게 해야 하나요?",
+      options: [
+        "DO를 GPIO22가 아닌 다른 GPIO 핀으로 옮겨 꽂는다",
+        "`cds.value`를 반복문 안에서 더 자주 읽도록 고친다",
+        "기준 조절 나사를 돌려 밝기가 숫자로 나오게 만든다",
+        "MCP3008 같은 ADC 칩을 연결해 밝기를 숫자로 읽는다",
+      ],
+      answer: 3,
+      explanation: "DO는 기준보다 어두운지 아닌지만 알려 줘요. 어두운 정도를 숫자로 읽으려면 아날로그 값을 숫자로 바꿔 주는 ADC 칩이 있어야 합니다.",
+      review: "방법 2: ADC 칩 연결하기 — 더 알아보기",
+    },
+    {
+      question: "CDS 모듈에 DO와 AO 핀이 함께 있습니다. 라즈베리파이의 GPIO22에 연결할 핀과 그 이유로 알맞은 것은 무엇인가요?",
+      options: [
+        "AO: 연속적인 전압이 나와서 GPIO가 밝기를 자세히 읽는다",
+        "DO: 비교기가 판단한 결과가 디지털 신호로 나온다",
+        "AO: GPIO가 아날로그 전압을 스스로 숫자로 바꿔 읽는다",
+        "DO: 밝기를 100단계 숫자로 바꿔서 GPIO에 보내 준다",
+      ],
+      answer: 1,
+      explanation: "GPIO는 높음과 낮음만 읽는 디지털 전용이라 AO의 연속적인 전압은 읽을 수 없어요. DO는 비교기의 판단 결과가 디지털 신호로 나오므로 버튼처럼 읽을 수 있습니다.",
+      review: "방법 1: 비교기가 달린 CDS 모듈 — 우리 수업의 방법",
+    },
+    {
+      question: "이 모듈은 어두울 때 `cds.value`가 참입니다. 아래 프로그램을 실행하면 LED는 언제 켜질까요?",
+      code: [
+        "from gpiozero import DigitalInputDevice, LED",
+        "",
+        "cds = DigitalInputDevice(22)",
+        "lamp = LED(17)",
+        "",
+        "while True:",
+        "    if cds.value:",
+        "        lamp.off()",
+        "    else:",
+        "        lamp.on()",
+      ],
+      options: [
+        "주변이 밝을 때 켜지고, 어두워지면 꺼진다",
+        "주변이 어두울 때 켜지고, 밝아지면 다시 꺼진다",
+        "밝기와 상관없이 언제나 켜져 있다",
+        "밝기와 상관없이 언제나 꺼져 있다",
+      ],
+      answer: 0,
+      explanation: "어두우면 `cds.value`가 참이라 `lamp.off()`가 실행되고, 밝으면 `else` 쪽의 `lamp.on()`이 실행돼요. 가로등과 거꾸로 동작하는 프로그램입니다.",
+      review: "방법 1: 비교기가 달린 CDS 모듈 — 우리 수업의 방법",
+    },
+    {
+      question: "가로등 프로그램을 실행했는데 교실이 아직 밝은데도 LED가 켜집니다. 배선과 프로그램에는 문제가 없을 때 무엇을 해 봐야 하나요?",
+      options: [
+        "CDS의 두 다리를 반대 방향으로 바꿔서 꽂는다",
+        "`DigitalInputDevice(22)`의 숫자를 11로 바꾼다",
+        "모듈의 작은 나사를 돌려 어두움의 기준을 맞춘다",
+        "AO 핀을 GPIO22에 옮겨 꽂아 밝기를 직접 읽는다",
+      ],
+      answer: 2,
+      explanation: "모듈의 비교기는 밝기를 기준과 비교해서 판단하고, 그 기준은 작은 나사로 조절해요. CDS 자체는 방향이 없어서 바꿔 꽂아도 달라지지 않습니다.",
+      review: "방법 1: 비교기가 달린 CDS 모듈 — 우리 수업의 방법",
+    },
+    {
+      question: "가로등 프로그램의 CDS 모듈과 LED를 입력과 출력으로 나누면 어떻게 되나요?",
+      options: [
+        "CDS 모듈과 LED 둘 다 프로그램이 전압을 읽는 입력이다",
+        "CDS 모듈은 전압을 바꾸는 출력, LED는 전압을 읽는 입력이다",
+        "CDS 모듈은 전압을 읽는 입력, LED는 전압을 바꾸는 출력이다",
+        "CDS 모듈과 LED 둘 다 프로그램이 전압을 바꾸는 출력이다",
+      ],
+      answer: 2,
+      explanation: "입력은 바깥에서 만들어진 핀의 전압을 프로그램이 읽는 것이고, 출력은 프로그램이 핀의 전압을 바꾸는 것이에요. 모듈은 버튼처럼 입력이고 LED는 출력입니다.",
+      review: "8차시 기초 택트 스위치",
+    },
+  ]}
+/>
+
+## 다음 단계
+
+- [학습하기](/RaspberryPi/what_is_CDS/goal)로 돌아가 헷갈린 부분을 다시 읽어 보세요.
+- 모두 이해했다면 [실습하기](/RaspberryPi/what_is_CDS/task)에서 직접 회로를 만들어 봅니다.

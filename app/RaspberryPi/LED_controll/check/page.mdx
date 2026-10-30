@@ -1,0 +1,94 @@
+import { CheckQuiz } from "@/components/mdx/CheckQuiz";
+
+export const metadata = {
+  title: "LED 제어하기 확인",
+  description: "LED 제어하기에서 읽은 내용을 제대로 이해했는지 문제로 확인합니다.",
+  session: 6,
+};
+
+# LED 제어하기 확인
+
+학습하기에서 읽은 내용을 문제로 확인해 봐요.
+답을 고르면 바로 결과가 나오고, 틀렸다면 다시 읽을 곳을 알려 줍니다.
+
+<CheckQuiz
+  questions={[
+    {
+      question: "LED를 꽂고 프로그램을 실행했는데 켜지지 않습니다. 프로그램에는 문제가 없고 LED를 거꾸로 꽂은 것이 원인일 때, 가장 알맞은 조치는 무엇인가요?",
+      options: [
+        "LED가 망가졌으니 부품함에서 새 LED를 꺼내 똑같은 방향으로 바꿔 꽂는다",
+        "전원을 분리하고 LED를 뽑아 긴 다리가 GPIO17 쪽이 되게 다시 꽂는다",
+        "프로그램의 `LED(17)`을 물리 핀 번호인 `LED(11)`로 고쳐서 다시 실행한다",
+        "전기가 잘 흐르도록 330옴 저항을 빼고 LED를 GPIO에 직접 연결한다",
+      ],
+      answer: 1,
+      explanation: "방향을 반대로 꽂은 정도로는 LED가 보통 망가지지 않아요. 전원을 분리한 상태에서 긴 다리가 GPIO 신호 쪽, 짧은 다리가 GND 쪽이 되도록 바로잡으면 됩니다.",
+      review: "1. LED: 방향이 있는 작은 전구",
+    },
+    {
+      question: "저항을 빼고 LED를 GPIO에 직접 연결하면 어떤 일이 생길 수 있나요?",
+      options: [
+        "전류가 지나치게 흘러 LED와 보드에 무리가 간다",
+        "전류가 부족해져서 LED가 평소보다 어둡게 켜진다",
+        "LED의 긴 다리와 짧은 다리의 역할이 서로 바뀐다",
+        "프로그램이 GPIO 번호를 찾지 못해 실행 오류가 난다",
+      ],
+      answer: 0,
+      explanation: "저항은 전류를 제한하는 부품이에요. 그래서 LED는 반드시 저항과 직렬로 연결하고, 우리 수업에서는 330옴을 사용합니다.",
+      review: "1. LED: 방향이 있는 작은 전구",
+    },
+    {
+      question: "실습 회로의 전기가 지나가는 순서로 알맞은 것은 무엇인가요?",
+      options: [
+        "GND → LED 긴 다리 → LED 짧은 다리 → 저항 → GPIO17",
+        "GPIO17 → LED 짧은 다리 → LED 긴 다리 → 저항 → GND",
+        "GPIO17 → 저항 → LED 긴 다리 → LED 짧은 다리 → GND",
+        "GPIO17 → GND → 저항 → LED 긴 다리 → LED 짧은 다리",
+      ],
+      answer: 2,
+      explanation: "GPIO17이 3.3V가 되면 전기가 저항을 지나 LED의 긴 다리로 들어가고, 짧은 다리에서 GND로 나갑니다.",
+      review: "2. 회로의 길을 미리 그려 봐요",
+    },
+    {
+      question: "아래 프로그램을 실행하면 LED는 어떻게 움직일까요?",
+      code: [
+        "from gpiozero import LED",
+        "from time import sleep",
+        "",
+        "led = LED(17)",
+        "",
+        "while True:",
+        "    led.on()",
+        "    sleep(2)",
+        "    led.off()",
+        "    sleep(1)",
+      ],
+      options: [
+        "2초 동안 꺼졌다가 1초 동안 켜지는 일을 계속 반복한다",
+        "2초 동안 켜졌다가 한 번 꺼진 뒤 프로그램이 끝난다",
+        "켜진 시간과 꺼진 시간이 똑같이 1초씩 반복된다",
+        "2초 동안 켜졌다가 1초 동안 꺼지기를 반복한다",
+      ],
+      answer: 3,
+      explanation: "`while True:` 안의 줄이 위에서 아래로 계속 반복돼요. 켠 뒤에 `sleep(2)`, 끈 뒤에 `sleep(1)`이므로 켜진 시간이 2초, 꺼진 시간이 1초입니다.",
+      review: "3. gpiozero로 LED 조종하기",
+    },
+    {
+      question: "점퍼선을 GPIO22 자리에 꽂아 두고 프로그램은 `LED(17)`로 썼습니다. LED가 켜지지 않을 때 무엇을 고쳐야 하나요?",
+      options: [
+        "저항을 더 큰 값으로 바꿔 꽂은 뒤 다시 실행한다",
+        "점퍼선을 물리 핀 11번(GPIO17)으로 옮긴다",
+        "프로그램에서 `led.on()`을 두 번 이어서 쓴다",
+        "LED의 두 다리 방향을 반대로 바꿔 꽂는다",
+      ],
+      answer: 1,
+      explanation: "프로그램은 GPIO17을 켜는데 선은 다른 핀에 있어요. 프로그램의 번호와 실제 핀 자리가 맞아야 하므로, 전원을 분리한 뒤 GPIO17의 자리인 물리 핀 11번으로 옮깁니다.",
+      review: "1차시 라즈베리파이의 구성요소",
+    },
+  ]}
+/>
+
+## 다음 단계
+
+- [학습하기](/RaspberryPi/LED_controll/goal)로 돌아가 헷갈린 부분을 다시 읽어 보세요.
+- 모두 이해했다면 [실습하기](/RaspberryPi/LED_controll/task)에서 직접 회로를 만들어 봅니다.

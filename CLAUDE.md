@@ -150,7 +150,8 @@ Check the section's tree module before assuming:
 | section | routes per chapter | curriculum type |
 |---|---|---|
 | `AIDeveloper`, `PublicDataViz`, `tourOfPython`, `spaceshipCaptain` | goal / goal_slide / task / task_slide | flat `Lesson[]` |
-| `Algorithm`, `RaspberryPi` | `goal/page.mdx` + `task/page.mdx` only — no slides | flat `Lesson[]` |
+| `Algorithm` | `goal/page.mdx` + `task/page.mdx` only — no slides | flat `Lesson[]` |
+| `RaspberryPi` | `goal/page.mdx` + `check/page.mdx` + `task/page.mdx` — no slides | flat `Lesson[]` |
 | `simpleWebDev` | one `page.mdx` per chapter | `Part[]` of `{ name, lessons }` |
 
 `RaspberryPi`'s curriculum file is `utils/curriculum/RapberryPi.ts` — the
@@ -192,6 +193,12 @@ deliberately kept out of the curriculum array.
 `components/slide/SlideShell`. Each `Slide` carries a `script` field — that is
 the **instructor's spoken narration**, not student-facing text, so it should
 read as something a teacher says out loud.
+
+`RaspberryPi`'s `check` route (사이드바의 확인하기, between 학습하기 and 실습하기)
+holds five questions per chapter in `<CheckQuiz />`: a wrong pick points back to
+a heading instead of revealing the answer. Its `code` field is a `string[]`
+because MDX strips indentation from a multi-line template literal, which
+silently changes Python.
 
 Prop shapes that are easy to get wrong (check the component, don't guess):
 

@@ -1,0 +1,90 @@
+import { CheckQuiz } from "@/components/mdx/CheckQuiz";
+
+export const metadata = {
+  title: "카메라 연결하기 확인",
+  description: "카메라 연결하기에서 읽은 내용을 제대로 이해했는지 문제로 확인합니다.",
+  session: 19,
+};
+
+# 카메라 연결하기 확인
+
+학습하기에서 읽은 내용을 문제로 확인해 봐요.
+답을 고르면 바로 결과가 나오고, 틀렸다면 다시 읽을 곳을 알려 줍니다.
+
+<CheckQuiz
+  questions={[
+    {
+      question: "다음 네 가지 일 중에서 터미널 명령 한 줄로는 어렵고 Python 프로그램이 있어야 하는 일은 무엇인가요?",
+      options: [
+        "지금 앞에 있는 장면을 한 장 찍어 파일로 남기기",
+        "초음파 센서에 물체가 가까워질 때만 사진 찍기",
+        "앞에 있는 장면을 10초 동안 영상으로 녹화하기",
+        "저장된 사진을 파일 관리자에서 열어 확인하기",
+      ],
+      answer: 1,
+      explanation: "한 장을 찍거나 정해진 시간 동안 녹화하는 일은 명령 한 줄로 충분해요. 센서 값에 따라 찍으려면 조건을 붙일 수 있는 프로그램이 필요합니다.",
+      review: "3. Python으로 찍기: 프로그램과 카메라의 만남",
+    },
+    {
+      question: "카메라를 상자에 넣으려니 리본 케이블이 길어서 남습니다. 어떻게 다루는 것이 알맞나요?",
+      options: [
+        "남는 부분을 반으로 납작하게 접어서 고정한다",
+        "남는 길이만큼 가위로 잘라 내고 다시 꽂는다",
+        "단자 쪽으로 힘껏 당겨서 팽팽하게 만들어 둔다",
+        "꺾이는 곳이 없도록 여유 있게 놓아 둔다",
+      ],
+      answer: 3,
+      explanation: "리본 케이블은 꺾이면 속의 가는 선이 끊어질 수 있어요. 잠금 클립도 약하니 모든 동작을 천천히, 부드럽게 합니다.",
+      review: "1. 어디에, 어떻게 꽂을까요?",
+    },
+    {
+      question: "아래 프로그램에서 카메라가 밝기에 적응할 시간을 가진 뒤에 찍히는 사진은 무엇인가요?",
+      code: [
+        "camera = Picamera2()",
+        "camera.start()",
+        "camera.capture_file(\"a.jpg\")",
+        "sleep(2)",
+        "camera.capture_file(\"b.jpg\")",
+        "camera.stop()",
+      ],
+      options: [
+        "`a.jpg`, `camera.start()` 바로 다음에 찍었으므로",
+        "`b.jpg`, `sleep(2)`로 기다린 다음에 찍었으므로",
+        "두 장 다, 프로그램 안에 `sleep(2)`가 있으므로",
+        "둘 다 아님, 끝에 `camera.stop()`이 있으므로",
+      ],
+      answer: 1,
+      explanation: "코드는 위에서 아래로 실행돼요. `a.jpg`는 기다리기 전에 찍히고, `b.jpg`는 `sleep(2)`로 적응할 시간을 준 뒤에 찍힙니다.",
+      review: "3. Python으로 찍기: 프로그램과 카메라의 만남",
+    },
+    {
+      question: "`rpicam-still -o photo.jpg`를 실행했는데 사진이 찍히지 않습니다. 가장 먼저 할 일은 무엇인가요?",
+      options: [
+        "`rpicam-vid`로 명령을 바꿔서 영상으로 찍어 본다",
+        "전원을 켠 채로 리본 케이블을 살짝 빼서 다시 꽂는다",
+        "전원을 분리하고 케이블 방향과 고정 상태를 확인한다",
+        "파일 이름을 바꿔서 같은 명령을 여러 번 실행한다",
+      ],
+      answer: 2,
+      explanation: "촬영이 안 되면 먼저 연결을 의심해요. 카메라 연결은 반드시 꺼진 상태에서 하므로, 전원을 분리한 뒤 방향과 고정을 다시 봅니다.",
+      review: "2. 첫 촬영: 명령어 한 줄",
+    },
+    {
+      question: "사진을 찍을 때마다 촬영 시각을 `camera_log.csv`에 한 줄씩 쌓으려고 합니다. 어제까지의 기록을 지우지 않으려면 파일을 어떻게 열어야 하나요?",
+      options: [
+        "`with open(\"camera_log.csv\", \"a\") as file:`",
+        "`with open(\"camera_log.csv\", \"w\") as file:`",
+        "`with open(\"camera_log.jpg\", \"a\") as file:`",
+        "`camera.capture_file(\"camera_log.csv\")`",
+      ],
+      answer: 0,
+      explanation: "`a`는 기존 내용 뒤에 덧붙이는 추가 모드예요. `w`로 열면 파일의 내용이 모두 지워지고 처음부터 다시 써요.",
+      review: "15차시 데이터 저장하기",
+    },
+  ]}
+/>
+
+## 다음 단계
+
+- [학습하기](/RaspberryPi/camera_controll/goal)로 돌아가 헷갈린 부분을 다시 읽어 보세요.
+- 모두 이해했다면 [실습하기](/RaspberryPi/camera_controll/task)에서 직접 카메라를 연결하고 촬영해 봅니다.
