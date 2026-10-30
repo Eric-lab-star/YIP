@@ -152,7 +152,7 @@ export default async function RootLayout({
         <SpeedInsights />
         <SidebarShell>
           <AppSideBar />
-          <main className="w-full  flex flex-col ">
+          <main className="w-full min-w-0 flex flex-col">
             <Header />
             <div className="xl:max-w-7xl lg:max-w-5xl w-full md:max-w-3xl sm:max-w-160 sm:min-w-100  sm:mx-auto ">
               {children}

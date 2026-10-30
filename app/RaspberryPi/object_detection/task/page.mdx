@@ -1,7 +1,258 @@
+import { Callout } from "@/components/mdx/Callout";
+import { MissionCard } from "@/components/mdx/MissionCard";
+
 export const metadata = {
   title: "사물인식 실습",
-  description: "사물인식 실습 페이지입니다.",
+  description: "사진을 숫자로 직접 세어 보고, 공식 예제와 미리 학습된 모델로 물체를 찾은 뒤 그 판단을 LED로 연결합니다.",
   session: 20,
 };
 
 # 사물인식 실습
+
+오늘은 카메라가 찍은 장면을 숫자로 들여다보고, 미리 학습된 모델에게 무엇이 보이는지 물어봅니다.
+모델의 답을 표로 시험해 본 다음, 그 판단으로 진짜 LED를 켜 봐요.
+
+<Callout type="goal">
+
+**이번 실습을 마치면**
+
+1. 카메라 사진 한 장에 들어 있는 픽셀 수와 색 숫자의 개수를 직접 계산해 확인할 수 있어요.
+2. 여러 물건을 비춰 보며 모델의 답과 신뢰도를 표에 기록할 수 있어요.
+3. 사람이 보일 때 LED가 켜지는 프로그램을 돌리고 기준값을 바꿔 볼 수 있어요.
+
+</Callout>
+
+<Callout type="important">
+
+**배선 전 약속**
+
+- 미션 4의 LED를 꽂기 전에 **운영체제를 종료하고 전원을 완전히 분리**해요. 카메라 리본 케이블이 꺾이지 않게 보드를 조심히 다뤄요.
+- GPIO 신호 핀은 **3.3V**까지만 다뤄요. GPIO17에 5V 핀을 연결하지 마세요.
+- 전원을 넣기 전에 친구나 선생님과 배선을 한 번 더 확인해요.
+- 친구를 카메라로 비출 때는 먼저 허락을 받아요.
+
+</Callout>
+
+## 준비물
+
+- [ ] 라즈베리파이와 전원 어댑터 (모니터, 키보드, 마우스 연결)
+- [ ] 19차시에 연결한 카메라 모듈
+- [ ] 시험할 물건 3개 이상 (컵, 병, 책, 바나나처럼 흔한 물건과 좀 낯선 물건을 섞어요)
+- [ ] 브레드보드
+- [ ] LED 1개
+- [ ] 330옴 저항 1개
+- [ ] 암-수 점퍼선 2개
+
+<Callout type="note">
+
+**수업 전에 선생님이 꼭 준비해 둬요**
+
+미션 시간에는 설치 시간이 들어 있지 않아요. 프로그램과 모델을 내려받는 데는 인터넷이 필요하고 시간도 걸리니, 라즈베리파이마다 수업 전에 끝내 둬요. 아래는 공식 예제의 안내를 따른 준비 과정이고, 64비트 Raspberry Pi OS 기준이에요.
+
+```bash
+sudo apt update
+sudo apt install python3-opencv
+python3 -m venv --system-site-packages ~/ai-env
+source ~/ai-env/bin/activate
+pip install ai-edge-litert
+mkdir ~/ai-lesson
+cd ~/ai-lesson
+wget https://raw.githubusercontent.com/raspberrypi/picamera2-examples/main/examples/tensorflow/real_time_with_labels.py
+wget https://raw.githubusercontent.com/raspberrypi/picamera2-examples/main/examples/tensorflow/mobilenet_v2.tflite
+wget https://raw.githubusercontent.com/raspberrypi/picamera2-examples/main/examples/tensorflow/coco_labels.txt
+```
+
+`ai-env`는 이 모델을 돌리는 도구만 따로 담아 두는 작업 공간이에요.
+이 공간에 설치한 도구는 Thonny에서는 보이지 않아서, 미션 2부터는 터미널에서 실행합니다.
+미션 4의 코드는 길어서 입력만으로 시간이 다 갈 수 있어요. `person_led.py`도 `~/ai-lesson`에 미리 넣어 두면 좋아요.
+
+</Callout>
+
+코드의 따옴표 안에 있는 한글이 입력되지 않으면 영어로 바꿔도 돼요.
+
+<MissionCard number={1} title="사진을 숫자로 세어 보기" time="10분">
+
+컴퓨터가 보는 사진을 직접 꺼내 봐요. 사진의 크기를 가로 640, 세로 480으로 정합니다.
+
+실행하기 전에 **결과를 먼저 계산**해 공책에 적어요.
+
+- 픽셀은 모두 몇 개일까요?
+- 픽셀 하나의 색을 숫자 3개로 나타낸다면 숫자는 모두 몇 개일까요?
+
+1. Thonny에서 아래 코드를 `pixels.py`로 저장하고 **Run**을 눌러요.
+
+```python
+from picamera2 import Picamera2
+from time import sleep
+
+camera = Picamera2()
+config = camera.create_preview_configuration(main={"size": (640, 480), "format": "RGB888"})
+camera.configure(config)
+camera.start()
+sleep(2)
+
+image = camera.capture_array()
+camera.stop()
+
+print(image.shape)
+print(image.size)
+print(image[240, 320])
+```
+
+2. 출력을 내 계산과 비교해요. `image.shape`는 세로, 가로, 색 숫자 개수 순서로 나와요.
+3. 렌즈를 손으로 가리고 다시 실행해요. 마지막 줄의 세 숫자가 어떻게 바뀌는지 봐요.
+
+**성공 확인:** `(480, 640, 3)`과 `921600`이 나와요. 픽셀은 640 × 480 = 307,200개, 색 숫자는 그 세 배인 921,600개라는 것을 설명할 수 있고, 렌즈를 가리면 가운데 점의 숫자가 대체로 작아지는 것을 확인했어요.
+
+</MissionCard>
+
+<MissionCard number={2} title="공식 예제로 물체 찾기" time="10분">
+
+1. 메모리를 아끼기 위해 브라우저처럼 쓰지 않는 프로그램을 모두 닫아요. Thonny도 Stop을 누른 뒤 닫아요.
+2. 터미널을 열고 작업 공간으로 들어가요.
+
+```bash
+source ~/ai-env/bin/activate
+cd ~/ai-lesson
+python3 real_time_with_labels.py --model mobilenet_v2.tflite --label coco_labels.txt
+```
+
+3. 미리보기 창이 뜨면 카메라 앞에 물건을 하나씩 천천히 비춰요.
+4. 멈출 때는 터미널에서 **Ctrl+C**를 눌러요. 미리보기 창이 남아 있으면 창도 닫아요.
+
+화면의 상자에는 영어 이름이 붙고, 터미널에는 이름과 함께 `score =` 뒤에 신뢰도가 나와요.
+이 예제는 점수가 0.5보다 높은 답만 보여 줘요.
+
+**성공 확인:** 물건 하나 이상에 상자와 이름이 나오고, 터미널에서 같은 이름의 신뢰도를 찾아 읽을 수 있어요.
+
+</MissionCard>
+
+<MissionCard number={3} title="모델을 시험대에 올리기" time="10분">
+
+이번에는 모델이 시험을 보는 시간이에요. 미션 2의 명령을 다시 실행하고 아래 표를 공책에 옮겨 적어요.
+**비추기 전에** 내 예상을 먼저 적고, 비춘 뒤에 결과를 적어요.
+
+| 시험 | 내 예상 | 모델의 답 | 신뢰도 | 맞았나요? |
+| --- | --- | --- | --- | --- |
+| 흔한 물건을 밝은 곳에서 | | | | |
+| 같은 물건을 반쯤 가리고 | | | | |
+| 같은 물건을 어둡게 하고 | | | | |
+| 모델이 배웠을 것 같지 않은 물건 | | | | |
+
+모델이 아는 이름은 `coco_labels.txt`에 있어요. 파일 관리자에서 열어 어떤 이름이 있고 없는지 찾아봐요.
+
+**성공 확인:** 표의 네 줄을 모두 채웠어요. 모델이 틀렸거나 답을 못 한 경우를 하나 이상 찾았고, 왜 그랬을지 내 생각을 말할 수 있어요.
+
+</MissionCard>
+
+<MissionCard number={4} title="사람이 보이면 LED 켜기" time="15분">
+
+**회로의 길:** GPIO17(물리 핀 11) → 저항 → LED 긴 다리 → LED 짧은 다리 → GND(물리 핀 9)
+
+1. 운영체제를 종료하고 어댑터를 뽑은 뒤 아래 표대로 꽂아요. 같은 줄끼리 이어지면 다른 줄을 써도 괜찮아요.
+
+| 부품 | 한쪽 | 다른 쪽 |
+| --- | --- | --- |
+| 점퍼선 1 | 물리 핀 11 (GPIO17) | 브레드보드 a10 |
+| 330옴 저항 | c10 | c15 |
+| LED | 긴 다리 d15 | 짧은 다리 d16 |
+| 점퍼선 2 | 브레드보드 a16 | 물리 핀 9 (GND) |
+
+2. 전원을 연결하고 `coco_labels.txt`에서 `person`의 번호를 찾아요.
+3. `~/ai-lesson`에 아래 코드를 `person_led.py`로 저장해요. Thonny 편집기에서 입력해 저장만 하고, 실행은 터미널에서 해요.
+
+```python
+from picamera2 import Picamera2
+from gpiozero import LED
+from ai_edge_litert.interpreter import Interpreter
+from time import sleep
+import cv2
+import numpy as np
+
+TARGET = 0
+THRESHOLD = 0.6
+
+led = LED(17)
+
+model = Interpreter(model_path="mobilenet_v2.tflite", num_threads=4)
+model.allocate_tensors()
+input_info = model.get_input_details()
+output_info = model.get_output_details()
+
+camera = Picamera2()
+config = camera.create_preview_configuration(main={"size": (640, 480), "format": "RGB888"})
+camera.configure(config)
+camera.start()
+sleep(2)
+
+while True:
+    frame = camera.capture_array()
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    small = cv2.resize(rgb, (300, 300))
+
+    model.set_tensor(input_info[0]["index"], np.expand_dims(small, axis=0))
+    model.invoke()
+
+    numbers = model.get_tensor(output_info[1]["index"])[0]
+    scores = model.get_tensor(output_info[2]["index"])[0]
+
+    found = False
+    best = 0
+    for number, score in zip(numbers, scores):
+        if int(number) == TARGET:
+            best = max(best, float(score))
+            if score >= THRESHOLD:
+                found = True
+
+    if found:
+        led.on()
+    else:
+        led.off()
+
+    print("찾았나요:", found, "가장 높은 신뢰도:", round(best, 2))
+```
+
+4. 터미널에서 실행해요. 멈출 때는 **Ctrl+C**를 눌러요.
+
+```bash
+source ~/ai-env/bin/activate
+cd ~/ai-lesson
+python3 person_led.py
+```
+
+5. 내가 카메라 앞에 섰다가 벗어나 보고, 친구를 비출 때는 먼저 허락을 받아요.
+6. `THRESHOLD`를 `0.9`로 바꾸면 LED가 어떻게 달라질지 **먼저 예상**하고 공책에 적은 뒤, 실행해서 비교해요.
+
+**성공 확인:** 내가 카메라에 비치면 LED가 켜지고 벗어나면 꺼져요. 기준을 높였을 때 LED가 덜 켜지는 까닭을 터미널의 신뢰도 숫자로 설명할 수 있어요.
+
+</MissionCard>
+
+## 막혔을 때
+
+| 증상 | 확인할 곳 |
+| --- | --- |
+| `ModuleNotFoundError: No module named 'ai_edge_litert'` | 터미널에서 `source ~/ai-env/bin/activate`를 먼저 실행했는지 확인해요. Thonny에서 실행해도 이 오류가 나요. |
+| `pip install`이 `externally-managed-environment`로 멈춰요 | 작업 공간 안에서 설치해야 해요. 위의 `python3 -m venv`와 `source` 줄을 먼저 실행해요. |
+| `pip install`이 맞는 버전을 찾지 못해요 | 이 도구는 64비트 운영체제용으로 배포돼요. `uname -m`이 `aarch64`인지 선생님과 확인해요. |
+| 카메라가 사용 중이라는 오류가 나요 | 앞의 프로그램이 돌고 있어요. Thonny의 Stop이나 터미널의 Ctrl+C로 멈춰요. |
+| `No such file or directory`가 나와요 | `cd ~/ai-lesson`을 했는지, 모델과 이름 파일이 그 폴더에 있는지 확인해요. |
+| 화면이 멈춘 듯 느리게 바뀌어요 | 작은 보드에서는 인식이 빠르지 않아요. 브라우저와 다른 프로그램을 닫아요. 메모리가 1GB이면 특히 도움이 돼요. |
+| 물체를 전혀 찾지 못해요 | 조명을 밝게 하고, 물체를 화면에 크게 비추고, 이름 파일에 있는 물건인지 확인해요. |
+| 터미널에 답은 나오는데 LED가 안 켜져요 | 전원을 분리하고 LED 방향과 물리 핀 11번, 9번을 확인해요. |
+
+## 더 해 보기
+
+1. **다른 물건 지키기:** `coco_labels.txt`에서 다른 번호를 찾아 `TARGET`을 바꾸고, 그 물건이 보일 때 LED가 켜지게 해 보세요.
+2. **찾으면 사진 남기기:** 찾았을 때 `camera.capture_file("found.jpg")`를 실행해 보세요. 친구를 찍기 전에는 허락부터 받아요.
+3. **기준값 실험:** `THRESHOLD`를 0.3, 0.6, 0.9로 바꿔 가며, 없는데 켜지는 경우와 있는데 안 켜지는 경우가 어떻게 달라지는지 표로 정리해 보세요.
+
+## 마무리
+
+- [ ] 터미널에서 Ctrl+C로 프로그램을 멈췄어요.
+- [ ] 허락받지 않은 사람이 찍힌 사진은 지웠어요.
+- [ ] 운영체제를 종료하고 어댑터를 뽑은 뒤 부품을 정리했어요.
+
+헷갈린 부분이 있으면 [학습하기](/RaspberryPi/object_detection/goal)와 [확인하기](/RaspberryPi/object_detection/check)로 돌아가 보세요.
+
+다음 수업 [녹음기](/RaspberryPi/audio_recorder/goal)에서는
+라즈베리파이에 귀를 달아 내 목소리를 숫자로 저장해 봅니다.

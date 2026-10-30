@@ -1,7 +1,197 @@
+import { Callout } from "@/components/mdx/Callout";
+import { MissionCard } from "@/components/mdx/MissionCard";
+
 export const metadata = {
   title: "MPU6050 센서 실습",
-  description: "MPU6050 센서 실습 페이지입니다.",
+  description: "MPU6050을 I2C로 연결해 i2cdetect로 찾아내고, 가속도와 자이로 값을 읽어 보드의 자세를 말해 주는 프로그램을 만듭니다.",
   session: 13,
 };
 
 # MPU6050 센서 실습
+
+오늘은 브레드보드를 직접 기울이면서 숫자가 따라 움직이는 것을 봅니다.
+선 네 개로 센서를 연결해 출석을 확인하고, 보드의 자세를 글로 말해 주는 프로그램까지 만들어요.
+
+<Callout type="goal">
+
+**이번 실습을 마치면**
+
+1. I2C를 켜고 `i2cdetect`로 표에서 68을 찾아낼 수 있어요.
+2. 가상 환경에 라이브러리를 설치하고 가속도와 자이로 값을 화면에 띄울 수 있어요.
+3. 중력이 어느 방향에 잡히는지 보고 보드의 자세를 판단하는 프로그램을 만들 수 있어요.
+
+</Callout>
+
+<Callout type="important">
+
+**배선 전 약속**
+
+- 배선을 바꿀 때는 **먼저 전원을 완전히 분리**해요.
+- GPIO 신호 핀은 **3.3V**까지만 다뤄요. MPU6050의 VCC는 5V가 아니라 **3.3V(물리 핀 1)**에 연결해요.
+- 전원을 넣기 전에 친구나 선생님과 배선을 한 번 더 확인해요.
+
+</Callout>
+
+## 준비물
+
+- [ ] 라즈베리파이와 전원 어댑터 (모니터, 키보드, 마우스 연결, 인터넷 연결)
+- [ ] 브레드보드
+- [ ] 핀이 납땜된 MPU6050 모듈 1개
+- [ ] 암-수 점퍼선 4개
+
+코드의 따옴표 안에 있는 한글이 입력되지 않으면 영어로 바꿔도 돼요.
+
+<MissionCard number={1} title="연결하고 출석 확인하기" time="15분">
+
+1. 라즈베리파이의 전원을 끄고 어댑터를 뽑아요.
+2. 모듈을 브레드보드의 e 열에 꽂고, 몸체는 가운데 홈 쪽으로 놓아요. 그래야 a 열이 비어서 점퍼선을 꽂을 수 있어요.
+3. 모듈에 적힌 글자를 읽으며 아래 표대로 연결해요. 줄 번호는 예시예요. 모듈을 꽂은 방향에 따라 순서가 달라질 수 있으니 **글자를 따라** 같은 줄에 꽂으면 돼요.
+
+| 모듈 핀 | 모듈이 꽂힌 곳 | 점퍼선 한쪽 | 점퍼선 다른 쪽 |
+| --- | --- | --- | --- |
+| VCC | e1 | 브레드보드 a1 | 물리 핀 1 (3.3V) |
+| GND | e2 | 브레드보드 a2 | 물리 핀 9 (GND) |
+| SCL | e3 | 브레드보드 a3 | 물리 핀 5 (GPIO3) |
+| SDA | e4 | 브레드보드 a4 | 물리 핀 3 (GPIO2) |
+
+4. 나머지 핀(XDA, XCL, AD0, INT)에는 아무것도 연결하지 않아요.
+5. 확인이 끝나면 전원을 연결해요.
+6. 라즈베리 메뉴의 **기본 설정**에서 **Raspberry Pi Configuration**(새 버전은 **Control Centre**)을 열고, **Interfaces**에서 **I2C**를 켠 뒤 다시 시작해요.
+7. 터미널을 열고 입력해요.
+
+```bash
+i2cdetect -y 1
+```
+
+**성공 확인:** 표 안에 **68**이 보여요.
+
+</MissionCard>
+
+<MissionCard number={2} title="라이브러리를 설치하고 값 읽기" time="15분">
+
+요즘 라즈베리파이 OS는 `pip`로 받는 라이브러리를 **가상 환경**이라는 나만의 작업 폴더에 넣게 되어 있어요. 터미널에 한 줄씩 입력해요.
+
+```bash
+sudo apt install python3-smbus
+python3 -m venv --system-site-packages ~/sensor-env
+source ~/sensor-env/bin/activate
+pip install mpu6050-raspberrypi
+```
+
+세 번째 줄을 실행하면 터미널 맨 앞에 `(sensor-env)`가 붙어요. 이 표시가 있는 터미널에서 프로그램을 실행해야 라이브러리를 찾을 수 있어요. 이 가상 환경은 다음 수업에서도 계속 써요.
+
+<Callout type="note">
+
+**수업 전에 선생님이 준비해 두면 좋아요**
+
+설치는 인터넷 상태에 따라 몇 분씩 걸릴 수 있어요. 위 명령을 미리 실행해 두면 학생은 `source` 줄만 입력하고 바로 코드를 쓸 수 있어요.
+
+</Callout>
+
+1. Thonny 편집기에 아래 코드를 입력하고 홈 폴더에 `tilt_values.py`로 저장해요.
+
+```python
+from mpu6050 import mpu6050
+from time import sleep
+
+sensor = mpu6050(0x68)
+
+while True:
+    accel = sensor.get_accel_data()
+    gyro = sensor.get_gyro_data()
+
+    ax = int(accel["x"])
+    ay = int(accel["y"])
+    az = int(accel["z"])
+    gx = int(gyro["x"])
+    gy = int(gyro["y"])
+    gz = int(gyro["z"])
+
+    print(f"가속도 x={ax} y={ay} z={az}  자이로 x={gx} y={gy} z={gz}")
+    sleep(0.5)
+```
+
+`int()`는 소수점 아래를 버려서 화면을 읽기 쉽게 해 줘요.
+
+2. 실행은 Thonny의 Run 대신 `(sensor-env)`가 붙은 터미널에서 해요. 멈출 때는 터미널에서 **Ctrl+C**를 눌러요.
+
+```bash
+python tilt_values.py
+```
+
+3. 브레드보드를 책상에 평평하게 두고 값을 봐요. 그다음 선이 빠지지 않게 천천히 움직여 봐요.
+
+**성공 확인:** 평평할 때 `z`가 10 가까이 나와요. 값은 모듈마다 조금 달라요. 브레드보드를 빙글 돌리는 동안에는 자이로 값이 커지고, 멈추면 다시 0 가까이로 돌아와요.
+
+</MissionCard>
+
+<MissionCard number={3} title="보드의 자세를 말해 주는 프로그램" time="15분">
+
+프로그램을 실행하기 전에 **결과를 먼저 예상**해 봐요.
+
+1. 브레드보드를 왼쪽 옆으로 세우면 x, y, z 중 어느 값이 10에 가까워질까요? 앞쪽으로 세우면요? 예상을 공책에 적어요.
+2. `tilt_values.py`를 실행해서 확인해요. 더하기(+)가 나오는 쪽과 빼기(-)가 나오는 쪽도 적어요. 부호는 모듈을 꽂은 방향에 따라 달라요.
+3. Ctrl+C로 멈추고 아래 코드를 `posture.py`로 저장한 뒤 실행해요.
+
+```python
+from mpu6050 import mpu6050
+from time import sleep
+
+sensor = mpu6050(0x68)
+
+while True:
+    data = sensor.get_accel_data()
+    x = int(data["x"])
+    y = int(data["y"])
+    z = int(data["z"])
+
+    if z > 7:
+        print("평평해요")
+    elif x > 7:
+        print("X 플러스 쪽이 아래예요")
+    elif x < -7:
+        print("X 마이너스 쪽이 아래예요")
+    elif y > 7 or y < -7:
+        print("Y 쪽으로 세워졌어요")
+    else:
+        print("비스듬하거나 뒤집혔어요")
+
+    sleep(0.5)
+```
+
+4. 보드를 천천히 세우면서 어느 각도쯤에서 글이 바뀌는지 봐요. 2번에서 적은 방향과 맞는지 비교해요.
+
+**성공 확인:** 보드를 눕히고 세울 때마다 알맞은 문장이 나오고, 왜 그 문장이 나오는지 중력의 방향으로 설명할 수 있어요.
+
+</MissionCard>
+
+## 막혔을 때
+
+| 증상 | 확인할 곳 |
+| --- | --- |
+| 표에 68이 없어요 | I2C를 켜고 다시 시작했는지 확인해요. 그다음 전원을 분리하고 SDA와 SCL이 서로 바뀌지 않았는지 봐요. |
+| 그래도 68이 없어요 | VCC가 3.3V에 있는지 확인하고, 점퍼선을 다른 것으로 바꿔 봐요. |
+| 표에 68이 아니라 69가 보여요 | AD0 핀에 선이 연결되어 있지 않은지 확인해요. |
+| `i2cdetect: command not found` | 터미널에서 `sudo apt install i2c-tools`를 실행해요. |
+| `error: externally-managed-environment` | 가상 환경 밖에서 `pip`를 실행했어요. `source ~/sensor-env/bin/activate`를 먼저 입력해요. |
+| `No module named 'mpu6050'` | Thonny의 Run으로 실행했거나 터미널 앞에 `(sensor-env)`가 없어요. 활성화한 터미널에서 실행해요. |
+| `No module named 'smbus'` | `sudo apt install python3-smbus`를 실행했는지 확인해요. |
+| `can't open file` 오류가 나요 | 코드를 홈 폴더에 저장했는지 확인해요. 터미널을 새로 열면 홈 폴더에서 시작해요. |
+| 실행 중에 `OSError`가 나요 | 브레드보드를 움직이다 선이 빠졌을 수 있어요. 전원을 분리하고 네 선을 다시 꽂아요. |
+
+## 더 해 보기
+
+1. **흔들림 감지:** 자이로 값 하나가 100을 넘으면 `흔들렸어요`를 출력해 보세요.
+2. **중력 단위:** `sensor.get_accel_data(g=True)`로 바꾸면 값이 어떻게 달라지는지 비교해 보세요.
+3. **기울기 경보등:** 6차시 LED 회로를 더해, 보드가 평평하지 않을 때만 GPIO17의 LED가 켜지게 해 보세요.
+
+## 마무리
+
+- [ ] 터미널에서 Ctrl+C로 프로그램을 멈췄어요.
+- [ ] 메뉴에서 안전하게 종료했어요.
+- [ ] 전원을 끄고 어댑터를 뽑은 뒤 부품을 정리했어요.
+
+헷갈린 부분이 있으면 [학습하기](/RaspberryPi/MPU6050_sensor/goal)와 [확인하기](/RaspberryPi/MPU6050_sensor/check)로 돌아가 보세요.
+
+다음 수업 [DS18B20 온도센서](/RaspberryPi/DS18B02_sensor/goal)에서는
+선 한 가닥으로 대화하는 방수 온도센서를 만나 봅니다.
