@@ -122,7 +122,8 @@ Numbers alone miss overlap and squeezing, so look at it too.
 ## Lesson Content
 
 Lesson pages (`app/AIDeveloper`, `app/tourOfPython`, `app/Algorithm`,
-`app/spaceshipCaptain`, `app/PublicDataViz`, `app/simpleWebDev`) and the
+`app/spaceshipCaptain`, `app/PublicDataViz`, `app/simpleWebDev`,
+`app/RaspberryPi`) and the
 components that render them
 (`components/mdx/`) must not use emoji — including in 코딩냥이's dialogue,
 headings, and card labels. Use plain text, or `CatIcon` when a character
@@ -143,14 +144,17 @@ several appear inside Python examples, where removing them breaks the code.
 
 ## Lesson Section Structure
 
-Six sections carry lesson content, and they do **not** all have the same shape.
+Seven sections carry lesson content, and they do **not** all have the same shape.
 Check the section's tree module before assuming:
 
 | section | routes per chapter | curriculum type |
 |---|---|---|
 | `AIDeveloper`, `PublicDataViz`, `tourOfPython`, `spaceshipCaptain` | goal / goal_slide / task / task_slide | flat `Lesson[]` |
-| `Algorithm` | `goal/page.mdx` + `task/page.mdx` only — no slides | flat `Lesson[]` |
+| `Algorithm`, `RaspberryPi` | `goal/page.mdx` + `task/page.mdx` only — no slides | flat `Lesson[]` |
 | `simpleWebDev` | one `page.mdx` per chapter | `Part[]` of `{ name, lessons }` |
+
+`RaspberryPi`'s curriculum file is `utils/curriculum/RapberryPi.ts` — the
+filename's typo is real, so search for it rather than assuming the spelling.
 
 `simpleWebDev` (32강, Streamlit) is the odd one out on purpose, and its
 curriculum header says why: Piston runs pure Python only, so Streamlit apps are
@@ -292,7 +296,7 @@ All database writes go through **Server Actions** (`app/actions/`) which validat
 - `proxy.ts` (Next 16's middleware, Edge runtime) verifies the token **signature** on the gated route matcher using `jose`. It only checks the signature — never merely the cookie's presence — and clears a rejected cookie.
 - Server-side, `validateToken()` (`app/lib/auth/login.ts`) is called in API routes, Server Actions, and via `requireAuth()` (`app/lib/auth/requireAuth.ts`) in the gated section layouts. It verifies the signature with `jsonwebtoken` **and** checks the revocation list (`app/lib/mongo/revocation.ts`): a deleted/disabled user's still-valid token is rejected. `deleteStudentAction` calls `revokeUserTokens`.
 
-Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `PublicDataViz`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed. `app/dashBoard/layout.tsx` is the same shape but calls `requireAdmin()`.
+Gated section layouts (`AIDeveloper`, `tourOfPython`, `spaceshipCaptain`, `PublicDataViz`, `RaspberryPi`, `chat`, `editor`, `students`) are `force-dynamic` and call `requireAuth()`, so content cannot render for an unauthenticated or revoked session even if the middleware is bypassed. `app/dashBoard/layout.tsx` is the same shape but calls `requireAdmin()`.
 
 **`Algorithm` and `simpleWebDev` are deliberately ungated** — absent from the proxy matcher, and `app/simpleWebDev/layout.tsx` has no `requireAuth()` on purpose. Adding one would 307 every search visitor to `/login`, and both are in `sitemap.ts` precisely so their chapters are crawlable. If you add a lesson section, decide gating first: gated sections are excluded from the sitemap and disallowed in `robots.ts`.
 

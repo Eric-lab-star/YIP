@@ -18,6 +18,7 @@ export default function robots(): MetadataRoute.Robots {
     "/spaceshipCaptain",
     "/AIDeveloper",
     "/PublicDataViz",
+    "/RaspberryPi",
     // /problems and /problems/<slug> stay crawlable — these are the sub-routes
     // that need a session (or admin rights) and would only burn crawl budget.
     "/problems/new",
