@@ -7,6 +7,7 @@ export const raspberryPiTree: SideBarTreeItem[] = RaspberryPiCurriculum.map(
     name,
     files: [
       { kind: "file", name: "학습하기", url: `/RaspberryPi/${slug}/goal` },
+      { kind: "file", name: "확인하기", url: `/RaspberryPi/${slug}/check` },
       { kind: "file", name: "실습하기", url: `/RaspberryPi/${slug}/task` },
     ],
   }),

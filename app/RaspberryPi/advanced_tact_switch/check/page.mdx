@@ -1,0 +1,96 @@
+import { CheckQuiz } from "@/components/mdx/CheckQuiz";
+
+export const metadata = {
+  title: "고급 택트 스위치 확인",
+  description: "고급 택트 스위치에서 읽은 내용을 제대로 이해했는지 문제로 확인합니다.",
+  session: 9,
+};
+
+# 고급 택트 스위치 확인
+
+학습하기에서 읽은 내용을 문제로 확인해 봐요.
+답을 고르면 바로 결과가 나오고, 틀렸다면 다시 읽을 곳을 알려 줍니다.
+
+<CheckQuiz
+  questions={[
+    {
+      question: "프로그램이 `while True:` 안에서 5초 걸리는 일을 되풀이합니다. 그 사이에 잠깐 누른 버튼도 놓치지 않으려면 어떻게 고치는 것이 알맞나요?",
+      options: [
+        "`is_pressed`를 확인하는 줄을 같은 자리에 한 번 더 쓴다",
+        "`while True:`를 두 개로 늘려 번갈아 가며 버튼을 확인한다",
+        "눌렸을 때 할 일을 함수로 만들어 `when_pressed`에 맡긴다",
+        "`Button(27)`을 `Button(13)`으로 바꿔 물리 핀으로 읽게 한다",
+      ],
+      answer: 2,
+      explanation: "계속 확인하는 방식은 다른 일을 하는 사이에 짧은 누름을 놓칠 수 있어요. 이벤트 방식으로 맡겨 두면 평소에는 할 일을 하다가 신호가 올 때 움직입니다.",
+      review: "1. 기다리는 두 가지 방식",
+    },
+    {
+      question: "버튼을 빠르게 연타해 점수를 올리는 게임을 만들면서 `Button(27, bounce_time=2)`로 설정했습니다. 어떤 일이 생길까요?",
+      options: [
+        "신호가 바뀐 뒤 2초 동안의 신호를 무시해 연타를 놓친다",
+        "튕김을 다 거르지 못해 한 번 눌러도 여러 번으로 읽힌다",
+        "버튼을 누르지 않아도 2초마다 한 번씩 눌린 것으로 저절로 읽힌다",
+        "버튼을 한 번 누를 때마다 점수가 2점씩 한꺼번에 올라간다",
+      ],
+      answer: 0,
+      explanation: "`bounce_time`이 너무 길면 튕김뿐 아니라 빠르게 다시 누른 것까지 무시해 버려요. 그래서 용도에 맞게 값을 조절합니다.",
+      review: "해결: 짧은 튕김은 무시하기",
+    },
+    {
+      question: "LED가 꺼진 상태에서 아래 프로그램을 실행했습니다. 버튼을 한 번 눌렀다가 손을 떼면 LED는 어떻게 될까요?",
+      code: [
+        "from gpiozero import Button, LED",
+        "from signal import pause",
+        "",
+        "button = Button(27)",
+        "led = LED(17)",
+        "",
+        "def toggle():",
+        "    led.toggle()",
+        "",
+        "button.when_released = toggle",
+        "",
+        "pause()",
+      ],
+      options: [
+        "누르는 순간 켜지고, 손을 떼는 순간 다시 꺼진다",
+        "누르는 순간 켜지고, 손을 떼도 그대로 켜져 있다",
+        "누르거나 떼어도 변화 없이 계속 꺼진 채로 있다",
+        "누를 때는 그대로이고, 손을 떼는 순간 켜진다",
+      ],
+      answer: 3,
+      explanation: "`when_released`는 뗐을 때 실행할 일을 맡기는 자리예요. 그래서 누를 때는 변화가 없고, 손을 떼는 순간 `toggle`이 실행되어 꺼져 있던 LED가 켜집니다.",
+      review: "2. when_pressed: 눌리면 실행할 일을 맡겨요",
+    },
+    {
+      question: "토글 프로그램이 대체로 잘 동작하는데, 가끔 한 번 눌렀을 때 LED가 켜졌다가 바로 다시 꺼집니다. 무엇을 먼저 바꿔 보면 좋을까요?",
+      options: [
+        "`when_pressed`에 맡기는 `toggle` 뒤에 괄호를 붙여 다시 실행한다",
+        "`Button(27, bounce_time=0.1)`처럼 디바운스를 설정한다",
+        "배선을 뽑아 스위치의 같은 짝 두 다리로 옮겨 꽂는다",
+        "`pause()` 줄을 지우고 `while True:`만 남겨 실행한다",
+      ],
+      answer: 1,
+      explanation: "한 번 눌렀는데 가끔 두 번 반응한 것처럼 보이면 바운싱일 가능성이 커요. 접점이 튕기는 짧은 신호를 `bounce_time`으로 무시하게 합니다.",
+      review: "3. 바운싱: 한 번 눌렀는데 여러 번으로 읽히는 이유",
+    },
+    {
+      question: "버튼이 눌리기 전까지 프로그램이 다음 줄로 넘어가지 않게 하려면 어느 코드를 쓰면 되나요?",
+      options: [
+        "`led.toggle()`",
+        "`button.is_pressed`",
+        "`button.wait_for_press()`",
+        "`button = Button(27)`",
+      ],
+      answer: 2,
+      explanation: "`wait_for_press()`는 버튼이 눌릴 때까지 프로그램을 그 자리에서 기다리게 해요. `is_pressed`는 지금 눌려 있는지 알려 주는 값이라 기다려 주지 않습니다.",
+      review: "8차시 기초 택트 스위치",
+    },
+  ]}
+/>
+
+## 다음 단계
+
+- [학습하기](/RaspberryPi/advanced_tact_switch/goal)로 돌아가 헷갈린 부분을 다시 읽어 보세요.
+- 모두 이해했다면 [실습하기](/RaspberryPi/advanced_tact_switch/task)에서 직접 회로를 만들어 봅니다.
