@@ -1,7 +1,206 @@
+import { Callout } from "@/components/mdx/Callout";
+import { MissionCard } from "@/components/mdx/MissionCard";
+
 export const metadata = {
   title: "고급 택트 스위치 실습",
-  description: "고급 택트 스위치 실습 페이지입니다.",
+  description: "바쁜 프로그램에서 버튼을 놓치는 모습을 확인하고, 이벤트 방식 토글을 만들어 바운싱을 직접 세어 봅니다.",
   session: 9,
 };
 
 # 고급 택트 스위치 실습
+
+오늘은 지난 시간의 회로로 프로그램의 방식을 바꿔 봅니다.
+버튼을 놓치는 프로그램을 직접 겪어 본 뒤, 이벤트 방식 토글을 만들고 바운싱까지 세어 봐요.
+
+<Callout type="goal">
+
+**이번 실습을 마치면**
+
+1. 계속 확인하는 프로그램이 짧은 누름을 놓치는 모습을 직접 보여 줄 수 있어요.
+2. `when_pressed`로 누를 때마다 켜지고 꺼지는 토글을 만들 수 있어요.
+3. 버튼을 열 번 눌러 반응 횟수를 세고, `bounce_time`을 넣기 전과 후를 비교할 수 있어요.
+
+</Callout>
+
+<Callout type="important">
+
+**배선 전 약속**
+
+- 배선을 바꿀 때는 **먼저 전원을 완전히 분리**해요.
+- GPIO 신호 핀은 **3.3V**까지만 다뤄요. 오늘 회로는 GPIO 핀과 GND만 쓰니 5V 핀에는 아무것도 꽂지 않아요.
+- 버튼이 연결된 GPIO27을 `LED(27)`처럼 출력으로 쓰지 않아요. 버튼은 입력 핀에만 연결해요.
+- 전원을 넣기 전에 친구나 선생님과 배선을 한 번 더 확인해요.
+
+</Callout>
+
+## 준비물
+
+- [ ] 라즈베리파이와 전원 어댑터 (모니터, 키보드, 마우스 연결)
+- [ ] 브레드보드
+- [ ] 택트 스위치 1개
+- [ ] LED 1개
+- [ ] 330옴 저항 1개
+- [ ] 암-수 점퍼선 3개
+- [ ] 수-수 점퍼선 2개
+
+<MissionCard number={1} title="버튼과 LED 회로 다시 만들기" time="10분">
+
+지난 시간과 같은 회로예요. 이번에는 표를 보기 전에 회로의 길을 먼저 떠올려 봐요.
+
+1. 라즈베리파이의 전원을 끄고 어댑터를 뽑아요.
+2. 택트 스위치를 가운데 홈에 걸쳐 e10, e12, f10, f12에 꽂아요.
+3. 아래 표대로 꽂아요. 점퍼선은 스위치에서 **대각선으로 마주 보는 다리**의 묶음에 연결돼요.
+
+| 부품 | 한쪽 | 다른 쪽 |
+| --- | --- | --- |
+| 암-수 점퍼선 1 | 물리 핀 9 (GND) | 파란 레일(-) |
+| 암-수 점퍼선 2 | 물리 핀 13 (GPIO27) | j10 |
+| 수-수 점퍼선 1 | a12 | 파란 레일(-) |
+| 암-수 점퍼선 3 | 물리 핀 11 (GPIO17) | a18 |
+| 330옴 저항 | c18 | c23 |
+| LED | 긴 다리 d23 | 짧은 다리 d24 |
+| 수-수 점퍼선 2 | a24 | 파란 레일(-) |
+
+4. 확인이 끝나면 전원을 연결하고 바탕화면이 나올 때까지 기다려요.
+
+**성공 확인:** 전원을 넣었을 때 LED는 꺼져 있고, 연기나 타는 냄새가 나지 않아요. 이상하면 바로 전원을 뽑고 선생님을 불러요.
+
+</MissionCard>
+
+<MissionCard number={2} title="버튼을 놓치는 프로그램" time="8분">
+
+이 프로그램은 3초 동안 다른 일을 하고, 그다음에 버튼이 눌려 있는지 한 번 확인해요.
+
+```python
+from gpiozero import Button, LED
+from time import sleep
+
+button = Button(27)
+led = LED(17)
+
+while True:
+    if button.is_pressed:
+        led.toggle()
+    print("다른 일을 하는 중이에요")
+    sleep(3)
+```
+
+1. 실행하기 전에 **결과를 먼저 예상**해요. 버튼을 톡 하고 짧게 누르면 LED가 바로 바뀔까요? 공책에 적어요.
+2. `polling.py`로 저장하고 실행해요. 시간을 두고 버튼을 짧게 다섯 번 눌러 봐요. 한글이 입력되지 않으면 오늘 코드의 따옴표 안은 모두 영어로 바꿔도 돼요.
+3. 이번에는 버튼을 4초쯤 꾹 누르고 있어 봐요.
+4. **Stop** 버튼으로 멈춰요.
+
+**성공 확인:** 짧게 누른 다섯 번 중 LED가 바뀌지 않은 때가 있고, 꾹 누르고 있으면 쉘에 문장이 나올 때쯤 LED가 바뀌어요. 프로그램이 버튼을 살피는 순간이 3초에 한 번뿐이라서 그렇다고 설명할 수 있어요.
+
+</MissionCard>
+
+<MissionCard number={3} title="이벤트 방식으로 토글 만들기" time="12분">
+
+프로그램은 그대로 3초씩 바쁘게 두고, 버튼만 이벤트 방식으로 맡겨 봐요.
+
+1. 아래 코드를 `event.py`로 저장하고 실행해요. 버튼을 짧게 다섯 번 눌러 봐요.
+
+```python
+from gpiozero import Button, LED
+from time import sleep
+
+button = Button(27)
+led = LED(17)
+
+def toggle():
+    led.toggle()
+
+button.when_pressed = toggle
+
+while True:
+    print("다른 일을 하는 중이에요")
+    sleep(3)
+```
+
+**성공 확인:** 쉘의 문장은 3초마다 나오는데, LED는 버튼을 누르는 순간 바로 바뀌어요.
+
+2. **Stop** 버튼으로 멈춘 뒤, 다른 할 일이 없는 토글 프로그램으로 줄여요. `toggle.py`로 저장해요.
+
+```python
+from gpiozero import Button, LED
+from signal import pause
+
+button = Button(27)
+led = LED(17)
+
+def toggle():
+    led.toggle()
+
+button.when_pressed = toggle
+
+pause()
+```
+
+`pause()`는 프로그램이 끝나지 않고 이벤트를 기다리게 잡아 둬요. `when_pressed` 뒤의 `toggle`에는 괄호를 붙이지 않아요.
+
+**성공 확인:** 누를 때마다 LED가 켜졌다 꺼졌다 해요. 손을 떼는 순간에는 바뀌지 않아요.
+
+</MissionCard>
+
+<MissionCard number={4} title="바운싱 세어 보기" time="10분">
+
+버튼이 눌렸다고 읽힌 횟수를 직접 세어 봐요.
+
+1. 아래 코드를 `bounce.py`로 저장해요.
+
+```python
+from gpiozero import Button
+from signal import pause
+
+button = Button(27)
+
+def press():
+    print("눌림")
+
+button.when_pressed = press
+
+pause()
+```
+
+2. 실행하기 전에 **결과를 먼저 예상**해요. 버튼을 천천히 열 번 누르면 쉘에 `눌림`이 몇 줄 나올까요? 공책에 적어요.
+3. 실행하고 천천히 열 번 눌러요. 나온 줄 수를 공책에 적어요.
+4. **Stop**을 누르고, `button = Button(27)` 줄을 아래처럼 바꿔요.
+
+```python
+button = Button(27, bounce_time=0.1)
+```
+
+5. 다시 실행하고 열 번 눌러 줄 수를 적어요.
+
+gpiozero 문서는 `bounce_time`을 처음 상태가 바뀐 뒤 변화를 무시하는 시간(초)이라고 설명해요. 기본값은 `None`이고, 이때는 튕김을 보정하지 않아요.
+
+**성공 확인:** 공책에 `bounce_time`이 없을 때와 있을 때의 줄 수가 하나씩 적혀 있어요. 스위치마다 튕기는 정도가 달라서 처음부터 열 줄이 나올 수도 있어요. 그래도 두 숫자를 친구의 결과와 비교할 수 있으면 성공이에요.
+
+</MissionCard>
+
+## 막혔을 때
+
+| 증상 | 확인할 곳 |
+| --- | --- |
+| 프로그램을 켜자마자 LED가 바뀌고 버튼에는 반응이 없어요 | `button.when_pressed = toggle()`처럼 괄호를 붙였는지 확인해요. 괄호를 붙이면 그 자리에서 바로 실행돼요. |
+| 프로그램이 바로 끝나요 | 맨 아래에 `pause()`가 있는지, 위에 `from signal import pause`가 있는지 확인해요. |
+| 눌러도 전혀 반응이 없어요 | 바운싱이 아니라 배선이나 핀 번호 문제예요. 전원을 분리하고 물리 핀 13번과 스위치 대각선 다리의 연결을 확인해요. |
+| 가끔 켜졌다가 바로 다시 꺼져요 | 한 번의 누름이 여러 번으로 읽혔을 수 있어요. 미션 4처럼 `bounce_time`을 넣어 비교해 봐요. |
+| `NameError: name 'pause' is not defined` | `from signal import pause` 줄이 빠지지 않았는지 확인해요. |
+| `GPIO busy`처럼 핀을 쓸 수 없다는 오류가 나요 | 이전 프로그램이 핀을 쓰고 있어요. Stop을 누르고 다시 실행해요. |
+
+## 더 해 보기
+
+1. **뗄 때 바꾸기:** `when_pressed`를 `when_released`로 바꾸면 LED가 언제 바뀔지 예상하고 확인해 보세요.
+2. **길게 누르기:** 짧게 누르면 토글하고, `when_held`에 맡긴 함수로 1초 넘게 누르면 쉘에 문장이 나오게 해 보세요. 기다리는 시간의 기본값이 1초예요.
+3. **값 바꿔 보기:** `bounce_time`을 0.05와 0.3으로 바꿔 빠르게 연달아 누른 횟수가 어떻게 세어지는지 공책에 표로 정리해 보세요.
+
+## 마무리
+
+- [ ] 프로그램을 Stop으로 멈췄어요.
+- [ ] 전원을 끄고 어댑터를 뽑은 뒤 부품을 정리했어요.
+
+헷갈린 부분이 있으면 [학습하기](/RaspberryPi/advanced_tact_switch/goal)와 [확인하기](/RaspberryPi/advanced_tact_switch/check)로 돌아가 보세요.
+
+다음 수업 [CDS 센서](/RaspberryPi/what_is_CDS/goal)에서는
+버튼 대신 빛을 입력으로 받아 어두워지면 켜지는 가로등을 만듭니다.

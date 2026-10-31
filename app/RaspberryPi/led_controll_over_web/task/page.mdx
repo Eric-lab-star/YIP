@@ -1,7 +1,193 @@
+import { Callout } from "@/components/mdx/Callout";
+import { MissionCard } from "@/components/mdx/MissionCard";
+
 export const metadata = {
   title: "웹으로 LED 제어하기 실습",
-  description: "웹으로 LED 제어하기 실습 페이지입니다.",
+  description: "Flask 서버와 LED 회로를 합쳐 주소로 LED를 켜고 끈 뒤, 현재 상태를 보여 주는 스마트 조명 페이지를 완성합니다.",
   session: 18,
 };
 
 # 웹으로 LED 제어하기 실습
+
+오늘은 폰의 화면을 눌러 책상 위의 진짜 불을 켜 봅니다.
+회로와 서버를 합치고, 지금 불이 켜져 있는지 알려 주는 조명 페이지까지 완성해요.
+
+<Callout type="goal">
+
+**이번 실습을 마치면**
+
+1. 주소를 입력하는 것만으로 브레드보드의 LED를 켜고 끌 수 있어요.
+2. 현재 상태와 켜기, 끄기 링크가 있는 조명 페이지를 만들 수 있어요.
+3. 두 기기로 함께 조작해 보고, 왜 비밀번호 없는 서버가 위험한지 내 경험으로 말할 수 있어요.
+
+</Callout>
+
+<Callout type="important">
+
+**배선 전 약속**
+
+- 배선을 바꿀 때는 Flask 서버를 멈추고, **운영체제를 종료한 뒤 전원을 완전히 분리**해요.
+- GPIO 신호 핀은 **3.3V**까지만 다뤄요. 오늘 쓰는 GPIO17에 5V 핀을 연결하지 마세요.
+- 전원을 넣기 전에 친구나 선생님과 배선을 한 번 더 확인해요.
+
+</Callout>
+
+## 준비물
+
+- [ ] 라즈베리파이와 전원 어댑터 (모니터, 키보드, 마우스 연결)
+- [ ] 라즈베리파이의 Wi-Fi 연결
+- [ ] 같은 Wi-Fi에 연결할 수 있는 스마트폰 2대, 또는 친구와 함께 쓸 기기
+- [ ] 브레드보드
+- [ ] LED 1개
+- [ ] 330옴 저항 1개
+- [ ] 암-수 점퍼선 2개
+
+<MissionCard number={1} title="LED 회로 점검하기" time="10분">
+
+**회로의 길:** GPIO17(물리 핀 11) → 저항 → LED 긴 다리 → LED 짧은 다리 → GND(물리 핀 9)
+
+1. 라즈베리파이의 전원을 끄고 어댑터를 뽑아요.
+2. 아래 표대로 꽂아요. 같은 줄끼리 이어지기만 하면 다른 줄을 써도 괜찮아요.
+
+| 부품 | 한쪽 | 다른 쪽 |
+| --- | --- | --- |
+| 점퍼선 1 | 물리 핀 11 (GPIO17) | 브레드보드 a10 |
+| 330옴 저항 | c10 | c15 |
+| LED | 긴 다리 d15 | 짧은 다리 d16 |
+| 점퍼선 2 | 브레드보드 a16 | 물리 핀 9 (GND) |
+
+3. 회로의 길을 손가락으로 따라간 뒤 전원을 연결해요.
+4. 웹보다 회로를 먼저 시험해요. Thonny의 쉘에 한 줄씩 입력해요.
+
+```python
+from gpiozero import LED
+led = LED(17)
+led.on()
+```
+
+5. LED가 켜지면 **Stop**을 눌러요. 쉘의 `led`가 핀을 계속 잡고 있으면 다음 미션의 서버가 핀을 쓸 수 없어요.
+
+**성공 확인:** `led.on()`에서 LED가 켜져요. 이제 문제가 생겨도 회로는 범인이 아니라는 것을 알 수 있어요. Stop을 눌러도 LED가 켜진 채 남을 수 있는데, 다음 미션의 프로그램을 실행하면 꺼지니 괜찮아요.
+
+</MissionCard>
+
+<MissionCard number={2} title="주소창 리모컨 만들기" time="10분">
+
+1. 아래 코드를 `light.py`로 저장하고 **Run**을 눌러요.
+
+```python
+from flask import Flask
+from gpiozero import LED
+
+app = Flask(__name__)
+led = LED(17)
+
+@app.route("/on")
+def turn_on():
+    led.on()
+    return "LED를 켰어요"
+
+@app.route("/off")
+def turn_off():
+    led.off()
+    return "LED를 껐어요"
+
+app.run(host="0.0.0.0", port=8080)
+```
+
+2. 터미널에서 `hostname -I`로 오늘의 IP 주소를 확인해요.
+3. 같은 Wi-Fi의 폰 브라우저에서 `http://내IP주소:8080/on`에 접속하고, 이어서 `/off`에도 접속해요.
+4. 이번에는 `/on`으로 LED를 켜 둔 채 Thonny의 **Stop**을 누를 거예요. 누르기 전에 **결과를 먼저 예상**해 공책에 적어요. 그다음 폰에서 `/off`에 접속하면 LED가 꺼질까요?
+5. 해 보고 예상과 비교해요. Stop 뒤에 LED가 켜진 채 남아 있어도 다음 미션에서 프로그램을 다시 실행하면 꺼져요.
+
+**성공 확인:** 주소를 입력할 때마다 LED가 바뀌고 폰에 응답 글자가 나와요. Stop을 누른 뒤에는 폰에서 `/off`가 열리지 않아요. 그래서 폰으로 계속 조작하려면 서버가 돌아가고 있어야 한다는 것을 설명할 수 있어요.
+
+</MissionCard>
+
+<MissionCard number={3} title="상태가 보이는 조명 페이지" time="15분">
+
+주소를 외워서 입력하는 대신 누를 수 있는 페이지를 만들어요. 여기에 두 가지를 더합니다.
+
+- `led.is_lit`은 LED가 지금 켜져 있으면 `True`예요. 따로 적어 두지 않고 **LED에게 직접 물어보면** 표시와 실제가 어긋나지 않아요.
+- `redirect("/")`는 일을 마친 뒤 브라우저를 첫 화면으로 돌려보내요. 그래서 누르고 나면 바뀐 상태가 바로 보여요.
+
+1. **Stop**을 누르고 `light.py`를 아래처럼 고쳐 저장한 뒤 **Run**을 눌러요.
+
+```python
+from flask import Flask, redirect
+from gpiozero import LED
+
+app = Flask(__name__)
+led = LED(17)
+
+@app.route("/")
+def home():
+    if led.is_lit:
+        state = "켜짐"
+    else:
+        state = "꺼짐"
+    return f"""
+    <h1>우리 집 스마트 조명</h1>
+    <p>지금 상태: {state}</p>
+    <p><a href="/on">켜기</a></p>
+    <p><a href="/off">끄기</a></p>
+    """
+
+@app.route("/on")
+def turn_on():
+    led.on()
+    return redirect("/")
+
+@app.route("/off")
+def turn_off():
+    led.off()
+    return redirect("/")
+
+app.run(host="0.0.0.0", port=8080)
+```
+
+2. 폰에서 `http://내IP주소:8080`에 접속해요.
+3. 켜기와 끄기를 눌러 보며 화면의 글자와 실제 LED를 비교해요.
+
+**성공 확인:** 켜기를 누르면 LED가 켜지고 화면에 `지금 상태: 켜짐`이 나와요. 끄기를 누르면 둘 다 함께 바뀌어요.
+
+</MissionCard>
+
+<MissionCard number={4} title="두 기기로 함께 조작하기" time="10분">
+
+1. 친구의 폰이나 다른 기기로도 내 조명 페이지를 열어요. 두 화면 모두 같은 상태를 보여 주는지 확인해요.
+2. 친구가 자기 화면에서 끄기를 누르기 전에 **결과를 먼저 예상**해요. 내 화면의 글자는 저절로 바뀔까요?
+3. 해 보고 비교한 뒤, 내 화면을 새로 고침해요.
+
+**성공 확인:** 내 화면은 새로 고침을 해야 바뀌어요. 서버는 요청이 왔을 때만 응답하기 때문이에요. 또한 주소만 알면 비밀번호 없이 누구나 내 LED를 조작할 수 있다는 것도 직접 확인했어요.
+
+</MissionCard>
+
+## 막혔을 때
+
+| 증상 | 확인할 곳 |
+| --- | --- |
+| 폰에 응답 글자는 나오는데 LED가 안 켜져요 | 요청은 서버까지 왔어요. 전원을 분리하고 LED 방향과 물리 핀 11번, 9번을 확인해요. |
+| 폰에서 페이지가 아예 열리지 않아요 | 서버가 실행 중인지, 같은 Wi-Fi인지, IP 주소와 `:8080`이 맞는지 확인해요. |
+| `GPIO busy`처럼 핀을 쓸 수 없다는 오류가 나요 | 쉘이나 이전 프로그램이 핀을 쓰고 있어요. Stop을 누르고 다시 실행해요. |
+| `app.run`에 `debug=True`를 넣었더니 `GPIO busy`가 나요 | 이 옵션은 프로그램을 한 번 더 띄워서 핀을 두 번 잡게 돼요. 오늘은 넣지 말아요. |
+| `Address already in use` 오류가 나요 | 앞서 켠 서버가 아직 돌고 있어요. Stop을 누르고 다시 실행해요. |
+| 화면에 `Internal Server Error`가 나와요 | 코드에서 오류가 난 거예요. Thonny 쉘의 마지막 줄을 읽어 봐요. |
+| 켜기를 누르면 `Not Found`가 나와요 | `<a href="/on">`과 `@app.route("/on")`의 철자가 같은지 비교해요. |
+| 폰에서 글자가 너무 작게 보여요 | 페이지 맨 앞에 `<meta name="viewport" content="width=device-width">` 줄을 더해요. |
+
+## 더 해 보기
+
+1. **깜빡임 모드:** `/blink` 주소를 만들고 함수 안에서 `led.blink()`를 불러 보세요. `/off`로 멈추는지도 확인해 보세요.
+2. **취침등 이름 짓기:** 주소와 화면의 글자를 내 방에 어울리게 바꿔 보세요. 주소 이름은 내가 정하기 나름이에요.
+3. **방마다 불 켜기:** 전원을 분리하고 LED를 하나 더 GPIO27(물리 핀 13)에 연결한 뒤, 주소와 링크도 두 벌로 늘려 보세요.
+
+## 마무리
+
+- [ ] 서버를 Stop으로 멈췄어요. 비밀번호가 없는 서버는 수업이 끝나면 꺼 둬요.
+- [ ] 전원을 끄고 어댑터를 뽑은 뒤 부품을 정리했어요.
+
+헷갈린 부분이 있으면 [학습하기](/RaspberryPi/led_controll_over_web/goal)와 [확인하기](/RaspberryPi/led_controll_over_web/check)로 돌아가 보세요.
+
+다음 수업 [카메라 연결하기](/RaspberryPi/camera_controll/goal)에서는
+라즈베리파이에 카메라를 달고 첫 사진을 찍어 봅니다.
