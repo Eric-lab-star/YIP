@@ -1,0 +1,180 @@
+import { Callout } from "@/components/mdx/Callout";
+import { ProjectCard } from "@/components/mdx/ProjectCard";
+
+export const metadata = {
+  title: "라즈베리파이 프로젝트 둘러보기",
+  description: "우주정거장부터 화성 로버 모형, 자율주행차까지 라즈베리파이로 만든 실제 프로젝트를 둘러봅니다.",
+  session: 1,
+};
+
+# 라즈베리파이 프로젝트 둘러보기
+
+손바닥만 한 이 보드로 어디까지 만들 수 있을까요?
+전 세계 사람들이 실제로 만든 프로젝트를 둘러보고, 내가 만들고 싶은 것을 찾아봐요.
+
+<Callout type="goal">
+
+**이 페이지를 읽고 나면**
+
+1. 라즈베리파이가 프로젝트 안에서 어떤 일을 맡는지 말할 수 있어요.
+2. 앞으로 배울 수업이 실제 프로젝트의 어느 부분과 이어지는지 알 수 있어요.
+3. 내가 만들어 보고 싶은 프로젝트를 한 문장으로 적을 수 있어요.
+
+</Callout>
+
+<Callout type="note">
+
+바깥 링크는 대부분 영어 사이트예요. 부품을 사거나 계정을 만들어야 할 때는 먼저 어른과 상의해요.
+내용은 2026년 10월에 확인했고, 이후에 바뀔 수 있어요.
+
+</Callout>
+
+## 우주와 하늘로 간 프로젝트
+
+<ProjectCard title="Astro Pi: 우주정거장에서 도는 학생 코드" field="우주">
+
+유럽우주국(ESA)과 라즈베리파이 재단이 함께 여는 학생 대회예요.
+학생이 쓴 Python 프로그램이 국제우주정거장의 Astro Pi 컴퓨터에서 실행됩니다.
+
+**라즈베리파이가 하는 일:** 입문 과정인 Mission Zero에서는 색과 밝기 센서의 값을 읽어, 학생이 만든 그림의 배경색을 정해요.
+
+**우리 수업과 이어지는 곳:** 센서 값을 코드로 읽는 방법은 [빛 센서 수업](/RaspberryPi/what_is_CDS/goal)에서 배워요.
+
+**알아 둘 점:** 현재 참가 자격은 유럽우주국 회원국과 캐나다 등 일부 국가의 학교에 있어서, 한국 학교는 참가 대상이 아니에요. 어떤 프로그램을 만드는지는 누구나 살펴볼 수 있어요.
+
+**더 보기:** [Astro Pi 공식 사이트](https://astro-pi.org/)
+
+</ProjectCard>
+
+<ProjectCard title="PiAware: 내 방에서 하늘의 비행기 찾기" field="전파">
+
+ADS-B 장치를 갖춘 비행기는 자기 위치를 1090MHz 전파로 알려요. 작은 안테나로 이 신호를 받으면 근처를 나는 비행기가 지도에 나타납니다.
+
+**라즈베리파이가 하는 일:** USB 수신기와 안테나로 받은 신호를 해석하고, 비행기 위치를 웹 지도로 보여 줘요.
+
+**우리 수업과 이어지는 곳:** USB 장치를 연결하는 방법은 [주변기기 연결하기](/RaspberryPi/connecting_components/goal)에서, 웹 페이지를 띄우는 방법은 [웹 서버 수업](/RaspberryPi/web_server/goal)에서 배워요.
+
+**더 보기:** [FlightAware PiAware 소개](https://www.flightaware.com/adsb/piaware/)
+
+</ProjectCard>
+
+## 스스로 움직이는 프로젝트
+
+<ProjectCard title="오픈소스 로버: 화성 탐사차의 작은 동생" field="로봇">
+
+NASA 제트추진연구소(JPL)가 화성 탐사 로버의 6바퀴 설계를 작게 줄여 공개한 프로젝트예요.
+설계도와 코드가 모두 공개되어 있어서 누구나 만들어 볼 수 있습니다.
+
+**라즈베리파이가 하는 일:** 로버의 두뇌로서 프로그램을 실행해 로버를 움직여요.
+
+**우리 수업과 이어지는 곳:** 수업에서 모터는 다루지 않지만, 코드로 신호를 보내 장치를 움직이는 원리는 [LED 제어하기](/RaspberryPi/LED_controll/goal)와 같아요.
+
+**알아 둘 점:** 공식 문서는 만드는 데 최소 100시간이 걸린다고 안내해요. 학교 동아리처럼 팀으로 도전하는 규모의 프로젝트예요.
+
+**더 보기:** [JPL Open Source Rover](https://github.com/nasa-jpl/open-source-rover)
+
+</ProjectCard>
+
+<ProjectCard title="Donkey Car: 운전을 배우는 RC카" field="인공지능">
+
+RC카에 카메라와 라즈베리파이를 올려 스스로 달리게 만드는 프로젝트예요.
+사람이 여러 바퀴 운전해 보여 주면, 그 기록을 보고 운전하는 법을 배웁니다.
+
+**라즈베리파이가 하는 일:** 카메라 사진과 사람의 조종 값을 함께 저장하고, 학습된 모델로 차를 움직여요.
+
+**우리 수업과 이어지는 곳:** 사진을 찍는 방법은 [카메라 수업](/RaspberryPi/camera_controll/goal)에서, 사진 속 물체를 찾는 방법은 [사물 인식 수업](/RaspberryPi/object_detection/goal)에서 배워요.
+
+**더 보기:** [Donkey Car 공식 문서](https://docs.donkeycar.com/)
+
+</ProjectCard>
+
+## 생활을 바꾸는 프로젝트
+
+<ProjectCard title="MagicMirror²: 말없이 알려 주는 거울" field="스마트홈">
+
+거울 뒤에 모니터를 숨겨, 거울 속에 시계와 달력, 날씨, 뉴스가 떠오르게 만드는 프로젝트예요.
+기능은 모듈로 나뉘어 있어서 필요한 것만 골라 쓸 수 있습니다.
+
+**라즈베리파이가 하는 일:** 프로그램을 실행해 화면에 보여 줄 정보를 모으고 표시해요.
+
+**우리 수업과 이어지는 곳:** 모니터를 연결하는 방법은 [주변기기 연결하기](/RaspberryPi/connecting_components/goal)에서, 내가 만든 화면을 띄우는 방법은 [웹 서버 수업](/RaspberryPi/web_server/goal)에서 배워요.
+
+**더 보기:** [MagicMirror² 공식 사이트](https://magicmirror.builders/)
+
+</ProjectCard>
+
+<ProjectCard title="학교 기상 관측소: 우리 동네 날씨 기록하기" field="과학">
+
+라즈베리파이 재단이 학교용으로 만든 프로젝트예요.
+학생들이 강수량, 풍속, 기온, 기압 같은 값을 직접 재고 기록합니다.
+
+**라즈베리파이가 하는 일:** 센서 값을 Python으로 읽고, 파일로 저장한 뒤 그래프로 비교할 수 있게 해 줘요.
+
+**우리 수업과 이어지는 곳:** 온도를 재는 방법은 [DS18B20 수업](/RaspberryPi/DS18B02_sensor/goal)에서, 값을 파일로 남기는 방법은 [데이터 저장 수업](/RaspberryPi/save_data/goal)에서 배워요.
+
+**알아 둘 점:** 수업 자료는 지금 보관 자료로 남아 있어서 내용이 오래되었을 수 있어요.
+
+**더 보기:** [Sensing the Weather 수업 자료](https://github.com/raspberrypilearning/sensing-the-weather)
+
+</ProjectCard>
+
+<ProjectCard title="버드박스: 새 둥지 생중계" field="자연 관찰">
+
+새집 안에 적외선 카메라를 달아, 어린 새가 자라는 모습을 YouTube로 생중계한 프로젝트예요.
+적외선을 쓰기 때문에 어두운 둥지 안도 찍을 수 있습니다.
+
+**라즈베리파이가 하는 일:** 카메라 영상을 받아 Wi-Fi로 인터넷에 내보내요.
+
+**우리 수업과 이어지는 곳:** 부품 연결은 적외선 LED와 저항을 쓰는 [LED 제어하기](/RaspberryPi/LED_controll/goal)와 비슷하고, 카메라 연결은 [카메라 수업](/RaspberryPi/camera_controll/goal)에서 배워요.
+
+**알아 둘 점:** 새가 이미 자리를 잡은 둥지는 건드리지 않아요. 카메라는 새가 오기 전에 달아야 해요.
+
+**더 보기:** [birdbox-2021 프로젝트](https://github.com/garraflavatra/birdbox-2021)
+
+</ProjectCard>
+
+## 만들면서 즐기는 프로젝트
+
+<ProjectCard title="Sonic Pi: 코드로 연주하는 음악" field="음악">
+
+코드를 쓰면 바로 음악이 되는 무료 프로그램이에요.
+케임브리지 대학 컴퓨터 연구실이 라즈베리파이와 함께 시작했고, 코드를 고치면서 공연하는 사람들도 있습니다.
+
+**라즈베리파이가 하는 일:** 내가 쓴 코드를 실행해 소리를 만들어요. 스피커나 이어폰으로 들을 수 있어요.
+
+**우리 수업과 이어지는 곳:** Sonic Pi의 코드는 Python과 다르지만, 코드를 쓰고 실행해 고치는 흐름은 [파이썬 설정하기](/RaspberryPi/python_setup/goal)에서 시작해요. 소리를 다루는 방법은 [오디오 녹음기 수업](/RaspberryPi/audio_recorder/goal)에서 배워요.
+
+**더 보기:** [Sonic Pi 공식 사이트](https://sonic-pi.net/)
+
+</ProjectCard>
+
+<ProjectCard title="RetroPie: 나만의 고전 게임기" field="게임">
+
+RetroPie 소프트웨어를 설치하면 라즈베리파이가 옛날 게임기처럼 동작해요.
+라즈베리파이 공식 튜토리얼은 게임패드를 설정하고, 개인 개발자가 새로 만든 게임을 실행하는 과정을 보여 줍니다.
+
+**라즈베리파이가 하는 일:** 옛날 게임기의 동작을 프로그램으로 흉내 내어 게임을 실행해요.
+
+**우리 수업과 이어지는 곳:** 게임패드와 화면 연결은 [주변기기 연결하기](/RaspberryPi/connecting_components/goal)에서, 버튼 입력을 읽는 원리는 [택트 스위치 수업](/RaspberryPi/basic_tact_switch/goal)에서 배워요.
+
+**알아 둘 점:** 게임 파일에도 저작권이 있어요. 저작권자가 배포를 허락한 게임만 사용해요. 보드 모델에 따라 설치 방법이 다를 수 있어요.
+
+**더 보기:** [라즈베리파이 공식 튜토리얼](https://www.raspberrypi.com/news/retro-console-with-retropie-raspberry-pi-1/)
+
+</ProjectCard>
+
+## 내가 만들고 싶은 것 고르기
+
+마음에 드는 프로젝트를 하나 고르고, 공책에 아래 세 가지를 적어 봐요.
+
+- [ ] 고른 프로젝트에서 가장 멋있다고 생각한 부분은 무엇인가요?
+- [ ] 그 프로젝트의 라즈베리파이는 어떤 값을 받아서 무엇을 내보내나요?
+- [ ] 비슷한 방법으로 우리 교실이나 집의 어떤 문제를 해결할 수 있을까요?
+
+오늘 적은 아이디어는 잘 보관해요.
+[최종 프로젝트](/RaspberryPi/final_project/goal)에서 내 작품을 만들 때 출발점이 됩니다.
+
+헷갈린 부분이 있으면 [학습하기](/RaspberryPi/what_is_raspberryPi/goal)와 [확인하기](/RaspberryPi/what_is_raspberryPi/check)로 돌아가 보세요.
+
+다음 수업 [환경설정하기](/RaspberryPi/How_to_setup/goal)에서는
+빈 microSD 카드에 운영체제를 설치하는 방법을 배웁니다.

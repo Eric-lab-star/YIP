@@ -156,6 +156,9 @@ Check the section's tree module before assuming:
 
 `RaspberryPi`'s curriculum file is `utils/curriculum/RapberryPi.ts` — the
 filename's typo is real, so search for it rather than assuming the spelling.
+Its first chapter is the one exception to the table: `what_is_raspberryPi` has
+`projects/page.mdx` (사이드바의 프로젝트 둘러보기) instead of `task`, wired by hand
+in `utils/sideBarTree/raspberryPiTree.ts`.
 
 `simpleWebDev` (32강, Streamlit) is the odd one out on purpose, and its
 curriculum header says why: Piston runs pure Python only, so Streamlit apps are
