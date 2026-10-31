@@ -1,5 +1,6 @@
 import { Callout } from "@/components/mdx/Callout";
 import { MissionCard } from "@/components/mdx/MissionCard";
+import { FileModeSim } from "@/components/mdx/raspberry/PracticeSims";
 
 export const metadata = {
   title: "데이터 저장하기 실습",
@@ -61,6 +62,8 @@ file.close()
 3. Thonny 위쪽의 `write_test.py` 탭으로 돌아와요. record.txt 탭에서 Run을 누르면 글 파일을 프로그램으로 실행하게 돼요. `"w"`를 `"a"`로 바꾸고 세 번 더 실행하면 record.txt는 몇 줄이 될까요? 예상을 공책에 적어요.
 4. 실행하고 파일을 다시 열어 비교해요.
 5. `write_test.py` 탭에서 다시 `"w"`로 되돌려 한 번 실행하면 몇 줄이 될까요? 예상한 뒤 확인해요.
+
+<FileModeSim />
 
 **성공 확인:** w로 세 번 실행하면 1줄, a로 세 번 더 실행하면 4줄, 다시 w로 한 번 실행하면 1줄이에요. 기록 프로그램에 a를 쓰는 이유를 말할 수 있어요.
 

@@ -1,5 +1,6 @@
 import { Callout } from "@/components/mdx/Callout";
 import { MissionCard } from "@/components/mdx/MissionCard";
+import { ThresholdSim } from "@/components/mdx/raspberry/PracticeSims";
 
 export const metadata = {
   title: "사물인식 실습",
@@ -222,6 +223,8 @@ python3 person_led.py
 
 5. 내가 카메라 앞에 섰다가 벗어나 보고, 친구를 비출 때는 먼저 허락을 받아요.
 6. `THRESHOLD`를 `0.9`로 바꾸면 LED가 어떻게 달라질지 **먼저 예상**하고 공책에 적은 뒤, 실행해서 비교해요.
+
+<ThresholdSim />
 
 **성공 확인:** 내가 카메라에 비치면 LED가 켜지고 벗어나면 꺼져요. 기준을 높였을 때 LED가 덜 켜지는 까닭을 터미널의 신뢰도 숫자로 설명할 수 있어요.
 

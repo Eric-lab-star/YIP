@@ -1,5 +1,6 @@
 import { Callout } from "@/components/mdx/Callout";
 import { MissionCard } from "@/components/mdx/MissionCard";
+import { BleWriteSim } from "@/components/mdx/raspberry/PracticeSims";
 
 export const metadata = {
   title: "블루투스LE 스마트 조명제어 실습",
@@ -168,6 +169,8 @@ python ble_light.py
 
 5. LED가 켜진 상태에서 `02`를 쓰면 어떻게 될까요? 코드의 `if`를 보고 예상을 공책에 적어요.
 6. 보내서 예상과 비교해요. 그다음 읽기를 눌러 값이 무엇으로 나오는지도 확인해요.
+
+<BleWriteSim />
 
 **성공 확인:** `02`는 1이 아니라서 `else`로 가고 LED가 꺼져요. 읽기 값은 `read_power`가 LED 상태를 보고 답하므로 `00`이에요.
 
