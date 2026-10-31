@@ -1,5 +1,6 @@
 import { Callout } from "@/components/mdx/Callout";
 import { MissionCard } from "@/components/mdx/MissionCard";
+import { RouteSim } from "@/components/mdx/raspberry/PracticeSims";
 
 export const metadata = {
   title: "웹서버 만들기 실습",
@@ -104,6 +105,8 @@ app.run(host="0.0.0.0", port=8080)
 - 코드에 없는 `/snack`에 접속하면 어떻게 될까요?
 
 3. 차례로 해 보고 예상과 비교해요.
+
+<RouteSim />
 
 **성공 확인:** `/time`은 새로 고침할 때마다 시각이 바뀌고, `/snack`에서는 `Not Found`가 나오며 쉘의 그 줄에 `404`가 찍혀요. 왜 그런지 코드의 어느 부분 때문인지 말할 수 있어요.
 

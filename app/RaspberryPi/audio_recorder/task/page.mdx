@@ -1,5 +1,6 @@
 import { Callout } from "@/components/mdx/Callout";
 import { MissionCard } from "@/components/mdx/MissionCard";
+import { AudioSizeSim } from "@/components/mdx/raspberry/PracticeSims";
 
 export const metadata = {
   title: "녹음기 실습",
@@ -118,6 +119,8 @@ ls -l recording.wav phone.wav
 aplay phone.wav
 aplay recording.wav
 ```
+
+<AudioSizeSim />
 
 **성공 확인:** 실제 크기가 계산한 441,000바이트와 80,000바이트보다 파일 정보만큼 조금 더 크게 나와요. `phone.wav`가 더 작은 대신 전화기처럼 답답하게 들리는 까닭을 말할 수 있어요.
 
